@@ -1,0 +1,38 @@
+diy force feedback wheel
+
+motores com redutor aqui:
+https://mauser.pt/catalog/index.php?cPath=324_1667_1750&sort=2a&page=1
+
+
+Um rato de bola (antigo, nao laser) costuma ter 2 Optical Rotary Encoders. 
+(o Scroll button é um rotary encoder mas quase sempre mecanico)
+Para ligar ao Arduino o componente era suposto ter um LM393 a amplificar e quadrificar, mas este simples esquema e script mostram que é possivel mesmo sem isso (e nos comments há um tipo de dá montes de boas ideias para usar rotary encoders magneticos):
+http://www.electroschematics.com/10494/arduino-optical-position-rotary-encoder/
+(mas resta o problema desses sensores só terem 3 pinos no led e 3 pinos no sensor... como sei a direção?)
+Outra forma é ligar o rato ao Arduino via PS2 e usar este script (espero que não seja muito pesado para o Arduino):
+https://playground.arduino.cc/ComponentLib/Ps2mouse
+https://playground.arduino.cc/uploads/ComponentLib/mouse.txt
+Ourta forma é ligar o rato ao PC, mas o windows nao o pode usar, e nós temos de usar WM_INPUT, só encontro codigo em C++:
+GLFW_multiple_mice_example-master
+...mas converte-se bem para vb.net, com <DllImport fica limpinho e muito poderoso:
+https://docs.microsoft.com/en-us/dotnet/visual-basic/programming-guide/com-interop/walkthrough-calling-windows-apis
+Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
+
+
+
+um rato laser encostado ao eixo da direcao! mas é muito instável
+A saida é usb e detectado como Mouse e nao como joystick. Em .net é facilimo saber a posicao do rato mesmo que ele nao esteja sobre a nossa aplicacao, mas o problema é que a resolução que vamos obter é a do ecran, que é insuficiente. 
+Outra forma é o rato usb ligar ao Arduino, mas não sei se é compativel com as outras coisas que o Arduino ja tem de fazer: http://strofoland.com/arduino-projects/reading-a5020-optical-sensor-using-arduino-part2/
+
+Steppers têm rotary encoders (positional), é só descobrir o pinout !
+
+Para o volante motor e redutores de Impressora jacto de tinta ou matricial. Mas são sempre steppers, teria de controlar o passo a passo...
+ 
+
+
+
+
+Euro Truck Simulator 2 (ou o American ): https://github.com/nlhans/ets2-sdk-plugin
+
+
+https://msdn.microsoft.com/en-us/library/cc526981.aspx?f=255&MSPPError=-2147217396#AircraftPositionAndSpeedData

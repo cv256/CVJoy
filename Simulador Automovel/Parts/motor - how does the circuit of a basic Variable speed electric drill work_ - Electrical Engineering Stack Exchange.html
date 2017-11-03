@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<!-- saved from url=(0120)http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work -->
+<html itemscope="" itemtype="http://schema.org/QAPage"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>motor - how does the circuit of a basic Variable speed electric drill work? - Electrical Engineering Stack Exchange</title>
+    <link rel="shortcut icon" href="https://cdn.sstatic.net/Sites/electronics/img/favicon.ico?v=575707ea0f4e">
+    <link rel="apple-touch-icon image_src" href="https://cdn.sstatic.net/Sites/electronics/img/apple-touch-icon.png?v=8ab405a669c4">
+    <link rel="search" type="application/opensearchdescription+xml" title="Electrical Engineering Stack Exchange" href="http://electronics.stackexchange.com/opensearch.xml">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@StackElectronix">
+    <meta name="twitter:domain" content="electronics.stackexchange.com">
+    <meta property="og:type" content="website">
+
+    <meta property="og:image" itemprop="image primaryImageOfPage" content="https://cdn.sstatic.net/Sites/electronics/img/apple-touch-icon@2.png?v=7b89fddaa66b">
+    <meta name="twitter:title" property="og:title" itemprop="title name" content="how does the circuit of a basic Variable speed electric drill work?">
+    <meta name="twitter:description" property="og:description" itemprop="description" content="i am trying to &#39;automate&#39; the control of an electric drill motor that im taking from a garden variety Variable Speed drill (from Harbor Freight)
+
+it has a universal AC motor which I basically under...">
+    <meta property="og:url" content="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work">
+    <link rel="canonical" href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work">
+
+    
+    
+    <script type="text/javascript" async="" src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/ados"></script><script async="" src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/quant.js.transferir"></script><script async="" src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/beacon.js.transferir"></script><script async="" src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/analytics.js.transferir"></script><script type="text/javascript" async="" src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/ados.js.transferir"></script><script src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/jquery.min.js.transferir"></script>
+    <script src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/stub.en.js.transferir"></script>
+    <link rel="stylesheet" type="text/css" href="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/all.css">
+
+            <link rel="alternate" type="application/atom+xml" title="Feed for question &#39;how does the circuit of a basic Variable speed electric drill work?&#39;" href="http://electronics.stackexchange.com/feeds/question/167556">
+            <meta name="twitter:app:country" content="US">
+            <meta name="twitter:app:name:iphone" content="Stack Exchange iOS">
+            <meta name="twitter:app:id:iphone" content="871299723">
+            <meta name="twitter:app:url:iphone" content="se-zaphod://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work">
+            <meta name="twitter:app:name:ipad" content="Stack Exchange iOS">
+            <meta name="twitter:app:id:ipad" content="871299723">
+            <meta name="twitter:app:url:ipad" content="se-zaphod://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work">
+            <meta name="twitter:app:name:googleplay" content="Stack Exchange Android">
+            <meta name="twitter:app:url:googleplay" content="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work">
+            <meta name="twitter:app:id:googleplay" content="com.stackexchange.marvin">
+        <script>
+        
+            StackExchange.ready(function () {
+                
+                StackExchange.using("postValidation", function () {
+                    StackExchange.postValidation.initOnBlurAndSubmit($('#post-form'), 2, 'answer');
+                });
+
+                
+                StackExchange.question.init({showAnswerHelp:true,totalCommentCount:0,shownCommentCount:0,highlightColor:'#F4A83D',backgroundColor:'#FFF',questionId:167556});
+
+                styleCode();
+
+                    StackExchange.realtime.subscribeToQuestion('135', '167556');
+                                                                    StackExchange.using("gps", function () { StackExchange.gps.trackOutboundClicks('#content', '.post-text', false); });
+
+            });
+        </script>
+
+                <script type="text/x-mathjax-config;executed=true">
+                    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+                                        tex2jax: { inlineMath: [ ["\\$", "\\$"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
+                                        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+                                        messageStyle: "none"
+                });
+                </script>        
+            <script src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/MathJax.js.transferir"></script>  
+
+    <script>
+        StackExchange.ready(function () {
+                        StackExchange.realtime.init('wss://qa.sockets.stackexchange.com,ws://qa.sockets.stackexchange.com');
+            StackExchange.realtime.subscribeToReputationNotifications('135');
+                StackExchange.realtime.subscribeToTopBarNotifications('135');
+        });
+    </script>
+    <script>
+        StackExchange.init({"locale":"en","stackAuthUrl":"https://stackauth.com","networkMetaHostname":"meta.stackexchange.com","serverTime":1485731829,"routeName":"Questions/Show","site":{"name":"Electrical Engineering Stack Exchange","description":"Q&A for electronics and electrical engineering professionals, students, and enthusiasts","isNoticesTabEnabled":true,"recaptchaPublicKey":"6LdsB7sSAAAAAAzjgEF_Hd8vXv-C42sa_KyofaGR","recaptchaAudioLang":"en","enableNewTagCreationWarning":false,"insertSpaceAfterNameTabCompletion":false,"id":135,"enableInsertDocLinkDialog":false,"enableSocialMediaInSharePopup":true},"user":{"fkey":"fa0ee606b9290b85105a299c9684d4fb","rep":0,"isAnonymous":true,"isAnonymousNetworkWide":true,"ab":{"question_show_tweaks":{"v":"altern_unansw_cta","g":1}}},"realtime":{"newest":true,"active":true,"tagged":true,"staleDisconnectIntervalInHours":0,"workerIframeDomain":"https://cdn.sstatic.net"},"events":{"postType":{"question":1},"postEditionSection":{"title":1,"body":2,"tags":3}},"story":{"minCompleteBodyLength":75}}, {"site":{"allowImageUploads":true,"enableUserHovercards":true,"styleCode":true,"enableImgurHttps":true},"comments":{},"userProfile":{},"tags":{},"accounts":{"currentPasswordRequiredForChangingStackIdPassword":true},"flags":{"allowRetractingFlags":true},"analytics":{"clientTimingsAbsoluteTimeout":30000,"clientTimingsDebounceTimeout":1000},"snippets":{"renderDomain":"stacksnippets.net"},"markdown":{"asteriskIntraWordEmphasis":true}});
+        StackExchange.using.setCacheBreakers({"js/prettify-full.en.js":"9a9de9c3b749","js/moderator.en.js":"40864e2316e3","js/full-anon.en.js":"3e70e8e063e5","js/full.en.js":"3bafb94b490b","js/wmd.en.js":"a3821c9aefb0","js/third-party/jquery.autocomplete.min.js":"d3b8fa7fdf74","js/third-party/jquery.autocomplete.min.en.js":"","js/mobile.en.js":"3e4b65bc39c7","js/help.en.js":"12aebc9f0272","js/tageditor.en.js":"4af7bd263513","js/tageditornew.en.js":"178de9940f9e","js/inline-tag-editing.en.js":"2ddfa79492e7","js/revisions.en.js":"47de10a8358f","js/review.en.js":"d01b34a33afd","js/tagsuggestions.en.js":"78eee7c19ab2","js/post-validation.en.js":"2d1f822fece2","js/explore-qlist.en.js":"e71f14781288","js/events.en.js":"ceee8bc9654d","js/keyboard-shortcuts.en.js":"4f45a7f1f39a","js/external-editor.en.js":"235e80f649d7","js/adops.en.js":"9a6a7812a212","js/mathjax-editing.en.js":"1930297f1188","js/external-editor.en.js":"235e80f649d7"});
+        StackExchange.using("gps", function() {
+             StackExchange.gps.init(true);
+        });
+    </script>
+    
+        <script>
+            StackExchange.ready(function () {
+                $('#nav-tour').click(function () {
+                    StackExchange.using("gps", function() {
+                        StackExchange.gps.track("aboutpage.click", { aboutclick_location: "headermain" }, true);
+                    });
+                });
+            });
+        </script>
+<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><script async="" src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/full-anon.en.js.transferir"></script><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><script async="" src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/post-validation.en.js.transferir"></script><style type="text/css">.MathJax_Display {text-align: center; margin: 1em 0em; position: relative; display: block!important; text-indent: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; width: 100%}
+.MathJax .merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MathJax .MJX-monospace {font-family: monospace}
+.MathJax .MJX-sans-serif {font-family: sans-serif}
+#MathJax_Tooltip {background-color: InfoBackground; color: InfoText; border: 1px solid black; box-shadow: 2px 2px 5px #AAAAAA; -webkit-box-shadow: 2px 2px 5px #AAAAAA; -moz-box-shadow: 2px 2px 5px #AAAAAA; -khtml-box-shadow: 2px 2px 5px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true'); padding: 3px 4px; z-index: 401; position: absolute; left: 0; top: 0; width: auto; height: auto; display: none}
+.MathJax {display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 100%; font-size-adjust: none; text-indent: 0; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0; min-height: 0; border: 0; padding: 0; margin: 0}
+.MathJax:focus, body :focus .MathJax {display: inline-table}
+.MathJax.MathJax_FullWidth {text-align: center; display: table-cell!important; width: 10000em!important}
+.MathJax img, .MathJax nobr, .MathJax a {border: 0; padding: 0; margin: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; vertical-align: 0; line-height: normal; text-decoration: none}
+img.MathJax_strut {border: 0!important; padding: 0!important; margin: 0!important; vertical-align: 0!important}
+.MathJax span {display: inline; position: static; border: 0; padding: 0; margin: 0; vertical-align: 0; line-height: normal; text-decoration: none}
+.MathJax nobr {white-space: nowrap!important}
+.MathJax img {display: inline!important; float: none!important}
+.MathJax * {transition: none; -webkit-transition: none; -moz-transition: none; -ms-transition: none; -o-transition: none}
+.MathJax_Processing {visibility: hidden; position: fixed; width: 0; height: 0; overflow: hidden}
+.MathJax_Processed {display: none!important}
+.MathJax_ExBox {display: block!important; overflow: hidden; width: 1px; height: 60ex; min-height: 0; max-height: none}
+.MathJax .MathJax_EmBox {display: block!important; overflow: hidden; width: 1px; height: 60em; min-height: 0; max-height: none}
+.MathJax_LineBox {display: table!important}
+.MathJax_LineBox span {display: table-cell!important; width: 10000em!important; min-width: 0; max-width: none; padding: 0; border: 0; margin: 0}
+.MathJax .MathJax_HitBox {cursor: text; background: white; opacity: 0; filter: alpha(opacity=0)}
+.MathJax .MathJax_HitBox * {filter: none; opacity: 1; background: transparent}
+#MathJax_Tooltip * {filter: none; opacity: 1; background: transparent}
+@font-face {font-family: MathJax_Main; src: url('http://cdn.mathjax.org/mathjax/2.7-latest/fonts/HTML-CSS/TeX/woff/MathJax_Main-Regular.woff?V=2.7.0') format('woff'), url('http://cdn.mathjax.org/mathjax/2.7-latest/fonts/HTML-CSS/TeX/otf/MathJax_Main-Regular.otf?V=2.7.0') format('opentype')}
+@font-face {font-family: MathJax_Main-bold; src: url('http://cdn.mathjax.org/mathjax/2.7-latest/fonts/HTML-CSS/TeX/woff/MathJax_Main-Bold.woff?V=2.7.0') format('woff'), url('http://cdn.mathjax.org/mathjax/2.7-latest/fonts/HTML-CSS/TeX/otf/MathJax_Main-Bold.otf?V=2.7.0') format('opentype')}
+@font-face {font-family: MathJax_Main-italic; src: url('http://cdn.mathjax.org/mathjax/2.7-latest/fonts/HTML-CSS/TeX/woff/MathJax_Main-Italic.woff?V=2.7.0') format('woff'), url('http://cdn.mathjax.org/mathjax/2.7-latest/fonts/HTML-CSS/TeX/otf/MathJax_Main-Italic.otf?V=2.7.0') format('opentype')}
+@font-face {font-family: MathJax_Math-italic; src: url('http://cdn.mathjax.org/mathjax/2.7-latest/fonts/HTML-CSS/TeX/woff/MathJax_Math-Italic.woff?V=2.7.0') format('woff'), url('http://cdn.mathjax.org/mathjax/2.7-latest/fonts/HTML-CSS/TeX/otf/MathJax_Math-Italic.otf?V=2.7.0') format('opentype')}
+@font-face {font-family: MathJax_Caligraphic; src: url('http://cdn.mathjax.org/mathjax/2.7-latest/fonts/HTML-CSS/TeX/woff/MathJax_Caligraphic-Regular.woff?V=2.7.0') format('woff'), url('http://cdn.mathjax.org/mathjax/2.7-latest/fonts/HTML-CSS/TeX/otf/MathJax_Caligraphic-Regular.otf?V=2.7.0') format('opentype')}
+@font-face {font-family: MathJax_Size1; src: url('http://cdn.mathjax.org/mathjax/2.7-latest/fonts/HTML-CSS/TeX/woff/MathJax_Size1-Regular.woff?V=2.7.0') format('woff'), url('http://cdn.mathjax.org/mathjax/2.7-latest/fonts/HTML-CSS/TeX/otf/MathJax_Size1-Regular.otf?V=2.7.0') format('opentype')}
+@font-face {font-family: MathJax_Size2; src: url('http://cdn.mathjax.org/mathjax/2.7-latest/fonts/HTML-CSS/TeX/woff/MathJax_Size2-Regular.woff?V=2.7.0') format('woff'), url('http://cdn.mathjax.org/mathjax/2.7-latest/fonts/HTML-CSS/TeX/otf/MathJax_Size2-Regular.otf?V=2.7.0') format('opentype')}
+@font-face {font-family: MathJax_Size3; src: url('http://cdn.mathjax.org/mathjax/2.7-latest/fonts/HTML-CSS/TeX/woff/MathJax_Size3-Regular.woff?V=2.7.0') format('woff'), url('http://cdn.mathjax.org/mathjax/2.7-latest/fonts/HTML-CSS/TeX/otf/MathJax_Size3-Regular.otf?V=2.7.0') format('opentype')}
+@font-face {font-family: MathJax_Size4; src: url('http://cdn.mathjax.org/mathjax/2.7-latest/fonts/HTML-CSS/TeX/woff/MathJax_Size4-Regular.woff?V=2.7.0') format('woff'), url('http://cdn.mathjax.org/mathjax/2.7-latest/fonts/HTML-CSS/TeX/otf/MathJax_Size4-Regular.otf?V=2.7.0') format('opentype')}
+.MathJax .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><script type="text/javascript" src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/adFeedback.js.transferir"></script><link rel="stylesheet" href="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/adFeedback.css"></head>
+<body class="question-page new-topbar"><div style="visibility: hidden; overflow: hidden; position: absolute; top: 0px; height: 1px; width: auto; padding: 0px; border: 0px; margin: 0px; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal;"><div id="MathJax_Hidden"></div></div><div id="MathJax_Message" style="display: none;"></div>
+    <noscript>&lt;div id="noscript-padding"&gt;&lt;/div&gt;</noscript>
+            <script>(function () { var old = $.fn.contents; $.fn.contents = function () { try { return old.apply(this, arguments); } catch (e) { return $([]); } } })()</script>
+        
+
+
+
+
+    <div id="notify-container"></div>
+    <div id="custom-header"></div>
+
+
+
+
+
+<div class="topbar">
+    <div class="topbar-wrapper">
+
+        <div class="js-topbar-dialog-corral">
+
+
+    <div class="topbar-dialog siteSwitcher-dialog dno">
+        <div class="header">
+            <h3><a href="http://electronics.stackexchange.com/">current community</a>
+            </h3>
+        </div>
+        <div class="modal-content current-site-container">
+            <ul class="current-site">
+                    <li>
+                            <div class="related-links">
+                    <a href="http://chat.stackexchange.com/?tab=site&amp;host=electronics.stackexchange.com" class="js-gps-track" data-gps-track="site_switcher.click({ item_type:6 })">chat</a>
+            </div>
+
+
+
+
+    <a href="http://electronics.stackexchange.com/" class="current-site-link site-link js-gps-track" data-id="135" data-gps-track="
+        site_switcher.click({ item_type:3 })">
+        <div class="site-icon favicon favicon-electronics" title="Electrical Engineering"></div>
+        Electrical Engineering
+    </a>
+
+                    </li>
+                    <li class="related-site">
+                            <div class="L-shaped-icon-container">
+        <span class="L-shaped-icon"></span>
+    </div>
+
+                        
+
+
+
+    <a href="http://meta.electronics.stackexchange.com/" class="site-link js-gps-track" data-id="137" data-gps-track="
+            site.switch({ target_site:137, item_type:3 }),
+        site_switcher.click({ item_type:4 })">
+        <div class="site-icon favicon favicon-electronicsmeta" title="Electrical Engineering Meta"></div>
+        Electrical Engineering Meta
+    </a>
+
+                    </li>
+            </ul>
+        </div>
+
+        <div class="header" id="your-communities-header">
+            <h3>
+your communities            </h3>
+
+        </div>
+        <div class="modal-content" id="your-communities-section">
+
+                <div class="call-to-login">
+<a href="https://electronics.stackexchange.com/users/signup?ssrc=site_switcher&amp;returnurl=http%3a%2f%2felectronics.stackexchange.com%2fquestions%2f167556%2fhow-does-the-circuit-of-a-basic-variable-speed-electric-drill-work" class="login-link js-gps-track" data-gps-track="site_switcher.click({ item_type:10 })">Sign up</a> or <a href="https://electronics.stackexchange.com/users/login?ssrc=site_switcher&amp;returnurl=http%3a%2f%2felectronics.stackexchange.com%2fquestions%2f167556%2fhow-does-the-circuit-of-a-basic-variable-speed-electric-drill-work" class="login-link js-gps-track" data-gps-track="site_switcher.click({ item_type:11 })">log in</a> to customize your list.
+                </div>
+        </div>
+
+        <div class="header">
+            <h3><a href="http://stackexchange.com/sites">more stack exchange communities</a>
+            </h3>
+            <a href="http://stackoverflow.blog/" class="fr">company blog</a>
+        </div>
+        <div class="modal-content">
+                <div class="child-content"></div>
+        </div>        
+    </div>
+        </div>
+
+        <div class="network-items">
+                <a href="http://stackexchange.com/" class="topbar-icon icon-site-switcher yes-hover js-site-switcher-button js-gps-track" data-gps-track="site_switcher.show" title="A list of all 163 Stack Exchange sites">
+                    <span class="hidden-text">Stack Exchange</span>
+                </a>
+
+    <a href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work#" class="topbar-icon icon-inbox yes-hover js-inbox-button" title="Recent inbox messages">
+        <span class="hidden-text">Inbox</span>
+        <span class="unread-count" style="display:none"></span>
+    </a>
+    <a href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work#" class="topbar-icon icon-achievements yes-hover js-achievements-button" data-unread-class="" title="Recent achievements: reputation, badges, and privileges earned">
+        <span class="hidden-text">Reputation and Badges</span>
+        <span class="unread-count" style="display:none">
+            
+        </span>
+    </a>
+        </div>
+
+        <div class="topbar-links">
+
+                <div class="links-container">
+                <span class="topbar-menu-links">
+                                    <a href="https://electronics.stackexchange.com/users/signup?ssrc=head&amp;returnurl=http%3a%2f%2felectronics.stackexchange.com%2fquestions%2f167556%2fhow-does-the-circuit-of-a-basic-variable-speed-electric-drill-work" class="login-link" rel="nofollow">sign up</a>
+                                <a href="https://electronics.stackexchange.com/users/login?ssrc=head&amp;returnurl=http%3a%2f%2felectronics.stackexchange.com%2fquestions%2f167556%2fhow-does-the-circuit-of-a-basic-variable-speed-electric-drill-work" class="login-link" rel="nofollow">log in</a>
+
+                            <a href="http://electronics.stackexchange.com/tour">tour</a>
+        <a href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work#" class="icon-help js-help-button" title="Help Center and other resources">
+            help
+            <span class="triangle"></span>
+        </a>
+    <div class="topbar-dialog help-dialog js-help-dialog dno">
+        <div class="modal-content">
+            <ul>
+                                    <li>
+                        <a href="http://electronics.stackexchange.com/tour" class="js-gps-track" data-gps-track="help_popup.click({ item_type:1 })">
+                            Tour
+                            <span class="item-summary">
+                                Start here for a quick overview of the site
+                            </span>
+                        </a>
+                    </li>
+                <li>
+                    <a href="http://electronics.stackexchange.com/help" class="js-gps-track" data-gps-track="help_popup.click({ item_type:4 })">
+                        Help Center
+                        <span class="item-summary">
+                            Detailed answers to any questions you might have
+                        </span>
+                    </a>
+                </li>
+                        <li>
+                            <a href="http://meta.electronics.stackexchange.com/" class="js-gps-track" data-gps-track="help_popup.click({ item_type:2 })">
+                                Meta
+                                <span class="item-summary">
+                                    Discuss the workings and policies of this site
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://stackoverflow.com/company/about" class="js-gps-track" data-gps-track="help_popup.click({ item_type:6 })">
+                                About Us
+                                <span class="item-summary">
+                                    Learn more about Stack Overflow the company
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.stackoverflowbusiness.com/?ref=topbar_help" class="js-gps-track" data-gps-track="help_popup.click({ item_type:7 })">
+                                Business
+                                <span class="item-summary">
+                                    Learn more about hiring developers or posting ads with us
+                                </span>
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+                                            </span>
+                </div>
+
+            <div class="search-container">
+                <form id="search" action="http://electronics.stackexchange.com/search" method="get" autocomplete="off">
+                        <input name="q" type="text" placeholder="Search Q&amp;A" value="" tabindex="1" autocomplete="off" maxlength="240">
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <script>
+        StackExchange.ready(function() { StackExchange.topbar.init(); });
+    </script>
+
+    <div class="container">
+        <div id="header">
+            <br class="cbt">
+            <div id="hlogo">
+                <a href="http://electronics.stackexchange.com/">
+                    Electrical Engineering
+                </a>
+            </div>
+            <div id="hmenus">
+                <div class="nav mainnavs">
+                    <ul>
+                            <li class="youarehere">
+        <a id="nav-questions" href="http://electronics.stackexchange.com/questions" class="js-gps-track" data-gps-track="top_nav.click({is_current:true, location:3, destination:1})">
+        Questions
+        </a>
+    </li>
+
+                                                    <li>
+        <a id="nav-tags" href="http://electronics.stackexchange.com/tags" class="js-gps-track" data-gps-track="top_nav.click({is_current:false, location:3, destination:2})">
+        Tags
+        </a>
+    </li>
+
+                            <li>
+        <a id="nav-users" href="http://electronics.stackexchange.com/users" class="js-gps-track" data-gps-track="top_nav.click({is_current:false, location:3, destination:3})">
+        Users
+        </a>
+    </li>
+
+                            <li>
+        <a id="nav-badges" href="http://electronics.stackexchange.com/help/badges" class="js-gps-track" data-gps-track="top_nav.click({is_current:false, location:3, destination:4})">
+        Badges
+        </a>
+    </li>
+
+    <li>
+        <a id="nav-unanswered" href="http://electronics.stackexchange.com/unanswered" class="js-gps-track" data-gps-track="top_nav.click({is_current:false, location:3, destination:5})">
+        Unanswered
+        </a>
+    </li>
+                    </ul>
+                </div>
+                <div class="nav askquestion">
+                    <ul>
+                        <li>
+                            <a id="nav-askquestion" href="http://electronics.stackexchange.com/questions/ask">Ask Question</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+
+
+
+        <div id="content">
+            
+
+<div itemscope="" itemtype="http://schema.org/Question">
+    <link itemprop="image" href="https://cdn.sstatic.net/Sites/electronics/img/apple-touch-icon.png?v=8ab405a669c4">
+
+
+    <div id="herobox">
+        <div id="hero-content">
+                <div id="close"><a title="click to minimize">_</a></div>
+            <div id="blurb">
+                Electrical Engineering Stack Exchange is a question and answer site for electronics and electrical engineering professionals, students, and enthusiasts. Join them; it only takes a minute:
+                <br>
+                <br>
+                <a href="http://electronics.stackexchange.com/users/signup?ssrc=hero&amp;returnurl=http%3a%2f%2felectronics.stackexchange.com%2fquestions%2f167556%2fhow-does-the-circuit-of-a-basic-variable-speed-electric-drill-work" id="tell-me-more" class="button">Sign up</a>
+            </div>
+            <div id="desc">
+                <b>Here's how it works:</b>
+                <ol id="hiw">
+                    <li id="q">Anybody can ask a question
+                    </li>
+                    <li id="an">Anybody can answer
+                    </li>
+                    <li id="b">The best answers are voted up and rise to the top
+                    </li>
+                </ol>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+    </div>
+<script>
+    StackExchange.ready(function () {
+
+        var location = 0;
+        if ($("body").hasClass("questions-page")) {
+            location = 1;;
+        } else if ($("body").hasClass("question-page")) {
+            location = 1;;
+        } else if ($("body").hasClass("faq-page")) {
+            location = 5;;
+        } else if ($("body").hasClass("home-page")) {
+            location = 3;;
+        }
+
+        $('#tell-me-more').click(function () {
+            StackExchange.using("gps", function () {
+                StackExchange.gps.track("hero.action", { hero_action_type: 'cta', location: location }, true);
+            });
+        });
+        $('#herobox #close').click(function () {
+            StackExchange.using("gps", function () {
+                StackExchange.gps.track("hero.action", { hero_action_type: "minimize", location: location }, true);
+            });
+            $.cookie("hero", "mini", { path: "/", expires: 365 });
+            $.ajax({
+                url: "/hero-mini",
+                success: function (data) {
+                    $("#herobox").fadeOut("fast", function () {
+                        $("#herobox").replaceWith(data);
+                        $("#herobox-mini").fadeIn("fast");
+                    });
+                }
+            });
+            return false;
+        });
+    });
+
+</script>			<div id="question-header">
+                <h1 itemprop="name"><a href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work" class="question-hyperlink">how does the circuit of a basic Variable speed electric drill work?</a></h1>
+		</div>
+			<div id="mainbar">
+
+			
+
+<div class="question" data-questionid="167556" id="question">
+
+    <script>
+                var ados = ados || {}; ados.run = ados.run || [];
+                ados.run.push(function () { ados_add_placement(22,0,"adzerk1265219069",4).enableDynamicSiteSelection().setZone(29); });
+            </script>
+            <div class="everyonelovesstackoverflow adzerk-vote" id="adzerk1265219069"><a href="http://engine.adzerk.net/r?e=eyJhdiI6NDE0LCJhdCI6NCwiYnQiOjAsImNtIjo1MjcxODEsImNoIjoxNjUzMSwiY2siOnt9LCJjciI6MTg1Nzg5OSwiZGkiOiJjY2M5YWVhZTI4Nzc0OGUzOGY1NTI0YTA0MGU3YjQyMCIsImRtIjoxLCJmYyI6MjIzMDIyMCwiZmwiOjI2ODA2MjMsImlwIjoiODUuMjQwLjI2Ljc2Iiwia3ciOiJtb3RvcixhYyx0cmlhYyx4LWhvc3QtZWxlY3Ryb25pY3Muc3RhY2tleGNoYW5nZS5jb20iLCJudyI6MjIsInBjIjowLCJlYyI6MCwicHIiOjU1Njk1LCJydCI6MiwicmYiOiJodHRwczovL3d3dy5nb29nbGUucHQvIiwic3QiOjY3NDMzOCwidWsiOiJ1ZTEtYjUwNzllYjQ4ZTFmNDY0N2FiYTAwMGVkMWI2MjgxZjkiLCJ6biI6MjksInRzIjoxNDg1NzMyNDUyODkyLCJiZiI6dHJ1ZSwicG4iOiJhZHplcmsxMjY1MjE5MDY5IiwidXIiOiJodHRwczovL3d3dy5zdXJ2ZXltb25rZXkuY28udWsvci9WQ1M3NUpYIn0&amp;s=Cyw6MsddHIic8Ai5OIj60qF3S-8" rel="nofollow" target="_blank" title=""><img src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/594c4477539a46308fe9241c23e21245.png" title="" alt="" border="0" width="728" height="90"></a><div class="adzerk-vote-controls" style="display: none;"><div class="adzerk-vote-option adzerk-vote-up"><div class="adzerk-vote-icon"></div></div><div class="adzerk-vote-option adzerk-vote-down"><div class="adzerk-vote-icon"></div></div></div><div class="adzerk-vote-survey" style="display:none;"><form><span>No problem. We won't show you that ad again. Why didn't you like it?</span><ul><li><label><input type="radio" value="12" name="downvoteReason">Uninteresting</label></li><li><label><input type="radio" value="13" name="downvoteReason">Misleading</label></li><li><label><input type="radio" value="14" name="downvoteReason">Offensive</label></li><li><label><input type="radio" value="15" name="downvoteReason">Repetitive</label></li><li><label><input type="radio" value="16" name="downvoteReason">Other</label></li></ul><a href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work#" class="adzerk-vote-cancel">Oops! I didn't mean to do this.</a></form></div><img height="0px" width="0px" border="0" style="position:absolute;" src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/i.gif"></div>    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input type="hidden" name="_id_" value="167556">
+        <a class="vote-up-off" title="This question shows research effort; it is useful and clear">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">8</span>
+        <a class="vote-down-off" title="This question does not show any research effort; it is unclear or not useful">down vote</a>
+
+        <a class="star-off" href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work#">favorite</a>
+        <div class="favoritecount"><b>2</b></div>
+
+
+</div>
+
+            </td>
+            
+<td class="postcell">
+<div>
+    <div class="post-text" itemprop="text">
+
+<p>i am trying to 'automate' the control of an electric drill motor that im taking from a garden variety Variable Speed drill (from Harbor Freight)</p>
+
+<p>it has a universal AC motor which I basically undertand and a DPDT switch to reverse direction and a triac citcuit to vary speed  </p>
+
+<p>Question 1 . i see 4 wires going to the 'field/Stator coil(s)'. Are there 2 seperate field/stator coils here? is this to provide low/high power.  I think in theory , you only need 1 coil with 2 wires and that coil is wired in series with the brushes... is that right?   how does this circuit work with 2 coils.</p>
+
+<p>Question 2 . how does this variable speed circuit work.  is the wiring diagram correct (it doesnt show a variable resistor and it doesnt show what drives the control input of the traic? why are there two switches in the thing? does switch 2 close at high speed and thus shunt around the triac?</p>
+
+<p>please see the attached 4 diagrams
+<img src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/nm5ZW.jpg" alt="drill pic">
+<img src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/jlstp.jpg" alt="drill pic2">
+<img src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/55pyW.png" alt="drill pic3">
+<img src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/HMEDs.jpg" alt=""></p>
+    </div>
+    <div class="post-taglist">
+        <a href="http://electronics.stackexchange.com/questions/tagged/motor" class="post-tag js-gps-track" title="show questions tagged &#39;motor&#39;" rel="tag">motor</a> <a href="http://electronics.stackexchange.com/questions/tagged/ac" class="post-tag js-gps-track" title="show questions tagged &#39;ac&#39;" rel="tag">ac</a> <a href="http://electronics.stackexchange.com/questions/tagged/triac" class="post-tag js-gps-track" title="show questions tagged &#39;triac&#39;" rel="tag">triac</a> 
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://electronics.stackexchange.com/q/167556" title="short permalink to this question" class="short-link" id="link-post-167556">share</a><span class="lsep">|</span><a href="http://electronics.stackexchange.com/posts/167556/edit" class="suggest-edit-post" title="">improve this question</a></div>        
+    </td>
+    <td class="post-signature owner">
+        <div class="user-info ">
+    <div class="user-action-time">
+        asked <span title="2015-05-01 17:04:39Z" class="relativetime">May 1 '15 at 17:04</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://electronics.stackexchange.com/users/36025/cool-pontiac"><div class="gravatar-wrapper-32"><img src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/1211f6d259808a390ff2a9881c616ca1" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://electronics.stackexchange.com/users/36025/cool-pontiac">Cool Pontiac</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">59</span><span title="1 gold badge"><span class="badge1"></span><span class="badgecount">1</span></span><span title="2 silver badges"><span class="badge2"></span><span class="badgecount">2</span></span><span title="3 bronze badges"><span class="badge3"></span><span class="badgecount">3</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</div>
+</td>
+        </tr>
+                    
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-167556" class="comments  dno">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+                        <tr><td></td><td></td></tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-167556" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid answering questions in comments.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work#" onclick=""></a>
+        </div>         
+    </td>
+</tr>        </tbody></table>
+</div>
+
+			<div id="answers">
+
+				<a name="tab-top"></a>
+				<div id="answers-header">
+					<div class="subheader answers-subheader">
+						<h2>
+								2 Answers
+                                <span style="display:none;" itemprop="answerCount">2</span>
+						</h2>
+						<div>
+							<div id="tabs">
+        <a href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work?answertab=active#tab-top" data-nav-xhref="" title="Answers with the latest activity first" data-value="active" data-shortcut="A">
+            active</a>
+        <a href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work?answertab=oldest#tab-top" data-nav-xhref="" title="Answers in the order they were provided" data-value="oldest" data-shortcut="O">
+            oldest</a>
+        <a class="youarehere" href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work?answertab=votes#tab-top" data-nav-xhref="" title="Answers with the highest score first" data-value="votes" data-shortcut="V">
+            votes</a>
+</div>
+						</div>
+					</div>    
+				</div>    
+
+
+
+
+  
+<a name="167580"></a>
+<div id="answer-167580" class="answer" data-answerid="167580" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input type="hidden" name="_id_" value="167580">
+        <a class="vote-up-off" title="This answer is useful">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">2</span>
+        <a class="vote-down-off" title="This answer is not useful">down vote</a>
+
+
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<blockquote>
+  <p>Question 1 . i see 4 wires going to the 'field/Stator coil(s)'. Are there 2 seperate field/stator coils here? is this to provide low/high power. I think in theory , you only need 1 coil with 2 wires and that coil is wired in series with the brushes... is that right? how does this circuit work with 2 coils.</p>
+</blockquote>
+
+<p>The switch-box connected to the brushes also needs to be supplied. But it is neither connected to AC, nor directly to the trigger box. Finally, it connects to the cables from the trigger box at the terminals of the field coil. You can already see on the picture that a white and a black cable are (very likely) connected to the same terminal of the coil on the right. It's not so obvious on the left side. But of course the switch box somehow <em>must</em> be supplied.</p>
+
+<blockquote>
+  <p>Question 2 . how does this variable speed circuit work. is the wiring diagram correct (it doesnt show a variable resistor and it doesnt show what drives the control input of the traic? why are there two switches in the thing? does switch 2 close at high speed and thus shunt around the triac?</p>
+</blockquote>
+
+<p>This is not a complete schematic, it is only a sketch.
+AC should be connected to terminals 1 and 3, field coil and switch box to 2 and 3. </p>
+
+<p>The triac is used for a <a href="http://en.wikipedia.org/wiki/Phase-fired_controllers" rel="nofollow noreferrer">phase-fired controller</a>. The trigger will contain a variable resistor between 4 and the "the black-dot-terminal". Depending on the trigger position, the current will increase above the triac threshold at a certain point within the first 90° of a half-wave, and the triac will fire. Maybe, the trigger contains even more electronics to fire the triac somewhere over the full 180° range.</p>
+
+<p>Even when you pull the trigger to the maximum, the trigger will still cut a little from the half waves, and in general, some voltage will drop over the triac. Therefore, the switch between 4 and 2 will short cut the triac in this case, allowing the full AC voltage to pass to the motor.</p>
+
+<p>On the other side, you do not want to power the motor / triac when you don't touch the trigger. In this case, the switch between 1 and 4 will be open.</p>
+
+<hr>
+
+<p>EDIT:</p>
+
+<p>According to your comment: </p>
+
+<p>Here is a more complete schematic of your electric drill:</p>
+
+
+
+<p><img src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/ummjH.png" alt="schematic"></p>
+
+
+
+<p><sup><a href="http://electronics.stackexchange.com/plugins/schematics?image=http%3a%2f%2fi.stack.imgur.com%2fummjH.png">simulate this circuit</a> – Schematic created using <a href="https://www.circuitlab.com/" rel="nofollow">CircuitLab</a></sup></p>
+
+<p>As you want to change the rotation direction of your drill, you need to be able to swap the polarity of either the field coil or the rotor coil. Here, the power-regulated AC from the trigger is connected to two terminals of the field coils via the black cables. The white cables are connected to the same terminals, feeding the direction switch, which powers the brushes via the blue cables. </p>
+
+<p>Field and rotor coil are connected in parallel, which increases the power of the motor (each gets the full voltage from the trigger box, they don't have to share it)</p>
+
+<p>And keep in mind my variable resistor also is just a model on how the trigger may actually work. See above.</p>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://electronics.stackexchange.com/a/167580" title="short permalink to this answer" class="short-link" id="link-post-167580">share</a><span class="lsep">|</span><a href="http://electronics.stackexchange.com/posts/167580/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+    <td align="right" class="post-signature">
+<div class="user-info ">
+    <div class="user-action-time">
+        <a href="http://electronics.stackexchange.com/posts/167580/revisions" title="show all edits to this post">edited <span title="2015-05-02 18:43:03Z" class="relativetime">May 2 '15 at 18:43</span></a>
+    </div>
+    <div class="user-gravatar32">
+        
+    </div>
+    <div class="user-details">
+        
+        <div class="-flair">
+            
+        </div>
+    </div>
+</div>    </td>
+            
+
+
+    <td align="right" class="post-signature">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2015-05-01 19:42:11Z" class="relativetime">May 1 '15 at 19:42</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://electronics.stackexchange.com/users/57828/sweber"><div class="gravatar-wrapper-32"><img src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/N9DU0.png" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://electronics.stackexchange.com/users/57828/sweber">sweber</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">6,398</span><span title="1 gold badge"><span class="badge1"></span><span class="badgecount">1</span></span><span title="6 silver badges"><span class="badge2"></span><span class="badgecount">6</span></span><span title="22 bronze badges"><span class="badge3"></span><span class="badgecount">22</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-167580" class="comments ">
+		    <table>
+                <tbody data-remaining-comments-count="1" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+
+
+    <tr id="comment-341915" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">thanks! but im still confused why there are 4 leads going to the field coil(s). in a simple motor.. the field coil is wired in series with the rotor coil via the brushes.. thus you only supply your AC power to 2 leads.. lead #1 would be to one side of the coil and lead #2 would be one side of the brushes.     thus does my motor have an 'extra' field coil for 'added pwer'</span>
+                    –&nbsp;<a href="http://electronics.stackexchange.com/users/36025/cool-pontiac" title="59 reputation" class="comment-user owner">Cool Pontiac</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work#comment341915_167580"><span title="2015-05-02 15:52:55Z" class="relativetime-clean">May 2 '15 at 15:52</span></a></span>
+                        <span class="edited-yes" title="this comment was edited 1 time"></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-342969" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">There are 4 leads because the motor has a separate field winding on either side of the stator. These windings could simply be joined together to make a single coil, but putting them in a balanced configuration either side of the armature may reduce voltage stress on the insulation and help to suppress brush arcing. The field coil is almost certainly wired in <i>series</i> with the armature, not parallel (you can verify this by tracing the wires and/or measuring the windings with an Ohmmeter).</span>
+                    –&nbsp;<a href="http://electronics.stackexchange.com/users/49222/bruce-abbott" title="17,020 reputation" class="comment-user">Bruce Abbott</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work#comment342969_167580"><span title="2015-05-02 20:20:32Z" class="relativetime-clean">May 2 '15 at 20:20</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-343417" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">@BruceAbbott I agree there.  That is a typical single phase "Universal" motor, and the fields have to be in series with the armature.  A Universal motor is just a plain DC motor at its heart, but running off of AC.  By using a series configuration for the field, they have very high starting torque, as the magnetic flux builds with current, which is at maximum at stall or load.  In parallel, you can't get the magnetic field boost when the shaft is loaded.</span>
+                    –&nbsp;<a href="http://electronics.stackexchange.com/users/71653/r-drast" title="3,475 reputation" class="comment-user">R Drast</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work#comment343417_167580"><span title="2015-05-04 14:06:17Z" class="relativetime-clean">May 4 '15 at 14:06</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-343746" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">I'm still not sure about the serial connections due to the wires. It seems absolutely clear on the picture that a white and black cable are connected on the left terminal. Black is supply, white connects to the direction switch. I have no idea how this can be a serial wiring. I'd check if this wires are really connected to a single terminal by inspection / measurement of the resistance.</span>
+                    –&nbsp;<a href="http://electronics.stackexchange.com/users/57828/sweber" title="6,398 reputation" class="comment-user">sweber</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work#comment343746_167580"><span title="2015-05-05 12:48:18Z" class="relativetime-clean">May 5 '15 at 12:48</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+    <tr id="comment-345677" class="comment ">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class=" comment-score">
+                                &nbsp;&nbsp;
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+                <span class="comment-copy">thanks everyone for your help! I think my armature is wired in series with the field coils. it appears that 'thyristor controlled power' is fed into "Side A" of upper field coil. "side B" of upper field coil then feeds thru DPDT into the armature coil. arm coil flows back out thru the DPDT to " Side B" of lower field coil. SideA of lower field coil completes circuit to ground. does this make sense?</span>
+                    –&nbsp;<a href="http://electronics.stackexchange.com/users/36025/cool-pontiac" title="59 reputation" class="comment-user owner">Cool Pontiac</a>
+                <span class="comment-date" dir="ltr"><a class="comment-link" href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work#comment345677_167580"><span title="2015-05-11 06:47:46Z" class="relativetime-clean">May 11 '15 at 6:47</span></a></span>
+                                                                            </div>
+                    </td>
+    </tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-167580" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link  dno" title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”."></a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link " title="expand to show all comments on this post" href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work#" onclick="">show <b>1</b> more comment</a>
+        </div>         
+    </td>
+</tr>    </tbody></table>
+</div>
+<script>
+                var ados = ados || {}; ados.run = ados.run || [];
+                ados.run.push(function () { ados_add_placement(22,0,"adzerk146579059",4).enableDynamicSiteSelection().setZone(30); });
+            </script>
+            <div class="everyonelovesstackoverflow adzerk-vote" id="adzerk146579059"><a href="http://engine.adzerk.net/r?e=eyJhdiI6NDE0LCJhdCI6NCwiYnQiOjAsImNtIjo1MjcxODEsImNoIjoxNjUzMSwiY2siOnt9LCJjciI6MTg3NzA0OCwiZGkiOiJmM2E3OTgwYzEwZjQ0NjZhOGJhNTg5YjIyODg4OGJiMSIsImRtIjoxLCJmYyI6MjI1NzM3MiwiZmwiOjI2ODA2MzQsImlwIjoiODUuMjQwLjI2Ljc2Iiwia3ciOiJtb3RvcixhYyx0cmlhYyx4LWhvc3QtZWxlY3Ryb25pY3Muc3RhY2tleGNoYW5nZS5jb20iLCJudyI6MjIsInBjIjowLCJlYyI6MCwicHIiOjU1Njk1LCJydCI6MiwicmYiOiJodHRwczovL3d3dy5nb29nbGUucHQvIiwic3QiOjY3NDMzOCwidWsiOiJ1ZTEtYjUwNzllYjQ4ZTFmNDY0N2FiYTAwMGVkMWI2MjgxZjkiLCJ6biI6MzAsInRzIjoxNDg1NzMyNDUyODk0LCJiZiI6dHJ1ZSwicG4iOiJhZHplcmsxNDY1NzkwNTkiLCJ1ciI6Imh0dHBzOi8vd3d3LnN1cnZleW1vbmtleS5jby51ay9yL1ZDVFFNTVYifQ&amp;s=rqqOdruNCDKig3rvIHFTc2uxsaQ" rel="nofollow" target="_blank" title=""><img src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/89709c48c5764a61870e6637a4f730fc.png" title="" alt="" border="0" width="728" height="90"></a><div class="adzerk-vote-controls" style="display:none;"><div class="adzerk-vote-option adzerk-vote-up"><div class="adzerk-vote-icon"></div></div><div class="adzerk-vote-option adzerk-vote-down"><div class="adzerk-vote-icon"></div></div></div><div class="adzerk-vote-survey" style="display:none;"><form><span>No problem. We won't show you that ad again. Why didn't you like it?</span><ul><li><label><input type="radio" value="12" name="downvoteReason">Uninteresting</label></li><li><label><input type="radio" value="13" name="downvoteReason">Misleading</label></li><li><label><input type="radio" value="14" name="downvoteReason">Offensive</label></li><li><label><input type="radio" value="15" name="downvoteReason">Repetitive</label></li><li><label><input type="radio" value="16" name="downvoteReason">Other</label></li></ul><a href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work#" class="adzerk-vote-cancel">Oops! I didn't mean to do this.</a></form></div><img height="0px" width="0px" border="0" style="position:absolute;" src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/i(1).gif"></div>
+  
+<a name="204779"></a>
+<div id="answer-204779" class="answer" data-answerid="204779" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input type="hidden" name="_id_" value="204779">
+        <a class="vote-up-off" title="This answer is useful">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">0</span>
+        <a class="vote-down-off" title="This answer is not useful">down vote</a>
+
+
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>Just a small error in the schematic. The way you had it would short circuit the system.
+<a href="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/RGhEm.png" rel="nofollow noreferrer"><img src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/RGhEm.png" alt="enter image description here"></a></p>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://electronics.stackexchange.com/a/204779" title="short permalink to this answer" class="short-link" id="link-post-204779">share</a><span class="lsep">|</span><a href="http://electronics.stackexchange.com/posts/204779/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td align="right" class="post-signature">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2015-12-07 09:41:01Z" class="relativetime">Dec 7 '15 at 9:41</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://electronics.stackexchange.com/users/93783/i11011011001"><div class="gravatar-wrapper-32"><img src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/photo.jpg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://electronics.stackexchange.com/users/93783/i11011011001">i11011011001</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">1</span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-204779" class="comments  dno">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+                        <tr><td></td><td></td></tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-204779" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work#" onclick=""></a>
+        </div>         
+    </td>
+</tr>    </tbody></table>
+</div>
+				    <div class="question-status">
+        <h2>                    <b>protected</b> by <a href="http://electronics.stackexchange.com/users/-1/community">Community</a><span class="mod-flair" title="moderator">♦</span> <span dir="ltr"><span title="2016-05-16 13:24:03Z" class="relativetime">May 16 '16 at 13:24</span></span>
+</h2>
+        <p>
+Thank you for your interest in this question. 
+Because it has attracted low-quality or spam answers that had to be removed, posting an answer now requires 10 <a href="http://electronics.stackexchange.com/help/whats-reputation">reputation</a> on this site (the <a href="http://electronics.stackexchange.com/help/privileges/new-user">association bonus does not count</a>).
+<br><br>
+Would you like to answer one of these <a href="http://electronics.stackexchange.com/unanswered?fromProtectedNotice=true">unanswered questions</a> instead?
+</p>
+    </div>
+
+
+
+
+
+						<h2 class="bottom-notice" data-loc="1">
+Not the answer you're looking for?							Browse other questions tagged <a href="http://electronics.stackexchange.com/questions/tagged/motor" class="post-tag" title="show questions tagged &#39;motor&#39;" rel="tag">motor</a> <a href="http://electronics.stackexchange.com/questions/tagged/ac" class="post-tag" title="show questions tagged &#39;ac&#39;" rel="tag">ac</a> <a href="http://electronics.stackexchange.com/questions/tagged/triac" class="post-tag" title="show questions tagged &#39;triac&#39;" rel="tag">triac</a>  or <a href="http://electronics.stackexchange.com/questions/ask">ask your own question</a>.						</h2>
+			</div>
+		</div>
+				<div id="sidebar" class="show-votes">
+						    <div class="module question-stats">
+			        <table id="qinfo">
+			            <tbody><tr>
+			                <td>
+			                    <p class="label-key">asked</p>
+			                </td>
+			                <td style="padding-left: 10px">
+			                    <p class="label-key" title="2015-05-01 17:04:39Z"><b>1 year ago</b></p>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>
+			                    <p class="label-key">viewed</p>
+			                </td>
+
+			                <td style="padding-left: 10px">
+			                    <p class="label-key">
+			                        <b>13098 times</b>
+			                    </p>
+			                </td>
+			            </tr>
+			                <tr>
+			                    <td>
+			                        <p class="label-key">active</p>
+			                    </td>
+			                    <td style="padding-left: 10px">
+			                        <p class="label-key"><b><a href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work?lastactivity" class="lastactivity-link" title="2016-05-16 12:14:33Z">8 months ago</a></b></p>
+			                    </td>
+			                </tr>
+			        </tbody></table>
+			    </div>
+						
+			<script>
+                var ados = ados || {}; ados.run = ados.run || [];
+                ados.run.push(function () { ados_add_placement(22,0,"adzerk1084213294",[5,17]).enableDynamicSiteSelection().setZone(56016); });
+            </script>
+            <div class="everyonelovesstackoverflow adzerk-vote" id="adzerk1084213294"><a href="http://engine.adzerk.net/r?e=eyJhdiI6NDE0LCJhdCI6NSwiYnQiOjAsImNtIjo1MjcxODEsImNoIjoxNjUzMSwiY2siOnt9LCJjciI6MTg1NzkyOSwiZGkiOiJiNzRiYjI1ZDNjY2I0Y2VmOTA3MGRiZDM3YmFjMGZkYiIsImRtIjoxLCJmYyI6MjIzMDIzNywiZmwiOjI2ODA2MjcsImlwIjoiODUuMjQwLjI2Ljc2Iiwia3ciOiJtb3RvcixhYyx0cmlhYyx4LWhvc3QtZWxlY3Ryb25pY3Muc3RhY2tleGNoYW5nZS5jb20iLCJudyI6MjIsInBjIjowLCJlYyI6MCwicHIiOjU1Njk1LCJydCI6MiwicmYiOiJodHRwczovL3d3dy5nb29nbGUucHQvIiwic3QiOjY3NDMzOCwidWsiOiJ1ZTEtYjUwNzllYjQ4ZTFmNDY0N2FiYTAwMGVkMWI2MjgxZjkiLCJ6biI6NTYwMTYsInRzIjoxNDg1NzMyNDUyODk2LCJiZiI6dHJ1ZSwicG4iOiJhZHplcmsxMDg0MjEzMjk0IiwidXIiOiJodHRwczovL3d3dy5zdXJ2ZXltb25rZXkuY28udWsvci9WQ1hOOUdYIn0&amp;s=x8xsLfM75C9pAgwc4ZTXBbyQSMI" rel="nofollow" target="_blank" title=""><img src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/b8e889a09d3049aeaca687a6a3cf5d17.png" title="" alt="" border="0" width="300" height="250"></a><div class="adzerk-vote-controls" style="display:none;"><div class="adzerk-vote-option adzerk-vote-up"><div class="adzerk-vote-icon"></div></div><div class="adzerk-vote-option adzerk-vote-down"><div class="adzerk-vote-icon"></div></div></div><div class="adzerk-vote-survey" style="display:none;"><form><span>No problem. We won't show you that ad again. Why didn't you like it?</span><ul><li><label><input type="radio" value="12" name="downvoteReason">Uninteresting</label></li><li><label><input type="radio" value="13" name="downvoteReason">Misleading</label></li><li><label><input type="radio" value="14" name="downvoteReason">Offensive</label></li><li><label><input type="radio" value="15" name="downvoteReason">Repetitive</label></li><li><label><input type="radio" value="16" name="downvoteReason">Other</label></li></ul><a href="http://electronics.stackexchange.com/questions/167556/how-does-the-circuit-of-a-basic-variable-speed-electric-drill-work#" class="adzerk-vote-cancel">Oops! I didn't mean to do this.</a></form></div><img height="0px" width="0px" border="0" style="position:absolute;" src="./motor - how does the circuit of a basic Variable speed electric drill work_ - Electrical Engineering Stack Exchange_files/i(2).gif"></div>
+			
+
+            
+
+				<div class="module sidebar-related">
+					<h4 id="h-related">Related</h4>
+                    <div class="related js-gps-related-questions" data-tracker="rq=1">
+                        <div class="spacer js-gps-track"><a href="http://electronics.stackexchange.com/q/25103?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">1</div></a><a href="http://electronics.stackexchange.com/questions/25103/what-electric-motor-spec-clues-indicate-easy-speed-control-options?rq=1" class="question-hyperlink">What electric motor spec clues indicate easy speed control options?</a></div><div class="spacer js-gps-track"><a href="http://electronics.stackexchange.com/q/116751?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">1</div></a><a href="http://electronics.stackexchange.com/questions/116751/design-of-simple-1000w-ac-motor-heating-element-controller?rq=1" class="question-hyperlink">Design of “simple” 1000W AC motor/ heating element controller</a></div><div class="spacer js-gps-track"><a href="http://electronics.stackexchange.com/q/161960?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">3</div></a><a href="http://electronics.stackexchange.com/questions/161960/is-it-possible-to-change-the-speed-of-an-ac-motordrill-press-without-losing-to?rq=1" class="question-hyperlink">Is it possible to change the speed of an AC motor(drill press) without losing too much torque?</a></div><div class="spacer js-gps-track"><a href="http://electronics.stackexchange.com/q/169494?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">0</div></a><a href="http://electronics.stackexchange.com/questions/169494/how-to-determine-the-pole-number-or-synchronous-speed-of-an-ac-motor-from-its-ra?rq=1" class="question-hyperlink">How to determine the pole number or synchronous speed of an AC motor from its rated RPM?</a></div><div class="spacer js-gps-track"><a href="http://electronics.stackexchange.com/q/169904?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">0</div></a><a href="http://electronics.stackexchange.com/questions/169904/how-is-speed-torque-curve-of-an-induction-motor-plotted-experimentally?rq=1" class="question-hyperlink">How is speed torque curve of an induction motor plotted experimentally?</a></div><div class="spacer js-gps-track"><a href="http://electronics.stackexchange.com/q/209837?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">1</div></a><a href="http://electronics.stackexchange.com/questions/209837/how-does-a-capacitor-function-in-a-120v-ac-motor-circuit?rq=1" class="question-hyperlink">How does a capacitor function in a 120v ac motor circuit?</a></div><div class="spacer js-gps-track"><a href="http://electronics.stackexchange.com/q/220690?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">7</div></a><a href="http://electronics.stackexchange.com/questions/220690/how-does-a-hair-dryer-change-its-motor-speed-diagram-included?rq=1" class="question-hyperlink">How does a hair dryer change its motor speed? Diagram included</a></div><div class="spacer js-gps-track"><a href="http://electronics.stackexchange.com/q/223739?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">-2</div></a><a href="http://electronics.stackexchange.com/questions/223739/how-do-i-control-this-power-circuit-using-an-mcu?rq=1" class="question-hyperlink">How do I control this power circuit using an MCU?</a></div><div class="spacer js-gps-track"><a href="http://electronics.stackexchange.com/q/239755?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">3</div></a><a href="http://electronics.stackexchange.com/questions/239755/can-anyone-give-me-tips-on-how-to-proceed-with-this-triac-optocoupler-motor-circ?rq=1" class="question-hyperlink">Can anyone give me tips on how to proceed with this triac/optocoupler/motor circuit fix?</a></div><div class="spacer js-gps-track"><a href="http://electronics.stackexchange.com/q/250706?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">0</div></a><a href="http://electronics.stackexchange.com/questions/250706/can-i-make-a-one-speed-ac-motor-variable-speed-by-modulating-the-power-input?rq=1" class="question-hyperlink">Can I make a one-speed AC motor variable-speed by modulating the power input?</a></div>
+                    </div>
+				</div>
+            
+<div id="hot-network-questions" class="module">
+    <h4>
+        <a href="http://stackexchange.com/questions?tab=hot" class="js-gps-track" data-gps-track="posts_hot_network.click({ item_type:1, location:11 })">
+            Hot Network Questions
+        </a>
+    </h4>
+    <ul>
+            <li>
+                <div class="favicon favicon-aviation" title="Aviation Stack Exchange"></div><a href="http://aviation.stackexchange.com/questions/35082/what-is-the-standard-way-for-the-atc-to-ask-a-pilot-to-repeat-his-herself" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:528 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What is the standard way for the ATC to ask a pilot to repeat his/herself?
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-unix" title="Unix &amp; Linux Stack Exchange"></div><a href="http://unix.stackexchange.com/questions/341026/a-nice-escape-for-ssh" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:106 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    A nice escape for ssh
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-academia" title="Academia Stack Exchange"></div><a href="http://academia.stackexchange.com/questions/83895/4-years-in-phd-no-publications-and-adviser-keep-changing-my-research" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:415 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    4 Years in PhD. No publications and adviser keep changing my research
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-math" title="Mathematics Stack Exchange"></div><a href="http://math.stackexchange.com/questions/2119338/countable-intersection-of-connected-sets" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:69 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    countable intersection of connected sets
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-physics" title="Physics Stack Exchange"></div><a href="http://physics.stackexchange.com/questions/308237/why-is-my-hand-not-burned-by-the-air-in-an-oven-at-200c" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:151 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why is my hand not burned by the air in an oven at 200°C?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-english" title="English Language &amp; Usage Stack Exchange"></div><a href="http://english.stackexchange.com/questions/370174/what-is-the-antonym-of-assemble-a-team" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:97 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What is the antonym of "assemble a team"?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-skeptics" title="Skeptics Stack Exchange"></div><a href="http://skeptics.stackexchange.com/questions/36956/did-president-obama-institute-immigration-restrictions-in-2011-that-were-similar" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:212 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Did President Obama institute immigration restrictions in 2011 that were similar to Trump's Jan 2017 immigration restrictions?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-movies" title="Movies &amp; TV Stack Exchange"></div><a href="http://movies.stackexchange.com/questions/67688/what-is-the-meaning-of-the-numbers-in-princess-bubblegums-electrocardiogram" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:367 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What is the meaning of the numbers in Princess Bubblegum's electrocardiogram?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-stackoverflow" title="Stack Overflow"></div><a href="http://stackoverflow.com/questions/41923089/what-is-the-expected-behavior-when-using-the-sizeof-operator-on-a-flexible-array" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:1 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What is the expected behavior when using the sizeof operator on a flexible array?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-mathoverflow" title="MathOverflow"></div><a href="http://mathoverflow.net/questions/260853/is-there-a-name-for-this-property-weil-saw-for-integer-polynomials" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:504 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Is there a name for this property Weil saw for integer polynomials?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-ham" title="Amateur Radio Stack Exchange"></div><a href="http://ham.stackexchange.com/questions/7154/moon-earth-433mhz-link-achievable-digital-bandwidth" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:520 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Moon-&gt;Earth 433MHz link achievable digital bandwidth
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-boardgames" title="Board &amp; Card Games Stack Exchange"></div><a href="http://boardgames.stackexchange.com/questions/34057/can-a-creature-have-negative-toughness" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:147 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Can a creature have negative toughness?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-rpg" title="Role-playing Games Stack Exchange"></div><a href="http://rpg.stackexchange.com/questions/93857/what-is-the-point-of-lowering-the-hood-on-a-hooded-lantern" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:122 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What is the point of lowering the hood on a hooded lantern?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-scifi" title="Science Fiction &amp; Fantasy Stack Exchange"></div><a href="http://scifi.stackexchange.com/questions/151256/when-did-darth-vader-get-his-red-lightsaber" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:186 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    When did Darth Vader get his red lightsaber?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-mathematica" title="Mathematica Stack Exchange"></div><a href="http://mathematica.stackexchange.com/questions/136476/type-conversions" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:387 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Type conversions
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-scifi" title="Science Fiction &amp; Fantasy Stack Exchange"></div><a href="http://scifi.stackexchange.com/questions/151367/why-do-ships-burn-in-space-when-hit-by-lasers" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:186 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why do ships burn in space when hit by lasers?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-unix" title="Unix &amp; Linux Stack Exchange"></div><a href="http://unix.stackexchange.com/questions/340997/assignments-are-like-commands-with-an-exit-status-except-when-theres-command-su" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:106 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Assignments are like commands with an exit status except when there's command substitution?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-skeptics" title="Skeptics Stack Exchange"></div><a href="http://skeptics.stackexchange.com/questions/36946/did-donald-trump-exclude-muslim-countries-in-which-he-does-business-from-the-rec" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:212 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Did Donald Trump exclude Muslim countries in which he does business from the recent entry ban?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-bricks" title="LEGO® Answers"></div><a href="http://bricks.stackexchange.com/questions/8547/i-have-a-box-that-says-lego-extra-parts-think-no-058-cant-find-anywhere" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:336 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    I have a box that says Lego Extra Parts. Think NO 058 can't find anywhere
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-rpg" title="Role-playing Games Stack Exchange"></div><a href="http://rpg.stackexchange.com/questions/93959/what-is-the-lowest-hit-dice-outsider-that-can-use-teleport" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:122 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What is the lowest hit dice outsider that can use teleport?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-scifi" title="Science Fiction &amp; Fantasy Stack Exchange"></div><a href="http://scifi.stackexchange.com/questions/151410/why-didnt-darth-vader-fly-out-to-space-in-the-end-of-rogue-one" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:186 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why didn't Darth Vader fly out to space in the end of Rogue One?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-mechanics" title="Motor Vehicle Maintenance &amp; Repair Stack Exchange"></div><a href="http://mechanics.stackexchange.com/questions/41379/toyota-yaris-fuel-saving" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:224 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Toyota Yaris Fuel Saving
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-sqa" title="Software Quality Assurance &amp; Testing Stack Exchange"></div><a href="http://sqa.stackexchange.com/questions/25034/should-a-tester-feel-bad-about-finding-too-many-defects-bugs-in-the-product" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:244 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Should a tester feel bad about finding too many defects/bugs in the product?
+                </a>
+
+            </li>
+            <li class="dno js-hidden" style="display: list-item;">
+                <div class="favicon favicon-stackoverflow" title="Stack Overflow"></div><a href="http://stackoverflow.com/questions/41924244/is-switch-operator-volatile" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:1 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Is switch operator volatile?
+                </a>
+
+            </li>
+    </ul>
+
+        
+</div>
+		</div>
+	
+<div id="feed-link">
+    <div id="feed-link-text">
+        <a href="http://electronics.stackexchange.com/feeds/question/167556" title="feed of this question and its answers">
+            <span class="feed-icon"></span>question feed
+        </a>
+    </div>
+</div>	<script>
+StackExchange.ready(function(){$.get('/posts/167556/ivc/271f');});
+</script>
+<noscript>
+    &lt;div&gt;&lt;img src="/posts/167556/ivc/271f" class="dno" alt="" width="0" height="0"&gt;&lt;/div&gt;
+</noscript><div style="display:none" id="prettify-lang"></div></div>
+
+
+        </div>
+    </div>
+    <div id="footer" class="categories">
+        <div class="footerwrap">            
+            <div id="footer-menu">
+                <div class="top-footer-links">
+                    <a href="http://stackoverflow.com/company/about">about us</a>
+                        <a href="http://electronics.stackexchange.com/tour">tour</a>
+                    <a href="http://electronics.stackexchange.com/help">help</a>
+                    <a href="http://stackoverflow.blog/?blb=1">blog</a>
+                        <a href="http://chat.stackexchange.com/?tab=site&amp;host=electronics.stackexchange.com">chat</a>
+                    <a href="http://data.stackexchange.com/">data</a>
+                    <a href="http://stackexchange.com/legal">legal</a>
+                    <a href="http://stackexchange.com/legal/privacy-policy">privacy policy</a>
+                    <a href="http://stackoverflow.com/company/work-here">work here</a>
+                    <a href="http://stackexchange.com/mediakit">advertising info</a>
+
+                    <a onclick="StackExchange.switchMobile(&quot;on&quot;)">mobile</a>
+                    <b><a href="http://electronics.stackexchange.com/contact">contact us</a></b>
+                        <b><a href="http://meta.electronics.stackexchange.com/">feedback</a></b>
+                    
+                </div>
+                <div id="footer-sites">
+                    <table>
+    <tbody><tr>
+            <th colspan="3">
+                Technology
+            </th>
+            <th>
+                Life / Arts
+            </th>
+            <th>
+                Culture / Recreation
+            </th>
+            <th>
+                Science
+            </th>
+            <th>
+                Other
+            </th>
+    </tr>
+    <tr>
+            <td>
+                <ol>
+                        <li><a href="http://stackoverflow.com/" title="professional and enthusiast programmers">Stack Overflow</a></li>
+                        <li><a href="http://serverfault.com/" title="system and network administrators">Server Fault</a></li>
+                        <li><a href="http://superuser.com/" title="computer enthusiasts and power users">Super User</a></li>
+                        <li><a href="http://webapps.stackexchange.com/" title="power users of web applications">Web Applications</a></li>
+                        <li><a href="http://askubuntu.com/" title="Ubuntu users and developers">Ask Ubuntu</a></li>
+                        <li><a href="http://webmasters.stackexchange.com/" title="pro webmasters">Webmasters</a></li>
+                        <li><a href="http://gamedev.stackexchange.com/" title="professional and independent game developers">Game Development</a></li>
+                        <li><a href="http://tex.stackexchange.com/" title="users of TeX, LaTeX, ConTeXt, and related typesetting systems">TeX - LaTeX</a></li>
+                        <li><a href="http://softwareengineering.stackexchange.com/" title="professionals, academics, and students working within the systems development life cycle who care about creating, delivering, and maintaining software responsibly">Software Engineering</a></li>
+                        <li><a href="http://unix.stackexchange.com/" title="users of Linux, FreeBSD and other Un*x-like operating systems">Unix &amp; Linux</a></li>
+                        <li><a href="http://apple.stackexchange.com/" title="power users of Apple hardware and software">Ask Different (Apple)</a></li>
+                        <li><a href="http://wordpress.stackexchange.com/" title="WordPress developers and administrators">WordPress Development</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="http://gis.stackexchange.com/" title="cartographers, geographers and GIS professionals">Geographic Information Systems</a></li>
+                        <li><a href="http://electronics.stackexchange.com/" title="electronics and electrical engineering professionals, students, and enthusiasts">Electrical Engineering</a></li>
+                        <li><a href="http://android.stackexchange.com/" title="enthusiasts and power users of the Android operating system">Android Enthusiasts</a></li>
+                        <li><a href="http://security.stackexchange.com/" title="information security professionals">Information Security</a></li>
+                        <li><a href="http://dba.stackexchange.com/" title="database professionals who wish to improve their database skills and learn from others in the community">Database Administrators</a></li>
+                        <li><a href="http://drupal.stackexchange.com/" title="Drupal developers and administrators">Drupal Answers</a></li>
+                        <li><a href="http://sharepoint.stackexchange.com/" title="SharePoint enthusiasts">SharePoint</a></li>
+                        <li><a href="http://ux.stackexchange.com/" title="user experience researchers and experts">User Experience</a></li>
+                        <li><a href="http://mathematica.stackexchange.com/" title="users of Wolfram Mathematica">Mathematica</a></li>
+                        <li><a href="http://salesforce.stackexchange.com/" title="Salesforce administrators, implementation experts, developers and anybody in-between">Salesforce</a></li>
+                        <li><a href="http://expressionengine.stackexchange.com/" title="administrators, end users, developers and designers for ExpressionEngine® CMS">ExpressionEngine® Answers</a></li>
+                        <li><a href="http://crypto.stackexchange.com/" title="software developers, mathematicians and others interested in cryptography">Cryptography</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="http://codereview.stackexchange.com/" title="peer programmer code reviews">Code Review</a></li>
+                        <li><a href="http://magento.stackexchange.com/" title="users of the Magento e-Commerce platform">Magento</a></li>
+                        <li><a href="http://dsp.stackexchange.com/" title="practitioners of the art and science of signal, image and video processing">Signal Processing</a></li>
+                        <li><a href="http://raspberrypi.stackexchange.com/" title="users and developers of hardware and software for Raspberry Pi">Raspberry Pi</a></li>
+                        <li><a href="http://codegolf.stackexchange.com/" title="programming puzzle enthusiasts and code golfers">Programming Puzzles &amp; Code Golf</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#technology" class="more">
+                                more (7)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://photo.stackexchange.com/" title="professional, enthusiast and amateur photographers">Photography</a></li>
+                        <li><a href="http://scifi.stackexchange.com/" title="science fiction and fantasy enthusiasts">Science Fiction &amp; Fantasy</a></li>
+                        <li><a href="http://graphicdesign.stackexchange.com/" title="Graphic Design professionals, students, and enthusiasts">Graphic Design</a></li>
+                        <li><a href="http://movies.stackexchange.com/" title="movie and tv enthusiasts">Movies &amp; TV</a></li>
+                        <li><a href="http://music.stackexchange.com/" title="musicians, students, and enthusiasts">Music: Practice &amp; Theory</a></li>
+                        <li><a href="http://cooking.stackexchange.com/" title="professional and amateur chefs">Seasoned Advice (cooking)</a></li>
+                        <li><a href="http://diy.stackexchange.com/" title="contractors and serious DIYers">Home Improvement</a></li>
+                        <li><a href="http://money.stackexchange.com/" title="people who want to be financially literate">Personal Finance &amp; Money</a></li>
+                        <li><a href="http://academia.stackexchange.com/" title="academics and those enrolled in higher education">Academia</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#lifearts" class="more">
+                                more (8)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://english.stackexchange.com/" title="linguists, etymologists, and serious English language enthusiasts">English Language &amp; Usage</a></li>
+                        <li><a href="http://skeptics.stackexchange.com/" title="scientific skepticism">Skeptics</a></li>
+                        <li><a href="http://judaism.stackexchange.com/" title="those who base their lives on Jewish law and tradition and anyone interested in learning more">Mi Yodeya (Judaism)</a></li>
+                        <li><a href="http://travel.stackexchange.com/" title="road warriors and seasoned travelers">Travel</a></li>
+                        <li><a href="http://christianity.stackexchange.com/" title="committed Christians, experts in Christianity and those interested in learning more">Christianity</a></li>
+                        <li><a href="http://ell.stackexchange.com/" title="speakers of other languages learning English">English Language Learners</a></li>
+                        <li><a href="http://japanese.stackexchange.com/" title="students, teachers, and linguists wanting to discuss the finer points of the Japanese language">Japanese Language</a></li>
+                        <li><a href="http://gaming.stackexchange.com/" title="passionate videogamers on all platforms">Arqade (gaming)</a></li>
+                        <li><a href="http://bicycles.stackexchange.com/" title="people who build and repair bicycles, people who train cycling, or commute on bicycles">Bicycles</a></li>
+                        <li><a href="http://rpg.stackexchange.com/" title="gamemasters and players of tabletop, paper-and-pencil role-playing games">Role-playing Games</a></li>
+                        <li><a href="http://anime.stackexchange.com/" title="anime and manga fans">Anime &amp; Manga</a></li>
+                        <li><a href="http://mechanics.stackexchange.com/" title="mechanics and DIY enthusiast owners of cars, trucks, and motorcycles">Motor Vehicle Maintenance &amp; Repair</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#culturerecreation" class="more">
+                                more (17)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://mathoverflow.net/" title="professional mathematicians">MathOverflow</a></li>
+                        <li><a href="http://math.stackexchange.com/" title="people studying math at any level and professionals in related fields">Mathematics</a></li>
+                        <li><a href="http://stats.stackexchange.com/" title="people interested in statistics, machine learning, data analysis, data mining, and data visualization">Cross Validated (stats)</a></li>
+                        <li><a href="http://cstheory.stackexchange.com/" title="theoretical computer scientists and researchers in related fields">Theoretical Computer Science</a></li>
+                        <li><a href="http://physics.stackexchange.com/" title="active researchers, academics and students of physics">Physics</a></li>
+                        <li><a href="http://chemistry.stackexchange.com/" title="scientists, academics, teachers and students">Chemistry</a></li>
+                        <li><a href="http://biology.stackexchange.com/" title="biology researchers, academics, and students">Biology</a></li>
+                        <li><a href="http://cs.stackexchange.com/" title="students, researchers and practitioners of computer science">Computer Science</a></li>
+                        <li><a href="http://philosophy.stackexchange.com/" title="those interested in the study of the fundamental nature of knowledge, reality, and existence">Philosophy</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#science" class="more">
+                                more (3)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://meta.stackexchange.com/" title="meta-discussion of the Stack Exchange family of Q&amp;A websites">Meta Stack Exchange</a></li>
+                        <li><a href="http://stackapps.com/" title="apps, scripts, and development with the Stack Exchange API">Stack Apps</a></li>
+                        <li><a href="http://area51.stackexchange.com/" title="proposing new sites in the Stack Exchange network">Area 51</a></li>
+                        <li><a href="https://www.stackoverflowbusiness.com/talent">Stack Overflow Talent</a></li>
+                    
+                </ol>
+            </td>
+    </tr>
+</tbody></table>
+                </div>
+            </div>
+            <div id="copyright">
+                site design / logo © 2017 Stack Exchange Inc; user contributions licensed under <a href="https://creativecommons.org/licenses/by-sa/3.0/" rel="license">cc by-sa 3.0</a> 
+                with <a href="http://blog.stackoverflow.com/2009/06/attribution-required/" rel="license">attribution required</a>
+            </div>
+            <div id="svnrev">
+                rev 2017.1.27.24839
+            </div>
+                </div>
+    </div>
+    <noscript>
+        &lt;div id="noscript-warning"&gt;Electrical Engineering Stack Exchange works best with JavaScript enabled&lt;img src="https://pixel.quantserve.com/pixel/p-c1rF4kxgLUzNc.gif" alt="" class="dno"&gt;&lt;/div&gt;
+    </noscript>
+
+<script>var p = "http", d = "static"; if (document.location.protocol == "https:") { p += "s"; d = "engine"; } var z = document.createElement("script"); z.type = "text/javascript"; z.async = true; z.src = p + "://" + d + ".adzerk.net/ados.js"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(z, s);</script>
+<script>
+    var ados = ados || {};
+    ados.run = ados.run || [];
+    
+    
+        
+        ados.run.push(function () {
+                setTimeout(function () { $("#adzerk-user-match").remove(); }, window.AUMIframeDone ? 0 : 2000);
+                ados_setKeywords('motor,ac,triac,x-host-electronics.stackexchange.com');; ados_load();
+        });   
+        
+</script>
+
+    <script>
+            (function(i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function() { (i[r].q = i[r].q || []).push(arguments) }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m);
+            })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+                ga('create', 'UA-5620270-24', {'cookieDomain': 'stackexchange.com'});
+                ga('set', 'dimension2', '|motor|ac|triac|');
+                ga('send', 'pageview');
+        var _qevents = _qevents || [],
+            _comscore = _comscore || [];
+        (function () {
+            var ssl='https:'==document.location.protocol,
+                s=document.getElementsByTagName('script')[0],
+                qc=document.createElement('script');
+                qc.async = true;
+                qc.src = (ssl ? 'https://secure' : 'http://edge') + '.quantserve.com/quant.js';
+                s.parentNode.insertBefore(qc, s);
+                _qevents.push({ qacct: "p-c1rF4kxgLUzNc" });
+                            var sc=document.createElement('script');
+                sc.async=true;
+                sc.src=(ssl?'https://sb':'http://b') + '.scorecardresearch.com/beacon.js';
+                s.parentNode.insertBefore(sc, s);
+                _comscore.push({ c1: "2", c2: "17440561" });
+        })();
+
+    </script>
+        
+    
+            <script type="text/javascript">
+                
+                (function(appendChild) {
+                    Node.prototype.appendChild = function() {
+                        var parent = this;
+                        var newNode = arguments[0];
+                        if (parent.nodeName === 'HEAD'
+                            && newNode
+                            && newNode.nodeName === 'SCRIPT'
+                            && newNode.src) {
+                            
+                            window.setTimeout(function() {
+                                var result = newNode.src.match(/^https:\/\/maps\.googleapis\.com\/maps\/api\/place\/js\/(\w+)Service\./i) || [];
+                                var service = result[1];
+                                if (service) {
+                                    if (service === 'Autocompletion') service =  2;
+                                    else if (service === 'Place') service = 1;
+                                    else service = 0;
+                                    StackExchange.using('gps', function() {
+                                        StackExchange.gps.track('google_maps_places_api.call', { service: service });
+                                    });
+                                }
+                            }, 0);
+                        }
+                        return appendChild.apply(this, arguments);
+                    };
+                })(Node.prototype.appendChild);
+            </script>
+    
+<div style="position: absolute; width: 0px; height: 0px; overflow: hidden; padding: 0px; border: 0px; margin: 0px;"><div id="MathJax_Font_Test" style="position: absolute; visibility: hidden; top: 0px; left: 0px; width: auto; padding: 0px; border: 0px; margin: 0px; white-space: nowrap; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; font-size: 40px; font-weight: normal; font-style: normal; font-family: MathJax_Size1, monospace;"></div></div></body></html>

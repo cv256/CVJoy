@@ -1,0 +1,33 @@
+laranja riscado - GND
+laranja - +
+castanho - X
+castanho riscado - Y
+azul riscado - Z
+azul - Z Rotation
+
+------------------------
+
+curto verde riscado - 11 GND OU ADC
+curto verde - 12 GND OU ADC
+verde - 5 ADC
+azul riscado - 6 ADC
+verde riscado - 7 ADC
+azul - 8 ADC
+castanho riscado - 9 ADC
+castanho - 10 ADC
+------------------------
+
+(TODOS VIA ADC)
+
+azul - 1
+azul riscado - 2
+laranja riscado - 3
+laranja - 4
+castanho riscado - DOWN
+castanho - RIGHT
+verde riscado - LEFT
+verde - UP
+
+------------------------
+
+Laranja e Laranja Riscado SOLTOS - ADC

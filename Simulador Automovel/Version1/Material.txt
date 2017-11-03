@@ -1,0 +1,61 @@
+----------------
+Madeira >= 1,8 :
+----------------
+60 x 55 (costas)
+123 x 55 (base)
+45 x 55 (assento)
+27 x 55 (apoio assento)
+82 x 55 (frente)
+50 x 55 (tampo)
+(2x) 20 x 55 (tablier + estrutura interna)
+18 x 47 (estrutura do poisa pés, corto diagonal dá as 2 peças)
+(3x) 37 x 7 (pedais)
+
+
+----------------
+Madeira 0,3 :
+----------------
+(2x) 86 x 50 (laterais frente)
+(2x) 31 x 45 (laterais assento)
+
+
+----------------
+Ferragens :
+----------------
+(4x) rodas >= 11cm altura
+(3x) dobradiças (pedais)
+30 x 55 chapa texturada (poisa pés)
+(3~6x) elasticos ou molas fortes 14cm curso longitude descanso<>esticado
+(80x) parafusos madeira >6cm
+(30x) parafusos madeira ~4cm
+(130x) anilhas bonitas (para os parafusos nao enrolarem os acabemntos)
+52? varao cortinado madeira ? (47+5)
+? desentupidor
+? 6 molas (em U ou de porta de armario) (mudanças)
+
+
+----------------
+Acabamentos :
+----------------
+76 x 65 alcatifa (chão33+apoioassento43)
+> 628 x 65 resistente, flexivel, azul escuro (70+92+60+96+96+86+86+41+41)
+120 x 65 pele (tablier28+assento55+encosto37)
+120 x 65 esponja fina (tablier28+assento55+encosto37)
+
+
+----------------
+Eletronica :
+----------------
+joystick usb 4 analogicos >=8 digitais
+potenciometro 3 voltas linear 10K
+   http://pt.mouser.com/ProductDetail/ETI-Systems/MW22B-3-10K/?qs=sGAEpiMZZMvygUB3GLcD7ngsAX7l9VbcIygK633rBTI%3d
+(3x) potenciometro deslizante linear mono 10K
+  http://pt.mouser.com/ProductDetail/Bourns/PTA6043-2010CIB103/?qs=sGAEpiMZZMtC25l1F4XBU6L98ew7apOejUk1qA6Lox4%3d
+27m fio fino verde ou azul ou amarelo (16+8+3)
+6m fio fino preto (2+2+2)
+5m fio fino vermelho (2+3)
+? uns 16? botoes de pressao de varios tipos/cores:
+  http://pt.mouser.com/ProductDetail/Shin-Chin/R13-40A-05-BR/?qs=sGAEpiMZZMvxtGF7dlGNpgd0xIMHTksbVAzSzT5visI%3d
+  http://pt.mouser.com/ProductDetail/Mountain-Switch/104-0043-EVX/?qs=sGAEpiMZZMvxtGF7dlGNpqLRL2g33Pc5p%252bXTrodbdOI%3d
+  http://pt.mouser.com/ProductDetail/Mountain-Switch/107-3024-EVX/?qs=sGAEpiMZZMvxtGF7dlGNpo9U%2fcw6vTZD5IsagKr7%2fTo%3d
+...
