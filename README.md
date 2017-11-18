@@ -24,10 +24,13 @@ THE SOFTWARE:
 Inside you Program Files folder create a folder called CVJoy (this is the regular way but it doesnt have to be exactly like this).
 Inside it save CVJoy.exe you can find here.
 
-Download and install vjoy. This tiny software allows other softwares to emulate a joystick on your computer. Configure it like this:
+Download and install vjoy: https://sourceforge.net/projects/vjoystick/
+This tiny software allows other softwares to perfectly emulate a joystick on your computer. Configure it like this:
 ......
 
-Download AssettoCorsaSharedMemory and save its contents inside the CVJoy folder. This tiny library allows other softwares to know whats happening in the game in real-time (speed, position, acceleration, rpm)
+Download AssettoCorsaSharedMemory: https://github.com/mdjarv/assettocorsasharedmemory
+Compile it and copy the resulting AssettoCorsaSharedMemory.dll into the CVJoy folder.
+This tiny library allows other softwares to know whats happening in the game in real-time (speed, position, acceleration, rpm)
 
 Connect the computer (this project needs just 1 computer) to the Arduino using a usb cable. The computar will recognise your arduino as a serial port, tipically COM3.
 
