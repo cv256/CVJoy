@@ -1,5 +1,3 @@
-# CVJoy
-Car Simulator
 For only 700 USD I  built myself a full car simulator , with:
 - 6 speed H shifter and reverse
 - sequential shifter
@@ -14,7 +12,7 @@ For only 700 USD I  built myself a full car simulator , with:
 - the simulator pitches and rols 20º (wich is a lot, scary) front/back left/right (provided by two 800W drills)
 - and I've been thinking about adding 2 seatbelts that compress you when you break or turn hard ;-)
 
-It is recognised just like any comercial good steering wheel with forceedback, 3 pedals, handbrake, buttons and shifter, so that parts work with any game
+It is recognised just like any comercial good steering wheel with forceedback, 3 pedals, handbrake, buttons and shifter, so that parts work with any game.
 The leds, wind, shaking, pith&roll need specific software for each game, and by now I've developed it only for Assetto Corsa (but it's easy to do it for other car games, or even flight simulators).
 
 This project wants to be a complete tutorial on how to do it, and I'm sharing all the software I developed for this. It would be fantastic if this could help others to build their own simulators.
@@ -33,8 +31,10 @@ Download AssettoCorsaSharedMemory and save its contents inside the CVJoy folder.
 
 Connect the computer (this project needs just 1 computer) to the Arduino using a usb cable. The computar will recognise your arduino as a serial port, tipically COM3.
 
-Download and install the arduino driver/software you can find here.
-Use it to open my file ??? And then save it into the arduino. This file is the software (written in the arduino's specific language) that the arduino will allways be running, even if it is not connected to any computer.
+Download and install the arduino IDE Software you can find here: https://www.arduino.cc/en/Main/Software
+
+Use it to Open my file https://github.com/cv256/CVJoy/blob/master/sketch_CVJoy/sketch_CVJoy.ino
+and then Upload it (save it) into the arduino. This file is the software (written in the arduino's specific language) that the arduino will allways be running, even if it is not connected to any computer.
 
 This is one of the screens of the software I'm doing.
 On the top half you can «review» the buttons, leds, pitch, roll, steering wheel, shift.
