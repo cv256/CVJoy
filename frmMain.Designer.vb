@@ -157,7 +157,7 @@ Partial Class frmCVJoy
         'lbSlipBack
         '
         Me.lbSlipBack.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.lbSlipBack.BackColor = System.Drawing.Color.Red
+        Me.lbSlipBack.BackColor = System.Drawing.Color.DeepSkyBlue
         Me.lbSlipBack.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lbSlipBack.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbSlipBack.Location = New System.Drawing.Point(248, 60)
@@ -170,7 +170,7 @@ Partial Class frmCVJoy
         'lbRPM2
         '
         Me.lbRPM2.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.lbRPM2.BackColor = System.Drawing.Color.DodgerBlue
+        Me.lbRPM2.BackColor = System.Drawing.Color.Gold
         Me.lbRPM2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lbRPM2.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbRPM2.Location = New System.Drawing.Point(262, 39)
@@ -183,7 +183,7 @@ Partial Class frmCVJoy
         'lbRPM1
         '
         Me.lbRPM1.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.lbRPM1.BackColor = System.Drawing.Color.DodgerBlue
+        Me.lbRPM1.BackColor = System.Drawing.Color.LimeGreen
         Me.lbRPM1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lbRPM1.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbRPM1.Location = New System.Drawing.Point(234, 39)
@@ -195,7 +195,7 @@ Partial Class frmCVJoy
         '
         'bt5
         '
-        Me.bt5.BackColor = System.Drawing.Color.Gray
+        Me.bt5.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt5.Location = New System.Drawing.Point(248, 3)
         Me.bt5.Name = "bt5"
@@ -219,7 +219,7 @@ Partial Class frmCVJoy
         'G2
         '
         Me.G2.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.G2.BackColor = System.Drawing.Color.Gray
+        Me.G2.BackColor = System.Drawing.Color.WhiteSmoke
         Me.G2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G2.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.G2.Location = New System.Drawing.Point(204, 85)
@@ -232,7 +232,7 @@ Partial Class frmCVJoy
         'G3
         '
         Me.G3.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.G3.BackColor = System.Drawing.Color.Gray
+        Me.G3.BackColor = System.Drawing.Color.WhiteSmoke
         Me.G3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G3.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.G3.Location = New System.Drawing.Point(218, 85)
@@ -245,7 +245,7 @@ Partial Class frmCVJoy
         'G4
         '
         Me.G4.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.G4.BackColor = System.Drawing.Color.Gray
+        Me.G4.BackColor = System.Drawing.Color.WhiteSmoke
         Me.G4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G4.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.G4.Location = New System.Drawing.Point(232, 85)
@@ -258,7 +258,7 @@ Partial Class frmCVJoy
         'G5
         '
         Me.G5.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.G5.BackColor = System.Drawing.Color.Gray
+        Me.G5.BackColor = System.Drawing.Color.WhiteSmoke
         Me.G5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G5.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.G5.Location = New System.Drawing.Point(246, 85)
@@ -271,7 +271,7 @@ Partial Class frmCVJoy
         'G6
         '
         Me.G6.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.G6.BackColor = System.Drawing.Color.Gray
+        Me.G6.BackColor = System.Drawing.Color.WhiteSmoke
         Me.G6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G6.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.G6.Location = New System.Drawing.Point(260, 85)
@@ -284,7 +284,7 @@ Partial Class frmCVJoy
         'GR
         '
         Me.GR.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.GR.BackColor = System.Drawing.Color.Gray
+        Me.GR.BackColor = System.Drawing.Color.WhiteSmoke
         Me.GR.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.GR.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GR.Location = New System.Drawing.Point(274, 85)
@@ -297,7 +297,7 @@ Partial Class frmCVJoy
         'lbHandbrake
         '
         Me.lbHandbrake.Anchor = System.Windows.Forms.AnchorStyles.Top
-        Me.lbHandbrake.BackColor = System.Drawing.Color.Gray
+        Me.lbHandbrake.BackColor = System.Drawing.Color.WhiteSmoke
         Me.lbHandbrake.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lbHandbrake.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lbHandbrake.Location = New System.Drawing.Point(288, 85)
@@ -902,7 +902,7 @@ Partial Class frmCVJoy
         '
         'bt6
         '
-        Me.bt6.BackColor = System.Drawing.Color.Gray
+        Me.bt6.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt6.Location = New System.Drawing.Point(276, 3)
         Me.bt6.Name = "bt6"
@@ -912,7 +912,7 @@ Partial Class frmCVJoy
         '
         'bt4
         '
-        Me.bt4.BackColor = System.Drawing.Color.Gray
+        Me.bt4.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt4.Location = New System.Drawing.Point(220, 3)
         Me.bt4.Name = "bt4"
@@ -922,7 +922,7 @@ Partial Class frmCVJoy
         '
         'bt1
         '
-        Me.bt1.BackColor = System.Drawing.Color.Gray
+        Me.bt1.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt1.Location = New System.Drawing.Point(122, 3)
         Me.bt1.Name = "bt1"
@@ -932,7 +932,7 @@ Partial Class frmCVJoy
         '
         'bt3
         '
-        Me.bt3.BackColor = System.Drawing.Color.Gray
+        Me.bt3.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt3.Location = New System.Drawing.Point(178, 3)
         Me.bt3.Name = "bt3"
@@ -942,7 +942,7 @@ Partial Class frmCVJoy
         '
         'bt2
         '
-        Me.bt2.BackColor = System.Drawing.Color.Gray
+        Me.bt2.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt2.Location = New System.Drawing.Point(150, 3)
         Me.bt2.Name = "bt2"
@@ -952,7 +952,7 @@ Partial Class frmCVJoy
         '
         'bt7
         '
-        Me.bt7.BackColor = System.Drawing.Color.Gray
+        Me.bt7.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt7.Location = New System.Drawing.Point(318, 3)
         Me.bt7.Name = "bt7"
@@ -962,7 +962,7 @@ Partial Class frmCVJoy
         '
         'bt9
         '
-        Me.bt9.BackColor = System.Drawing.Color.Gray
+        Me.bt9.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt9.Location = New System.Drawing.Point(374, 3)
         Me.bt9.Name = "bt9"
@@ -972,7 +972,7 @@ Partial Class frmCVJoy
         '
         'bt8
         '
-        Me.bt8.BackColor = System.Drawing.Color.Gray
+        Me.bt8.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt8.Location = New System.Drawing.Point(346, 3)
         Me.bt8.Name = "bt8"
@@ -1036,6 +1036,7 @@ Partial Class frmCVJoy
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ClientSize = New System.Drawing.Size(521, 431)
         Me.Controls.Add(Me.txtJump)
         Me.Controls.Add(Me.lbACJump)
