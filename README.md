@@ -21,12 +21,14 @@ This project wants to be a complete tutorial on how to do it, and I'm sharing al
 
 THE SOFTWARE:
 
+https://github.com/cv256/CVJoy/blob/master/Simulador%20Automovel/Comunicacao/CV%20Joy1.png
+https://github.com/cv256/CVJoy/blob/master/Simulador%20Automovel/Comunicacao/CV%20Joy2.png
 Inside you Program Files folder create a folder called CVJoy (this is the regular way but it doesnt have to be exactly like this).
 Inside it save CVJoy.exe you can find here.
 
 Download and install vjoy: https://sourceforge.net/projects/vjoystick/
 This tiny software allows other softwares to perfectly emulate a joystick on your computer. Configure it like this:
-......
+https://github.com/cv256/CVJoy/blob/master/Simulador%20Automovel/Comunicacao/VJoy%20configuration.jpg
 
 Download AssettoCorsaSharedMemory: https://github.com/mdjarv/assettocorsasharedmemory
 Compile it and copy the resulting AssettoCorsaSharedMemory.dll into the CVJoy folder.
