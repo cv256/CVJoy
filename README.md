@@ -44,4 +44,10 @@ On the lower right you can configure some things on the fly (there are more scre
 
 THE HARDWARE:
 
-The electronics are based on a Arduino Mega (35$) + 4 triacs (35$) + 8 relays (10$). You just have to connect the wires (make no mistakes!)
+The electronics are based on_
+- Arduino Mega (35$) 
+- 4 ac dimmers (35$) https://www.facebook.com/krida.electronics/photos/a.146032125748693.1073741832.145962675755638/299516397066931/?type=3&theater
+- 8 relays (10$) https://www.miniinthebox.com/pt/8-channel-12v-modulo-rele-para-arduino-funciona-com-oficiais-arduino-placas_p903437.html?prm=2.3.5.0
+- ADXL345 (3$) http://www.dx.com/pt/p/gy-291-adxl345-digital-3-axis-acceleration-of-gravity-tilt-module-for-arduino-148921?tc=EUR&ta=PT&gclid=EAIaIQobChMIxtnanuXI1wIVoxXTCh3JIgHqEAQYAyABEgI0ovD_BwE#.WhCBCXlpE_4
+
+You just have to connect the wires (make no mistakes!)
