@@ -15,6 +15,8 @@ For only 700 USD I  built myself a full car simulator , with:
 It is recognised just like any comercial good steering wheel with forceedback, 3 pedals, handbrake, buttons and shifter, so that parts work with any game.
 The leds, wind, shaking, pith&roll need specific software for each game, and by now I've developed it only for Assetto Corsa (but it's easy to do it for other car games, or even flight simulators).
 
+See the genral diagram here:https://github.com/cv256/CVJoy/blob/master/Simulador%20Automovel/Comunicacao/Diagram1.png
+
 This project wants to be a complete tutorial on how to do it, and I'm sharing all the software I developed for this. It would be fantastic if this could help others to build their own simulators.
 
 
@@ -56,13 +58,14 @@ The electronics are based on_
 - 4 ac dimmers (35$) https://www.facebook.com/krida.electronics/photos/a.146032125748693.1073741832.145962675755638/299516397066931/?type=3&theater
 - 8 relays (10$) https://www.miniinthebox.com/pt/8-channel-12v-modulo-rele-para-arduino-funciona-com-oficiais-arduino-placas_p903437.html?prm=2.3.5.0
 - ADXL345 (3$) http://www.dx.com/pt/p/gy-291-adxl345-digital-3-axis-acceleration-of-gravity-tilt-module-for-arduino-148921?tc=EUR&ta=PT&gclid=EAIaIQobChMIxtnanuXI1wIVoxXTCh3JIgHqEAQYAyABEgI0ovD_BwE#.WhCBCXlpE_4
+- L298 (15$)
 
 You just have to connect the wires (make no mistakes!)
 
-to do
+(writing in progress...)
 
 
 
 THE MECHANICS:
 
-to do
+(writing in progress...)
