@@ -1,4 +1,4 @@
-For only 700 USD I  built myself a full car simulator , with:
+For only 500 USD I  built myself a full car simulator , with:
 - 6 speed H shifter and reverse
 - sequential shifter
 - handbreak + clutch + break + gas pedals (all are 10 bit analogic)
@@ -59,8 +59,14 @@ The electronics are based on_
 - 8 relays (10$) https://www.miniinthebox.com/pt/8-channel-12v-modulo-rele-para-arduino-funciona-com-oficiais-arduino-placas_p903437.html?prm=2.3.5.0
 - ADXL345 (3$) http://www.dx.com/pt/p/gy-291-adxl345-digital-3-axis-acceleration-of-gravity-tilt-module-for-arduino-148921?tc=EUR&ta=PT&gclid=EAIaIQobChMIxtnanuXI1wIVoxXTCh3JIgHqEAQYAyABEgI0ovD_BwE#.WhCBCXlpE_4
 - L298 (15$)
-
-You just have to connect the wires (make no mistakes!)
+- 4 5Kohm 0.5W linear potentiometers
+- 4 leds
+- 8 microswitches (for H shifter and sequential)
+- 1 switch (for reverse)
+- 1 switch (for emergency cut all energy)
+- 7 press buttons (off)-on
+- an old mouse
+- an old cheap forcefeedback wheel (got one for game-port, not even usb)
 
 (writing in progress...)
 
