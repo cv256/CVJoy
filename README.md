@@ -21,8 +21,6 @@ This project wants to be a complete tutorial on how to do it, and I'm sharing al
 
 THE SOFTWARE:
 
-https://github.com/cv256/CVJoy/blob/master/Simulador%20Automovel/Comunicacao/CV%20Joy1.png
-https://github.com/cv256/CVJoy/blob/master/Simulador%20Automovel/Comunicacao/CV%20Joy2.png
 Inside you Program Files folder create a folder called CVJoy (this is the regular way but it doesnt have to be exactly like this).
 Inside it save CVJoy.exe you can find here.
 
@@ -41,10 +39,14 @@ Download and install the arduino IDE Software you can find here: https://www.ard
 Use it to Open my file https://github.com/cv256/CVJoy/blob/master/sketch_CVJoy/sketch_CVJoy.ino
 and then Upload it (save it) into the arduino. This file is the software (written in the arduino's specific language) that the arduino will allways be running, even if it is not connected to any computer.
 
-This is one of the screens of the software I'm doing.
-On the top half you can «review» the buttons, leds, pitch, roll, steering wheel, shift.
-On the lower left you can view the data that is being red from AC.
-On the lower right you can configure some things on the fly (there are more screens where you can configure a lot more)
+This is one of the screens of the software I'm doing:
+https://github.com/cv256/CVJoy/blob/master/Simulador%20Automovel/Comunicacao/CV%20Joy1.png
+On the top half you can view the buttons, leds, pitch, roll, steering wheel, shift wich are red by CVJoy.exe from the arduino.
+On the lower half you can view the data that is being red from AC throught assettocorsasharedmemory, and you can configure how this values will be sent to the arduino, how they will affect the leds, the wind and shake.
+
+And if you press the Setup button you can configura a lot more parameters:
+https://github.com/cv256/CVJoy/blob/master/Simulador%20Automovel/Comunicacao/CV%20Joy2.png
+
 
 
 THE HARDWARE:
@@ -56,3 +58,11 @@ The electronics are based on_
 - ADXL345 (3$) http://www.dx.com/pt/p/gy-291-adxl345-digital-3-axis-acceleration-of-gravity-tilt-module-for-arduino-148921?tc=EUR&ta=PT&gclid=EAIaIQobChMIxtnanuXI1wIVoxXTCh3JIgHqEAQYAyABEgI0ovD_BwE#.WhCBCXlpE_4
 
 You just have to connect the wires (make no mistakes!)
+
+to do
+
+
+
+THE MECHANICS:
+
+to do
