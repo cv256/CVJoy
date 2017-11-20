@@ -1,4 +1,4 @@
-For only 500 USD I built myself a full car simulator , with:
+For only 500 USD (most of it on wood and a chair) I built myself a full car simulator , with:
 - 6 speed H shifter and reverse
 - sequential shifter
 - handbreak + clutch + break + gas pedals (all are 10 bit analogic)
@@ -64,8 +64,8 @@ The electronics are based on :
 - 1 switch (for reverse)
 - 1 switch (for emergency cut all energy)
 - 7 press buttons (off)-on
-- an old mouse
-- an old cheap forcefeedback wheel (got one for game-port, not even usb)
+- an old mouse (to use one of it's rotary encoders)
+- a dc motor and a sprocket (got them from an old forcefeedback wheel that was for game-port, not even usb)
 
 (writing in progress...)
 
