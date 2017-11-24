@@ -1,4 +1,4 @@
-For only 700 USD I  built myself a full car simulator , with:
+For only 500 USD (most of it on wood and a chair) I built myself a full car simulator , with:
 - 6 speed H shifter and reverse
 - sequential shifter
 - handbreak + clutch + break + gas pedals (all are 10 bit analogic)
@@ -14,6 +14,8 @@ For only 700 USD I  built myself a full car simulator , with:
 
 It is recognised just like any comercial good steering wheel with forceedback, 3 pedals, handbrake, buttons and shifter, so that parts work with any game.
 The leds, wind, shaking, pith&roll need specific software for each game, and by now I've developed it only for Assetto Corsa (but it's easy to do it for other car games, or even flight simulators).
+
+See the **general diagram here:** https://github.com/cv256/CVJoy/blob/master/Simulador%20Automovel/Comunicacao/Diagram1.png
 
 This project wants to be a complete tutorial on how to do it, and I'm sharing all the software I developed for this. It would be fantastic if this could help others to build their own simulators.
 
@@ -39,11 +41,10 @@ Download and install the arduino IDE Software you can find here: https://www.ard
 Use it to Open my file https://github.com/cv256/CVJoy/blob/master/sketch_CVJoy/sketch_CVJoy.ino
 and then Upload it (save it) into the arduino. This file is the software (written in the arduino's specific language) that the arduino will allways be running, even if it is not connected to any computer.
 
-This is one of the screens of the software I'm doing:
+This is one of the **screens of my software CVJoy.exe**:
 https://github.com/cv256/CVJoy/blob/master/Simulador%20Automovel/Comunicacao/CV%20Joy1.png
 On the top half you can view the buttons, leds, pitch, roll, steering wheel, shift wich are red by CVJoy.exe from the arduino.
 On the lower half you can view the data that is being red from AC throught assettocorsasharedmemory, and you can configure how this values will be sent to the arduino, how they will affect the leds, the wind and shake.
-
 And if you press the Setup button you can configura a lot more parameters:
 https://github.com/cv256/CVJoy/blob/master/Simulador%20Automovel/Comunicacao/CV%20Joy2.png
 
@@ -51,18 +52,25 @@ https://github.com/cv256/CVJoy/blob/master/Simulador%20Automovel/Comunicacao/CV%
 
 THE HARDWARE:
 
-The electronics are based on_
+The electronics are based on :
 - Arduino Mega (35$) 
 - 4 ac dimmers (35$) https://www.facebook.com/krida.electronics/photos/a.146032125748693.1073741832.145962675755638/299516397066931/?type=3&theater
 - 8 relays (10$) https://www.miniinthebox.com/pt/8-channel-12v-modulo-rele-para-arduino-funciona-com-oficiais-arduino-placas_p903437.html?prm=2.3.5.0
 - ADXL345 (3$) http://www.dx.com/pt/p/gy-291-adxl345-digital-3-axis-acceleration-of-gravity-tilt-module-for-arduino-148921?tc=EUR&ta=PT&gclid=EAIaIQobChMIxtnanuXI1wIVoxXTCh3JIgHqEAQYAyABEgI0ovD_BwE#.WhCBCXlpE_4
+- L298 (15$)
+- 4 5Kohm 0.5W linear potentiometers
+- 4 leds
+- 8 microswitches (for H shifter and sequential)
+- 1 switch (for reverse)
+- 1 switch (for emergency cut all energy)
+- 7 press buttons (off)-on
+- an old mouse (to use one of it's rotary encoders)
+- a dc motor and a sprocket (got them from an old forcefeedback wheel that was for game-port, not even usb)
 
-You just have to connect the wires (make no mistakes!)
-
-to do
+(writing in progress...)
 
 
 
 THE MECHANICS:
 
-to do
+(writing in progress...)
