@@ -12,7 +12,8 @@ Public Class frmCVJoy
     Private ACSpeedKmhLast As Single, ACLastRead As DateTime
     Private WheelPosition As Integer ' -16380 ~ 0 ~ 16380
     Private LastWheelDate As DateTime, LastWheelPosition As Integer
-    Private FFGain As Single = 1
+    Private FFGain As Single = 1 / 10000.0F ' 0 ~ 0.00001
+    Public FFWheel_Type As FFBEType
     Public FFWheel_Cond As New vJoyInterfaceWrap.vJoy.FFB_EFF_COND
     Public FFWheel_Const As New vJoyInterfaceWrap.vJoy.FFB_EFF_CONSTANT
 
@@ -33,6 +34,11 @@ Public Class frmCVJoy
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Text &= "  " & Application.ProductVersion
+        cbLog.Items.Add("Don't Log")
+        cbLog.Items.Add("Log")
+        cbLog.Items.Add("Log + FF")
+        cbLog.Items.Add("Log + FF Extra")
+        cbLog.SelectedIndex = 1
         'My.Settings.Reload()
         If Not My.Settings.Edited Then
             My.Settings.Upgrade()
@@ -310,8 +316,13 @@ Public Class frmCVJoy
                 lbSlipBack.BackColor = If(.slipBack, Color.Red, Color.White)
                 Dim g As System.Drawing.Graphics = lbWheelPos.CreateGraphics()
                 g.Clear(Color.White)
-                g.DrawLine(If(Math.Abs(WheelPosition) >= 16380, Pens.Red, Pens.Blue), CInt(lbWheelPos.Width / 2), 0, CInt(lbWheelPos.Width / 2 * (1 + WheelPosition / 16384)), 0)
-                g.DrawLine(If(Math.Abs(.wheelPower) >= 235, If(Math.Abs(.wheelPower) >= 235, Pens.Red, Pens.Orange), Pens.Blue), CInt(lbWheelPos.Width / 2), 2, CInt(lbWheelPos.Width / 2 * (1 - .wheelPower / 255)), 2)
+                Dim xHalf As Integer = CInt(lbWheelPos.Width / 2)
+                g.DrawLine(If(Math.Abs(WheelPosition) >= 16380, Pens.Red, Pens.Blue), xHalf, 1, CInt(xHalf * (1 + WheelPosition / 16384)), 1)
+                g.DrawLine(If(Math.Abs(.wheelPower) >= 235, If(Math.Abs(.wheelPower) >= 235, Pens.Red, Pens.Orange), Pens.Blue), xHalf, 7, CInt(xHalf * (1 - .wheelPower / 255)), 7)
+                g.DrawLine(Pens.Green, xHalf, 3, CInt(xHalf * (1 - FFWheel_Const.Magnitude / 10000)), 3)
+                Dim xCP As Integer = CInt(xHalf * (1 - FFWheel_Cond.CenterPointOffset / 10000))
+                g.DrawLine(Pens.DarkOrchid, xCP - 1, 5, xCP - CInt(xHalf * FFWheel_Cond.NegCoeff / 10000), 5)
+                g.DrawLine(Pens.DarkOrchid, xCP + 1, 5, xCP + CInt(xHalf * FFWheel_Cond.PosCoeff / 10000), 5)
                 lbWheelPos.ResumeLayout()
             End With
             With fromArduino
@@ -515,7 +526,7 @@ Public Class frmCVJoy
     End Sub
 
     Public Sub ErrorAdd(pNewErrorDescr As String)
-        If ckDontLog.Checked Then Return
+        If cbLog.SelectedIndex < 1 Then Return
         txtErrors.Text &= vbCrLf & Now.ToLongTimeString & "  " & pNewErrorDescr
         txtErrors.SelectionStart = 32767 : txtErrors.ScrollToCaret()
     End Sub
@@ -634,10 +645,13 @@ Public Class frmCVJoy
                 FFGain = tmpFFGain / 255.0F / 10000.0F
 
             Case FFBPType.PT_NEWEFREP
-                Dim et As New FFBEType ' Const, Damp, Inertia , Friction, Spring
-                Joy.Ffb_h_EffNew(pData, et)
-                thisCase = t.ToString & "  " & et.ToString
-                'TODO
+                Dim tmp As FFBEType
+                Joy.Ffb_h_EffNew(pData, tmp) ' Const, Damp, Inertia , Friction, Spring
+                thisCase = t.ToString & "  " & tmp.ToString
+                If tmp <> FFBEType.ET_CONST Then
+                    FFWheel_Type = tmp
+                    chkFFCond.Text = FFWheel_Type.ToString
+                End If
 
             'Case FFBPType.PT_EFFREP
             '    Dim et As New FFBEType
@@ -654,10 +668,14 @@ Public Class frmCVJoy
 
             Case FFBPType.PT_CONDREP
                 Joy.Ffb_h_Eff_Cond(pData, FFWheel_Cond)
-                'PosCoeff = NegCoeff = -10000~10000
+                'PosCoeff = NegCoeff = -10000~10000 (but they are never negative, both are positive)
                 'PosSatur = PosSatur = 10000 
                 'CenterPointOffset =0
-                'thisCase = t.ToString & "  " & FFWheel_Cond.PosCoeff & "  " & FFWheel_Cond.PosSatur & "  " & FFWheel_Cond.CenterPointOffset & "  " & FFWheel_Cond.NegCoeff & "  " & FFWheel_Cond.NegSatur  ' 10000 , 10000 , 0, ?, ?
+                If cbLog.SelectedIndex = 3 Then
+                    thisCase = t.ToString & "  " & FFWheel_Cond.PosCoeff & "  " & FFWheel_Cond.PosSatur & "  " & FFWheel_Cond.CenterPointOffset & "  " & FFWheel_Cond.NegCoeff & "  " & FFWheel_Cond.NegSatur  ' 10000 , 10000 , 0, ?, ?
+                Else
+                    thisCase = t.ToString
+                End If
                 If Not FFWheel_Cond.isY Then
                     'If the metric Is less than CP Offset - Dead Band, Then the resulting force Is given by the following formula:
                     '   force = Negative Coefficient * (q - (CP Offset – Dead Band))
@@ -673,17 +691,23 @@ Public Class frmCVJoy
 
             Case FFBPType.PT_CONSTREP
                 Joy.Ffb_h_Eff_Constant(pData, FFWheel_Const)
-                thisCase = t.ToString & "  " & FFWheel_Const.Magnitude
+                If cbLog.SelectedIndex = 3 Then
+                    thisCase = t.ToString & "  " & FFWheel_Const.Magnitude
+                Else
+                    thisCase = t.ToString
+                End If
 
             Case Else
                 thisCase = "???  " & t.ToString
         End Select
 
         ' log :
-        If Not String.IsNullOrEmpty(thisCase) Then
-            If Not FFCases.Contains(thisCase) Then
-                FFCases.Add(thisCase)
-                ErrorAdd(thisCase)
+        If cbLog.SelectedIndex >= 2 Then
+            If Not String.IsNullOrEmpty(thisCase) Then
+                If Not FFCases.Contains(thisCase) Then
+                    FFCases.Add(thisCase)
+                    ErrorAdd(thisCase)
+                End If
             End If
         End If
     End Sub
@@ -699,6 +723,7 @@ Public Class frmCVJoy
                 If r.header.Device = My.Settings.MouseSteering Then
                     WheelPosition += r.data.LastX * My.Settings.WheelSensitivity
                     'Debug.Print(WheelPosition & "                " & r.header.Device.ToString & "   x=" & r.data.LastX & "   y=" & r.data.LastY)
+                    'Cursor.Position = New Point(0, 0)
                     Return ' dont want this to be processed by windows
                 End If
         End Select
@@ -728,12 +753,15 @@ Public Class frmCVJoy
     End Sub
 
 
-    Private Function FFSteer(WheelPosition As Integer) As Integer
+    Private Function FFSteer(pWheelPosition As Integer) As Integer
         ' calculate ForceFeedback:
         ' 
-        Dim desiredTotalStrength As Single ' nominal = -10000 ~ 10000 (but can get to a lot more by summing up FF effects)
-        desiredTotalStrength = Math.Abs(FFWheel_Const.Magnitude / 10000.0F) ^ (My.Settings.WheelPowerGama / 100.0F) * Math.Sign(FFWheel_Const.Magnitude) * 10000.0F * My.Settings.WheelPowerFactor ' -10000 ~ 10000
+        Dim desiredTotalStrength As Single = 0 ' nominal = -10000 ~ 10000 (but can get to a lot more by summing up FF effects)
+        If chkFFConst.Checked Then
+            desiredTotalStrength = Math.Abs(FFWheel_Const.Magnitude / 10000.0F) ^ (My.Settings.WheelPowerGama / 100.0F) * Math.Sign(FFWheel_Const.Magnitude) * 10000.0F * My.Settings.WheelPowerFactor ' -10000 ~ 10000
+        End If
         'txtErrors.Text = FFWheel_Const.Magnitude.ToString("00000") & "       " & FFWheel_Cond.PosCoeff.ToString("00000") & "       " & FFWheel_Cond.CenterPointOffset.ToString("00000")
+
 
         'If the metric Is less than CP Offset - Dead Band, Then the resulting force Is given by the following formula:
         '   FFWheel += Negative Coefficient * (q - (CP Offset – Dead Band))
@@ -744,26 +772,34 @@ Public Class frmCVJoy
         '  - damper = axis velocity as the metric
         '  - inertia = axis acceleration as the metric
         '  - friction = when the axis is moved and depends on the defined friction coefficient
-        Dim q As Single = 0, timeElapsed As Long = Now.Subtract(LastWheelDate).Ticks
-        If Math.Abs(WheelPosition) > My.Settings.WheelDead Then
-            If My.Settings.WheelDampFactor = 0 Then ' Friction
-                'q = WheelPosition / 1.638
+        Dim q As Single = 0 ' aprox. -1~1
+        Dim timeElapsed As Single = Now.Subtract(LastWheelDate).Ticks
+        'If Not ckDontShow.Checked Then lbTicks.Text = timeElapsed
+        If Math.Abs(pWheelPosition) > My.Settings.WheelDead Then
+            If My.Settings.WheelDampFactor = 0 Then ' Spring
+                'q = pWheelPosition / 1.638
             Else ' Damper
-                q = (Math.Abs(WheelPosition - LastWheelPosition) * My.Settings.WheelDampFactor / timeElapsed) ^ (My.Settings.WheelInertia / 100.0F) * Math.Sign(WheelPosition - LastWheelPosition)
+                'q = (Math.Abs(pWheelPosition - LastWheelPosition) * My.Settings.WheelDampFactor / timeElapsed) ^ (My.Settings.WheelInertia / 100.0F) * Math.Sign(pWheelPosition - LastWheelPosition)
+                q = (pWheelPosition - LastWheelPosition) * My.Settings.WheelDampFactor / timeElapsed
             End If
         End If
-        LastWheelPosition = WheelPosition : LastWheelDate = Now
-        ' mechanical speed limitation:
+        LastWheelPosition = pWheelPosition : LastWheelDate = Now
+        ' fixed mechanical speed limitation:
         desiredTotalStrength += My.Settings.WheelFriction * q
-        ' FF damper:
-        If q < FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand Then ' if Q is negative:
-            desiredTotalStrength += (FFWheel_Cond.NegCoeff - My.Settings.WheelFriction) * (q - (FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand))
-        ElseIf q > FFWheel_Cond.CenterPointOffset + FFWheel_Cond.DeadBand Then ' if Q is positive:
-            desiredTotalStrength += (FFWheel_Cond.PosCoeff - My.Settings.WheelFriction) * (q - (FFWheel_Cond.CenterPointOffset + FFWheel_Cond.DeadBand))
+
+        If chkFFCond.Checked Then
+            If FFWheel_Type = FFBEType.ET_DMPR OrElse FFWheel_Type = FFBEType.ET_FRCTN Then ' I have not underestand yet the difference between Damper and Friction
+                If q < FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand Then ' if Q is negative:
+                    desiredTotalStrength += (FFWheel_Cond.NegCoeff - My.Settings.WheelFriction) * (q - (FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand))
+                ElseIf q > FFWheel_Cond.CenterPointOffset + FFWheel_Cond.DeadBand Then ' if Q is positive:
+                    desiredTotalStrength += (FFWheel_Cond.PosCoeff - My.Settings.WheelFriction) * (q - (FFWheel_Cond.CenterPointOffset + FFWheel_Cond.DeadBand))
+                End If
+            End If
         End If
 
         ' final output:
         Dim powerToApply As Integer = Math.Abs(desiredTotalStrength) * FFGain * (255 - My.Settings.WheelPowerForMin)  ' motor power: 0 ~ (255-Min)
+        'If Not ckDontShow.Checked Then lbGain.Text = (FFGain * 10000)
 
         'txtErrors.Text = "Res=" & res.ToString("000") & "      FFWheel=" & Math.Abs(FFWheel).ToString("000") & "   q=" & Math.Abs(q).ToString("00000") & "   PosCoeff=" & FFWheel_Cond.PosCoeff.ToString("00000") '& "     CenterPointOffset=" & FFWheel_Cond.CenterPointOffset.ToString("00000") & "     DeadBand=" & FFWheel_Cond.DeadBand.ToString("00000")
         If powerToApply >= 1 Then

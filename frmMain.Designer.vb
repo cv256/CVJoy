@@ -85,7 +85,6 @@ Partial Class frmCVJoy
         Me.btWheelCenter = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.ckDontShow = New System.Windows.Forms.CheckBox()
-        Me.ckDontLog = New System.Windows.Forms.CheckBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.lbGyroPitch = New System.Windows.Forms.Label()
         Me.lbGyroRoll = New System.Windows.Forms.Label()
@@ -110,13 +109,16 @@ Partial Class frmCVJoy
         Me.lbACJump = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.txtJump = New System.Windows.Forms.MaskedTextBox()
+        Me.cbLog = New System.Windows.Forms.ComboBox()
+        Me.chkFFConst = New System.Windows.Forms.CheckBox()
+        Me.chkFFCond = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'btArduinoStart
         '
         Me.btArduinoStart.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btArduinoStart.BackColor = System.Drawing.Color.Gold
-        Me.btArduinoStart.Location = New System.Drawing.Point(180, 141)
+        Me.btArduinoStart.Location = New System.Drawing.Point(180, 142)
         Me.btArduinoStart.Name = "btArduinoStart"
         Me.btArduinoStart.Size = New System.Drawing.Size(108, 22)
         Me.btArduinoStart.TabIndex = 0
@@ -712,7 +714,7 @@ Partial Class frmCVJoy
         '
         Me.btSetup.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btSetup.BackColor = System.Drawing.Color.Gold
-        Me.btSetup.Location = New System.Drawing.Point(117, 141)
+        Me.btSetup.Location = New System.Drawing.Point(117, 142)
         Me.btSetup.Name = "btSetup"
         Me.btSetup.Size = New System.Drawing.Size(59, 22)
         Me.btSetup.TabIndex = 82
@@ -756,7 +758,7 @@ Partial Class frmCVJoy
         Me.lbWheelPos.ImageAlign = System.Drawing.ContentAlignment.TopLeft
         Me.lbWheelPos.Location = New System.Drawing.Point(0, 129)
         Me.lbWheelPos.Name = "lbWheelPos"
-        Me.lbWheelPos.Size = New System.Drawing.Size(521, 3)
+        Me.lbWheelPos.Size = New System.Drawing.Size(521, 9)
         Me.lbWheelPos.TabIndex = 86
         Me.lbWheelPos.UseMnemonic = False
         '
@@ -786,23 +788,12 @@ Partial Class frmCVJoy
         '
         Me.ckDontShow.AutoSize = True
         Me.ckDontShow.BackColor = System.Drawing.Color.Transparent
-        Me.ckDontShow.Location = New System.Drawing.Point(21, 133)
+        Me.ckDontShow.Location = New System.Drawing.Point(21, 138)
         Me.ckDontShow.Name = "ckDontShow"
         Me.ckDontShow.Size = New System.Drawing.Size(79, 17)
         Me.ckDontShow.TabIndex = 93
         Me.ckDontShow.Text = "Dont Show"
         Me.ckDontShow.UseVisualStyleBackColor = False
-        '
-        'ckDontLog
-        '
-        Me.ckDontLog.AutoSize = True
-        Me.ckDontLog.BackColor = System.Drawing.Color.Transparent
-        Me.ckDontLog.Location = New System.Drawing.Point(21, 147)
-        Me.ckDontLog.Name = "ckDontLog"
-        Me.ckDontLog.Size = New System.Drawing.Size(70, 17)
-        Me.ckDontLog.TabIndex = 94
-        Me.ckDontLog.Text = "Dont Log"
-        Me.ckDontLog.UseVisualStyleBackColor = False
         '
         'Label2
         '
@@ -893,7 +884,7 @@ Partial Class frmCVJoy
         '
         Me.ckKeepVisible.AutoSize = True
         Me.ckKeepVisible.BackColor = System.Drawing.Color.Transparent
-        Me.ckKeepVisible.Location = New System.Drawing.Point(21, 161)
+        Me.ckKeepVisible.Location = New System.Drawing.Point(21, 158)
         Me.ckKeepVisible.Name = "ckKeepVisible"
         Me.ckKeepVisible.Size = New System.Drawing.Size(84, 17)
         Me.ckKeepVisible.TabIndex = 105
@@ -1032,12 +1023,52 @@ Partial Class frmCVJoy
         Me.txtJump.TabIndex = 123
         Me.txtJump.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
+        'cbLog
+        '
+        Me.cbLog.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cbLog.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbLog.Location = New System.Drawing.Point(383, 332)
+        Me.cbLog.Name = "cbLog"
+        Me.cbLog.Size = New System.Drawing.Size(121, 21)
+        Me.cbLog.TabIndex = 125
+        '
+        'chkFFConst
+        '
+        Me.chkFFConst.BackColor = System.Drawing.Color.Transparent
+        Me.chkFFConst.Checked = True
+        Me.chkFFConst.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkFFConst.ForeColor = System.Drawing.Color.Green
+        Me.chkFFConst.Location = New System.Drawing.Point(150, 111)
+        Me.chkFFConst.Margin = New System.Windows.Forms.Padding(0)
+        Me.chkFFConst.Name = "chkFFConst"
+        Me.chkFFConst.Size = New System.Drawing.Size(79, 17)
+        Me.chkFFConst.TabIndex = 126
+        Me.chkFFConst.Text = "FF Const"
+        Me.chkFFConst.UseVisualStyleBackColor = False
+        '
+        'chkFFCond
+        '
+        Me.chkFFCond.BackColor = System.Drawing.Color.Transparent
+        Me.chkFFCond.Checked = True
+        Me.chkFFCond.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkFFCond.ForeColor = System.Drawing.Color.DarkOrchid
+        Me.chkFFCond.Location = New System.Drawing.Point(314, 111)
+        Me.chkFFCond.Margin = New System.Windows.Forms.Padding(0)
+        Me.chkFFCond.Name = "chkFFCond"
+        Me.chkFFCond.Size = New System.Drawing.Size(79, 17)
+        Me.chkFFCond.TabIndex = 127
+        Me.chkFFCond.Text = "FF Cond"
+        Me.chkFFCond.UseVisualStyleBackColor = False
+        '
         'frmCVJoy
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ClientSize = New System.Drawing.Size(521, 431)
+        Me.Controls.Add(Me.chkFFCond)
+        Me.Controls.Add(Me.chkFFConst)
+        Me.Controls.Add(Me.cbLog)
         Me.Controls.Add(Me.txtJump)
         Me.Controls.Add(Me.lbACJump)
         Me.Controls.Add(Me.Label10)
@@ -1121,7 +1152,6 @@ Partial Class frmCVJoy
         Me.Controls.Add(Me.btSave)
         Me.Controls.Add(Me.btArduinoStart)
         Me.Controls.Add(Me.ckKeepVisible)
-        Me.Controls.Add(Me.ckDontLog)
         Me.Controls.Add(Me.ckDontShow)
         Me.Name = "frmCVJoy"
         Me.Text = "CV Joy"
@@ -1192,7 +1222,6 @@ Partial Class frmCVJoy
     Friend WithEvents btWheelCenter As Button
     Friend WithEvents Label1 As Label
     Friend WithEvents ckDontShow As CheckBox
-    Friend WithEvents ckDontLog As CheckBox
     Friend WithEvents Label2 As Label
     Friend WithEvents lbGyroPitch As Label
     Friend WithEvents lbGyroRoll As Label
@@ -1217,4 +1246,7 @@ Partial Class frmCVJoy
     Friend WithEvents lbACJump As Label
     Friend WithEvents Label10 As Label
     Friend WithEvents txtJump As MaskedTextBox
+    Friend WithEvents cbLog As ComboBox
+    Friend WithEvents chkFFConst As CheckBox
+    Friend WithEvents chkFFCond As CheckBox
 End Class
