@@ -763,37 +763,39 @@ Public Class frmCVJoy
         'txtErrors.Text = FFWheel_Const.Magnitude.ToString("00000") & "       " & FFWheel_Cond.PosCoeff.ToString("00000") & "       " & FFWheel_Cond.CenterPointOffset.ToString("00000")
 
 
-        'If the metric Is less than CP Offset - Dead Band, Then the resulting force Is given by the following formula:
-        '   FFWheel += Negative Coefficient * (q - (CP Offset – Dead Band))
-        'If the metric Is greater than CP Offset + Dead Band, then the resulting force Is given by the following formula:
-        '  FFWheel += Positive Coefficient * (q - (CP Offset + Dead Band))
-        'where q Is a type-dependent metric: 
-        '  - spring = axis position as the metric
-        '  - damper = axis velocity as the metric
-        '  - inertia = axis acceleration as the metric
-        '  - friction = when the axis is moved and depends on the defined friction coefficient
-        Dim q As Single = 0 ' aprox. -1~1
-        Dim timeElapsed As Single = Now.Subtract(LastWheelDate).Ticks
-        'If Not ckDontShow.Checked Then lbTicks.Text = timeElapsed
-        If Math.Abs(pWheelPosition) > My.Settings.WheelDead Then
-            If My.Settings.WheelDampFactor = 0 Then ' Spring
-                'q = pWheelPosition / 1.638
-            Else ' Damper
-                'q = (Math.Abs(pWheelPosition - LastWheelPosition) * My.Settings.WheelDampFactor / timeElapsed) ^ (My.Settings.WheelInertia / 100.0F) * Math.Sign(pWheelPosition - LastWheelPosition)
-                q = (pWheelPosition - LastWheelPosition) * My.Settings.WheelDampFactor / timeElapsed
-            End If
-        End If
-        LastWheelPosition = pWheelPosition : LastWheelDate = Now
-        ' fixed mechanical speed limitation:
-        desiredTotalStrength += My.Settings.WheelFriction * q
-
         If chkFFCond.Checked Then
+            'If the metric Is less than CP Offset - Dead Band, Then the resulting force Is given by the following formula:
+            '   FFWheel += Negative Coefficient * (q - (CP Offset – Dead Band))
+            'If the metric Is greater than CP Offset + Dead Band, then the resulting force Is given by the following formula:
+            '  FFWheel += Positive Coefficient * (q - (CP Offset + Dead Band))
+            'where q Is a type-dependent metric: 
+            '  - spring = axis position as the metric
+            '  - damper = axis velocity as the metric
+            '  - inertia = axis acceleration as the metric
+            '  - friction = when the axis is moved and depends on the defined friction coefficient
+            Dim q As Single = 0 ' aprox. -1~1
             If FFWheel_Type = FFBEType.ET_DMPR OrElse FFWheel_Type = FFBEType.ET_FRCTN Then ' I have not underestand yet the difference between Damper and Friction
-                If q < FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand Then ' if Q is negative:
-                    desiredTotalStrength += (FFWheel_Cond.NegCoeff - My.Settings.WheelFriction) * (q - (FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand))
-                ElseIf q > FFWheel_Cond.CenterPointOffset + FFWheel_Cond.DeadBand Then ' if Q is positive:
-                    desiredTotalStrength += (FFWheel_Cond.PosCoeff - My.Settings.WheelFriction) * (q - (FFWheel_Cond.CenterPointOffset + FFWheel_Cond.DeadBand))
+                Dim newPosition As Integer
+                If pWheelPosition > My.Settings.WheelDead Then
+                    newPosition = pWheelPosition - My.Settings.WheelDead
+                ElseIf pWheelPosition < -My.Settings.WheelDead Then
+                    newPosition = pWheelPosition + My.Settings.WheelDead
                 End If
+                Dim timeElapsed As Single = Now.Subtract(LastWheelDate).Ticks
+                'If Not ckDontShow.Checked Then lbTicks.Text = timeElapsed
+                q = (newPosition - LastWheelPosition) * My.Settings.WheelDampFactor / timeElapsed 'q = (Math.Abs(pWheelPosition - LastWheelPosition) * My.Settings.WheelDampFactor / timeElapsed) ^ (My.Settings.WheelInertia / 100.0F) * Math.Sign(pWheelPosition - LastWheelPosition)
+                LastWheelPosition = newPosition : LastWheelDate = Now
+            ElseIf FFWheel_Type = FFBEType.ET_SPRNG Then
+                If pWheelPosition > My.Settings.WheelDead Then
+                    q = (pWheelPosition - My.Settings.WheelDead) / 1.637
+                ElseIf pWheelPosition < -My.Settings.WheelDead Then
+                    q = (pWheelPosition + My.Settings.WheelDead) / 1.637
+                End If
+            End If
+            If q < 0 Then ' if Q is negative: I am not using FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand  because they are allways zero, and their range would be -10000~10000 while Q range is -1~1 , and CVJoy has its own DeadZone
+                desiredTotalStrength += (FFWheel_Cond.NegCoeff - My.Settings.WheelFriction) * q '(q - (FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand))
+            ElseIf q > FFWheel_Cond.CenterPointOffset + FFWheel_Cond.DeadBand Then ' if Q is positive:
+                desiredTotalStrength += (FFWheel_Cond.PosCoeff - My.Settings.WheelFriction) * q '(q - (FFWheel_Cond.CenterPointOffset + FFWheel_Cond.DeadBand))
             End If
         End If
 
