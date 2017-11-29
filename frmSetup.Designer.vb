@@ -112,7 +112,7 @@ Partial Class frmSetup
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(263, 12)
         Me.Label3.TabIndex = 10
-        Me.Label3.Text = "Hz (fps) between Arduino <-> ACJoy <-> vJoy + Assetto Corsa"
+        Me.Label3.Text = "Hz (fps) between Arduino <-> CVJoy <-> vJoy + Assetto Corsa"
         '
         'txtFreq
         '
@@ -287,6 +287,7 @@ Partial Class frmSetup
         '
         Me.btClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btClose.BackColor = System.Drawing.Color.Gold
+        Me.btClose.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btClose.Location = New System.Drawing.Point(706, 310)
         Me.btClose.Name = "btClose"
         Me.btClose.Size = New System.Drawing.Size(59, 22)
@@ -421,7 +422,7 @@ Partial Class frmSetup
         Me.txtPitchHysteria.AsciiOnly = True
         Me.txtPitchHysteria.BeepOnError = True
         Me.txtPitchHysteria.HidePromptOnLeave = True
-        Me.txtPitchHysteria.Location = New System.Drawing.Point(246, 235)
+        Me.txtPitchHysteria.Location = New System.Drawing.Point(253, 235)
         Me.txtPitchHysteria.Mask = "0.0\º"
         Me.txtPitchHysteria.Name = "txtPitchHysteria"
         Me.txtPitchHysteria.Size = New System.Drawing.Size(27, 20)
@@ -431,18 +432,18 @@ Partial Class frmSetup
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(196, 239)
+        Me.Label10.Location = New System.Drawing.Point(192, 239)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(48, 13)
+        Me.Label10.Size = New System.Drawing.Size(60, 13)
         Me.Label10.TabIndex = 121
-        Me.Label10.Text = "Hysteria:"
+        Me.Label10.Text = "Deadband:"
         '
         'txtRollHysteria
         '
         Me.txtRollHysteria.AsciiOnly = True
         Me.txtRollHysteria.BeepOnError = True
         Me.txtRollHysteria.HidePromptOnLeave = True
-        Me.txtRollHysteria.Location = New System.Drawing.Point(246, 262)
+        Me.txtRollHysteria.Location = New System.Drawing.Point(253, 262)
         Me.txtRollHysteria.Mask = "0.0\º"
         Me.txtRollHysteria.Name = "txtRollHysteria"
         Me.txtRollHysteria.Size = New System.Drawing.Size(27, 20)
@@ -452,11 +453,11 @@ Partial Class frmSetup
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(196, 266)
+        Me.Label11.Location = New System.Drawing.Point(192, 266)
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(48, 13)
+        Me.Label11.Size = New System.Drawing.Size(60, 13)
         Me.Label11.TabIndex = 123
-        Me.Label11.Text = "Hysteria:"
+        Me.Label11.Text = "Deadband:"
         '
         'txtRollOffset
         '
@@ -812,6 +813,7 @@ Partial Class frmSetup
         'Label33
         '
         Me.Label33.AutoSize = True
+        Me.Label33.ForeColor = System.Drawing.SystemColors.ActiveBorder
         Me.Label33.Location = New System.Drawing.Point(258, 140)
         Me.Label33.Name = "Label33"
         Me.Label33.Size = New System.Drawing.Size(82, 13)
@@ -822,6 +824,7 @@ Partial Class frmSetup
         '
         Me.txtWheelFriction.AllowPromptAsInput = False
         Me.txtWheelFriction.BeepOnError = True
+        Me.txtWheelFriction.ForeColor = System.Drawing.SystemColors.ActiveBorder
         Me.txtWheelFriction.HidePromptOnLeave = True
         Me.txtWheelFriction.Location = New System.Drawing.Point(342, 136)
         Me.txtWheelFriction.Mask = "0000"
@@ -833,7 +836,7 @@ Partial Class frmSetup
         'Label34
         '
         Me.Label34.AutoSize = True
-        Me.Label34.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.Label34.ForeColor = System.Drawing.SystemColors.ActiveBorder
         Me.Label34.Location = New System.Drawing.Point(252, 159)
         Me.Label34.Name = "Label34"
         Me.Label34.Size = New System.Drawing.Size(87, 13)
@@ -844,7 +847,7 @@ Partial Class frmSetup
         '
         Me.txtWheelInertia.AllowPromptAsInput = False
         Me.txtWheelInertia.BeepOnError = True
-        Me.txtWheelInertia.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.txtWheelInertia.ForeColor = System.Drawing.SystemColors.ActiveBorder
         Me.txtWheelInertia.HidePromptOnLeave = True
         Me.txtWheelInertia.Location = New System.Drawing.Point(342, 155)
         Me.txtWheelInertia.Mask = "000"
@@ -857,6 +860,7 @@ Partial Class frmSetup
         '
         Me.Label36.AutoSize = True
         Me.Label36.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label36.ForeColor = System.Drawing.SystemColors.ActiveBorder
         Me.Label36.Location = New System.Drawing.Point(385, 140)
         Me.Label36.Name = "Label36"
         Me.Label36.Size = New System.Drawing.Size(33, 12)
@@ -867,7 +871,7 @@ Partial Class frmSetup
         '
         Me.Label35.AutoSize = True
         Me.Label35.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label35.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.Label35.ForeColor = System.Drawing.SystemColors.ActiveBorder
         Me.Label35.Location = New System.Drawing.Point(385, 160)
         Me.Label35.Name = "Label35"
         Me.Label35.Size = New System.Drawing.Size(51, 12)
@@ -939,12 +943,14 @@ Partial Class frmSetup
         'btTestSpeed
         '
         Me.btTestSpeed.BackColor = System.Drawing.Color.Gold
+        Me.btTestSpeed.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.btTestSpeed.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btTestSpeed.Location = New System.Drawing.Point(648, 71)
         Me.btTestSpeed.Name = "btTestSpeed"
-        Me.btTestSpeed.Size = New System.Drawing.Size(59, 20)
+        Me.btTestSpeed.Size = New System.Drawing.Size(91, 20)
         Me.btTestSpeed.TabIndex = 176
-        Me.btTestSpeed.Text = "Test"
+        Me.btTestSpeed.Text = "Test Wind&Shake"
+        Me.btTestSpeed.UseMnemonic = False
         Me.btTestSpeed.UseVisualStyleBackColor = False
         '
         'frmSetup
