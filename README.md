@@ -67,6 +67,9 @@ The electronics are based on :
 - an old mouse (to use one of it's rotary encoders)
 - a dc motor and a sprocket (got them from an old forcefeedback wheel that was for game-port, not even usb)
 
+Put the Arduino, Dimmers and Relays in a transparent box so that you can see the hardware leds:
+https://github.com/cv256/CVJoy/blob/master/Simulador%20Automovel/Comunicacao/DSCN8519.JPG
+
 (writing in progress...)
 
 
