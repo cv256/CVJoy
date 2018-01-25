@@ -53,7 +53,7 @@
         txtWheelPowerForMin.Text = My.Settings.WheelPowerForMin
         txtWheelPowerFactor.Text = My.Settings.WheelPowerFactor.ToString("0.00")
         txtWheelDampFactor.Text = My.Settings.WheelDampFactor.ToString("+0000;-0000")
-        txtWheelSensitivity.Text = My.Settings.WheelSensitivity.ToString("+0000.0;-0000.0")
+        txtWheelSensitivity.Text = (My.Settings.WheelSensitivity * 100).ToString("+0000;-0000")
         txtWheelDead.Text = My.Settings.WheelDead
     End Sub
 
@@ -115,7 +115,7 @@
         My.Settings.BrakeMax = txtBrakeMax.Text
         My.Settings.ClutchMin = txtClutchMin.Text
         My.Settings.ClutchMax = txtClutchMax.Text
-        My.Settings.WheelSensitivity = txtWheelSensitivity.Text
+        My.Settings.WheelSensitivity = CInt(txtWheelSensitivity.Text) / 100
         My.Settings.WheelDead = txtWheelDead.Text
         My.Settings.WheelDampFactor = txtWheelDampFactor.Text
         My.Settings.WheelFriction = txtWheelFriction.Text

@@ -676,7 +676,9 @@ Partial Class frmSetup
         'txtWheelDampFactor
         '
         Me.txtWheelDampFactor.AllowPromptAsInput = False
+        Me.txtWheelDampFactor.BackColor = System.Drawing.SystemColors.Control
         Me.txtWheelDampFactor.BeepOnError = True
+        Me.txtWheelDampFactor.ForeColor = System.Drawing.SystemColors.ControlText
         Me.txtWheelDampFactor.HidePromptOnLeave = True
         Me.txtWheelDampFactor.Location = New System.Drawing.Point(342, 174)
         Me.txtWheelDampFactor.Mask = "#0000"
@@ -688,6 +690,8 @@ Partial Class frmSetup
         'Label28
         '
         Me.Label28.AutoSize = True
+        Me.Label28.BackColor = System.Drawing.SystemColors.Control
+        Me.Label28.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Label28.Location = New System.Drawing.Point(259, 177)
         Me.Label28.Name = "Label28"
         Me.Label28.Size = New System.Drawing.Size(80, 13)
@@ -700,7 +704,7 @@ Partial Class frmSetup
         Me.txtWheelSensitivity.BeepOnError = True
         Me.txtWheelSensitivity.HidePromptOnLeave = True
         Me.txtWheelSensitivity.Location = New System.Drawing.Point(140, 148)
-        Me.txtWheelSensitivity.Mask = "#0000.0"
+        Me.txtWheelSensitivity.Mask = "#0000"
         Me.txtWheelSensitivity.Name = "txtWheelSensitivity"
         Me.txtWheelSensitivity.Size = New System.Drawing.Size(46, 20)
         Me.txtWheelSensitivity.TabIndex = 149
@@ -813,7 +817,8 @@ Partial Class frmSetup
         'Label33
         '
         Me.Label33.AutoSize = True
-        Me.Label33.ForeColor = System.Drawing.SystemColors.ActiveBorder
+        Me.Label33.BackColor = System.Drawing.SystemColors.Control
+        Me.Label33.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Label33.Location = New System.Drawing.Point(258, 140)
         Me.Label33.Name = "Label33"
         Me.Label33.Size = New System.Drawing.Size(82, 13)
@@ -823,8 +828,9 @@ Partial Class frmSetup
         'txtWheelFriction
         '
         Me.txtWheelFriction.AllowPromptAsInput = False
+        Me.txtWheelFriction.BackColor = System.Drawing.SystemColors.Control
         Me.txtWheelFriction.BeepOnError = True
-        Me.txtWheelFriction.ForeColor = System.Drawing.SystemColors.ActiveBorder
+        Me.txtWheelFriction.ForeColor = System.Drawing.SystemColors.ControlText
         Me.txtWheelFriction.HidePromptOnLeave = True
         Me.txtWheelFriction.Location = New System.Drawing.Point(342, 136)
         Me.txtWheelFriction.Mask = "0000"
@@ -836,7 +842,8 @@ Partial Class frmSetup
         'Label34
         '
         Me.Label34.AutoSize = True
-        Me.Label34.ForeColor = System.Drawing.SystemColors.ActiveBorder
+        Me.Label34.BackColor = System.Drawing.Color.Transparent
+        Me.Label34.ForeColor = System.Drawing.Color.DimGray
         Me.Label34.Location = New System.Drawing.Point(252, 159)
         Me.Label34.Name = "Label34"
         Me.Label34.Size = New System.Drawing.Size(87, 13)
@@ -846,8 +853,9 @@ Partial Class frmSetup
         'txtWheelInertia
         '
         Me.txtWheelInertia.AllowPromptAsInput = False
+        Me.txtWheelInertia.BackColor = System.Drawing.SystemColors.Control
         Me.txtWheelInertia.BeepOnError = True
-        Me.txtWheelInertia.ForeColor = System.Drawing.SystemColors.ActiveBorder
+        Me.txtWheelInertia.ForeColor = System.Drawing.Color.DimGray
         Me.txtWheelInertia.HidePromptOnLeave = True
         Me.txtWheelInertia.Location = New System.Drawing.Point(342, 155)
         Me.txtWheelInertia.Mask = "000"
@@ -859,8 +867,9 @@ Partial Class frmSetup
         'Label36
         '
         Me.Label36.AutoSize = True
+        Me.Label36.BackColor = System.Drawing.SystemColors.Control
         Me.Label36.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label36.ForeColor = System.Drawing.SystemColors.ActiveBorder
+        Me.Label36.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Label36.Location = New System.Drawing.Point(385, 140)
         Me.Label36.Name = "Label36"
         Me.Label36.Size = New System.Drawing.Size(33, 12)
@@ -870,8 +879,9 @@ Partial Class frmSetup
         'Label35
         '
         Me.Label35.AutoSize = True
+        Me.Label35.BackColor = System.Drawing.Color.Transparent
         Me.Label35.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label35.ForeColor = System.Drawing.SystemColors.ActiveBorder
+        Me.Label35.ForeColor = System.Drawing.Color.DimGray
         Me.Label35.Location = New System.Drawing.Point(385, 160)
         Me.Label35.Name = "Label35"
         Me.Label35.Size = New System.Drawing.Size(51, 12)

@@ -10,7 +10,7 @@ Public Class frmCVJoy
     Public AC As AssettoCorsa
     Public acS As AssettoCorsaSharedMemory.StaticInfo
     Private ACSpeedKmhLast As Single, ACLastRead As DateTime
-    Private WheelPosition As Integer ' -16380 ~ 0 ~ 16380
+    Private WheelPosition As Single ' -16380 ~ 0 ~ 16380
     Private LastWheelDate As DateTime, LastWheelPosition As Integer
     Private FFGain As Single = 1 / 10000.0F ' 0 ~ 0.00001
     Public FFWheel_Type As FFBEType
@@ -793,9 +793,9 @@ Public Class frmCVJoy
                 End If
             End If
             If q < 0 Then ' if Q is negative: I am not using FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand  because they are allways zero, and their range would be -10000~10000 while Q range is -1~1 , and CVJoy has its own DeadZone
-                desiredTotalStrength += (FFWheel_Cond.NegCoeff - My.Settings.WheelFriction) * q '(q - (FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand))
-            ElseIf q > FFWheel_Cond.CenterPointOffset + FFWheel_Cond.DeadBand Then ' if Q is positive:
-                desiredTotalStrength += (FFWheel_Cond.PosCoeff - My.Settings.WheelFriction) * q '(q - (FFWheel_Cond.CenterPointOffset + FFWheel_Cond.DeadBand))
+                desiredTotalStrength += Math.Max(FFWheel_Cond.NegCoeff, My.Settings.WheelFriction) * q '(q - (FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand))
+            ElseIf q > 0 Then ' if Q is positive:
+                desiredTotalStrength += Math.Max(FFWheel_Cond.PosCoeff, My.Settings.WheelFriction) * q '(q - (FFWheel_Cond.CenterPointOffset + FFWheel_Cond.DeadBand))
             End If
         End If
 

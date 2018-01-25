@@ -6,7 +6,7 @@
       <Value Profile="(Default)">COM3</Value>
     </Setting>
     <Setting Name="RefreshRate" Type="System.Byte" Scope="User">
-      <Value Profile="(Default)">45</Value>
+      <Value Profile="(Default)">35</Value>
     </Setting>
     <Setting Name="MaxPitch" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -69,10 +69,10 @@
       <Value Profile="(Default)">0.9</Value>
     </Setting>
     <Setting Name="AccelMin" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">150</Value>
+      <Value Profile="(Default)">290</Value>
     </Setting>
     <Setting Name="AccelMax" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">800</Value>
+      <Value Profile="(Default)">850</Value>
     </Setting>
     <Setting Name="BrakeMin" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">150</Value>
@@ -93,22 +93,22 @@
       <Value Profile="(Default)">780</Value>
     </Setting>
     <Setting Name="WheelSensitivity" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">8.7</Value>
+      <Value Profile="(Default)">8.75</Value>
     </Setting>
     <Setting Name="WheelDead" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">20</Value>
+      <Value Profile="(Default)">45</Value>
     </Setting>
     <Setting Name="Edited" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="WheelPowerGama" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">80</Value>
+      <Value Profile="(Default)">100</Value>
     </Setting>
     <Setting Name="WheelPowerForMin" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">130</Value>
+      <Value Profile="(Default)">110</Value>
     </Setting>
     <Setting Name="WheelPowerFactor" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">1.12</Value>
+      <Value Profile="(Default)">1.1</Value>
     </Setting>
     <Setting Name="WheelFriction" Type="System.Single" Scope="User">
       <Value Profile="(Default)">5500</Value>
@@ -123,7 +123,7 @@
       <Value Profile="(Default)">1.8</Value>
     </Setting>
     <Setting Name="SpeedMin" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">26</Value>
+      <Value Profile="(Default)">23</Value>
     </Setting>
   </Settings>
 </SettingsFile>
