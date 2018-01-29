@@ -2,12 +2,10 @@
 Imports AssettoCorsaSharedMemory
 
 
-
-
 Public Class frmCVJoy
     Public TimerProcessing As Boolean = False
     Public Joy As vJoyInterfaceWrap.vJoy ' http://vjoystick.sourceforge.net/site/includes/SDK_ReadMe.pdf
-    Public AC As AssettoCorsa
+    Public AC As AssettoCorsaSharedMemory.AssettoCorsa
     Public acS As AssettoCorsaSharedMemory.StaticInfo
     Private ACSpeedKmhLast As Single, ACLastRead As DateTime
     Private WheelPosition As Single ' -16380 ~ 0 ~ 16380
@@ -28,8 +26,6 @@ Public Class frmCVJoy
         Wind
     End Enum
     Public TestMode As Motor, TestValue As Integer = 0
-
-
 
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -72,7 +68,7 @@ Public Class frmCVJoy
             btArduinoStart.Text = "Start"
         Else
             Try
-                SerialPort1.PortName = My.Settings.ComPort
+                SerialPort1.PortName = My.Settings.ArduinoComPort
                 SerialPort1.ReceivedBytesThreshold = SerialRead.PacketLen
                 ' SerialPort1.WriteBufferSize = SerialSend.PacketLen
                 SerialPort1.Open()
@@ -508,9 +504,10 @@ Public Class frmCVJoy
             'Debug.Print(gyroPitch.ToString("000") & "            " & gyroRoll.ToString("000") & "                      " & gyroX.ToString("000") & "            " & gyroY.ToString("000") & "            " & gyroZ.ToString("000"))
 
             ' corrected analogic values:
-            AccelCorrected = ScaleValue(pedalAccel, My.Settings.AccelMin, My.Settings.AccelMax, 0, 1023)
-            BrakeCorrected = ScaleValue(pedalBreak, My.Settings.BrakeMin, My.Settings.BrakeMax, 0, 1023)
-            ClutchCorrected = ScaleValue(pedalClutch, My.Settings.ClutchMin, My.Settings.ClutchMax, 0, 1023)
+            AccelCorrected = ScaleValue(pedalAccel, My.Settings.AccelMin, My.Settings.AccelMax, 0, 1023, My.Settings.AccelGama)
+            BrakeCorrected = ScaleValue(pedalBreak, My.Settings.BrakeMin, My.Settings.BrakeMax, 0, 1023, My.Settings.BrakeGama)
+            ClutchCorrected = ScaleValue(pedalClutch, My.Settings.ClutchMin, My.Settings.ClutchMax, 0, 1023, My.Settings.ClutchGama)
+            If graph IsNot Nothing Then graph.updateValues(AccelCorrected, BrakeCorrected, ClutchCorrected)
         End Sub
     End Class
 

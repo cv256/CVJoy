@@ -102,6 +102,14 @@ Partial Class frmSetup
         Me.txtSpeedMin = New System.Windows.Forms.MaskedTextBox()
         Me.Label40 = New System.Windows.Forms.Label()
         Me.btTestSpeed = New System.Windows.Forms.Button()
+        Me.txtClutchGama = New System.Windows.Forms.MaskedTextBox()
+        Me.txtBrakeGama = New System.Windows.Forms.MaskedTextBox()
+        Me.txtAccelGama = New System.Windows.Forms.MaskedTextBox()
+        Me.Label41 = New System.Windows.Forms.Label()
+        Me.btAccelGraph = New System.Windows.Forms.Button()
+        Me.btBrakeGraph = New System.Windows.Forms.Button()
+        Me.btClutchGraph = New System.Windows.Forms.Button()
+        Me.UcControlGraph1 = New CVJoy.ucControlGraph()
         Me.SuspendLayout()
         '
         'Label3
@@ -571,7 +579,7 @@ Partial Class frmSetup
         'Label26
         '
         Me.Label26.AutoSize = True
-        Me.Label26.Location = New System.Drawing.Point(269, 33)
+        Me.Label26.Location = New System.Drawing.Point(209, 33)
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(33, 13)
         Me.Label26.TabIndex = 136
@@ -582,7 +590,7 @@ Partial Class frmSetup
         Me.txtAccelMax.AllowPromptAsInput = False
         Me.txtAccelMax.BeepOnError = True
         Me.txtAccelMax.HidePromptOnLeave = True
-        Me.txtAccelMax.Location = New System.Drawing.Point(261, 49)
+        Me.txtAccelMax.Location = New System.Drawing.Point(201, 49)
         Me.txtAccelMax.Mask = "9999"
         Me.txtAccelMax.Name = "txtAccelMax"
         Me.txtAccelMax.Size = New System.Drawing.Size(40, 20)
@@ -608,7 +616,7 @@ Partial Class frmSetup
         Me.txtBrakeMax.AllowPromptAsInput = False
         Me.txtBrakeMax.BeepOnError = True
         Me.txtBrakeMax.HidePromptOnLeave = True
-        Me.txtBrakeMax.Location = New System.Drawing.Point(261, 75)
+        Me.txtBrakeMax.Location = New System.Drawing.Point(201, 75)
         Me.txtBrakeMax.Mask = "9999"
         Me.txtBrakeMax.Name = "txtBrakeMax"
         Me.txtBrakeMax.Size = New System.Drawing.Size(40, 20)
@@ -634,7 +642,7 @@ Partial Class frmSetup
         Me.txtClutchMax.AllowPromptAsInput = False
         Me.txtClutchMax.BeepOnError = True
         Me.txtClutchMax.HidePromptOnLeave = True
-        Me.txtClutchMax.Location = New System.Drawing.Point(261, 101)
+        Me.txtClutchMax.Location = New System.Drawing.Point(201, 101)
         Me.txtClutchMax.Mask = "9999"
         Me.txtClutchMax.Name = "txtClutchMax"
         Me.txtClutchMax.Size = New System.Drawing.Size(40, 20)
@@ -963,11 +971,111 @@ Partial Class frmSetup
         Me.btTestSpeed.UseMnemonic = False
         Me.btTestSpeed.UseVisualStyleBackColor = False
         '
+        'txtClutchGama
+        '
+        Me.txtClutchGama.AllowPromptAsInput = False
+        Me.txtClutchGama.BeepOnError = True
+        Me.txtClutchGama.HidePromptOnLeave = True
+        Me.txtClutchGama.Location = New System.Drawing.Point(254, 101)
+        Me.txtClutchGama.Mask = "9999"
+        Me.txtClutchGama.Name = "txtClutchGama"
+        Me.txtClutchGama.Size = New System.Drawing.Size(40, 20)
+        Me.txtClutchGama.TabIndex = 180
+        Me.txtClutchGama.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtClutchGama.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals
+        '
+        'txtBrakeGama
+        '
+        Me.txtBrakeGama.AllowPromptAsInput = False
+        Me.txtBrakeGama.BeepOnError = True
+        Me.txtBrakeGama.HidePromptOnLeave = True
+        Me.txtBrakeGama.Location = New System.Drawing.Point(254, 75)
+        Me.txtBrakeGama.Mask = "9999"
+        Me.txtBrakeGama.Name = "txtBrakeGama"
+        Me.txtBrakeGama.Size = New System.Drawing.Size(40, 20)
+        Me.txtBrakeGama.TabIndex = 179
+        Me.txtBrakeGama.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtBrakeGama.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals
+        '
+        'txtAccelGama
+        '
+        Me.txtAccelGama.AllowPromptAsInput = False
+        Me.txtAccelGama.BeepOnError = True
+        Me.txtAccelGama.HidePromptOnLeave = True
+        Me.txtAccelGama.Location = New System.Drawing.Point(254, 49)
+        Me.txtAccelGama.Mask = "9999"
+        Me.txtAccelGama.Name = "txtAccelGama"
+        Me.txtAccelGama.Size = New System.Drawing.Size(40, 20)
+        Me.txtAccelGama.TabIndex = 178
+        Me.txtAccelGama.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtAccelGama.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals
+        '
+        'Label41
+        '
+        Me.Label41.AutoSize = True
+        Me.Label41.Location = New System.Drawing.Point(262, 33)
+        Me.Label41.Name = "Label41"
+        Me.Label41.Size = New System.Drawing.Size(36, 13)
+        Me.Label41.TabIndex = 177
+        Me.Label41.Text = "gama:"
+        '
+        'btAccelGraph
+        '
+        Me.btAccelGraph.BackColor = System.Drawing.Color.Gold
+        Me.btAccelGraph.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btAccelGraph.Location = New System.Drawing.Point(300, 49)
+        Me.btAccelGraph.Name = "btAccelGraph"
+        Me.btAccelGraph.Size = New System.Drawing.Size(59, 20)
+        Me.btAccelGraph.TabIndex = 181
+        Me.btAccelGraph.Text = "Graph"
+        Me.btAccelGraph.UseVisualStyleBackColor = False
+        '
+        'btBrakeGraph
+        '
+        Me.btBrakeGraph.BackColor = System.Drawing.Color.Gold
+        Me.btBrakeGraph.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btBrakeGraph.Location = New System.Drawing.Point(300, 75)
+        Me.btBrakeGraph.Name = "btBrakeGraph"
+        Me.btBrakeGraph.Size = New System.Drawing.Size(59, 20)
+        Me.btBrakeGraph.TabIndex = 182
+        Me.btBrakeGraph.Text = "Graph"
+        Me.btBrakeGraph.UseVisualStyleBackColor = False
+        '
+        'btClutchGraph
+        '
+        Me.btClutchGraph.BackColor = System.Drawing.Color.Gold
+        Me.btClutchGraph.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btClutchGraph.Location = New System.Drawing.Point(300, 101)
+        Me.btClutchGraph.Name = "btClutchGraph"
+        Me.btClutchGraph.Size = New System.Drawing.Size(59, 20)
+        Me.btClutchGraph.TabIndex = 183
+        Me.btClutchGraph.Text = "Graph"
+        Me.btClutchGraph.UseVisualStyleBackColor = False
+        '
+        'UcControlGraph1
+        '
+        Me.UcControlGraph1.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.UcControlGraph1.Location = New System.Drawing.Point(0, 324)
+        Me.UcControlGraph1.Margin = New System.Windows.Forms.Padding(0)
+        Me.UcControlGraph1.Name = "UcControlGraph1"
+        Me.UcControlGraph1.Size = New System.Drawing.Size(770, 11)
+        Me.UcControlGraph1.TabIndex = 184
+        Me.UcControlGraph1.TabStop = False
+        Me.UcControlGraph1.Visible = False
+        '
         'frmSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(770, 335)
+        Me.Controls.Add(Me.UcControlGraph1)
+        Me.Controls.Add(Me.btClutchGraph)
+        Me.Controls.Add(Me.btBrakeGraph)
+        Me.Controls.Add(Me.btAccelGraph)
+        Me.Controls.Add(Me.txtClutchGama)
+        Me.Controls.Add(Me.txtBrakeGama)
+        Me.Controls.Add(Me.txtAccelGama)
+        Me.Controls.Add(Me.Label41)
         Me.Controls.Add(Me.btTestSpeed)
         Me.Controls.Add(Me.Label39)
         Me.Controls.Add(Me.txtSpeedMin)
@@ -1048,7 +1156,6 @@ Partial Class frmSetup
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.txtFreq)
         Me.Controls.Add(Me.Label2)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Name = "frmSetup"
         Me.Text = "frmSetup"
         Me.ResumeLayout(False)
@@ -1136,4 +1243,12 @@ Partial Class frmSetup
     Friend WithEvents txtSpeedMin As MaskedTextBox
     Friend WithEvents Label40 As Label
     Friend WithEvents btTestSpeed As Button
+    Friend WithEvents txtClutchGama As MaskedTextBox
+    Friend WithEvents txtBrakeGama As MaskedTextBox
+    Friend WithEvents txtAccelGama As MaskedTextBox
+    Friend WithEvents Label41 As Label
+    Friend WithEvents btAccelGraph As Button
+    Friend WithEvents btBrakeGraph As Button
+    Friend WithEvents btClutchGraph As Button
+    Friend WithEvents UcControlGraph1 As ucControlGraph
 End Class

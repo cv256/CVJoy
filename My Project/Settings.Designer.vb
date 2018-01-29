@@ -57,12 +57,12 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("COM3")>  _
-        Public Property ComPort() As String
+        Public Property ArduinoComPort() As String
             Get
-                Return CType(Me("ComPort"),String)
+                Return CType(Me("ArduinoComPort"),String)
             End Get
             Set
-                Me("ComPort") = value
+                Me("ArduinoComPort") = value
             End Set
         End Property
         
@@ -543,6 +543,42 @@ Namespace My
             End Get
             Set
                 Me("SpeedMin") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
+        Public Property AccelGama() As Single
+            Get
+                Return CType(Me("AccelGama"),Single)
+            End Get
+            Set
+                Me("AccelGama") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
+        Public Property BrakeGama() As Single
+            Get
+                Return CType(Me("BrakeGama"),Single)
+            End Get
+            Set
+                Me("BrakeGama") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
+        Public Property ClutchGama() As Single
+            Get
+                Return CType(Me("ClutchGama"),Single)
+            End Get
+            Set
+                Me("ClutchGama") = value
             End Set
         End Property
     End Class

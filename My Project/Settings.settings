@@ -2,7 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="My" GeneratedClassName="MySettings" UseMySettingsClassName="true">
   <Profiles />
   <Settings>
-    <Setting Name="ComPort" Type="System.String" Scope="User">
+    <Setting Name="ArduinoComPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">COM3</Value>
     </Setting>
     <Setting Name="RefreshRate" Type="System.Byte" Scope="User">
@@ -124,6 +124,15 @@
     </Setting>
     <Setting Name="SpeedMin" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">23</Value>
+    </Setting>
+    <Setting Name="AccelGama" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="BrakeGama" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="ClutchGama" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">1</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -13,7 +13,7 @@
         Next
 
         cbComPort.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames())
-        cbComPort.SelectedValue = My.Settings.ComPort
+        cbComPort.SelectedValue = My.Settings.ArduinoComPort
         If cbComPort.SelectedIndex = -1 AndAlso cbComPort.Items.Count = 1 Then cbComPort.SelectedIndex = 0
 
         For n As Integer = 1 To 16 : cbVjoy.Items.Add(n) : Next
@@ -41,10 +41,13 @@
         txtRollPowerForMax.Text = My.Settings.RollPowerForMax
         txtAccelMin.Text = My.Settings.AccelMin
         txtAccelMax.Text = My.Settings.AccelMax
+        txtAccelGama.Text = My.Settings.AccelGama * 100
         txtBrakeMin.Text = My.Settings.BrakeMin
         txtBrakeMax.Text = My.Settings.BrakeMax
+        txtBrakeGama.Text = My.Settings.BrakeGama * 100
         txtClutchMin.Text = My.Settings.ClutchMin
         txtClutchMax.Text = My.Settings.ClutchMax
+        txtClutchGama.Text = My.Settings.ClutchGama * 100
         txtWheelFriction.Text = My.Settings.WheelFriction
         txtWheelInertia.Text = My.Settings.WheelInertia
         txtSpeedGama.Text = My.Settings.SpeedGama
@@ -73,10 +76,13 @@
         res &= ValidateNumber(txtRollPowerForMax, 0, 600, "Roll Power For Max")
         res &= ValidateNumber(txtAccelMin, 0, 1023, "Accelerator Min")
         res &= ValidateNumber(txtAccelMax, 0, 1023, "Accelerator Max")
+        res &= ValidateNumber(txtAccelGama, 1, 999, "Accelerator Gama")
         res &= ValidateNumber(txtBrakeMin, 0, 1023, "Brake Min")
         res &= ValidateNumber(txtBrakeMax, 0, 1023, "Brake Max")
+        res &= ValidateNumber(txtBrakeGama, 1, 999, "Brake Gama")
         res &= ValidateNumber(txtClutchMin, 0, 1023, "Clutch Min")
         res &= ValidateNumber(txtClutchMax, 0, 1023, "Clutch Max")
+        res &= ValidateNumber(txtClutchGama, 1, 999, "Clutch Gama")
         res &= ValidateNumber(txtWheelSensitivity, -9999, 9999, "Wheel Sensitivity (when using mouse)")
         res &= ValidateNumber(txtWheelDead, 0, 9999, "Wheel Dead Band")
         res &= ValidateNumber(txtWheelDampFactor, -9999, 9999, "Wheel FF Damp Factor")
@@ -100,9 +106,9 @@
         Return res
     End Function
 
-    Private Sub btClose_Click(sender As Object, e As EventArgs) Handles btClose.Click
-        If txt_Validate() > "" Then Return
-        If cbComPort.SelectedIndex >= 0 Then My.Settings.ComPort = cbComPort.SelectedItem
+    Private Function SaveSettings() As Boolean
+        If txt_Validate() > "" Then Return False
+        If cbComPort.SelectedIndex >= 0 Then My.Settings.ArduinoComPort = cbComPort.SelectedItem
         If cbVjoy.SelectedIndex >= 0 Then My.Settings.vJoyId = cbVjoy.SelectedItem
         My.Settings.RefreshRate = txtFreq.Text
         My.Settings.PitchPowerForMin = txtPitchPowerForMin.Text
@@ -111,10 +117,13 @@
         My.Settings.RollPowerForMax = txtRollPowerForMax.Text
         My.Settings.AccelMin = txtAccelMin.Text
         My.Settings.AccelMax = txtAccelMax.Text
+        My.Settings.AccelGama = CInt(txtAccelGama.Text) / 100
         My.Settings.BrakeMin = txtBrakeMin.Text
         My.Settings.BrakeMax = txtBrakeMax.Text
+        My.Settings.BrakeGama = CInt(txtBrakeGama.Text) / 100
         My.Settings.ClutchMin = txtClutchMin.Text
         My.Settings.ClutchMax = txtClutchMax.Text
+        My.Settings.ClutchGama = CInt(txtClutchGama.Text) / 100
         My.Settings.WheelSensitivity = CInt(txtWheelSensitivity.Text) / 100
         My.Settings.WheelDead = txtWheelDead.Text
         My.Settings.WheelDampFactor = txtWheelDampFactor.Text
@@ -141,7 +150,11 @@
         SetKSpeedGama() ' everytime My.Settings.SpeedGama  changes we must call Sub SetKSpeedGama. This is a mathematic optimization
 
         _FrmCVJoy.Timer1.Interval = 1000 / My.Settings.RefreshRate
+        Return True
+    End Function
 
+    Private Sub btClose_Click(sender As Object, e As EventArgs) Handles btClose.Click
+        If Not SaveSettings() Then Return
         Me.Close()
     End Sub
 
@@ -174,9 +187,59 @@
         ShowSettings()
     End Sub
 
+    Private Sub btAccelGraph_Click(sender As Object, e As EventArgs) Handles btAccelGraph.Click, btBrakeGraph.Click, btClutchGraph.Click
+        If UcControlGraph1.Visible Then
+            graph = Nothing ' stop updating graph data from frmMain
+            UcControlGraph1.Visible = False
+        Else
+            If sender Is btAccelGraph Then
+                UcControlGraph1.Mode = ucControlGraph.eMode.Accel
+                Integer.TryParse(txtAccelGama.Text, UcControlGraph1.Gama)
+            ElseIf sender Is btBrakeGraph Then
+                UcControlGraph1.Mode = ucControlGraph.eMode.Brake
+                Integer.TryParse(txtBrakeGama.Text, UcControlGraph1.Gama)
+            ElseIf sender Is btClutchGraph Then
+                UcControlGraph1.Mode = ucControlGraph.eMode.Clutch
+                Integer.TryParse(txtClutchGama.Text, UcControlGraph1.Gama)
+            End If
+            UcControlGraph1.Height = Me.ClientSize.Height - btClutchGraph.Bottom
+            UcControlGraph1.Visible = True
+            graph = UcControlGraph1 ' start updating graph data from frmMain
+        End If
+    End Sub
 
-    'Private Sub txtFFConst_Scroll(sender As Object, e As EventArgs)
-    '    _FrmCVJoy.FFWheel_Const.Magnitude = txtFFConst.Value
-    'End Sub
+    Private Sub frmSetup_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+        graph = Nothing ' stop updating graph data from frmMain
+    End Sub
+
+    Private Sub txtAccelGama_TextChanged(sender As Object, e As EventArgs) Handles txtAccelGama.TextChanged
+        If graph Is Nothing Then Return
+        If Not SaveSettings() Then Return
+        Integer.TryParse(txtAccelGama.Text, UcControlGraph1.Gama)
+        UcControlGraph1.Invalidate()
+    End Sub
+    Private Sub txtBrakeGama_TextChanged(sender As Object, e As EventArgs) Handles txtBrakeGama.TextChanged
+        If Not UcControlGraph1.Visible Then Return
+        Integer.TryParse(txtBrakeGama.Text, UcControlGraph1.Gama)
+        UcControlGraph1.Invalidate()
+    End Sub
+    Private Sub txtClutchGama_TextChanged(sender As Object, e As EventArgs) Handles txtClutchGama.TextChanged
+        If Not UcControlGraph1.Visible Then Return
+        Integer.TryParse(txtClutchGama.Text, UcControlGraph1.Gama)
+        UcControlGraph1.Invalidate()
+    End Sub
+
+    Private Sub txtMinMax_TextChanged(sender As Object, e As EventArgs) Handles txtAccelMin.TextChanged, txtAccelMax.TextChanged, txtBrakeMin.TextChanged, txtBrakeMax.TextChanged, txtClutchMin.TextChanged, txtClutchMax.TextChanged
+        If graph Is Nothing Then Return
+        If Not SaveSettings() Then Return
+    End Sub
+
+    Private Sub frmSetup_Resize(sender As Object, e As EventArgs) Handles Me.Resize
+        If UcControlGraph1.Visible Then ' on resize of this form recalculate the top of  UcControlGraph1 and redraw it:
+            UcControlGraph1.Visible = False
+            UcControlGraph1.Height = Me.ClientSize.Height - btClutchGraph.Bottom
+            UcControlGraph1.Visible = True
+        End If
+    End Sub
 
 End Class
