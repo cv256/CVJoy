@@ -272,10 +272,10 @@ Public Class frmCVJoy
             ' send to VJoy:
             If Joy IsNot Nothing Then
                 Dim j As New vJoyInterfaceWrap.vJoy.JoystickState
-                j.AxisXRot = If(Math.Abs(WheelPosition) > My.Settings.WheelDead, Math.Max(0, Math.Min(32767, WheelPosition + 16384)), 16384)  ' 0-16384-32767
-                j.AxisX = .AccelCorrected * 32 ' 0-32767
-                j.AxisY = .BrakeCorrected * 32 ' 0-32767
-                j.AxisZ = .ClutchCorrected * 32 ' 0-32767
+                j.AxisX = If(Math.Abs(WheelPosition) > My.Settings.WheelDead, Math.Max(0, Math.Min(32767, WheelPosition + 16384)), 16384)  ' 0-16384-32767
+                j.AxisY = .AccelCorrected * 32 ' 0-32767
+                j.AxisZ = .BrakeCorrected * 32 ' 0-32767
+                j.AxisXRot = .ClutchCorrected * 32 ' 0-32767
                 j.Buttons = If(.button1, 1, 0) _
                             + If(.button2, 2, 0) _
                             + If(.button3, 4, 0) _
