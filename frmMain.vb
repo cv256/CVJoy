@@ -10,13 +10,13 @@ Public Class frmCVJoy
     Private ACSpeedKmhLast As Single, ACLastRead As DateTime
     Private WheelPosition As Single ' -16380 ~ 0 ~ 16380
     Private LastWheelDate As DateTime, LastWheelPosition As Integer
-    Private FFGain As Single = 1 / 10000.0F ' 0 ~ 0.00001
+    Private FFGain As Single = 255 / 10000.0F ' 0 ~ 0.0255
     Public FFWheel_Type As FFBEType
     Public FFWheel_Cond As New vJoyInterfaceWrap.vJoy.FFB_EFF_COND
     Public FFWheel_Const As New vJoyInterfaceWrap.vJoy.FFB_EFF_CONSTANT
 
-    Private gyroPitch As Single, gyroRoll As Single ' isto devia ser processado no Arduino, escusava de vir ao PC e voltar. No VBJoy faço Serial.Write, e depois Serial.Read, o que não dá jeito nenhum para isto. Para estar no CVJoy isto devia estar na classe SerialRead.
-    Private gyroPitchLast As Single, gyroRollLast As Single ',gyroPitchAvg As New Queue(Of Single), gyroRollAvg As New Queue(Of Single)
+    Private _gyroPitch As Single, _gyroRoll As Single
+    Private _realPitch As Single, _realRoll As Single ' isto devia ser processado no Arduino, escusava de vir ao PC e voltar. No VBJoy faço Serial.Write, e depois Serial.Read, o que não dá jeito nenhum para isto. Para estar no CVJoy isto devia estar na classe SerialRead.
 
     Public Enum Motor
         None
@@ -41,7 +41,6 @@ Public Class frmCVJoy
             My.Settings.Edited = True
             My.Settings.Save()
         End If
-        SetKSpeedGama() ' everytime My.Settings.SpeedGama  changes we must call Sub SetKSpeedGama. This is a mathematic optimization
         txtRPM1.Text = My.Settings.ACRpm1 * 100
         txtRPM2.Text = My.Settings.ACRpm2 * 100
         txtMaxSpeed.Text = My.Settings.ACMaxSpeed
@@ -158,13 +157,6 @@ Public Class frmCVJoy
         ' prepare data to send to the Arduino :
         Dim toArduino As New SerialSend
         With toArduino
-            ' corrected analogic values:
-            'Dim WheelCorrected As Integer = 512
-            'If .wheelPos > My.Settings.WheelCenter Then
-            '    WheelCorrected = ScaleValue(.wheelPos, My.Settings.WheelCenter, My.Settings.WheelMax, 512, 1023)
-            'ElseIf .wheelPos < My.Settings.WheelCenter Then
-            '    WheelCorrected = ScaleValue(.wheelPos, My.Settings.WheelMin, My.Settings.WheelCenter, 0, 512)
-            'End If
             If TestMode = Motor.Wheel Then
                 .wheelPower = TestValue
             Else
@@ -173,27 +165,25 @@ Public Class frmCVJoy
                 ElseIf WheelPosition >= 16380 Then
                     .wheelPower = 255
                 Else
-                    .wheelPower = FFSteer(WheelPosition)  ' commented this out because I have not being using this functionality: MIN(127,ScaleValue(ABS(FFWheel) ,0,10000, My.Settings.wheelmin, My.Settings.wheelmax)) * Sgn(FFWheel)
+                    .wheelPower = FFSteer(WheelPosition)
                 End If
             End If
+
             If TestMode = Motor.Pitch Then
-                .pitchPower = TestValue
+                .leftPower = TestValue
+                .rightPower = TestValue
+            ElseIf TestMode = Motor.roll Then
+                .leftPower = TestValue
+                .rightPower = -TestValue
             Else
-                .pitchPower = -PowerFromAnglePitch(acP.Pitch * 57.29 * My.Settings.ACPitch + acP.AccG(2) * My.Settings.ACAccel)
+                PowerFromAngle(_realPitch, _realRoll, acP.Pitch * 57.29 * My.Settings.ACPitch + acP.AccG(2) * My.Settings.ACAccel, acP.Roll * 57.29 * My.Settings.ACRoll + acP.AccG(0) * My.Settings.ACTurn, OUTLeftPower:= .leftPower, OUTRightPower:= .rightPower)
             End If
-            If Math.Abs(gyroPitch) > My.Settings.MaxPitch Then
-                .pitchPower = 0
-                'ErrorAdd("DANGER !   PITCH ANGLE ERROR !")
+            If _realPitch > My.Settings.MaxPitch OrElse _realPitch < -My.Settings.MinPitch OrElse Math.Abs(_realRoll) > My.Settings.MaxRoll Then
+                .leftPower = 0
+                .rightPower = 0
+                'ErrorAdd("DANGER !   ANGLE ERROR !")
             End If
-            If TestMode = Motor.Roll Then
-                .rollPower = -TestValue
-            Else
-                .rollPower = PowerFromAngleRoll(acP.Roll * 57.29 * My.Settings.ACRoll + acP.AccG(0) * My.Settings.ACTurn)
-            End If
-            If Math.Abs(gyroRoll) > My.Settings.MaxRoll Then
-                .rollPower = 0
-                'ErrorAdd("DANGER !   ROLL ANGLE ERROR !")
-            End If
+
             If TestMode = Motor.Wind Then
                 .windPower = TestValue
             ElseIf Not chkNoWind.Checked Then
@@ -201,6 +191,7 @@ Public Class frmCVJoy
             Else
                 .windPower = 0
             End If
+
             '.abs = acP.Abs >= 1
             '.tc = acP.TC >= 1
             .slipFront = Math.Min(acP.WheelSlip(0), acP.WheelSlip(1)) > My.Settings.ACSlip
@@ -237,37 +228,13 @@ Public Class frmCVJoy
                     ErrorAdd("UNEXPECTED SerialPort1.buf(0)=" & buf(0))
                     Return
                 End If
-                fromArduino.SetSerialData(buf)
+                fromArduino.SetSerialData(buf, _gyroPitch, _gyroRoll, _realPitch, _realRoll)
             Catch ex As Exception
                 ErrorAdd("SerialPort1.DataReceived  " & ex.Message)
             End Try
         End If
 
         With fromArduino
-
-            ' try to stabilize gyroPitch readings:
-            'If gyroPitchAvg.Count > 0 Then
-            Dim moved As Single = .gyroPitch - gyroPitchLast
-            If moved > My.Settings.GyroMaxDegreesPerTimerClick Then
-                gyroPitch = gyroPitchLast + My.Settings.GyroMaxDegreesPerTimerClick
-            ElseIf -moved > My.Settings.GyroMaxDegreesPerTimerClick Then
-                gyroPitch = gyroPitchLast - My.Settings.GyroMaxDegreesPerTimerClick
-            End If
-            'End If
-            ' (gyroPitchAvg.Sum + .gyroPitch) / (gyroPitchAvg.Count + 1)
-            gyroPitchLast = gyroPitch 'gyroPitchAvg.Enqueue(gyroPitch) : If gyroPitchAvg.Count > 10 Then gyroPitchAvg.Dequeue()
-
-            ' try to stabilize gyroRoll readings:
-            'If gyroRollAvg.Count > 0 Then
-            moved = .gyroRoll - gyroRollLast
-            If moved > My.Settings.GyroMaxDegreesPerTimerClick Then
-                gyroRoll = gyroRollLast + My.Settings.GyroMaxDegreesPerTimerClick
-            ElseIf -moved > My.Settings.GyroMaxDegreesPerTimerClick Then
-                gyroRoll = gyroRollLast - My.Settings.GyroMaxDegreesPerTimerClick
-            End If
-            'End If
-            ' (gyroRollAvg.Sum + .gyroRoll) / (gyroRollAvg.Count + 1)
-            gyroRollLast = gyroRoll 'gyroRollAvg.Enqueue(gyroRoll) : If gyroRollAvg.Count > 10 Then gyroRollAvg.Dequeue()
 
             ' send to VJoy:
             If Joy IsNot Nothing Then
@@ -342,10 +309,12 @@ Public Class frmCVJoy
                 bt7.BackColor = If(.button7, Color.Green, Color.White)
                 bt8.BackColor = If(.button8, Color.Green, Color.White)
                 bt9.BackColor = If(.button9, Color.Green, Color.White)
-                lbGyroPitch.Text = gyroPitch.ToString("0.0") & "º"
-                lbGyroRoll.Text = gyroRoll.ToString("0.0") & "º"
+                lbGyroPitch.Text = _realPitch.ToString("0.0") & "º"
+                lbGyroRoll.Text = _realRoll.ToString("0.0") & "º"
             End With
         End If
+
+        If graph IsNot Nothing Then graph.UpdatePedals(fromArduino)
 
         'txtErrors.Text = Now.Subtract(timeStart).Ticks.ToString("0000000") & "    " & timeRead.Subtract(timeSent).Ticks.ToString("0000000")
         TimerProcessing = False
@@ -360,53 +329,67 @@ Public Class frmCVJoy
 
 
 
-    Public Function PowerFromAnglePitch(pAngle As Single) As SByte
-        Dim backcolor As Color = If(Math.Abs(pAngle) > My.Settings.MaxPitch, Color.Red, Color.White)
-        pAngle = Math.Max(Math.Min(My.Settings.MaxPitch, pAngle), -My.Settings.MaxPitch)
+    Public Function PowerFromAngle(pRealPitch As Single, pRealRoll As Single, pDesiredPitch As Single, pDesiredRoll As Single, ByRef OUTLeftPower As Byte, ByRef OUTRightPower As Byte) As SByte
+        ' normalize Desires:
+        If pDesiredPitch > My.Settings.MaxPitch Then pDesiredPitch = My.Settings.MaxPitch
+        If pDesiredPitch < -My.Settings.MinPitch Then pDesiredPitch = -My.Settings.MinPitch
+        If pDesiredRoll > My.Settings.MaxRoll Then pDesiredRoll = My.Settings.MaxRoll
+        If pDesiredRoll < -My.Settings.MaxRoll Then pDesiredRoll = -My.Settings.MaxRoll
+
+        ' draw realPitch:
+        Dim backcolor As Color = If(pRealPitch > My.Settings.MaxPitch OrElse pRealPitch < -My.Settings.MinPitch, Color.Red, Color.White)
+        Dim tmpAngle As Single = Math.Max(Math.Min(pRealPitch, My.Settings.MaxPitch), -My.Settings.MinPitch)
         If Me.WindowState <> FormWindowState.Minimized AndAlso ckDontShow.Checked = False Then
             Dim g As System.Drawing.Graphics = lbSimPitch.CreateGraphics()
             g.Clear(backcolor)
-            Dim y As Integer = lbSimPitch.Height / 2 * pAngle / 45
+            Dim y As Integer = lbSimPitch.Height / 2 * tmpAngle / 45
             g.DrawLine(Pens.Blue, 0, CInt(lbSimPitch.Height / 2 + y), lbSimPitch.Width, CInt(lbSimPitch.Height / 2 - y))
-            y = lbSimPitch.Height / 2 * gyroPitch / 45
+            y = lbSimPitch.Height / 2 * _realPitch / 45
             g.DrawLine(Pens.Black, 0, CInt(lbSimPitch.Height / 2 + y), lbSimPitch.Width, CInt(lbSimPitch.Height / 2 - y))
         End If
+
+        ' draw realRoll:
+        backcolor = If(pRealRoll > My.Settings.MaxRoll OrElse pRealRoll < -My.Settings.MaxRoll, Color.Red, Color.White)
+        tmpAngle = Math.Max(Math.Min(pRealRoll, My.Settings.MaxRoll), -My.Settings.MaxRoll)
+        If Me.WindowState <> FormWindowState.Minimized AndAlso ckDontShow.Checked = False Then
+            Dim g As System.Drawing.Graphics = lbSimRoll.CreateGraphics()
+            g.Clear(backcolor)
+            Dim y As Integer = lbSimRoll.Height / 2 * tmpAngle / 45
+            g.DrawLine(Pens.Blue, 0, CInt(lbSimRoll.Height / 2 + y), lbSimRoll.Width, CInt(lbSimRoll.Height / 2 - y))
+            y = lbSimRoll.Height / 2 * _realRoll / 45
+            g.DrawLine(Pens.Black, 0, CInt(lbSimRoll.Height / 2 + y), lbSimRoll.Width, CInt(lbSimRoll.Height / 2 - y))
+        End If
+
         ' com base no angulo actual e no pAngle calcular qual a força a aplicar nesse motor:
-        If pAngle - gyroPitch > My.Settings.PitchHysteria Then
-            Return Math.Min(127, ScaleValue(pAngle - gyroPitch, 0, 2 * My.Settings.MaxPitch, My.Settings.PitchPowerForMin, My.Settings.PitchPowerForMax))
-        ElseIf pAngle - gyroPitch < -My.Settings.PitchHysteria Then
-            Return -Math.Min(127, ScaleValue(gyroPitch - pAngle, 0, 2 * My.Settings.MaxPitch, My.Settings.PitchPowerForMin, My.Settings.PitchPowerForMax))
+        Dim difPitch As Single = pDesiredPitch - pRealPitch
+        Dim difRoll As Single = pDesiredRoll - pRealRoll
+        Dim difLeft As Single = difPitch + difRoll
+        Dim difRight As Single = difPitch - difRoll
+        If difLeft > My.Settings.GHysteria Then
+            OUTLeftPower = Math.Min(127, ScaleValue(difLeft, My.Settings.GHysteria, 0.8 * My.Settings.MaxPitch, My.Settings.GPowerForMin, My.Settings.GPowerForMax))
+        ElseIf difLeft < -My.Settings.GHysteria Then
+            OUTLeftPower = -Math.Min(127, ScaleValue(-difLeft, My.Settings.GHysteria, 0.8 * My.Settings.MaxPitch, My.Settings.GPowerForMin, My.Settings.GPowerForMax))
+        Else
+            OUTLeftPower = 0
+        End If
+        If difRight > My.Settings.GHysteria Then
+            OUTRightPower = Math.Min(127, ScaleValue(difRight, My.Settings.GHysteria, 0.8 * My.Settings.MaxRoll, My.Settings.GPowerForMin, My.Settings.GPowerForMax))
+        ElseIf difRight < -My.Settings.GHysteria Then
+            OUTRightPower = -Math.Min(127, ScaleValue(-difRight, My.Settings.GHysteria, 0.8 * My.Settings.MaxRoll, My.Settings.GPowerForMin, My.Settings.GPowerForMax))
+        Else
+            OUTRightPower = 0
         End If
         Return 0
     End Function
 
-    Public Function PowerFromAngleRoll(pAngle As Single) As SByte
-        Dim backcolor As Color = If(Math.Abs(pAngle) > My.Settings.MaxRoll, Color.Red, Color.White)
-        pAngle = Math.Max(Math.Min(My.Settings.MaxRoll, pAngle), -My.Settings.MaxRoll)
-        If Me.WindowState <> FormWindowState.Minimized AndAlso ckDontShow.Checked = False Then
-            Dim g As System.Drawing.Graphics = lbSimRoll.CreateGraphics()
-            g.Clear(backcolor)
-            Dim y As Integer = lbSimRoll.Height / 2 * pAngle / 45
-            g.DrawLine(Pens.Blue, 0, CInt(lbSimRoll.Height / 2 + y), lbSimRoll.Width, CInt(lbSimRoll.Height / 2 - y))
-            y = lbSimRoll.Height / 2 * gyroRoll / 45
-            g.DrawLine(Pens.Black, 0, CInt(lbSimRoll.Height / 2 + y), lbSimRoll.Width, CInt(lbSimRoll.Height / 2 - y))
-        End If
-        ' com base no angulo actual e no pAngle calcular qual a força a aplicar nesse motor:
-        If pAngle - gyroRoll > My.Settings.RollHysteria Then
-            Return Math.Min(127, ScaleValue(pAngle - gyroRoll, 0, 2 * My.Settings.MaxRoll, My.Settings.RollPowerForMin, My.Settings.RollPowerForMax))
-        ElseIf pAngle - gyroRoll < -My.Settings.RollHysteria Then
-            Return -Math.Min(127, ScaleValue(gyroRoll - pAngle, 0, 2 * My.Settings.MaxRoll, My.Settings.RollPowerForMin, My.Settings.RollPowerForMax))
-        End If
-        Return 0
-    End Function
 
 
 
 
     Public Structure SerialSend
         Public wheelPower As Integer ' -255~255  0=no force
-        Public pitchPower As SByte  ' -127~127  0=no force
-        Public rollPower As SByte ' -127~127  0=no force
+        Public leftPower As SByte  ' -127~127  0=no force
+        Public rightPower As SByte ' -127~127  0=no force
         Public windPower As Byte
         Public rpm1 As Boolean
         Public rpm2 As Boolean
@@ -419,8 +402,8 @@ Public Class frmCVJoy
             Dim res(PacketLen - 1) As Byte
             res(0) = If(wheelPower < 0, 254, 255) ' checkdigit + wheelPowerDir
             res(1) = Math.Abs(wheelPower)
-            res(2) = pitchPower + 128
-            res(3) = rollPower + 128
+            res(2) = leftPower + 128
+            res(3) = rightPower + 128
             res(4) = windPower
             If rpm1 Then res(5) += 1
             If rpm2 Then res(5) += 2
@@ -462,15 +445,14 @@ Public Class frmCVJoy
         Public button7 As Boolean
         Public button8 As Boolean
         Public button9 As Boolean
-        Public gyroPitch As Single, gyroRoll As Single ' isto devia ser processado no Arduino, escusava de vir ao PC e voltar. No VBJoy faço Serial.Write, e depois Serial.Read, o que não dá jeito nenhum para isto. Para estar no CVJoy isto devia estar na classe SerialRead.
 
         Public AccelCorrected As Integer
         Public BrakeCorrected As Integer
         Public ClutchCorrected As Integer
 
-        Public Const PacketLen As Byte = 15
+        Public Const PacketLen As Byte = 21
 
-        Public Sub SetSerialData(pSerialData As Byte())
+        Public Sub SetSerialData(pSerialData As Byte(), ByRef _gyroPitch As Single, ByRef _gyroRoll As Single, ByRef _realPitch As Single, ByRef _realRoll As Single)
             button9 = (pSerialData(0) And 1) <> 0
             button1 = (pSerialData(1) And 1) <> 0
             button2 = (pSerialData(1) And 2) <> 0
@@ -493,21 +475,34 @@ Public Class frmCVJoy
             pedalBreak = pSerialData(5) + pSerialData(6) * 256
             pedalClutch = pSerialData(7) + pSerialData(8) * 256
 
-            Dim gyroX As Integer = pSerialData(9) + (pSerialData(10) And 15) * 256
-            If pSerialData(10) > 15 Then gyroX = -4096 + gyroX
-            Dim gyroY As Integer = pSerialData(11) + (pSerialData(12) And 15) * 256
-            If pSerialData(12) > 15 Then gyroY = -4096 + gyroY
-            Dim gyroZ As Integer = pSerialData(13) + (pSerialData(14) And 15) * 256
-            If pSerialData(14) > 15 Then gyroZ = -4096 + gyroZ
-            gyroRoll = -Math.Atan2(gyroY, gyroZ) * 57.3 + My.Settings.RollOffset
-            gyroPitch = Math.Atan2(-gyroX, Math.Sqrt(gyroY ^ 2 + gyroZ ^ 2)) * 57.3 + My.Settings.PitchOffset
-            'Debug.Print(gyroPitch.ToString("000") & "            " & gyroRoll.ToString("000") & "                      " & gyroX.ToString("000") & "            " & gyroY.ToString("000") & "            " & gyroZ.ToString("000"))
+            Dim accelX As Integer = pSerialData(9) * 256 + pSerialData(10) ' in Quids  
+            Dim accelY As Integer = pSerialData(11) * 256 + pSerialData(12) ' in Quids  
+            Dim accelZ As Integer = pSerialData(13) * 256 + pSerialData(14) ' in Quids 
+            Dim gyroX As Integer = pSerialData(15) * 256 + pSerialData(16) ' in Quids  per second
+            Dim gyroY As Integer = pSerialData(17) * 256 + pSerialData(18) ' in Quids  per second
+            Dim gyroZ As Integer = pSerialData(19) * 256 + pSerialData(20) ' in Quids  per second
+
+            ' pitch & roll from Accelerometer :
+            Dim acc_total_vector As Single = Math.Sqrt(accelX ^ 2 + accelY ^ 2 + accelZ ^ 2)
+            Dim accelPitch As Single = Math.Asin(accelY / acc_total_vector) * 57.296 + My.Settings.PitchOffset ' in degrees ' 57.296 = 180/PI
+            Dim accelRoll As Single = Math.Asin(accelX / acc_total_vector) * -57.296 + My.Settings.RollOffset ' in degrees
+            'Debug.Print(accelPitch.ToString("000.0") & "            " & accelRoll.ToString("000.0") & "                      " & accelX.ToString("000") & "            " & accelY.ToString("000") & "            " & accelZ.ToString("000"))
+
+            ' pitch & roll from Gyroscope :
+            _gyroPitch += gyroX * 0.0000611 ' 0.0000611 = 1 / (250Hz x 65.5)  Calculate the traveled pitch angle And add this to the angle_pitch variable
+            _gyroRoll += gyroY * 0.0000611
+            _gyroPitch += _gyroRoll * Math.Sin(gyroZ * 0.000001066) ' 0.000001066 = 0.0000611 * (PI / 180degr)  If the IMU has yawed transfer the roll angle To the pitch angel
+            _gyroRoll -= _gyroPitch * Math.Sin(gyroZ * 0.000001066)
+
+            Dim moved As Single = (Math.Abs(gyroX) + Math.Abs(gyroY) + Math.Abs(gyroZ)) / My.Settings.GyroMaxDegreesPerTimerClick
+            If moved > 1 Then moved = 1
+            _realPitch = accelPitch * (1 - moved) + _gyroPitch * moved
+            _realRoll = accelRoll * (1 - moved) + _gyroRoll * moved
 
             ' corrected analogic values:
             AccelCorrected = ScaleValue(pedalAccel, My.Settings.AccelMin, My.Settings.AccelMax, 0, 1023, My.Settings.AccelGama)
             BrakeCorrected = ScaleValue(pedalBreak, My.Settings.BrakeMin, My.Settings.BrakeMax, 0, 1023, My.Settings.BrakeGama)
             ClutchCorrected = ScaleValue(pedalClutch, My.Settings.ClutchMin, My.Settings.ClutchMax, 0, 1023, My.Settings.ClutchGama)
-            If graph IsNot Nothing Then graph.updateValues(AccelCorrected, BrakeCorrected, ClutchCorrected)
         End Sub
     End Class
 
@@ -751,14 +746,13 @@ Public Class frmCVJoy
 
 
     Private Function FFSteer(pWheelPosition As Integer) As Integer
-        ' calculate ForceFeedback:
+        ' calculate steeringwheel ForceFeedback from -255 to 255:
         ' 
         Dim desiredTotalStrength As Single = 0 ' nominal = -10000 ~ 10000 (but can get to a lot more by summing up FF effects)
         If chkFFConst.Checked Then
-            desiredTotalStrength = Math.Abs(FFWheel_Const.Magnitude / 10000.0F) ^ (My.Settings.WheelPowerGama / 100.0F) * Math.Sign(FFWheel_Const.Magnitude) * 10000.0F * My.Settings.WheelPowerFactor ' -10000 ~ 10000
+            desiredTotalStrength = FFWheel_Const.Magnitude / 10000.0F ' -10000 ~ 10000 ' = Math.Abs(FFWheel_Const.Magnitude / 10000.0F) ^ (My.Settings.WheelPowerGama / 100.0F) * Math.Sign(FFWheel_Const.Magnitude) * 10000.0F * My.Settings.WheelPowerFactor ' -10000 ~ 10000
         End If
         'txtErrors.Text = FFWheel_Const.Magnitude.ToString("00000") & "       " & FFWheel_Cond.PosCoeff.ToString("00000") & "       " & FFWheel_Cond.CenterPointOffset.ToString("00000")
-
 
         If chkFFCond.Checked Then
             'If the metric Is less than CP Offset - Dead Band, Then the resulting force Is given by the following formula:
@@ -781,7 +775,7 @@ Public Class frmCVJoy
                 Dim timeElapsed As Single = Now.Subtract(LastWheelDate).Ticks
                 'If Not ckDontShow.Checked Then lbTicks.Text = timeElapsed
                 q = (newPosition - LastWheelPosition) * My.Settings.WheelDampFactor / timeElapsed 'q = (Math.Abs(pWheelPosition - LastWheelPosition) * My.Settings.WheelDampFactor / timeElapsed) ^ (My.Settings.WheelInertia / 100.0F) * Math.Sign(pWheelPosition - LastWheelPosition)
-                LastWheelPosition = newPosition : LastWheelDate = Now
+                LastWheelDate = Now : LastWheelPosition = newPosition
             ElseIf FFWheel_Type = FFBEType.ET_SPRNG Then
                 If pWheelPosition > My.Settings.WheelDead Then
                     q = (pWheelPosition - My.Settings.WheelDead) / 1.637
@@ -790,37 +784,27 @@ Public Class frmCVJoy
                 End If
             End If
             If q < 0 Then ' if Q is negative: I am not using FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand  because they are allways zero, and their range would be -10000~10000 while Q range is -1~1 , and CVJoy has its own DeadZone
-                desiredTotalStrength += Math.Max(FFWheel_Cond.NegCoeff, My.Settings.WheelFriction) * q '(q - (FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand))
+                desiredTotalStrength += FFWheel_Cond.NegCoeff * q '(q - (FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand))
             ElseIf q > 0 Then ' if Q is positive:
-                desiredTotalStrength += Math.Max(FFWheel_Cond.PosCoeff, My.Settings.WheelFriction) * q '(q - (FFWheel_Cond.CenterPointOffset + FFWheel_Cond.DeadBand))
+                desiredTotalStrength += FFWheel_Cond.PosCoeff * q '(q - (FFWheel_Cond.CenterPointOffset + FFWheel_Cond.DeadBand))
             End If
         End If
+
+        desiredTotalStrength *= FFGain
+        If graph IsNot Nothing Then graph.UpdateFFWheel(Math.Abs(desiredTotalStrength))
 
         ' final output:
-        Dim powerToApply As Integer = Math.Abs(desiredTotalStrength) * FFGain * (255 - My.Settings.WheelPowerForMin)  ' motor power: 0 ~ (255-Min)
-        'If Not ckDontShow.Checked Then lbGain.Text = (FFGain * 10000)
-
+        Dim powerToApply As Integer = CalculateOutput(Math.Abs(desiredTotalStrength), 255, My.Settings.WheelMinInput, My.Settings.WheelPowerForMin, My.Settings.WheelPowerGama, My.Settings.WheelPowerFactor) * Math.Sign(desiredTotalStrength)
         'txtErrors.Text = "Res=" & res.ToString("000") & "      FFWheel=" & Math.Abs(FFWheel).ToString("000") & "   q=" & Math.Abs(q).ToString("00000") & "   PosCoeff=" & FFWheel_Cond.PosCoeff.ToString("00000") '& "     CenterPointOffset=" & FFWheel_Cond.CenterPointOffset.ToString("00000") & "     DeadBand=" & FFWheel_Cond.DeadBand.ToString("00000")
-        If powerToApply >= 1 Then
-            If desiredTotalStrength > 0 Then
-                Return Math.Min(255, powerToApply + My.Settings.WheelPowerForMin)
-            Else
-                Return -Math.Min(255, powerToApply + My.Settings.WheelPowerForMin)
-            End If
-        End If
-        Return 0
+        Return powerToApply
     End Function
 
-    Private Function FFWind(SpeedKmh As Single, Jump As Single) As Byte
-        Static lastJump As Single
-        Dim res As Single = SpeedKmh / My.Settings.ACMaxSpeed + (Jump - lastJump) / My.Settings.ACJump ' typical 0~1, but can get to something like -9~9
-        If res > 0.19 Then
-            res = Math.Min(255, My.Settings.SpeedMin + (res * (255 - My.Settings.SpeedMin)) ^ (My.Settings.SpeedGama / 100) / kSpeedGama)
-        Else
-            res = 0
-        End If
+    Private Function FFWind(SpeedKmh As Integer, Jump As Single) As Integer
+        Static lastJump As Byte
+        Dim res As Single = (If(SpeedKmh > My.Settings.ACMinSpeed, SpeedKmh / My.Settings.ACMaxSpeed, 0) + (Jump - lastJump) / My.Settings.ACJump) * 255 ' typical 0~255, but can get to something like -2000~2000
         lastJump = Jump
-        Return res
+        If graph IsNot Nothing Then graph.UpdateSpeed(res)
+        Return CalculateOutput(res, 255, 0, My.Settings.SpeedMinPower, My.Settings.SpeedGama, 1)
     End Function
 
 End Class

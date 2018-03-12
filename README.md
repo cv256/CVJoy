@@ -60,15 +60,21 @@ The electronics are based on :
 - L298 (15$)
 - 4 5Kohm 0.5W linear potentiometers
 - 4 leds
-- 8 microswitches (for H shifter and sequential)
-- 1 switch (for reverse)
-- 1 switch (for emergency cut all energy)
-- 7 press buttons (off)-on
-- an old mouse (to use one of it's rotary encoders)
-- a dc motor and a sprocket (got them from an old forcefeedback wheel that was for game-port, not even usb)
+- 8 microswitches off(on) (for H shifter and sequential)
+- 1 switch on-off-on (for reverse)
+- 1 switch on-off 2 poles (for emergency cut all energy)
+- 7 press buttons off(on)
+- an old mouse (for using one of it's rotary encoders)
+- a dc motor and a sprocket (got them from an old forcefeedback wheel that was for game-port, not even usb) (I might use 2 motors um paralel, stronger wheel)
 
 Put the Arduino, Dimmers and Relays in a transparent box so that you can see the hardware leds:
 https://github.com/cv256/CVJoy/blob/master/Simulador%20Automovel/Comunicacao/DSCN8519.JPG
+
+
+I'm now changing from ADXL345 to MPU6050, so to get preciser/faster position data.
+This is a simple guide for choosing IMUs: https://www.sparkfun.com/pages/accel_gyro_guide
+This is a simple explanation about IMUs: http://www.instructables.com/id/Guide-to-gyro-and-accelerometer-with-Arduino-inclu/
+This is a fulll explanation of IMUs: https://theccontinuum.com/2012/09/24/arduino-imu-pitch-roll-from-accelerometer/
 
 (writing in progress...)
 

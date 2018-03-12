@@ -15,7 +15,7 @@ Option Explicit On
 Namespace My
     
     <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.5.0.0"),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.6.0.0"),  _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
     Partial Friend NotInheritable Class MySettings
         Inherits Global.System.Configuration.ApplicationSettingsBase
@@ -80,7 +80,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("7")>  _
         Public Property MaxPitch() As Integer
             Get
                 Return CType(Me("MaxPitch"),Integer)
@@ -92,7 +92,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("7")>  _
         Public Property MaxRoll() As Integer
             Get
                 Return CType(Me("MaxRoll"),Integer)
@@ -104,49 +104,25 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
-        Public Property PitchPowerForMin() As Integer
+         Global.System.Configuration.DefaultSettingValueAttribute("63")>  _
+        Public Property GPowerForMin() As Integer
             Get
-                Return CType(Me("PitchPowerForMin"),Integer)
+                Return CType(Me("GPowerForMin"),Integer)
             End Get
             Set
-                Me("PitchPowerForMin") = value
+                Me("GPowerForMin") = value
             End Set
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
-        Public Property PitchPowerForMax() As Integer
+         Global.System.Configuration.DefaultSettingValueAttribute("127")>  _
+        Public Property GPowerForMax() As Integer
             Get
-                Return CType(Me("PitchPowerForMax"),Integer)
+                Return CType(Me("GPowerForMax"),Integer)
             End Get
             Set
-                Me("PitchPowerForMax") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
-        Public Property RollPowerForMin() As Integer
-            Get
-                Return CType(Me("RollPowerForMin"),Integer)
-            End Get
-            Set
-                Me("RollPowerForMin") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
-        Public Property RollPowerForMax() As Integer
-            Get
-                Return CType(Me("RollPowerForMax"),Integer)
-            End Get
-            Set
-                Me("RollPowerForMax") = value
+                Me("GPowerForMax") = value
             End Set
         End Property
         
@@ -261,24 +237,12 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("1.5")>  _
-        Public Property PitchHysteria() As Single
+        Public Property GHysteria() As Single
             Get
-                Return CType(Me("PitchHysteria"),Single)
+                Return CType(Me("GHysteria"),Single)
             End Get
             Set
-                Me("PitchHysteria") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1.5")>  _
-        Public Property RollHysteria() As Single
-            Get
-                Return CType(Me("RollHysteria"),Single)
-            End Get
-            Set
-                Me("RollHysteria") = value
+                Me("GHysteria") = value
             End Set
         End Property
         
@@ -488,30 +452,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("5500")>  _
-        Public Property WheelFriction() As Single
-            Get
-                Return CType(Me("WheelFriction"),Single)
-            End Get
-            Set
-                Me("WheelFriction") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("100")>  _
-        Public Property WheelInertia() As Single
-            Get
-                Return CType(Me("WheelInertia"),Single)
-            End Get
-            Set
-                Me("WheelInertia") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("180")>  _
         Public Property SpeedGama() As Single
             Get
@@ -537,12 +477,12 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("23")>  _
-        Public Property SpeedMin() As Integer
+        Public Property SpeedMinPower() As Integer
             Get
-                Return CType(Me("SpeedMin"),Integer)
+                Return CType(Me("SpeedMinPower"),Integer)
             End Get
             Set
-                Me("SpeedMin") = value
+                Me("SpeedMinPower") = value
             End Set
         End Property
         
@@ -579,6 +519,66 @@ Namespace My
             End Get
             Set
                 Me("ClutchGama") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property WheelMinInput() As Integer
+            Get
+                Return CType(Me("WheelMinInput"),Integer)
+            End Get
+            Set
+                Me("WheelMinInput") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("4")>  _
+        Public Property ACMinSpeed() As Integer
+            Get
+                Return CType(Me("ACMinSpeed"),Integer)
+            End Get
+            Set
+                Me("ACMinSpeed") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("7")>  _
+        Public Property MinPitch() As Integer
+            Get
+                Return CType(Me("MinPitch"),Integer)
+            End Get
+            Set
+                Me("MinPitch") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("545")>  _
+        Public Property GZDistance() As Integer
+            Get
+                Return CType(Me("GZDistance"),Integer)
+            End Get
+            Set
+                Me("GZDistance") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("345")>  _
+        Public Property GXDistance() As Integer
+            Get
+                Return CType(Me("GXDistance"),Integer)
+            End Get
+            Set
+                Me("GXDistance") = value
             End Set
         End Property
     End Class

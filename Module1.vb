@@ -2,7 +2,6 @@
 
     Public graph As ucControlGraph
     'Public timeStart As DateTime, timeSent As DateTime, timeRead As DateTime
-    Public kSpeedGama As Single ' everytime My.Settings.SpeedGama  changes we must call Sub SetKSpeedGama. This is a mathematic optimization
 
     Public Function ValidateNumber(pTextbox As Control, pMin As Single, pMax As Single, FieldDescr As String) As String
         Dim res As Single, ok As Boolean
@@ -17,15 +16,28 @@
     End Function
 
 
+    Public Function CalculateOutput(pInput As Integer, Range As Integer, MinInput As Integer, MinPower As Integer, Gama As Integer, Factor As Single) As Integer
+        Dim output As Integer = 0
+        If pInput >= MinInput Then
+            If MinInput > 1 Then pInput = (pInput - MinInput) / (Range - MinInput) * Range
+            Dim tmpFactor As Single = Factor
+            If MinPower > 1 Then tmpFactor = Factor / Range * (Range - MinPower)
+            If Gama <> 100 Then
+                output = MinPower + (pInput / Range) ^ (Gama / 100) * Range * tmpFactor
+            Else
+                output = MinPower + pInput * tmpFactor
+            End If
+            If output > Range Then output = Range
+        End If
+        Return output
+    End Function
+
+
     Public Function ScaleValue(pValue As Integer, pFromMin As Integer, pFromMax As Integer, pToMin As Integer, pToMax As Integer) As Integer
         Return Math.Min(pToMax, Math.Max(pToMin, (pValue - pFromMin) / (pFromMax - pFromMin) * pToMax + pToMin))
     End Function
     Public Function ScaleValue(pValue As Integer, pFromMin As Integer, pFromMax As Integer, pToMin As Integer, pToMax As Integer, pGama As Single) As Integer
         Return (ScaleValue(pValue, pFromMin, pFromMax, pToMin, pToMax) / pToMax) ^ pGama * pToMax
     End Function
-
-    Public Sub SetKSpeedGama()
-        kSpeedGama = (255 - My.Settings.SpeedMin) ^ (My.Settings.SpeedGama / 100) / (255 - My.Settings.SpeedMin)
-    End Sub
 
 End Module

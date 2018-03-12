@@ -9,22 +9,16 @@
       <Value Profile="(Default)">35</Value>
     </Setting>
     <Setting Name="MaxPitch" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">7</Value>
     </Setting>
     <Setting Name="MaxRoll" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">7</Value>
     </Setting>
-    <Setting Name="PitchPowerForMin" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+    <Setting Name="GPowerForMin" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">63</Value>
     </Setting>
-    <Setting Name="PitchPowerForMax" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1</Value>
-    </Setting>
-    <Setting Name="RollPowerForMin" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="RollPowerForMax" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1</Value>
+    <Setting Name="GPowerForMax" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">127</Value>
     </Setting>
     <Setting Name="ACRpm1" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0.4</Value>
@@ -53,10 +47,7 @@
     <Setting Name="vJoyId" Type="System.Byte" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
-    <Setting Name="PitchHysteria" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">1.5</Value>
-    </Setting>
-    <Setting Name="RollHysteria" Type="System.Single" Scope="User">
+    <Setting Name="GHysteria" Type="System.Single" Scope="User">
       <Value Profile="(Default)">1.5</Value>
     </Setting>
     <Setting Name="PitchOffset" Type="System.Single" Scope="User">
@@ -110,19 +101,13 @@
     <Setting Name="WheelPowerFactor" Type="System.Single" Scope="User">
       <Value Profile="(Default)">1.1</Value>
     </Setting>
-    <Setting Name="WheelFriction" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">5500</Value>
-    </Setting>
-    <Setting Name="WheelInertia" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">100</Value>
-    </Setting>
     <Setting Name="SpeedGama" Type="System.Single" Scope="User">
       <Value Profile="(Default)">180</Value>
     </Setting>
     <Setting Name="ACJump" Type="System.Single" Scope="User">
       <Value Profile="(Default)">1.8</Value>
     </Setting>
-    <Setting Name="SpeedMin" Type="System.Int32" Scope="User">
+    <Setting Name="SpeedMinPower" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">23</Value>
     </Setting>
     <Setting Name="AccelGama" Type="System.Single" Scope="User">
@@ -133,6 +118,21 @@
     </Setting>
     <Setting Name="ClutchGama" Type="System.Single" Scope="User">
       <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="WheelMinInput" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="ACMinSpeed" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">4</Value>
+    </Setting>
+    <Setting Name="MinPitch" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">7</Value>
+    </Setting>
+    <Setting Name="GZDistance" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">545</Value>
+    </Setting>
+    <Setting Name="GXDistance" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">345</Value>
     </Setting>
   </Settings>
 </SettingsFile>
