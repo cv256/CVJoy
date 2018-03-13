@@ -210,20 +210,29 @@ Public Class frmSetup
         ShowSettings()
     End Sub
 
-    Private Sub btAccelGraph_Click(sender As Object, e As EventArgs) Handles btAccelGraph.Click, btBrakeGraph.Click, btClutchGraph.Click, btWheelGraph.Click, btSpeedGraph.Click
-        If UcControlGraph1.Visible Then
+    Private Sub btGraph_Click(sender As Object, e As EventArgs) Handles btAccelGraph.Click, btBrakeGraph.Click, btClutchGraph.Click, btWheelGraph.Click, btSpeedGraph.Click, btGGraph.Click
+        If graph IsNot Nothing OrElse Ggraph IsNot Nothing Then
             graph = Nothing ' stop updating graph data from frmMain
+            Ggraph = Nothing ' stop updating graph data from frmMain
+            UcControlGGraph1.Visible = False
             UcControlGraph1.Visible = False
         Else
-            UcControlGraph1.Init(sender)
-            UcControlGraph1.Height = Me.ClientSize.Height - sender.Bottom
-            UcControlGraph1.Visible = True
-            graph = UcControlGraph1 ' start updating graph data from frmMain
+            If sender.Equals(btGGraph) Then
+                UcControlGGraph1.Height = sender.top
+                UcControlGGraph1.Visible = True
+                Ggraph = UcControlGGraph1 ' start updating graph data from frmMain
+            Else
+                UcControlGraph1.Init(sender)
+                UcControlGraph1.Height = Me.ClientSize.Height - sender.Bottom
+                UcControlGraph1.Visible = True
+                graph = UcControlGraph1 ' start updating graph data from frmMain
+            End If
         End If
     End Sub
 
     Private Sub frmSetup_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         graph = Nothing ' stop updating graph data from frmMain
+        Ggraph = Nothing ' stop updating graph data from frmMain
     End Sub
 
     Private Sub frmSetup_Resize(sender As Object, e As EventArgs) Handles Me.Resize
@@ -235,6 +244,10 @@ Public Class frmSetup
     End Sub
 
     Private Sub frmSetup_Validated(sender As Object, e As EventArgs) Handles Me.Validated
-        UcControlGraph1.Invalidate()
+        If graph IsNot Nothing Then
+            graph.Invalidate()
+        ElseIf Ggraph IsNot Nothing Then
+            Ggraph.Invalidate()
+        End If
     End Sub
 End Class

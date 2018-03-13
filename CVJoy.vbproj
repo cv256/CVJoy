@@ -87,6 +87,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="ucControlGGraph.Designer.vb">
+      <DependentUpon>ucControlGGraph.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ucControlGGraph.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ucControlGraph.Designer.vb">
       <DependentUpon>ucControlGraph.vb</DependentUpon>
     </Compile>
@@ -125,6 +131,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ucControlGGraph.resx">
+      <DependentUpon>ucControlGGraph.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ucControlGraph.resx">
       <DependentUpon>ucControlGraph.vb</DependentUpon>
     </EmbeddedResource>

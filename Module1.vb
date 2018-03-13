@@ -1,6 +1,6 @@
 ﻿Module Module1
 
-    Public graph As ucControlGraph
+    Public graph As ucControlGraph, Ggraph As ucControlGGraph
     'Public timeStart As DateTime, timeSent As DateTime, timeRead As DateTime
 
     Public Function ValidateNumber(pTextbox As Control, pMin As Single, pMax As Single, FieldDescr As String) As String

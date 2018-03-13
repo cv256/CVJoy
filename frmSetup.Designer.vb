@@ -94,7 +94,6 @@ Partial Class frmSetup
         Me.btAccelGraph = New System.Windows.Forms.Button()
         Me.btBrakeGraph = New System.Windows.Forms.Button()
         Me.btClutchGraph = New System.Windows.Forms.Button()
-        Me.UcControlGraph1 = New CVJoy.ucControlGraph()
         Me.Label42 = New System.Windows.Forms.Label()
         Me.txtSpeedMinInput = New System.Windows.Forms.MaskedTextBox()
         Me.Label43 = New System.Windows.Forms.Label()
@@ -131,6 +130,9 @@ Partial Class frmSetup
         Me.txtGZDistance = New System.Windows.Forms.MaskedTextBox()
         Me.Label68 = New System.Windows.Forms.Label()
         Me.btSpeedGraph = New System.Windows.Forms.Button()
+        Me.btGGraph = New System.Windows.Forms.Button()
+        Me.UcControlGGraph1 = New CVJoy.ucControlGGraph()
+        Me.UcControlGraph1 = New CVJoy.ucControlGraph()
         Me.SuspendLayout()
         '
         'Label3
@@ -908,18 +910,6 @@ Partial Class frmSetup
         Me.btClutchGraph.Text = "Graph"
         Me.btClutchGraph.UseVisualStyleBackColor = False
         '
-        'UcControlGraph1
-        '
-        Me.UcControlGraph1.BackColor = System.Drawing.Color.FromArgb(CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer))
-        Me.UcControlGraph1.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.UcControlGraph1.Location = New System.Drawing.Point(0, 438)
-        Me.UcControlGraph1.Margin = New System.Windows.Forms.Padding(0)
-        Me.UcControlGraph1.Name = "UcControlGraph1"
-        Me.UcControlGraph1.Size = New System.Drawing.Size(770, 11)
-        Me.UcControlGraph1.TabIndex = 184
-        Me.UcControlGraph1.TabStop = False
-        Me.UcControlGraph1.Visible = False
-        '
         'Label42
         '
         Me.Label42.AutoSize = True
@@ -1280,23 +1270,58 @@ Partial Class frmSetup
         Me.Label68.TabIndex = 220
         Me.Label68.Text = "Z distance between motor and pivot:"
         '
-        'btWindGraph
+        'btSpeedGraph
         '
         Me.btSpeedGraph.BackColor = System.Drawing.Color.Gold
         Me.btSpeedGraph.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btSpeedGraph.Location = New System.Drawing.Point(723, 253)
-        Me.btSpeedGraph.Name = "btWindGraph"
+        Me.btSpeedGraph.Name = "btSpeedGraph"
         Me.btSpeedGraph.Size = New System.Drawing.Size(44, 20)
         Me.btSpeedGraph.TabIndex = 223
         Me.btSpeedGraph.Text = "Graph"
         Me.btSpeedGraph.UseVisualStyleBackColor = False
+        '
+        'btGGraph
+        '
+        Me.btGGraph.BackColor = System.Drawing.Color.Gold
+        Me.btGGraph.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btGGraph.Location = New System.Drawing.Point(723, 300)
+        Me.btGGraph.Name = "btGGraph"
+        Me.btGGraph.Size = New System.Drawing.Size(44, 20)
+        Me.btGGraph.TabIndex = 224
+        Me.btGGraph.Text = "Graph"
+        Me.btGGraph.UseVisualStyleBackColor = False
+        '
+        'UcControlGGraph1
+        '
+        Me.UcControlGGraph1.BackColor = System.Drawing.Color.FromArgb(CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer))
+        Me.UcControlGGraph1.Dock = System.Windows.Forms.DockStyle.Top
+        Me.UcControlGGraph1.Location = New System.Drawing.Point(0, 0)
+        Me.UcControlGGraph1.Name = "UcControlGGraph1"
+        Me.UcControlGGraph1.Size = New System.Drawing.Size(770, 10)
+        Me.UcControlGGraph1.TabIndex = 225
+        Me.UcControlGGraph1.Visible = False
+        '
+        'UcControlGraph1
+        '
+        Me.UcControlGraph1.BackColor = System.Drawing.Color.FromArgb(CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer))
+        Me.UcControlGraph1.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.UcControlGraph1.Location = New System.Drawing.Point(0, 438)
+        Me.UcControlGraph1.Margin = New System.Windows.Forms.Padding(0)
+        Me.UcControlGraph1.Name = "UcControlGraph1"
+        Me.UcControlGraph1.Size = New System.Drawing.Size(770, 11)
+        Me.UcControlGraph1.TabIndex = 184
+        Me.UcControlGraph1.TabStop = False
+        Me.UcControlGraph1.Visible = False
         '
         'frmSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(770, 449)
+        Me.Controls.Add(Me.UcControlGGraph1)
         Me.Controls.Add(Me.UcControlGraph1)
+        Me.Controls.Add(Me.btGGraph)
         Me.Controls.Add(Me.btSpeedGraph)
         Me.Controls.Add(Me.Label67)
         Me.Controls.Add(Me.txtGZDistance)
@@ -1521,4 +1546,6 @@ Partial Class frmSetup
     Friend WithEvents txtGZDistance As MaskedTextBox
     Friend WithEvents Label68 As Label
     Friend WithEvents btSpeedGraph As Button
+    Friend WithEvents btGGraph As Button
+    Friend WithEvents UcControlGGraph1 As ucControlGGraph
 End Class

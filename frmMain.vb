@@ -98,6 +98,7 @@ Public Class frmCVJoy
 
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        'If Ggraph IsNot Nothing AndAlso Not Ggraph.chkPause.Checked Then Ggraph.UpdateValue(VBMath.Rnd * 30 - 15, VBMath.Rnd * 30 - 15, VBMath.Rnd, VBMath.Rnd * 30 - 15)
         If TimerProcessing Then
             ErrorAdd("Cant stand such hight Refresh Rate, lower it.")
             Return
@@ -172,7 +173,7 @@ Public Class frmCVJoy
             If TestMode = Motor.Pitch Then
                 .leftPower = TestValue
                 .rightPower = TestValue
-            ElseIf TestMode = Motor.roll Then
+            ElseIf TestMode = Motor.Roll Then
                 .leftPower = TestValue
                 .rightPower = -TestValue
             Else
@@ -329,7 +330,7 @@ Public Class frmCVJoy
 
 
 
-    Public Function PowerFromAngle(pRealPitch As Single, pRealRoll As Single, pDesiredPitch As Single, pDesiredRoll As Single, ByRef OUTLeftPower As Byte, ByRef OUTRightPower As Byte) As SByte
+    Public Sub PowerFromAngle(pRealPitch As Single, pRealRoll As Single, pDesiredPitch As Single, pDesiredRoll As Single, ByRef OUTLeftPower As SByte, ByRef OUTRightPower As SByte)
         ' normalize Desires:
         If pDesiredPitch > My.Settings.MaxPitch Then pDesiredPitch = My.Settings.MaxPitch
         If pDesiredPitch < -My.Settings.MinPitch Then pDesiredPitch = -My.Settings.MinPitch
@@ -379,8 +380,8 @@ Public Class frmCVJoy
         Else
             OUTRightPower = 0
         End If
-        Return 0
-    End Function
+        Return
+    End Sub
 
 
 
@@ -498,6 +499,8 @@ Public Class frmCVJoy
             If moved > 1 Then moved = 1
             _realPitch = accelPitch * (1 - moved) + _gyroPitch * moved
             _realRoll = accelRoll * (1 - moved) + _gyroRoll * moved
+
+            If Ggraph IsNot Nothing AndAlso Not Ggraph.chkPause.Checked Then Ggraph.UpdateValue(accelPitch, _gyroPitch, moved, _realPitch)
 
             ' corrected analogic values:
             AccelCorrected = ScaleValue(pedalAccel, My.Settings.AccelMin, My.Settings.AccelMax, 0, 1023, My.Settings.AccelGama)
