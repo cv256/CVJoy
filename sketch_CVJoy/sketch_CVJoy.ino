@@ -134,11 +134,22 @@ void setup()
     //    Acceleration at 2g
     //    Clock source at internal 8MHz
     //    The device is in sleep mode.
-  Wire.begin(); // join i2c bus (address optional for master)
-  Wire.beginTransmission(MPU6050);
-  Wire.write(0x6B);  // PWR_MGMT_1 register
-  Wire.write(0);     // set to zero (wakes up the MPU-6050)
-  Wire.endTransmission(true);
+    Wire.begin(); // join i2c bus (address optional for master)
+    //Activate the MPU-6050
+    Wire.beginTransmission(MPU6050);                                        //Start communicating with the MPU-6050
+    Wire.write(0x6B);                                                    // PWR_MGMT_1 register
+    Wire.write(0x00);                                                    // set to zero (wakes up the MPU-6050)
+    Wire.endTransmission();                                             
+    //Configure the accelerometer (+/-2g)
+    Wire.beginTransmission(MPU6050);                                        //Start communicating with the MPU-6050
+    Wire.write(0x1C);                                                    //Send the requested starting register
+    Wire.write(0x00);                                                    //Set the requested starting register
+    Wire.endTransmission();                                             
+    //Configure the DLPF (Digital Low Pass Filter)
+    Wire.beginTransmission(MPU6050);                                        //Start communicating with the MPU-6050
+    Wire.write(26);                                                    //Send the requested starting register
+    Wire.write(4);                                                    //Set the requested starting register 3=(44Hz@1KHz=22 samplings lag=4.8ms) 4=(21Hz@1KHz=47 samplings lag=8.5ms)  5=(10Hz@1KHz=100 samplings lag=13.8ms)
+    Wire.endTransmission();                                             
 
   Serial.begin(115200);
 } //...setup
@@ -229,21 +240,13 @@ void loop()
       Wire.beginTransmission(MPU6050); //start transmission to device
       Wire.write(0x3B);  // starting with register 0x3B (ACCEL_XOUT_H)
       Wire.endTransmission(false);
-      Wire.requestFrom(MPU6050,14,true);  // request a total of 14 registers
+      Wire.requestFrom(MPU6050,6,true);  // request a total of 14 registers
       Serial.write(Wire.read());  // 0x3B (ACCEL_XOUT_H) 
       Serial.write(Wire.read());  // 0x3C (ACCEL_XOUT_L)   
       Serial.write(Wire.read());  // 0x3D (ACCEL_YOUT_H)
       Serial.write(Wire.read());  // 0x3E (ACCEL_YOUT_L)
       Serial.write(Wire.read());  // 0x3F (ACCEL_ZOUT_H) 
       Serial.write(Wire.read());  // 0x40 (ACCEL_ZOUT_L)
-      Wire.read();  // 0x41 (TEMP_OUT_H)
-      Wire.read();  // 0x42 (TEMP_OUT_L)
-      Serial.write(Wire.read());  // 0x43 (GYRO_XOUT_H) 
-      Serial.write(Wire.read());  // 0x44 (GYRO_XOUT_L)   
-      Serial.write(Wire.read());  // 0x45 (GYRO_YOUT_H)
-      Serial.write(Wire.read());  // 0x46 (GYRO_YOUT_L)
-      Serial.write(Wire.read());  // 0x47 (GYRO_ZOUT_H)
-      Serial.write(Wire.read());  // 0x48 (GYRO_ZOUT_L)
 
     } //..checkdigit
   } //..if Serial.available()==packetLen

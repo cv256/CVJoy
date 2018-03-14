@@ -35,7 +35,7 @@ Partial Class frmSetup
         Me.Label6 = New System.Windows.Forms.Label()
         Me.txtGPowerForMin = New System.Windows.Forms.MaskedTextBox()
         Me.Label7 = New System.Windows.Forms.Label()
-        Me.btClose = New System.Windows.Forms.Button()
+        Me.btSave = New System.Windows.Forms.Button()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.cbComPort = New System.Windows.Forms.ComboBox()
         Me.Label14 = New System.Windows.Forms.Label()
@@ -133,6 +133,7 @@ Partial Class frmSetup
         Me.btGGraph = New System.Windows.Forms.Button()
         Me.UcControlGGraph1 = New CVJoy.ucControlGGraph()
         Me.UcControlGraph1 = New CVJoy.ucControlGraph()
+        Me.btClose = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Label3
@@ -272,17 +273,17 @@ Partial Class frmSetup
         Me.Label7.TabIndex = 90
         Me.Label7.Text = "Min.Power:"
         '
-        'btClose
+        'btSave
         '
-        Me.btClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btClose.BackColor = System.Drawing.Color.Gold
-        Me.btClose.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btClose.Location = New System.Drawing.Point(706, 424)
-        Me.btClose.Name = "btClose"
-        Me.btClose.Size = New System.Drawing.Size(59, 22)
-        Me.btClose.TabIndex = 103
-        Me.btClose.Text = "Save"
-        Me.btClose.UseVisualStyleBackColor = False
+        Me.btSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btSave.BackColor = System.Drawing.Color.Gold
+        Me.btSave.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btSave.Location = New System.Drawing.Point(640, 424)
+        Me.btSave.Name = "btSave"
+        Me.btSave.Size = New System.Drawing.Size(59, 22)
+        Me.btSave.TabIndex = 103
+        Me.btSave.Text = "Save"
+        Me.btSave.UseVisualStyleBackColor = False
         '
         'Label13
         '
@@ -414,7 +415,7 @@ Partial Class frmSetup
         Me.txtRollOffset.BeepOnError = True
         Me.txtRollOffset.HidePromptOnLeave = True
         Me.txtRollOffset.Location = New System.Drawing.Point(82, 348)
-        Me.txtRollOffset.Mask = "#00.0\º"
+        Me.txtRollOffset.Mask = "#000.0\º"
         Me.txtRollOffset.Name = "txtRollOffset"
         Me.txtRollOffset.Size = New System.Drawing.Size(40, 20)
         Me.txtRollOffset.TabIndex = 128
@@ -435,7 +436,7 @@ Partial Class frmSetup
         Me.txtPitchOffset.BeepOnError = True
         Me.txtPitchOffset.HidePromptOnLeave = True
         Me.txtPitchOffset.Location = New System.Drawing.Point(82, 325)
-        Me.txtPitchOffset.Mask = "#00.0\º"
+        Me.txtPitchOffset.Mask = "#000.0\º"
         Me.txtPitchOffset.Name = "txtPitchOffset"
         Me.txtPitchOffset.Size = New System.Drawing.Size(40, 20)
         Me.txtPitchOffset.TabIndex = 126
@@ -457,9 +458,9 @@ Partial Class frmSetup
         Me.txtGyroMaxDegrees.CutCopyMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals
         Me.txtGyroMaxDegrees.HidePromptOnLeave = True
         Me.txtGyroMaxDegrees.Location = New System.Drawing.Point(391, 297)
-        Me.txtGyroMaxDegrees.Mask = "0.0\º"
+        Me.txtGyroMaxDegrees.Mask = "00.0\º"
         Me.txtGyroMaxDegrees.Name = "txtGyroMaxDegrees"
-        Me.txtGyroMaxDegrees.Size = New System.Drawing.Size(27, 20)
+        Me.txtGyroMaxDegrees.Size = New System.Drawing.Size(31, 20)
         Me.txtGyroMaxDegrees.TabIndex = 130
         Me.txtGyroMaxDegrees.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
@@ -694,7 +695,7 @@ Partial Class frmSetup
         '
         Me.btDefaults.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btDefaults.BackColor = System.Drawing.Color.Gold
-        Me.btDefaults.Location = New System.Drawing.Point(621, 424)
+        Me.btDefaults.Location = New System.Drawing.Point(555, 424)
         Me.btDefaults.Name = "btDefaults"
         Me.btDefaults.Size = New System.Drawing.Size(59, 22)
         Me.btDefaults.TabIndex = 155
@@ -1314,11 +1315,25 @@ Partial Class frmSetup
         Me.UcControlGraph1.TabStop = False
         Me.UcControlGraph1.Visible = False
         '
+        'btClose
+        '
+        Me.btClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btClose.BackColor = System.Drawing.Color.Gold
+        Me.btClose.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btClose.Location = New System.Drawing.Point(705, 424)
+        Me.btClose.Name = "btClose"
+        Me.btClose.Size = New System.Drawing.Size(59, 22)
+        Me.btClose.TabIndex = 226
+        Me.btClose.Text = "Close"
+        Me.btClose.UseVisualStyleBackColor = False
+        '
         'frmSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(770, 449)
+        Me.Controls.Add(Me.btClose)
+        Me.Controls.Add(Me.btSave)
         Me.Controls.Add(Me.UcControlGGraph1)
         Me.Controls.Add(Me.UcControlGraph1)
         Me.Controls.Add(Me.btGGraph)
@@ -1416,7 +1431,6 @@ Partial Class frmSetup
         Me.Controls.Add(Me.cbVjoy)
         Me.Controls.Add(Me.Label13)
         Me.Controls.Add(Me.cbComPort)
-        Me.Controls.Add(Me.btClose)
         Me.Controls.Add(Me.txtGPowerForMax)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.txtGPowerForMin)
@@ -1450,7 +1464,7 @@ Partial Class frmSetup
     Friend WithEvents Label6 As Label
     Friend WithEvents txtGPowerForMin As MaskedTextBox
     Friend WithEvents Label7 As Label
-    Friend WithEvents btClose As Button
+    Friend WithEvents btSave As Button
     Friend WithEvents Label13 As Label
     Friend WithEvents cbComPort As ComboBox
     Friend WithEvents Label14 As Label
@@ -1548,4 +1562,5 @@ Partial Class frmSetup
     Friend WithEvents btSpeedGraph As Button
     Friend WithEvents btGGraph As Button
     Friend WithEvents UcControlGGraph1 As ucControlGGraph
+    Friend WithEvents btClose As Button
 End Class

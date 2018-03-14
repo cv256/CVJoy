@@ -316,13 +316,14 @@ Partial Class frmCVJoy
         '
         Me.lbACInfo.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lbACInfo.BackColor = System.Drawing.SystemColors.ControlText
-        Me.lbACInfo.ForeColor = System.Drawing.SystemColors.Control
+        Me.lbACInfo.BackColor = System.Drawing.SystemColors.Info
+        Me.lbACInfo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbACInfo.ForeColor = System.Drawing.SystemColors.InfoText
         Me.lbACInfo.Location = New System.Drawing.Point(1, 176)
         Me.lbACInfo.Name = "lbACInfo"
         Me.lbACInfo.Size = New System.Drawing.Size(520, 13)
         Me.lbACInfo.TabIndex = 33
-        Me.lbACInfo.Text = "     connection to Assetto Corsa:"
+        Me.lbACInfo.Text = "   connection to  Assetto Corsa:"
         '
         'btACStart
         '

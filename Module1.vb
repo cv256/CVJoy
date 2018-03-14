@@ -16,6 +16,7 @@
     End Function
 
 
+
     Public Function CalculateOutput(pInput As Integer, Range As Integer, MinInput As Integer, MinPower As Integer, Gama As Integer, Factor As Single) As Integer
         Dim output As Integer = 0
         If pInput >= MinInput Then

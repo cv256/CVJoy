@@ -15,8 +15,7 @@ Public Class frmCVJoy
     Public FFWheel_Cond As New vJoyInterfaceWrap.vJoy.FFB_EFF_COND
     Public FFWheel_Const As New vJoyInterfaceWrap.vJoy.FFB_EFF_CONSTANT
 
-    Private _gyroPitch As Single, _gyroRoll As Single
-    Private _realPitch As Single, _realRoll As Single ' isto devia ser processado no Arduino, escusava de vir ao PC e voltar. No VBJoy faço Serial.Write, e depois Serial.Read, o que não dá jeito nenhum para isto. Para estar no CVJoy isto devia estar na classe SerialRead.
+    Private _realPitch As Single, _realRoll As Single ' isto povia ser processado no Arduino, escusava de vir ao PC e voltar. No VBJoy faço Serial.Write, e depois Serial.Read, o que não dá jeito nenhum para isto. Para estar no CVJoy isto devia estar na classe SerialRead.
 
     Public Enum Motor
         None
@@ -177,7 +176,7 @@ Public Class frmCVJoy
                 .leftPower = TestValue
                 .rightPower = -TestValue
             Else
-                PowerFromAngle(_realPitch, _realRoll, acP.Pitch * 57.29 * My.Settings.ACPitch + acP.AccG(2) * My.Settings.ACAccel, acP.Roll * 57.29 * My.Settings.ACRoll + acP.AccG(0) * My.Settings.ACTurn, OUTLeftPower:= .leftPower, OUTRightPower:= .rightPower)
+                PowerFromAngle(acP.Pitch * 57.29 * My.Settings.ACPitch + acP.AccG(2) * My.Settings.ACAccel, acP.Roll * 57.29 * My.Settings.ACRoll + acP.AccG(0) * My.Settings.ACTurn, OUTLeftPower:= .leftPower, OUTRightPower:= .rightPower)
             End If
             If _realPitch > My.Settings.MaxPitch OrElse _realPitch < -My.Settings.MinPitch OrElse Math.Abs(_realRoll) > My.Settings.MaxRoll Then
                 .leftPower = 0
@@ -229,13 +228,14 @@ Public Class frmCVJoy
                     ErrorAdd("UNEXPECTED SerialPort1.buf(0)=" & buf(0))
                     Return
                 End If
-                fromArduino.SetSerialData(buf, _gyroPitch, _gyroRoll, _realPitch, _realRoll)
+                fromArduino.SetSerialData(buf)
             Catch ex As Exception
                 ErrorAdd("SerialPort1.DataReceived  " & ex.Message)
             End Try
         End If
 
         With fromArduino
+            _realPitch = .RealPitch : _realRoll = .RealRoll
 
             ' send to VJoy:
             If Joy IsNot Nothing Then
@@ -330,7 +330,7 @@ Public Class frmCVJoy
 
 
 
-    Public Sub PowerFromAngle(pRealPitch As Single, pRealRoll As Single, pDesiredPitch As Single, pDesiredRoll As Single, ByRef OUTLeftPower As SByte, ByRef OUTRightPower As SByte)
+    Public Sub PowerFromAngle(pDesiredPitch As Single, pDesiredRoll As Single, ByRef OUTLeftPower As SByte, ByRef OUTRightPower As SByte)
         ' normalize Desires:
         If pDesiredPitch > My.Settings.MaxPitch Then pDesiredPitch = My.Settings.MaxPitch
         If pDesiredPitch < -My.Settings.MinPitch Then pDesiredPitch = -My.Settings.MinPitch
@@ -338,32 +338,30 @@ Public Class frmCVJoy
         If pDesiredRoll < -My.Settings.MaxRoll Then pDesiredRoll = -My.Settings.MaxRoll
 
         ' draw realPitch:
-        Dim backcolor As Color = If(pRealPitch > My.Settings.MaxPitch OrElse pRealPitch < -My.Settings.MinPitch, Color.Red, Color.White)
-        Dim tmpAngle As Single = Math.Max(Math.Min(pRealPitch, My.Settings.MaxPitch), -My.Settings.MinPitch)
+        Dim backcolor As Color = If(_realPitch > My.Settings.MaxPitch OrElse _realPitch < -My.Settings.MinPitch, Color.Red, Color.White)
         If Me.WindowState <> FormWindowState.Minimized AndAlso ckDontShow.Checked = False Then
             Dim g As System.Drawing.Graphics = lbSimPitch.CreateGraphics()
             g.Clear(backcolor)
-            Dim y As Integer = lbSimPitch.Height / 2 * tmpAngle / 45
+            Dim y As Integer = lbSimPitch.Height / 2 * pDesiredPitch / 45
             g.DrawLine(Pens.Blue, 0, CInt(lbSimPitch.Height / 2 + y), lbSimPitch.Width, CInt(lbSimPitch.Height / 2 - y))
             y = lbSimPitch.Height / 2 * _realPitch / 45
             g.DrawLine(Pens.Black, 0, CInt(lbSimPitch.Height / 2 + y), lbSimPitch.Width, CInt(lbSimPitch.Height / 2 - y))
         End If
 
         ' draw realRoll:
-        backcolor = If(pRealRoll > My.Settings.MaxRoll OrElse pRealRoll < -My.Settings.MaxRoll, Color.Red, Color.White)
-        tmpAngle = Math.Max(Math.Min(pRealRoll, My.Settings.MaxRoll), -My.Settings.MaxRoll)
+        backcolor = If(_realRoll > My.Settings.MaxRoll OrElse _realRoll < -My.Settings.MaxRoll, Color.Red, Color.White)
         If Me.WindowState <> FormWindowState.Minimized AndAlso ckDontShow.Checked = False Then
             Dim g As System.Drawing.Graphics = lbSimRoll.CreateGraphics()
             g.Clear(backcolor)
-            Dim y As Integer = lbSimRoll.Height / 2 * tmpAngle / 45
-            g.DrawLine(Pens.Blue, 0, CInt(lbSimRoll.Height / 2 + y), lbSimRoll.Width, CInt(lbSimRoll.Height / 2 - y))
+            Dim y As Integer = lbSimRoll.Height / 2 * pDesiredRoll / 45
+            g.DrawLine(Pens.Blue, 0, CInt(lbSimRoll.Height / 2 - y), lbSimRoll.Width, CInt(lbSimRoll.Height / 2 + y))
             y = lbSimRoll.Height / 2 * _realRoll / 45
-            g.DrawLine(Pens.Black, 0, CInt(lbSimRoll.Height / 2 + y), lbSimRoll.Width, CInt(lbSimRoll.Height / 2 - y))
+            g.DrawLine(Pens.Black, 0, CInt(lbSimRoll.Height / 2 - y), lbSimRoll.Width, CInt(lbSimRoll.Height / 2 + y))
         End If
 
         ' com base no angulo actual e no pAngle calcular qual a força a aplicar nesse motor:
-        Dim difPitch As Single = pDesiredPitch - pRealPitch
-        Dim difRoll As Single = pDesiredRoll - pRealRoll
+        Dim difPitch As Single = pDesiredPitch - _realPitch
+        Dim difRoll As Single = pDesiredRoll - _realRoll
         Dim difLeft As Single = difPitch + difRoll
         Dim difRight As Single = difPitch - difRoll
         If difLeft > My.Settings.GHysteria Then
@@ -380,6 +378,9 @@ Public Class frmCVJoy
         Else
             OUTRightPower = 0
         End If
+
+        If Ggraph IsNot Nothing AndAlso Not Ggraph.chkPause.Checked Then Ggraph.UpdateValue(_realPitch, _realRoll, pDesiredPitch, pDesiredRoll, OUTLeftPower, OUTRightPower)
+
         Return
     End Sub
 
@@ -451,9 +452,13 @@ Public Class frmCVJoy
         Public BrakeCorrected As Integer
         Public ClutchCorrected As Integer
 
-        Public Const PacketLen As Byte = 21
+        Public RealPitch As Single
+        Public RealRoll As Single
 
-        Public Sub SetSerialData(pSerialData As Byte(), ByRef _gyroPitch As Single, ByRef _gyroRoll As Single, ByRef _realPitch As Single, ByRef _realRoll As Single)
+
+        Public Const PacketLen As Byte = 15
+
+        Public Sub SetSerialData(pSerialData As Byte())
             button9 = (pSerialData(0) And 1) <> 0
             button1 = (pSerialData(1) And 1) <> 0
             button2 = (pSerialData(1) And 2) <> 0
@@ -476,31 +481,29 @@ Public Class frmCVJoy
             pedalBreak = pSerialData(5) + pSerialData(6) * 256
             pedalClutch = pSerialData(7) + pSerialData(8) * 256
 
-            Dim accelX As Integer = pSerialData(9) * 256 + pSerialData(10) ' in Quids  
-            Dim accelY As Integer = pSerialData(11) * 256 + pSerialData(12) ' in Quids  
-            Dim accelZ As Integer = pSerialData(13) * 256 + pSerialData(14) ' in Quids 
-            Dim gyroX As Integer = pSerialData(15) * 256 + pSerialData(16) ' in Quids  per second
-            Dim gyroY As Integer = pSerialData(17) * 256 + pSerialData(18) ' in Quids  per second
-            Dim gyroZ As Integer = pSerialData(19) * 256 + pSerialData(20) ' in Quids  per second
+            ' read data from IMU, in two's complement dword format ' https://en.wikipedia.org/wiki/Two%27s_complement
+            Dim accelX As Single = (pSerialData(9) And 32767) * 256 + pSerialData(10)
+            If pSerialData(9) > 127 Then accelX = -(65536 - accelX)
+            Dim accelY As Single = (pSerialData(11) And 32767) * 256 + pSerialData(12)
+            If pSerialData(11) > 127 Then accelY = -(65536 - accelY)
+            Dim accelZ As Single = (pSerialData(13) And 32767) * 256 + pSerialData(14)
+            If pSerialData(13) > 127 Then accelZ = -(65536 - accelZ)
 
             ' pitch & roll from Accelerometer :
-            Dim acc_total_vector As Single = Math.Sqrt(accelX ^ 2 + accelY ^ 2 + accelZ ^ 2)
-            Dim accelPitch As Single = Math.Asin(accelY / acc_total_vector) * 57.296 + My.Settings.PitchOffset ' in degrees ' 57.296 = 180/PI
-            Dim accelRoll As Single = Math.Asin(accelX / acc_total_vector) * -57.296 + My.Settings.RollOffset ' in degrees
-            'Debug.Print(accelPitch.ToString("000.0") & "            " & accelRoll.ToString("000.0") & "                      " & accelX.ToString("000") & "            " & accelY.ToString("000") & "            " & accelZ.ToString("000"))
-
-            ' pitch & roll from Gyroscope :
-            _gyroPitch += gyroX * 0.0000611 ' 0.0000611 = 1 / (250Hz x 65.5)  Calculate the traveled pitch angle And add this to the angle_pitch variable
-            _gyroRoll += gyroY * 0.0000611
-            _gyroPitch += _gyroRoll * Math.Sin(gyroZ * 0.000001066) ' 0.000001066 = 0.0000611 * (PI / 180degr)  If the IMU has yawed transfer the roll angle To the pitch angel
-            _gyroRoll -= _gyroPitch * Math.Sin(gyroZ * 0.000001066)
-
-            Dim moved As Single = (Math.Abs(gyroX) + Math.Abs(gyroY) + Math.Abs(gyroZ)) / My.Settings.GyroMaxDegreesPerTimerClick
-            If moved > 1 Then moved = 1
-            _realPitch = accelPitch * (1 - moved) + _gyroPitch * moved
-            _realRoll = accelRoll * (1 - moved) + _gyroRoll * moved
-
-            If Ggraph IsNot Nothing AndAlso Not Ggraph.chkPause.Checked Then Ggraph.UpdateValue(accelPitch, _gyroPitch, moved, _realPitch)
+            accelX += 0
+            accelY += -11469
+            accelZ += 0
+            'txtErrors.Text = Now.ToLongTimeString _
+            '    & vbCrLf & accelX.ToString("00000") & "            " & accelY.ToString("00000") & "            " & accelZ.ToString("00000") 
+            accelX /= 16384 ' in G
+            accelY /= 16384 ' in G
+            accelZ /= 16384 ' in G
+            RealPitch = -Math.Atan2(-accelX, Math.Sqrt(accelY ^ 2 + accelZ ^ 2)) * 57.2957 + My.Settings.PitchOffset  ' 57.296 = 180/PI
+            RealRoll = 180 - Math.Atan2(-accelY, accelZ) * 57.2957 + My.Settings.RollOffset
+            If RealPitch > 180 Then RealPitch = RealPitch Mod 360 - 360 ' -180~180 degrees
+            If RealPitch < -180 Then RealPitch = RealPitch Mod 360 + 360 ' -180~180 degrees
+            If RealRoll > 180 Then RealRoll = RealRoll Mod 360 - 360 ' -180~180 degrees
+            If RealRoll < -180 Then RealRoll = RealRoll Mod 360 + 360 ' -180~180 degrees
 
             ' corrected analogic values:
             AccelCorrected = ScaleValue(pedalAccel, My.Settings.AccelMin, My.Settings.AccelMax, 0, 1023, My.Settings.AccelGama)

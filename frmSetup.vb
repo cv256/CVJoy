@@ -59,9 +59,9 @@ Public Class frmSetup
         txtSpeedMin.Text = My.Settings.SpeedMinPower
         txtSpeedGama.Text = My.Settings.SpeedGama
 
-        txtGyroMaxDegrees.Text = My.Settings.GyroMaxDegreesPerTimerClick.ToString("0.0")
-        txtPitchOffset.Text = My.Settings.PitchOffset.ToString("+00.0;-00.0")
-        txtRollOffset.Text = My.Settings.RollOffset.ToString("+00.0;-00.0")
+        txtGyroMaxDegrees.Text = My.Settings.GyroMaxDegreesPerTimerClick.ToString("00.0")
+        txtPitchOffset.Text = My.Settings.PitchOffset.ToString("+000.0;-000.0")
+        txtRollOffset.Text = My.Settings.RollOffset.ToString("+000.0;-000.0")
         txtMinPitch.Text = My.Settings.MinPitch
         txtMaxPitch.Text = My.Settings.MaxPitch
         txtMaxRoll.Text = My.Settings.MaxRoll
@@ -100,9 +100,9 @@ Public Class frmSetup
         res &= ValidateNumber(txtSpeedGama, 0, 800, "Speed Power Gama")
         res &= ValidateNumber(txtSpeedMin, 0, 255, "Speed Power For Min")
 
-        res &= ValidateNumber(txtGyroMaxDegrees, 0.1, 9, "Gyroscope Min Degrees per Second")
-        res &= ValidateNumber(txtPitchOffset, -90, 90, "Pitch Offfset")
-        res &= ValidateNumber(txtRollOffset, -90, 90, "Roll Offfset")
+        res &= ValidateNumber(txtGyroMaxDegrees, 0.1, 99.9, "Gyroscope Min Degrees per Second")
+        res &= ValidateNumber(txtPitchOffset, -180, 180, "Pitch Offfset")
+        res &= ValidateNumber(txtRollOffset, -180, 180, "Roll Offfset")
         res &= ValidateNumber(txtMinPitch, 0, 90, "Max Down Pitch")
         res &= ValidateNumber(txtMaxPitch, 0, 90, "Max Up Pitch")
         res &= ValidateNumber(txtMaxRoll, 0, 90, "Max Roll")
@@ -177,8 +177,11 @@ Public Class frmSetup
         Return True
     End Function
 
-    Private Sub btClose_Click(sender As Object, e As EventArgs) Handles btClose.Click
+    Private Sub btSave_Click(sender As Object, e As EventArgs) Handles btSave.Click
         If Not SaveSettings() Then Return
+    End Sub
+
+    Private Sub btClose_Click(sender As Object, e As EventArgs) Handles btClose.Click
         Me.Close()
     End Sub
 
