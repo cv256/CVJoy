@@ -807,19 +807,21 @@ Partial Class frmCVJoy
         '
         'lbGyroPitch
         '
-        Me.lbGyroPitch.Location = New System.Drawing.Point(67, 92)
+        Me.lbGyroPitch.Location = New System.Drawing.Point(64, 92)
         Me.lbGyroPitch.Name = "lbGyroPitch"
-        Me.lbGyroPitch.Size = New System.Drawing.Size(30, 13)
+        Me.lbGyroPitch.Size = New System.Drawing.Size(29, 13)
         Me.lbGyroPitch.TabIndex = 96
         Me.lbGyroPitch.Text = "-99º"
+        Me.lbGyroPitch.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'lbGyroRoll
         '
-        Me.lbGyroRoll.Location = New System.Drawing.Point(498, 92)
+        Me.lbGyroRoll.Location = New System.Drawing.Point(490, 92)
         Me.lbGyroRoll.Name = "lbGyroRoll"
-        Me.lbGyroRoll.Size = New System.Drawing.Size(30, 13)
+        Me.lbGyroRoll.Size = New System.Drawing.Size(29, 13)
         Me.lbGyroRoll.TabIndex = 98
         Me.lbGyroRoll.Text = "-99º"
+        Me.lbGyroRoll.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label4
         '

@@ -59,15 +59,13 @@ Public Class frmSetup
         txtSpeedMin.Text = My.Settings.SpeedMinPower
         txtSpeedGama.Text = My.Settings.SpeedGama
 
-        txtGyroMaxDegrees.Text = My.Settings.GyroMaxDegreesPerTimerClick.ToString("00.0")
         txtPitchOffset.Text = My.Settings.PitchOffset.ToString("+000.0;-000.0")
         txtRollOffset.Text = My.Settings.RollOffset.ToString("+000.0;-000.0")
-        txtMinPitch.Text = My.Settings.MinPitch
-        txtMaxPitch.Text = My.Settings.MaxPitch
-        txtMaxRoll.Text = My.Settings.MaxRoll
-        txtGHysteria.Text = My.Settings.GHysteria.ToString("0.0")
+        txtMaxScrewUp.Text = My.Settings.GMaxScrewUp
+        txtMaxScrewDown.Text = My.Settings.GMaxScrewDown
+        txtGMinDiff.Text = My.Settings.GMinDiff
+        txtGMaxDiff.Text = My.Settings.GMaxDiff
         txtGPowerForMin.Text = My.Settings.GPowerForMin
-        txtGPowerForMax.Text = My.Settings.GPowerForMax
         txtGZDistance.Text = My.Settings.GZDistance
         txtGXDistance.Text = My.Settings.GXDistance
 
@@ -100,20 +98,18 @@ Public Class frmSetup
         res &= ValidateNumber(txtSpeedGama, 0, 800, "Speed Power Gama")
         res &= ValidateNumber(txtSpeedMin, 0, 255, "Speed Power For Min")
 
-        res &= ValidateNumber(txtGyroMaxDegrees, 0.1, 99.9, "Gyroscope Min Degrees per Second")
         res &= ValidateNumber(txtPitchOffset, -180, 180, "Pitch Offfset")
         res &= ValidateNumber(txtRollOffset, -180, 180, "Roll Offfset")
-        res &= ValidateNumber(txtMinPitch, 0, 90, "Max Down Pitch")
-        res &= ValidateNumber(txtMaxPitch, 0, 90, "Max Up Pitch")
-        res &= ValidateNumber(txtMaxRoll, 0, 90, "Max Roll")
-        res &= ValidateNumber(txtGHysteria, 0, 10, "Hysteria")
+        res &= ValidateNumber(txtMaxScrewUp, 1, 999, "Max Screw Up")
+        res &= ValidateNumber(txtMaxScrewDown, 1, 999, "Max Screw Down")
+        res &= ValidateNumber(txtGMinDiff, 1, 999, "Min.Milimeters of Difference for moving with Minimum power")
+        res &= ValidateNumber(txtGMaxDiff, 1, 999, "Min.Milimeters of Difference for moving with Maximum power")
         res &= ValidateNumber(txtGPowerForMin, 0, 255, "Power For Min")
-        res &= ValidateNumber(txtGPowerForMax, 0, 255, "Power For Max")
-        res &= ValidateNumber(txtGZDistance, 1, 999, "Z Distance")
-        res &= ValidateNumber(txtGXDistance, 1, 999, "X Distance")
+        res &= ValidateNumber(txtGZDistance, 1, 999, "Z Distance between motor and pivot")
+        res &= ValidateNumber(txtGXDistance, 1, 999, "Half X Distance between left and right motors")
 
         If String.IsNullOrEmpty(res) Then
-            If Math.Abs(CInt(txtGPowerForMax.Text)) <= Math.Abs(CInt(txtGPowerForMin.Text)) Then res &= "Power Max cant be less than Power Min" & vbCrLf
+            If CInt(txtGMaxDiff.Text) <= CInt(txtGMinDiff.Text) Then res &= "Difference for Power Max cant be less than Difference for Power Min" & vbCrLf
             If CInt(txtAccelMax.Text) <= CInt(txtAccelMin.Text) Then res &= "Accelerator Max cant be less than Min" & vbCrLf
             If CInt(txtBrakeMax.Text) <= CInt(txtBrakeMin.Text) Then res &= "Brake Max cant be less than Min" & vbCrLf
             If CInt(txtClutchMax.Text) <= CInt(txtClutchMin.Text) Then res &= "Clutch Max cant be less than Min" & vbCrLf
@@ -159,15 +155,13 @@ Public Class frmSetup
         My.Settings.SpeedGama = txtSpeedGama.Text
         My.Settings.SpeedMinPower = txtSpeedMin.Text
 
-        My.Settings.GyroMaxDegreesPerTimerClick = txtGyroMaxDegrees.Text.Replace("º", "")
         My.Settings.PitchOffset = txtPitchOffset.Text.Replace("º", "")
         My.Settings.RollOffset = txtRollOffset.Text.Replace("º", "")
-        My.Settings.MinPitch = txtMinPitch.Text.Replace("º", "")
-        My.Settings.MaxPitch = txtMaxPitch.Text.Replace("º", "")
-        My.Settings.MaxRoll = txtMaxRoll.Text.Replace("º", "")
-        My.Settings.GHysteria = txtGHysteria.Text.Replace("º", "")
+        My.Settings.GMaxScrewUp = txtMaxScrewUp.Text
+        My.Settings.GMaxScrewDown = txtMaxScrewDown.Text
+        My.Settings.GMinDiff = txtGMinDiff.Text
+        My.Settings.GMaxDiff = txtGMaxDiff.Text
         My.Settings.GPowerForMin = txtGPowerForMin.Text
-        My.Settings.GPowerForMax = txtGPowerForMax.Text
         My.Settings.GZDistance = txtGZDistance.Text
         My.Settings.GZDistance = txtGXDistance.Text
 
@@ -193,7 +187,7 @@ Public Class frmSetup
                 .TestValue = CInt(txtWheelPowerForMin.Text) * If(sender.Equals(btTestWheelLeft), 1, -1)
                 .TestMode = frmCVJoy.Motor.Wheel
             ElseIf sender.Equals(btTestGDown) OrElse sender.Equals(btTestGUp) Then
-                .TestValue = CInt(txtGPowerForMin.Text) * If(sender.Equals(btTestGDown), -1, 1)
+                .TestValue = CInt(txtGPowerForMin.Text) * If(sender.Equals(btTestGDown), 1, -1)
                 .TestMode = frmCVJoy.Motor.Pitch
             ElseIf sender.Equals(btTestGLeft) OrElse sender.Equals(btTestGRight) Then
                 .TestValue = CInt(txtGPowerForMin.Text) * If(sender.Equals(btTestGLeft), -1, 1)
@@ -221,7 +215,7 @@ Public Class frmSetup
             UcControlGraph1.Visible = False
         Else
             If sender.Equals(btGGraph) Then
-                UcControlGGraph1.Height = sender.top
+                UcControlGGraph1.Height = btTestGDown.Top
                 UcControlGGraph1.Visible = True
                 Ggraph = UcControlGGraph1 ' start updating graph data from frmMain
             Else

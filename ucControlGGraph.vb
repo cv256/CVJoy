@@ -1,38 +1,55 @@
 ﻿Public Class ucControlGGraph
 
     Private X As Integer
-    Private lastDesired As Integer, lastReal As Integer, lastMotorLeft As Integer, lastMotorRight As Integer
+    Private lastDesiredLeft As Integer, lastDesiredRight As Integer
+    Private lastRealLeft As Integer, lastRealRight As Integer
+    Private lastMotorLeft As Integer, lastMotorRight As Integer
 
-    Public Sub UpdateValue(pRealPitch As Single, pRealRoll As Single, pDesiredPitch As Single, pDesiredRoll As Single, pMotorLeft As SByte, pMotorRight As SByte)
-        Dim MainCenter As Integer = Me.Height / 2
-        Dim degree2screen As Single = My.Settings.MaxPitch * 1.3 / MainCenter
-        If degree2screen = 0 Then Return
+    Public Sub UpdateValue(pRealLeft As Single, pRealRight As Single, pDesiredLeft As Single, pDesiredRight As Single, pMotorLeft As SByte, pMotorRight As SByte)
+        Dim mm2screen As Single = Me.Height / (Math.Max(My.Settings.GMaxScrewUp, My.Settings.GMaxScrewDown) * 2 * 1.1)
+        If mm2screen = 0 Then Return
+        Dim mainCenter As Integer = Me.Height / 2
+        Dim nowLeft As Integer, nowRight As Integer
         Using g As Graphics = Me.CreateGraphics
             ' clear a small column in front of x:
             g.DrawLine(New Drawing.Pen(Me.BackColor, 1), X, 0, X + 5, Me.Height)
-            If X Mod 8 = 0 Then ' draw reference dotted lines :
-                g.DrawLine(Drawing.Pens.Gray, X, MainCenter, X + 1, MainCenter)
-                g.DrawLine(Drawing.Pens.Gray, X, MainCenter - CInt(MainCenter / 1.3), X + 1, MainCenter - CInt(MainCenter / 1.3))
-                g.DrawLine(Drawing.Pens.Gray, X, MainCenter + CInt(MainCenter / 1.3), X + 1, MainCenter + CInt(MainCenter / 1.3))
-                g.DrawLine(Drawing.Pens.Gray, X, MainCenter - CInt(My.Settings.GHysteria / degree2screen), X + 1, MainCenter - CInt(My.Settings.GHysteria / degree2screen))
-                g.DrawLine(Drawing.Pens.Gray, X, MainCenter + CInt(My.Settings.GHysteria / degree2screen), X + 1, MainCenter + CInt(My.Settings.GHysteria / degree2screen))
+            ' draw reference dotted lines :
+            If X Mod 8 = 0 Then
+                g.DrawLine(Drawing.Pens.Gray, X, mainCenter, X + 1, mainCenter)
+                g.DrawLine(Drawing.Pens.Gray, X, mainCenter - My.Settings.GMaxScrewUp * mm2screen, X + 1, mainCenter - My.Settings.GMaxScrewUp * mm2screen)
+                g.DrawLine(Drawing.Pens.Gray, X, mainCenter + My.Settings.GMaxScrewDown * mm2screen, X + 1, mainCenter + My.Settings.GMaxScrewDown * mm2screen)
+                g.DrawLine(Drawing.Pens.DarkBlue, X, mainCenter - CInt(My.Settings.GMinDiff * mm2screen), X + 1, mainCenter - CInt(My.Settings.GMinDiff * mm2screen))
+                g.DrawLine(Drawing.Pens.DarkBlue, X, mainCenter + CInt(My.Settings.GMinDiff * mm2screen), X + 1, mainCenter + CInt(My.Settings.GMinDiff * mm2screen))
+                g.DrawLine(Drawing.Pens.DarkBlue, X, mainCenter - CInt(My.Settings.GMaxDiff * mm2screen), X + 1, mainCenter - CInt(My.Settings.GMaxDiff * mm2screen))
+                g.DrawLine(Drawing.Pens.DarkBlue, X, mainCenter + CInt(My.Settings.GMaxDiff * mm2screen), X + 1, mainCenter + CInt(My.Settings.GMaxDiff * mm2screen))
             End If
-            Dim y As Integer
             'Motors:
-            y = MainCenter - pMotorRight / 127 * MainCenter / 1.3
-            If chkMotor.Checked Then g.DrawLine(Drawing.Pens.Red, X - 1, lastMotorRight, X, y)
-            lastMotorRight = y
-            y = MainCenter - pMotorLeft / 127 * MainCenter / 1.3
-            If chkMotor.Checked Then g.DrawLine(Drawing.Pens.Red, X - 1, lastMotorLeft, X, y)
-            lastMotorLeft = y
+            nowLeft = mainCenter - pMotorLeft / 127 * mainCenter / 1.1
+            nowRight = mainCenter - pMotorRight / 127 * mainCenter / 1.1
+            If chkMotor.Checked Then
+                If Not rdRight.Checked Then g.DrawLine(Drawing.Pens.DarkRed, X - 1, lastMotorLeft, X, nowLeft)
+                If Not rdLeft.Checked Then g.DrawLine(Drawing.Pens.DarkRed, X - 1, lastMotorRight, X, nowRight)
+            End If
+            lastMotorLeft = nowLeft
+            lastMotorRight = nowRight
             'Real:
-            y = MainCenter - If(rdRoll.Checked, pRealRoll, pRealPitch) / degree2screen
-            If chkReal.Checked Then g.DrawLine(Drawing.Pens.White, X - 1, lastReal, X, y)
-            lastReal = y
+            nowLeft = mainCenter - pRealLeft * mm2screen
+            nowRight = mainCenter - pRealRight * mm2screen
+            If chkReal.Checked Then
+                If Not rdRight.Checked Then g.DrawLine(Drawing.Pens.White, X - 1, lastRealLeft, X, nowLeft)
+                If Not rdLeft.Checked Then g.DrawLine(Drawing.Pens.White, X - 1, lastRealRight, X, nowRight)
+            End If
+            lastRealLeft = nowLeft
+            lastRealRight = nowRight
             'Desired:
-            y = MainCenter - If(rdRoll.Checked, pDesiredRoll, pDesiredPitch) / degree2screen
-            If chkDesired.Checked Then g.DrawLine(Drawing.Pens.Green, X - 1, lastDesired, X, y)
-            lastDesired = y
+            nowLeft = mainCenter - pDesiredLeft * mm2screen
+            nowRight = mainCenter - pDesiredRight * mm2screen
+            If chkDesired.Checked Then
+                If Not rdRight.Checked Then g.DrawLine(Drawing.Pens.Green, X - 1, lastDesiredLeft, X, nowLeft)
+                If Not rdLeft.Checked Then g.DrawLine(Drawing.Pens.Green, X - 1, lastDesiredRight, X, nowRight)
+            End If
+            lastDesiredLeft = nowLeft
+            lastDesiredRight = nowRight
         End Using
         X += 1
         If X > Me.Width Then X = 0

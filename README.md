@@ -45,8 +45,10 @@ This is one of the **screens of my software CVJoy.exe**:
 https://github.com/cv256/CVJoy/blob/master/Simulador%20Automovel/Comunicacao/CV%20Joy1.png
 On the top half you can view the buttons, leds, pitch, roll, steering wheel, shift wich are red by CVJoy.exe from the arduino.
 On the lower half you can view the data that is being red from AC throught assettocorsasharedmemory, and you can configure how this values will be sent to the arduino, how they will affect the leds, the wind and shake.
-And if you press the Setup button you can configura a lot more parameters:
+And if you press the Setup button you can configura a lot more parameters, test motors and parameters, analyze graphs:
 https://github.com/cv256/CVJoy/blob/master/Simulador%20Automovel/Comunicacao/CV%20Joy2.png
+https://github.com/cv256/CVJoy/blob/master/Simulador%20Automovel/Comunicacao/CV%20Joy3.png
+https://github.com/cv256/CVJoy/blob/master/Simulador%20Automovel/Comunicacao/CV%20Joy4.png
 
 
 
@@ -56,7 +58,7 @@ The electronics are based on :
 - Arduino Mega (35$) 
 - 4 ac dimmers (35$) https://www.facebook.com/krida.electronics/photos/a.146032125748693.1073741832.145962675755638/299516397066931/?type=3&theater
 - 8 relays (10$) https://www.miniinthebox.com/pt/8-channel-12v-modulo-rele-para-arduino-funciona-com-oficiais-arduino-placas_p903437.html?prm=2.3.5.0
-- ADXL345 (3$) http://www.dx.com/pt/p/gy-291-adxl345-digital-3-axis-acceleration-of-gravity-tilt-module-for-arduino-148921?tc=EUR&ta=PT&gclid=EAIaIQobChMIxtnanuXI1wIVoxXTCh3JIgHqEAQYAyABEgI0ovD_BwE#.WhCBCXlpE_4
+- GY-521 MPU-6050 (3$) 
 - L298 (15$)
 - 4 5Kohm 0.5W linear potentiometers
 - 4 leds
@@ -65,13 +67,12 @@ The electronics are based on :
 - 1 switch on-off 2 poles (for emergency cut all energy)
 - 7 press buttons off(on)
 - an old mouse (for using one of it's rotary encoders)
-- a dc motor and a sprocket (got them from an old forcefeedback wheel that was for game-port, not even usb) (I might use 2 motors um paralel, stronger wheel)
+- a 12v dc motor (got it from an old car's window elevator) and a sprocket (got them from an old forcefeedback wheel that was for game-port, not even usb) (I might use 2 motors um paralel, faster/stronger wheel, the L298 has 2 channels)
 
 Put the Arduino, Dimmers and Relays in a transparent box so that you can see the hardware leds:
 https://github.com/cv256/CVJoy/blob/master/Simulador%20Automovel/Comunicacao/DSCN8519.JPG
 
 
-I'm now changing from ADXL345 to MPU6050, so to get preciser/faster position data.
 This is a simple guide for choosing IMUs: https://www.sparkfun.com/pages/accel_gyro_guide
 This is a simple explanation about IMUs: http://www.instructables.com/id/Guide-to-gyro-and-accelerometer-with-Arduino-inclu/
 This is a fulll explanation of IMUs: https://theccontinuum.com/2012/09/24/arduino-imu-pitch-roll-from-accelerometer/

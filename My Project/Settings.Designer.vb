@@ -80,30 +80,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("7")>  _
-        Public Property MaxPitch() As Integer
-            Get
-                Return CType(Me("MaxPitch"),Integer)
-            End Get
-            Set
-                Me("MaxPitch") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("7")>  _
-        Public Property MaxRoll() As Integer
-            Get
-                Return CType(Me("MaxRoll"),Integer)
-            End Get
-            Set
-                Me("MaxRoll") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("63")>  _
         Public Property GPowerForMin() As Integer
             Get
@@ -111,18 +87,6 @@ Namespace My
             End Get
             Set
                 Me("GPowerForMin") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("127")>  _
-        Public Property GPowerForMax() As Integer
-            Get
-                Return CType(Me("GPowerForMax"),Integer)
-            End Get
-            Set
-                Me("GPowerForMax") = value
             End Set
         End Property
         
@@ -177,9 +141,9 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
-        Public Property ACPitch() As Double
+        Public Property ACPitch() As Single
             Get
-                Return CType(Me("ACPitch"),Double)
+                Return CType(Me("ACPitch"),Single)
             End Get
             Set
                 Me("ACPitch") = value
@@ -189,9 +153,9 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
-        Public Property ACRoll() As Double
+        Public Property ACRoll() As Single
             Get
-                Return CType(Me("ACRoll"),Double)
+                Return CType(Me("ACRoll"),Single)
             End Get
             Set
                 Me("ACRoll") = value
@@ -236,18 +200,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1.5")>  _
-        Public Property GHysteria() As Single
-            Get
-                Return CType(Me("GHysteria"),Single)
-            End Get
-            Set
-                Me("GHysteria") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
         Public Property PitchOffset() As Single
             Get
@@ -267,18 +219,6 @@ Namespace My
             End Get
             Set
                 Me("RollOffset") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("0.9")>  _
-        Public Property GyroMaxDegreesPerTimerClick() As Single
-            Get
-                Return CType(Me("GyroMaxDegreesPerTimerClick"),Single)
-            End Get
-            Set
-                Me("GyroMaxDegreesPerTimerClick") = value
             End Set
         End Property
         
@@ -548,19 +488,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("7")>  _
-        Public Property MinPitch() As Integer
-            Get
-                Return CType(Me("MinPitch"),Integer)
-            End Get
-            Set
-                Me("MinPitch") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("545")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("270")>  _
         Public Property GZDistance() As Integer
             Get
                 Return CType(Me("GZDistance"),Integer)
@@ -572,13 +500,61 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("345")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("250")>  _
         Public Property GXDistance() As Integer
             Get
                 Return CType(Me("GXDistance"),Integer)
             End Get
             Set
                 Me("GXDistance") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("9")>  _
+        Public Property GMinDiff() As Integer
+            Get
+                Return CType(Me("GMinDiff"),Integer)
+            End Get
+            Set
+                Me("GMinDiff") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("100")>  _
+        Public Property GMaxDiff() As Integer
+            Get
+                Return CType(Me("GMaxDiff"),Integer)
+            End Get
+            Set
+                Me("GMaxDiff") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("75")>  _
+        Public Property GMaxScrewUp() As Integer
+            Get
+                Return CType(Me("GMaxScrewUp"),Integer)
+            End Get
+            Set
+                Me("GMaxScrewUp") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("65")>  _
+        Public Property GMaxScrewDown() As Integer
+            Get
+                Return CType(Me("GMaxScrewDown"),Integer)
+            End Get
+            Set
+                Me("GMaxScrewDown") = value
             End Set
         End Property
     End Class

@@ -15,7 +15,8 @@ Public Class frmCVJoy
     Public FFWheel_Cond As New vJoyInterfaceWrap.vJoy.FFB_EFF_COND
     Public FFWheel_Const As New vJoyInterfaceWrap.vJoy.FFB_EFF_CONSTANT
 
-    Private _realPitch As Single, _realRoll As Single ' isto povia ser processado no Arduino, escusava de vir ao PC e voltar. No VBJoy faço Serial.Write, e depois Serial.Read, o que não dá jeito nenhum para isto. Para estar no CVJoy isto devia estar na classe SerialRead.
+    Private _realPitch As Single, _realRoll As Single ' RADIANS ' isto podia ser processado no Arduino, escusava de vir ao PC e voltar. No VBJoy faço Serial.Write, e depois Serial.Read, o que não dá jeito nenhum para isto. Para estar no CVJoy isto devia estar na classe SerialRead.
+    Private _realPitchTime As DateTime, _realRollTime As DateTime
 
     Public Enum Motor
         None
@@ -140,6 +141,8 @@ Public Class frmCVJoy
         End If
 
         ' show raw AC data on screen:
+        Dim desiredPitch As Single = acP.Pitch * My.Settings.ACPitch + acP.AccG(2) * My.Settings.ACAccel / 57.29 ' Radians
+        Dim desiredRoll As Single = acP.Roll * My.Settings.ACRoll + acP.AccG(0) * My.Settings.ACTurn / 57.29 ' Radians
         If Me.WindowState <> FormWindowState.Minimized AndAlso ckDontShow.Checked = False Then
             lbACSpeed.Text = acP.SpeedKmh
             lbACRPM.Text = acP.Rpms
@@ -169,20 +172,7 @@ Public Class frmCVJoy
                 End If
             End If
 
-            If TestMode = Motor.Pitch Then
-                .leftPower = TestValue
-                .rightPower = TestValue
-            ElseIf TestMode = Motor.Roll Then
-                .leftPower = TestValue
-                .rightPower = -TestValue
-            Else
-                PowerFromAngle(acP.Pitch * 57.29 * My.Settings.ACPitch + acP.AccG(2) * My.Settings.ACAccel, acP.Roll * 57.29 * My.Settings.ACRoll + acP.AccG(0) * My.Settings.ACTurn, OUTLeftPower:= .leftPower, OUTRightPower:= .rightPower)
-            End If
-            If _realPitch > My.Settings.MaxPitch OrElse _realPitch < -My.Settings.MinPitch OrElse Math.Abs(_realRoll) > My.Settings.MaxRoll Then
-                .leftPower = 0
-                .rightPower = 0
-                'ErrorAdd("DANGER !   ANGLE ERROR !")
-            End If
+            PowerFromAngle(desiredPitch, desiredRoll, OUTLeftPower:= .leftPower, OUTRightPower:= .rightPower)
 
             If TestMode = Motor.Wind Then
                 .windPower = TestValue
@@ -235,7 +225,14 @@ Public Class frmCVJoy
         End If
 
         With fromArduino
-            _realPitch = .RealPitch : _realRoll = .RealRoll
+            If Math.Abs(.RealPitch - _realPitch) * 10000000 / Now.Subtract(_realPitchTime).Ticks < 1 Then ' faster movements than the fastest we can really move, lets say 1º per second, can only be garabage
+                _realPitch = .RealPitch
+                _realPitchTime = Now
+            End If
+            If Math.Abs(.RealRoll - _realRoll) * 10000000 / Now.Subtract(_realRollTime).Ticks < 1 Then ' faster movements than the fastest we can really move, lets say 1º per second, can only be garabage
+                _realRoll = .RealRoll
+                _realRollTime = Now
+            End If
 
             ' send to VJoy:
             If Joy IsNot Nothing Then
@@ -272,12 +269,12 @@ Public Class frmCVJoy
         ' show lights on screen:
         If Me.WindowState <> FormWindowState.Minimized AndAlso ckDontShow.Checked = False Then
             With toArduino
-                lbRPM1.BackColor = If(.rpm1, Color.DodgerBlue, Color.White)
-                lbRPM2.BackColor = If(.rpm2, Color.DodgerBlue, Color.White)
+                lbRPM1.BackColor = If(.rpm1, Color.Green, Color.White)
+                lbRPM2.BackColor = If(.rpm2, Color.Orange, Color.White)
                 'lbABS.BackColor = If(.abs, Color.Blue, Color.White)
                 'lbTC.BackColor = If(.tc, Color.Blue, Color.White)
                 lbSlipFront.BackColor = If(.slipFront, Color.Red, Color.White)
-                lbSlipBack.BackColor = If(.slipBack, Color.Red, Color.White)
+                lbSlipBack.BackColor = If(.slipBack, Color.SkyBlue, Color.White)
                 Dim g As System.Drawing.Graphics = lbWheelPos.CreateGraphics()
                 g.Clear(Color.White)
                 Dim xHalf As Integer = CInt(lbWheelPos.Width / 2)
@@ -310,8 +307,26 @@ Public Class frmCVJoy
                 bt7.BackColor = If(.button7, Color.Green, Color.White)
                 bt8.BackColor = If(.button8, Color.Green, Color.White)
                 bt9.BackColor = If(.button9, Color.Green, Color.White)
-                lbGyroPitch.Text = _realPitch.ToString("0.0") & "º"
-                lbGyroRoll.Text = _realRoll.ToString("0.0") & "º"
+                lbGyroPitch.Text = (_realPitch * 57.29).ToString("0") & "º"
+                lbGyroRoll.Text = (_realRoll * 57.29).ToString("0") & "º"
+            End With
+            ' draw realPitch:
+            With lbSimPitch.CreateGraphics()
+                Dim backcolor As Color = Color.White ' If(_realPitch > My.Settings.MaxPitch OrElse _realPitch < -My.Settings.MinPitch, Color.Red, Color.White)
+                .Clear(BackColor)
+                Dim y As Integer = lbSimPitch.Height * desiredPitch / 1.5 ' diagonal at 43º
+                .DrawLine(Pens.Blue, 0, CInt(lbSimPitch.Height / 2 + y), lbSimPitch.Width, CInt(lbSimPitch.Height / 2 - y))
+                y = lbSimPitch.Height * _realPitch / 1.5 ' diagonal at 43º
+                .DrawLine(Pens.Black, 0, CInt(lbSimPitch.Height / 2 + y), lbSimPitch.Width, CInt(lbSimPitch.Height / 2 - y))
+            End With
+            ' draw realRoll:
+            With lbSimRoll.CreateGraphics()
+                Dim backcolor As Color = Color.White 'If(_realRoll > My.Settings.MaxRoll OrElse _realRoll < -My.Settings.MaxRoll, Color.Red, Color.White)
+                .Clear(BackColor)
+                Dim y As Integer = lbSimRoll.Height * desiredRoll / 1.5 ' diagonal at 43º
+                .DrawLine(Pens.Blue, 0, CInt(lbSimRoll.Height / 2 - y), lbSimRoll.Width, CInt(lbSimRoll.Height / 2 + y))
+                y = lbSimRoll.Height * _realRoll / 1.5 ' diagonal at 43º
+                .DrawLine(Pens.Black, 0, CInt(lbSimRoll.Height / 2 - y), lbSimRoll.Width, CInt(lbSimRoll.Height / 2 + y))
             End With
         End If
 
@@ -331,55 +346,57 @@ Public Class frmCVJoy
 
 
     Public Sub PowerFromAngle(pDesiredPitch As Single, pDesiredRoll As Single, ByRef OUTLeftPower As SByte, ByRef OUTRightPower As SByte)
-        ' normalize Desires:
-        If pDesiredPitch > My.Settings.MaxPitch Then pDesiredPitch = My.Settings.MaxPitch
-        If pDesiredPitch < -My.Settings.MinPitch Then pDesiredPitch = -My.Settings.MinPitch
-        If pDesiredRoll > My.Settings.MaxRoll Then pDesiredRoll = My.Settings.MaxRoll
-        If pDesiredRoll < -My.Settings.MaxRoll Then pDesiredRoll = -My.Settings.MaxRoll
+        ' convert Desired Angles into Desired Screw Positions:
+        Dim DesiredLeftScrew As Single = -My.Settings.GZDistance * Math.Sin(pDesiredPitch) + My.Settings.GXDistance * Math.Sin(pDesiredRoll) ' in mm
+        Dim DesiredRightScrew As Single = -My.Settings.GZDistance * Math.Sin(pDesiredPitch) - My.Settings.GXDistance * Math.Sin(pDesiredRoll) ' in mm
+        If DesiredLeftScrew > My.Settings.GMaxScrewUp Then DesiredLeftScrew = My.Settings.GMaxScrewUp
+        If DesiredLeftScrew < -My.Settings.GMaxScrewDown Then DesiredLeftScrew = -My.Settings.GMaxScrewDown
+        If DesiredRightScrew > My.Settings.GMaxScrewUp Then DesiredRightScrew = My.Settings.GMaxScrewUp
+        If DesiredRightScrew < -My.Settings.GMaxScrewDown Then DesiredRightScrew = -My.Settings.GMaxScrewDown
 
-        ' draw realPitch:
-        Dim backcolor As Color = If(_realPitch > My.Settings.MaxPitch OrElse _realPitch < -My.Settings.MinPitch, Color.Red, Color.White)
-        If Me.WindowState <> FormWindowState.Minimized AndAlso ckDontShow.Checked = False Then
-            Dim g As System.Drawing.Graphics = lbSimPitch.CreateGraphics()
-            g.Clear(backcolor)
-            Dim y As Integer = lbSimPitch.Height / 2 * pDesiredPitch / 45
-            g.DrawLine(Pens.Blue, 0, CInt(lbSimPitch.Height / 2 + y), lbSimPitch.Width, CInt(lbSimPitch.Height / 2 - y))
-            y = lbSimPitch.Height / 2 * _realPitch / 45
-            g.DrawLine(Pens.Black, 0, CInt(lbSimPitch.Height / 2 + y), lbSimPitch.Width, CInt(lbSimPitch.Height / 2 - y))
-        End If
+        ' convert Real Angles into Real Screw Positions:
+        Dim RealLeftScrew As Single = -My.Settings.GZDistance * Math.Sin(_realPitch) + My.Settings.GXDistance * Math.Sin(_realRoll) ' in mm
+        Dim RealRightScrew As Single = -My.Settings.GZDistance * Math.Sin(_realPitch) - My.Settings.GXDistance * Math.Sin(_realRoll) ' in mm
 
-        ' draw realRoll:
-        backcolor = If(_realRoll > My.Settings.MaxRoll OrElse _realRoll < -My.Settings.MaxRoll, Color.Red, Color.White)
-        If Me.WindowState <> FormWindowState.Minimized AndAlso ckDontShow.Checked = False Then
-            Dim g As System.Drawing.Graphics = lbSimRoll.CreateGraphics()
-            g.Clear(backcolor)
-            Dim y As Integer = lbSimRoll.Height / 2 * pDesiredRoll / 45
-            g.DrawLine(Pens.Blue, 0, CInt(lbSimRoll.Height / 2 - y), lbSimRoll.Width, CInt(lbSimRoll.Height / 2 + y))
-            y = lbSimRoll.Height / 2 * _realRoll / 45
-            g.DrawLine(Pens.Black, 0, CInt(lbSimRoll.Height / 2 - y), lbSimRoll.Width, CInt(lbSimRoll.Height / 2 + y))
-        End If
-
-        ' com base no angulo actual e no pAngle calcular qual a força a aplicar nesse motor:
-        Dim difPitch As Single = pDesiredPitch - _realPitch
-        Dim difRoll As Single = pDesiredRoll - _realRoll
-        Dim difLeft As Single = difPitch + difRoll
-        Dim difRight As Single = difPitch - difRoll
-        If difLeft > My.Settings.GHysteria Then
-            OUTLeftPower = Math.Min(127, ScaleValue(difLeft, My.Settings.GHysteria, 0.8 * My.Settings.MaxPitch, My.Settings.GPowerForMin, My.Settings.GPowerForMax))
-        ElseIf difLeft < -My.Settings.GHysteria Then
-            OUTLeftPower = -Math.Min(127, ScaleValue(-difLeft, My.Settings.GHysteria, 0.8 * My.Settings.MaxPitch, My.Settings.GPowerForMin, My.Settings.GPowerForMax))
+        ' calculate power to apply on Left and Right Motors:
+        If RealLeftScrew > My.Settings.GMaxScrewUp _
+            OrElse RealLeftScrew < -My.Settings.GMaxScrewDown _
+            OrElse RealRightScrew > My.Settings.GMaxScrewUp _
+            OrElse RealRightScrew < -My.Settings.GMaxScrewDown _
+            OrElse Now.Subtract(_realPitchTime).TotalMilliseconds > 100 _
+            OrElse Now.Subtract(_realRollTime).TotalMilliseconds > 100 _
+            Then
+            OUTLeftPower = 0 ' SHIIIT, stop everything ! dont even try to correct it, wires or screws may be swaped !
+            OUTRightPower = 0 ' SHIIIT, stop everything ! dont even try to correct it, wires or screws may be swaped !
         Else
-            OUTLeftPower = 0
-        End If
-        If difRight > My.Settings.GHysteria Then
-            OUTRightPower = Math.Min(127, ScaleValue(difRight, My.Settings.GHysteria, 0.8 * My.Settings.MaxRoll, My.Settings.GPowerForMin, My.Settings.GPowerForMax))
-        ElseIf difRight < -My.Settings.GHysteria Then
-            OUTRightPower = -Math.Min(127, ScaleValue(-difRight, My.Settings.GHysteria, 0.8 * My.Settings.MaxRoll, My.Settings.GPowerForMin, My.Settings.GPowerForMax))
-        Else
-            OUTRightPower = 0
+            If TestMode = Motor.Pitch Then
+                OUTLeftPower = TestValue
+                OUTRightPower = TestValue
+            ElseIf TestMode = Motor.Roll Then
+                OUTLeftPower = TestValue
+                OUTRightPower = -TestValue
+            Else ' Normal situation:
+                Dim LeftDiff As Single = DesiredLeftScrew - RealLeftScrew
+                If LeftDiff > My.Settings.GMinDiff Then
+                    OUTLeftPower = Math.Min(127, ScaleValue(LeftDiff, My.Settings.GMinDiff, My.Settings.GMaxDiff, My.Settings.GPowerForMin, 127))
+                ElseIf LeftDiff < -My.Settings.GMinDiff Then
+                    OUTLeftPower = -Math.Min(127, ScaleValue(-LeftDiff, My.Settings.GMinDiff, My.Settings.GMaxDiff, My.Settings.GPowerForMin, 127))
+                Else
+                    OUTLeftPower = 0
+                End If
+                Dim RightDiff As Single = DesiredRightScrew - RealRightScrew
+                If RightDiff > My.Settings.GMinDiff Then
+                    OUTRightPower = Math.Min(127, ScaleValue(RightDiff, My.Settings.GMinDiff, My.Settings.GMaxDiff, My.Settings.GPowerForMin, 127))
+                ElseIf RightDiff < -My.Settings.GMinDiff Then
+                    OUTRightPower = -Math.Min(127, ScaleValue(-RightDiff, My.Settings.GMinDiff, My.Settings.GMaxDiff, My.Settings.GPowerForMin, 127))
+                Else
+                    OUTRightPower = 0
+                End If
+            End If
         End If
 
-        If Ggraph IsNot Nothing AndAlso Not Ggraph.chkPause.Checked Then Ggraph.UpdateValue(_realPitch, _realRoll, pDesiredPitch, pDesiredRoll, OUTLeftPower, OUTRightPower)
+        ' graph:
+        If Ggraph IsNot Nothing AndAlso Not Ggraph.chkPause.Checked Then Ggraph.UpdateValue(RealLeftScrew, RealRightScrew, DesiredLeftScrew, DesiredRightScrew, OUTLeftPower, OUTRightPower)
 
         Return
     End Sub
@@ -498,12 +515,12 @@ Public Class frmCVJoy
             accelX /= 16384 ' in G
             accelY /= 16384 ' in G
             accelZ /= 16384 ' in G
-            RealPitch = -Math.Atan2(-accelX, Math.Sqrt(accelY ^ 2 + accelZ ^ 2)) * 57.2957 + My.Settings.PitchOffset  ' 57.296 = 180/PI
-            RealRoll = 180 - Math.Atan2(-accelY, accelZ) * 57.2957 + My.Settings.RollOffset
-            If RealPitch > 180 Then RealPitch = RealPitch Mod 360 - 360 ' -180~180 degrees
-            If RealPitch < -180 Then RealPitch = RealPitch Mod 360 + 360 ' -180~180 degrees
-            If RealRoll > 180 Then RealRoll = RealRoll Mod 360 - 360 ' -180~180 degrees
-            If RealRoll < -180 Then RealRoll = RealRoll Mod 360 + 360 ' -180~180 degrees
+            RealPitch = -Math.Atan2(-accelX, Math.Sqrt(accelY ^ 2 + accelZ ^ 2)) + My.Settings.PitchOffset / 57.296  ' 57.296 = 180/PI
+            RealRoll = 3.1416 - Math.Atan2(-accelY, accelZ) + My.Settings.RollOffset / 57.296
+            'If RealPitch > 3.1416 Then RealPitch = RealPitch Mod 3.1416 - 3.1416 ' -180~180 degrees
+            'If RealPitch < -3.1416 Then RealPitch = RealPitch Mod 3.1416 + 3.1416 ' -180~180 degrees
+            'If RealRoll > 3.1416 Then RealRoll = RealRoll Mod 3.1416 - 3.1416 ' -180~180 degrees
+            'If RealRoll < -3.1416 Then RealRoll = RealRoll Mod 3.1416 + 3.1416 ' -180~180 degrees
 
             ' corrected analogic values:
             AccelCorrected = ScaleValue(pedalAccel, My.Settings.AccelMin, My.Settings.AccelMax, 0, 1023, My.Settings.AccelGama)

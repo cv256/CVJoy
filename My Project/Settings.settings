@@ -8,17 +8,8 @@
     <Setting Name="RefreshRate" Type="System.Byte" Scope="User">
       <Value Profile="(Default)">35</Value>
     </Setting>
-    <Setting Name="MaxPitch" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">7</Value>
-    </Setting>
-    <Setting Name="MaxRoll" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">7</Value>
-    </Setting>
     <Setting Name="GPowerForMin" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">63</Value>
-    </Setting>
-    <Setting Name="GPowerForMax" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">127</Value>
     </Setting>
     <Setting Name="ACRpm1" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0.4</Value>
@@ -32,10 +23,10 @@
     <Setting Name="ACSlip" Type="System.Int16" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
-    <Setting Name="ACPitch" Type="System.Double" Scope="User">
+    <Setting Name="ACPitch" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="ACRoll" Type="System.Double" Scope="User">
+    <Setting Name="ACRoll" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="ACAccel" Type="System.Int16" Scope="User">
@@ -47,17 +38,11 @@
     <Setting Name="vJoyId" Type="System.Byte" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
-    <Setting Name="GHysteria" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">1.5</Value>
-    </Setting>
     <Setting Name="PitchOffset" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="RollOffset" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="GyroMaxDegreesPerTimerClick" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0.9</Value>
     </Setting>
     <Setting Name="AccelMin" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">290</Value>
@@ -125,14 +110,23 @@
     <Setting Name="ACMinSpeed" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">4</Value>
     </Setting>
-    <Setting Name="MinPitch" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">7</Value>
-    </Setting>
     <Setting Name="GZDistance" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">545</Value>
+      <Value Profile="(Default)">270</Value>
     </Setting>
     <Setting Name="GXDistance" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">345</Value>
+      <Value Profile="(Default)">250</Value>
+    </Setting>
+    <Setting Name="GMinDiff" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">9</Value>
+    </Setting>
+    <Setting Name="GMaxDiff" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="GMaxScrewUp" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">75</Value>
+    </Setting>
+    <Setting Name="GMaxScrewDown" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">65</Value>
     </Setting>
   </Settings>
 </SettingsFile>
