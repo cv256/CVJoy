@@ -10,7 +10,7 @@ Public Class frmCVJoy
     Private ACSpeedKmhLast As Single, ACLastRead As DateTime
     Private WheelPosition As Single ' -16380 ~ 0 ~ 16380
     Private LastWheelDate As DateTime, LastWheelPosition As Integer
-    Private FFGain As Single = 255 / 10000.0F ' 0 ~ 0.0255
+    Private FFGain As Single = 255
     Public FFWheel_Type As FFBEType
     Public FFWheel_Cond As New vJoyInterfaceWrap.vJoy.FFB_EFF_COND
     Public FFWheel_Const As New vJoyInterfaceWrap.vJoy.FFB_EFF_CONSTANT
@@ -657,7 +657,7 @@ Public Class frmCVJoy
                 Dim tmpFFGain As Byte
                 Joy.Ffb_h_DevGain(pData, tmpFFGain) ' na documentação da MSDN dizem que é 0~10000 , mas este interface é byte só dá 0-255
                 thisCase = t.ToString & "  " & tmpFFGain
-                FFGain = tmpFFGain / 255.0F / 10000.0F
+                FFGain = tmpFFGain
 
             Case FFBPType.PT_NEWEFREP
                 Dim tmp As FFBEType
@@ -773,7 +773,7 @@ Public Class frmCVJoy
         ' 
         Dim desiredTotalStrength As Single = 0 ' nominal = -10000 ~ 10000 (but can get to a lot more by summing up FF effects)
         If chkFFConst.Checked Then
-            desiredTotalStrength = FFWheel_Const.Magnitude / 10000.0F ' -10000 ~ 10000 ' = Math.Abs(FFWheel_Const.Magnitude / 10000.0F) ^ (My.Settings.WheelPowerGama / 100.0F) * Math.Sign(FFWheel_Const.Magnitude) * 10000.0F * My.Settings.WheelPowerFactor ' -10000 ~ 10000
+            desiredTotalStrength = FFWheel_Const.Magnitude  ' -10000 ~ 10000 ' = Math.Abs(FFWheel_Const.Magnitude / 10000.0F) ^ (My.Settings.WheelPowerGama / 100.0F) * Math.Sign(FFWheel_Const.Magnitude) * 10000.0F * My.Settings.WheelPowerFactor ' -10000 ~ 10000
         End If
         'txtErrors.Text = FFWheel_Const.Magnitude.ToString("00000") & "       " & FFWheel_Cond.PosCoeff.ToString("00000") & "       " & FFWheel_Cond.CenterPointOffset.ToString("00000")
 
@@ -813,7 +813,7 @@ Public Class frmCVJoy
             End If
         End If
 
-        desiredTotalStrength *= FFGain
+        desiredTotalStrength = desiredTotalStrength / 10000 * FFGain
         If graph IsNot Nothing Then graph.UpdateFFWheel(Math.Abs(desiredTotalStrength))
 
         ' final output:
@@ -823,8 +823,8 @@ Public Class frmCVJoy
     End Function
 
     Private Function FFWind(SpeedKmh As Integer, Jump As Single) As Integer
-        Static lastJump As Byte
-        Dim res As Single = (If(SpeedKmh > My.Settings.ACMinSpeed, SpeedKmh / My.Settings.ACMaxSpeed, 0) + (Jump - lastJump) / My.Settings.ACJump) * 255 ' typical 0~255, but can get to something like -2000~2000
+        Static lastJump As Integer
+        Dim res As Integer = (If(SpeedKmh > My.Settings.ACMinSpeed, SpeedKmh / My.Settings.ACMaxSpeed, 0) + (Jump - lastJump) / My.Settings.ACJump) * 255 ' typical 0~255, but can get to something like -2000~2000
         lastJump = Jump
         If graph IsNot Nothing Then graph.UpdateSpeed(res)
         Return CalculateOutput(res, 255, 0, My.Settings.SpeedMinPower, My.Settings.SpeedGama, 1)
