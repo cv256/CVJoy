@@ -822,12 +822,12 @@ Public Class frmCVJoy
         Return powerToApply
     End Function
 
-    Private Function FFWind(SpeedKmh As Integer, Jump As Single) As Integer
-        Static lastJump As Integer
+    Private Function FFWind(SpeedKmh As Single, Jump As Single) As Byte
+        Static lastJump As Single
         Dim res As Integer = (If(SpeedKmh > My.Settings.ACMinSpeed, SpeedKmh / My.Settings.ACMaxSpeed, 0) + (Jump - lastJump) / My.Settings.ACJump) * 255 ' typical 0~255, but can get to something like -2000~2000
         lastJump = Jump
         If graph IsNot Nothing Then graph.UpdateSpeed(res)
-        Return CalculateOutput(res, 255, 0, My.Settings.SpeedMinPower, My.Settings.SpeedGama, 1)
+        Return CalculateOutput(res, 255, 1, My.Settings.SpeedMinPower, My.Settings.SpeedGama, 1)
     End Function
 
 End Class

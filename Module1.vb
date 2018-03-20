@@ -17,16 +17,16 @@
 
 
 
-    Public Function CalculateOutput(pInput As Integer, Range As Integer, MinInput As Integer, MinPower As Integer, Gama As Integer, Factor As Single) As Integer
+    Public Function CalculateOutput(pInput As Integer, Range As Integer, MinInput As Integer, MinOuput As Integer, Gama As Integer, Factor As Single) As Integer
         Dim output As Integer = 0
-        If pInput >= MinInput Then
-            If MinInput > 1 Then pInput = (pInput - MinInput) / (Range - MinInput) * Range
+        If pInput > MinInput Then
+            If MinInput > 0 Then pInput = (pInput - MinInput) / (Range - MinInput) * Range
             Dim tmpFactor As Single = Factor
-            If MinPower > 1 Then tmpFactor = Factor / Range * (Range - MinPower)
+            If MinOuput > 1 Then tmpFactor = Factor / Range * (Range - MinOuput)
             If Gama <> 100 Then
-                output = MinPower + (pInput / Range) ^ (Gama / 100) * Range * tmpFactor
+                output = MinOuput + (pInput / Range) ^ (Gama / 100) * Range * tmpFactor
             Else
-                output = MinPower + pInput * tmpFactor
+                output = MinOuput + pInput * tmpFactor
             End If
             If output > Range Then output = Range
         End If

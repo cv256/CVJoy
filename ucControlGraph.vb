@@ -73,7 +73,7 @@
             x = x / .Range * Me.Width
             Using g As Graphics = Me.CreateGraphics
                 g.FillRectangle(Drawing.Brushes.Black, 0, 12, Me.Width, 28 - 12) ' clear
-                g.DrawLine(Drawing.Pens.White, x, 12, x, 28) ' draw current position
+                g.DrawLine(Drawing.Pens.White, x, 12, x + 1, 28) ' draw current position
             End Using
         End With
     End Sub

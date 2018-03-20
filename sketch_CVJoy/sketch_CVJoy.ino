@@ -112,8 +112,8 @@ void setup()
   pinMode(slipBack, OUTPUT);
   pinMode(wheelMotorPower, OUTPUT);
   noInterrupts();           // disable all interrupts
-  //TCCR4A = 0;
-  TCCR4B = (TCCR4B & 0b11111000) | 0x01; // default is 0x03 (divisor 64 = 490.20Hz), 0x01 gives 31372.55Hz
+  //TCCR4A = 0; // timer 4 controls pin 6, 7, 8
+  TCCR4B = (TCCR4B & 0b11111000) | 0x03; // 0x03 gives 980Hz I red that DC motors work better with >2KHz and there may be losses above 20KHz. But I made experiments with 2 different motors and both had much better effeciency with lower frequencies. Divisor 1 and 2 makes no noise but are not effecient. Divisors bigger than 3 make the steeringwheel shiver. Diviser 3 makes some whistle but it's my choice.
   interrupts();           // enable all interrupts
   pinMode(wheelMotorDir1, OUTPUT);
   pinMode(wheelMotorDir2, OUTPUT);
