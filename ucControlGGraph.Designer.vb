@@ -30,6 +30,7 @@ Partial Class ucControlGGraph
         Me.rdBoth = New System.Windows.Forms.RadioButton()
         Me.rdLeft = New System.Windows.Forms.RadioButton()
         Me.rdRight = New System.Windows.Forms.RadioButton()
+        Me.lbInfo = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'btReset
@@ -37,7 +38,7 @@ Partial Class ucControlGGraph
         Me.btReset.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btReset.BackColor = System.Drawing.Color.Gold
         Me.btReset.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btReset.Location = New System.Drawing.Point(6, 148)
+        Me.btReset.Location = New System.Drawing.Point(5, 151)
         Me.btReset.Name = "btReset"
         Me.btReset.Size = New System.Drawing.Size(44, 20)
         Me.btReset.TabIndex = 0
@@ -50,7 +51,7 @@ Partial Class ucControlGGraph
         Me.chkPause.BackColor = System.Drawing.Color.Gold
         Me.chkPause.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.chkPause.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!)
-        Me.chkPause.Location = New System.Drawing.Point(56, 150)
+        Me.chkPause.Location = New System.Drawing.Point(55, 153)
         Me.chkPause.Name = "chkPause"
         Me.chkPause.Size = New System.Drawing.Size(52, 16)
         Me.chkPause.TabIndex = 1
@@ -65,7 +66,7 @@ Partial Class ucControlGGraph
         Me.chkDesired.Checked = True
         Me.chkDesired.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkDesired.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!)
-        Me.chkDesired.Location = New System.Drawing.Point(182, 150)
+        Me.chkDesired.Location = New System.Drawing.Point(163, 153)
         Me.chkDesired.Name = "chkDesired"
         Me.chkDesired.Size = New System.Drawing.Size(65, 16)
         Me.chkDesired.TabIndex = 2
@@ -80,7 +81,7 @@ Partial Class ucControlGGraph
         Me.chkMotor.Checked = True
         Me.chkMotor.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkMotor.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!)
-        Me.chkMotor.Location = New System.Drawing.Point(324, 150)
+        Me.chkMotor.Location = New System.Drawing.Point(305, 153)
         Me.chkMotor.Name = "chkMotor"
         Me.chkMotor.Size = New System.Drawing.Size(65, 16)
         Me.chkMotor.TabIndex = 4
@@ -95,7 +96,7 @@ Partial Class ucControlGGraph
         Me.chkReal.Checked = True
         Me.chkReal.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkReal.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!)
-        Me.chkReal.Location = New System.Drawing.Point(253, 150)
+        Me.chkReal.Location = New System.Drawing.Point(234, 153)
         Me.chkReal.Name = "chkReal"
         Me.chkReal.Size = New System.Drawing.Size(65, 16)
         Me.chkReal.TabIndex = 3
@@ -108,7 +109,7 @@ Partial Class ucControlGGraph
         Me.rdBoth.BackColor = System.Drawing.Color.Gold
         Me.rdBoth.Checked = True
         Me.rdBoth.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!)
-        Me.rdBoth.Location = New System.Drawing.Point(483, 150)
+        Me.rdBoth.Location = New System.Drawing.Point(425, 153)
         Me.rdBoth.Name = "rdBoth"
         Me.rdBoth.Size = New System.Drawing.Size(47, 16)
         Me.rdBoth.TabIndex = 5
@@ -121,7 +122,7 @@ Partial Class ucControlGGraph
         Me.rdLeft.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.rdLeft.BackColor = System.Drawing.Color.Gold
         Me.rdLeft.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!)
-        Me.rdLeft.Location = New System.Drawing.Point(536, 150)
+        Me.rdLeft.Location = New System.Drawing.Point(478, 153)
         Me.rdLeft.Name = "rdLeft"
         Me.rdLeft.Size = New System.Drawing.Size(47, 16)
         Me.rdLeft.TabIndex = 6
@@ -133,18 +134,29 @@ Partial Class ucControlGGraph
         Me.rdRight.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.rdRight.BackColor = System.Drawing.Color.Gold
         Me.rdRight.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!)
-        Me.rdRight.Location = New System.Drawing.Point(589, 150)
+        Me.rdRight.Location = New System.Drawing.Point(531, 153)
         Me.rdRight.Name = "rdRight"
         Me.rdRight.Size = New System.Drawing.Size(47, 16)
         Me.rdRight.TabIndex = 7
         Me.rdRight.Text = "Right"
         Me.rdRight.UseVisualStyleBackColor = False
         '
+        'lbInfo
+        '
+        Me.lbInfo.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.lbInfo.BackColor = System.Drawing.Color.White
+        Me.lbInfo.Location = New System.Drawing.Point(624, 154)
+        Me.lbInfo.Name = "lbInfo"
+        Me.lbInfo.Size = New System.Drawing.Size(109, 13)
+        Me.lbInfo.TabIndex = 8
+        Me.lbInfo.Text = "999 mm  /  999 mm"
+        '
         'ucControlGGraph
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer))
+        Me.Controls.Add(Me.lbInfo)
         Me.Controls.Add(Me.rdRight)
         Me.Controls.Add(Me.rdLeft)
         Me.Controls.Add(Me.rdBoth)
@@ -167,4 +179,5 @@ Partial Class ucControlGGraph
     Friend WithEvents rdBoth As RadioButton
     Friend WithEvents rdLeft As RadioButton
     Friend WithEvents rdRight As RadioButton
+    Friend WithEvents lbInfo As Label
 End Class

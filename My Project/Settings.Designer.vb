@@ -200,30 +200,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
-        Public Property PitchOffset() As Single
-            Get
-                Return CType(Me("PitchOffset"),Single)
-            End Get
-            Set
-                Me("PitchOffset") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
-        Public Property RollOffset() As Single
-            Get
-                Return CType(Me("RollOffset"),Single)
-            End Get
-            Set
-                Me("RollOffset") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("290")>  _
         Public Property AccelMin() As Integer
             Get
@@ -555,6 +531,126 @@ Namespace My
             End Get
             Set
                 Me("GMaxScrewDown") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property bt2() As String
+            Get
+                Return CType(Me("bt2"),String)
+            End Get
+            Set
+                Me("bt2") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property bt3() As String
+            Get
+                Return CType(Me("bt3"),String)
+            End Get
+            Set
+                Me("bt3") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property bt4() As String
+            Get
+                Return CType(Me("bt4"),String)
+            End Get
+            Set
+                Me("bt4") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property bt5() As String
+            Get
+                Return CType(Me("bt5"),String)
+            End Get
+            Set
+                Me("bt5") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property bt6() As String
+            Get
+                Return CType(Me("bt6"),String)
+            End Get
+            Set
+                Me("bt6") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property bt7() As String
+            Get
+                Return CType(Me("bt7"),String)
+            End Get
+            Set
+                Me("bt7") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property bt8() As String
+            Get
+                Return CType(Me("bt8"),String)
+            End Get
+            Set
+                Me("bt8") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property bt9() As String
+            Get
+                Return CType(Me("bt9"),String)
+            End Get
+            Set
+                Me("bt9") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("350")>  _
+        Public Property GLeftScrewCenter() As Integer
+            Get
+                Return CType(Me("GLeftScrewCenter"),Integer)
+            End Get
+            Set
+                Me("GLeftScrewCenter") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("350")>  _
+        Public Property GRightScrewCenter() As Integer
+            Get
+                Return CType(Me("GRightScrewCenter"),Integer)
+            End Get
+            Set
+                Me("GRightScrewCenter") = value
             End Set
         End Property
     End Class

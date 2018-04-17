@@ -20,7 +20,6 @@
 // 0x06       256          122.55
 // 0x07       1024          30.64
 
-#define MPU6050 0x68 // I2C address of the MPU-6050   SDA = pin 20  SCL = pin 21
 #define packetLen 6 // must be equal to CVJoyAc.SerialSend.PacketLen
 
 
@@ -46,6 +45,10 @@
 #define gear6 32
 #define gearR 36
 #define handbrake 38
+#define leftUSSend 14
+#define leftUSRead 15
+#define rightUSSend 17
+#define rightUSRead 16
 
 // arduino -> external hardware:
 #define rpm1  39
@@ -57,13 +60,13 @@
 #define wheelMotorDir1  52
 #define wheelMotorDir2  53
 
-#define pitchMotorPower  22
-#define pitchMotorDir1  48
-#define pitchMotorDir2  49
+#define leftMotorPower  22
+#define leftMotorDir1  50
+#define leftMotorDir2  51
 
-#define rollMotorPower  25
-#define rollMotorDir1  50
-#define rollMotorDir2  51
+#define rightMotorPower  25
+#define rightMotorDir1  48
+#define rightMotorDir2  49
 
 #define windMotorPower  24
 
@@ -71,12 +74,12 @@
 //unsigned long lastLoop;
 unsigned long lastSerialRecv;
 
-unsigned long dimmerPitchDelay;
-unsigned long dimmerRollDelay;
+unsigned long dimmerLeftDelay;
+unsigned long dimmerRightDelay;
 unsigned long dimmerWindDelay;
 
-char pitchMotorPowerSpeed;// -127 to 127
-char rollMotorPowerSpeed;// -127 to 127
+char leftMotorPowerSpeed;// -127 to 127
+char rightMotorPowerSpeed;// -127 to 127
 byte windMotorPowerSpeed;// 0-255
 
 
@@ -105,11 +108,17 @@ void setup()
   pinMode(gear6, INPUT_PULLUP);
   pinMode(gearR, INPUT_PULLUP);
   pinMode(handbrake, INPUT_PULLUP);
+  pinMode(leftUSSend,OUTPUT);
+  pinMode(leftUSRead,INPUT);
+  pinMode(rightUSSend,OUTPUT);
+  pinMode(rightUSRead,INPUT);
+
   // arduino -> external hardware
   pinMode(rpm1, OUTPUT);
   pinMode(rpm2, OUTPUT);
   pinMode(slipFront, OUTPUT);
   pinMode(slipBack, OUTPUT);
+  // preparing the steeringwheel :
   pinMode(wheelMotorPower, OUTPUT);
   noInterrupts();           // disable all interrupts
   //TCCR4A = 0; // timer 4 controls pin 6, 7, 8
@@ -117,40 +126,19 @@ void setup()
   interrupts();           // enable all interrupts
   pinMode(wheelMotorDir1, OUTPUT);
   pinMode(wheelMotorDir2, OUTPUT);
-  pinMode(pitchMotorPower, OUTPUT);
-  pinMode(pitchMotorDir1, OUTPUT);
-  pinMode(pitchMotorDir2, OUTPUT);
-  pinMode(rollMotorPower, OUTPUT);
-  pinMode(rollMotorDir1, OUTPUT);
-  pinMode(rollMotorDir2, OUTPUT);
+  // preparing the pitch and roll :
+  pinMode(leftMotorPower, OUTPUT);
+  pinMode(leftMotorDir1, OUTPUT);
+  pinMode(leftMotorDir2, OUTPUT);
+  pinMode(rightMotorPower, OUTPUT);
+  pinMode(rightMotorDir1, OUTPUT);
+  pinMode(rightMotorDir2, OUTPUT);
   pinMode(windMotorPower, OUTPUT);
-  // preparing the Dimmers
+  // preparing the mains Dimmers :
   attachInterrupt(digitalPinToInterrupt(zeroCrossDetector), zero_cross_ISR, RISING);
   Timer1.initialize(100); // 100 microseconds = 10KHz = 200 times each 50Hz
   Timer1.attachInterrupt( timerIsr );
-  //Turning on the Gyroscope
-    // at power-up:
-    //    Gyro at 250 degrees second
-    //    Acceleration at 2g
-    //    Clock source at internal 8MHz
-    //    The device is in sleep mode.
-    Wire.begin(); // join i2c bus (address optional for master)
-    //Activate the MPU-6050
-    Wire.beginTransmission(MPU6050);                                        //Start communicating with the MPU-6050
-    Wire.write(0x6B);                                                    // PWR_MGMT_1 register
-    Wire.write(0x00);                                                    // set to zero (wakes up the MPU-6050)
-    Wire.endTransmission();                                             
-    //Configure the accelerometer (+/-2g)
-    Wire.beginTransmission(MPU6050);                                        //Start communicating with the MPU-6050
-    Wire.write(0x1C);                                                    //Send the requested starting register
-    Wire.write(0x00);                                                    //Set the requested starting register
-    Wire.endTransmission();                                             
-    //Configure the DLPF (Digital Low Pass Filter)
-    Wire.beginTransmission(MPU6050);                                        //Start communicating with the MPU-6050
-    Wire.write(26);                                                    //Send the requested starting register
-    Wire.write(4);                                                    //Set the requested starting register 3=(44Hz@1KHz=22 samplings lag=4.8ms) 4=(21Hz@1KHz=47 samplings lag=8.5ms)  5=(10Hz@1KHz=100 samplings lag=13.8ms)
-    Wire.endTransmission();                                             
-
+  
   Serial.begin(115200);
 } //...setup
 
@@ -165,27 +153,27 @@ void loop()
     if (wheelMotorPowerDir >= 254) { // checkdigit + wheelMotorPowerDir
       lastSerialRecv = millis();
       byte wheelMotorPowerSpeed = Serial.read();
-      pitchMotorPowerSpeed = Serial.read() - 128; //pitchDesiredPos
-      rollMotorPowerSpeed = Serial.read() - 128; //rollDesiredPos
+      leftMotorPowerSpeed = Serial.read() - 128; //pitchDesiredPos
+      rightMotorPowerSpeed = Serial.read() - 128; //rollDesiredPos
       windMotorPowerSpeed = Serial.read();
       //leds:
-      byte tmp = Serial.read();
-      if (tmp & 1) {
+      byte tmpByte = Serial.read();
+      if (tmpByte & 1) {
         digitalWrite(rpm1, HIGH);
       } else {
         digitalWrite(rpm1, LOW);
       }
-      if (tmp & 2) {
+      if (tmpByte & 2) {
         digitalWrite(rpm2, HIGH);
       } else {
         digitalWrite(rpm2, LOW);
       }
-      if (tmp & 4) {
+      if (tmpByte & 4) {
         digitalWrite(slipFront, HIGH);
       } else {
         digitalWrite(slipFront, LOW);
       }
-      if (tmp & 8) {
+      if (tmpByte & 8) {
         digitalWrite(slipBack, HIGH);
       } else {
         digitalWrite(slipBack, LOW);
@@ -202,61 +190,67 @@ void loop()
       analogWrite(wheelMotorPower, wheelMotorPowerSpeed);
 
       //send data to serial:   must be equal to CVJoyAc.SerialRead
-      tmp = 170; // checkdigit
-      if (digitalRead(button9) == LOW) tmp += 1;
-      Serial.write(tmp);
-      tmp = 0;
-      if (digitalRead(button1) == LOW) tmp += 1;
-      if (digitalRead(button2) == LOW) tmp += 2;
-      if (digitalRead(button3) == LOW) tmp += 4;
-      if (digitalRead(button4) == LOW) tmp += 8;
-      if (digitalRead(button5) == LOW) tmp += 16;
-      if (digitalRead(button6) == LOW) tmp += 32;
-      if (digitalRead(button7) == LOW) tmp += 64;
-      if (digitalRead(button8) == LOW) tmp += 128;
-      Serial.write(tmp);
-      tmp = 0;
-      if (digitalRead(gear1) == LOW) tmp += 1;
-      if (digitalRead(gear2) == LOW) tmp += 2;
-      if (digitalRead(gear3) == LOW) tmp += 4;
-      if (digitalRead(gear4) == LOW) tmp += 8;
-      if (digitalRead(gear5) == LOW) tmp += 16;
-      if (digitalRead(gear6) == LOW) tmp += 32;
-      if (digitalRead(gearR) == LOW) tmp += 64;
-      if (digitalRead(handbrake) == LOW) tmp += 128;
-      Serial.write(tmp);
-      unsigned int n;
-      n = analogRead(pedalAccel);
-      Serial.write(n & 255);
-      Serial.write(n / 256);
-      n = analogRead(pedalBreak);
-      Serial.write(n & 255);
-      Serial.write(n / 256);
-      n = analogRead(pedalClutch);
-      Serial.write(n & 255);
-      Serial.write(n / 256);
+      tmpByte = 170; // checkdigit
+      if (digitalRead(button9) == LOW) tmpByte += 1;
+      Serial.write(tmpByte); //0
+      tmpByte = 0;
+      if (digitalRead(button1) == LOW) tmpByte += 1;
+      if (digitalRead(button2) == LOW) tmpByte += 2;
+      if (digitalRead(button3) == LOW) tmpByte += 4;
+      if (digitalRead(button4) == LOW) tmpByte += 8;
+      if (digitalRead(button5) == LOW) tmpByte += 16;
+      if (digitalRead(button6) == LOW) tmpByte += 32;
+      if (digitalRead(button7) == LOW) tmpByte += 64;
+      if (digitalRead(button8) == LOW) tmpByte += 128;
+      Serial.write(tmpByte);//1
+      tmpByte = 0;
+      if (digitalRead(gear1) == LOW) tmpByte += 1;
+      if (digitalRead(gear2) == LOW) tmpByte += 2;
+      if (digitalRead(gear3) == LOW) tmpByte += 4;
+      if (digitalRead(gear4) == LOW) tmpByte += 8;
+      if (digitalRead(gear5) == LOW) tmpByte += 16;
+      if (digitalRead(gear6) == LOW) tmpByte += 32;
+      if (digitalRead(gearR) == LOW) tmpByte += 64;
+      if (digitalRead(handbrake) == LOW) tmpByte += 128;
+      Serial.write(tmpByte);//2
+      unsigned int tmpUInt;
+      tmpUInt = analogRead(pedalAccel);
+      Serial.write(tmpUInt & 255);//3
+      Serial.write(tmpUInt / 256);//4
+      tmpUInt = analogRead(pedalBreak);
+      Serial.write(tmpUInt & 255);//5
+      Serial.write(tmpUInt / 256);//6
+      tmpUInt = analogRead(pedalClutch);
+      Serial.write(tmpUInt & 255);//7
+      Serial.write(tmpUInt / 256);//8
 
-      // Read Gyroscope :
-      Wire.beginTransmission(MPU6050); //start transmission to device
-      Wire.write(0x3B);  // starting with register 0x3B (ACCEL_XOUT_H)
-      Wire.endTransmission(false);
-      Wire.requestFrom(MPU6050,6,true);  // request a total of 14 registers
-      Serial.write(Wire.read());  // 0x3B (ACCEL_XOUT_H) 
-      Serial.write(Wire.read());  // 0x3C (ACCEL_XOUT_L)   
-      Serial.write(Wire.read());  // 0x3D (ACCEL_YOUT_H)
-      Serial.write(Wire.read());  // 0x3E (ACCEL_YOUT_L)
-      Serial.write(Wire.read());  // 0x3F (ACCEL_ZOUT_H) 
-      Serial.write(Wire.read());  // 0x40 (ACCEL_ZOUT_L)
+      // Read Left Distance :
+      digitalWrite(leftUSSend, HIGH);// The PING is triggered by a HIGH pulse of 10 or more microseconds
+      delayMicroseconds(12);
+      digitalWrite(leftUSSend, LOW);
+      tmpUInt=pulseIn(leftUSRead, HIGH, 35000); // microseconds of (total) sound travel;
+      Serial.write(tmpUInt & 255);//9
+      Serial.write(tmpUInt / 256);//10
+      // Read Right Distance :
+      digitalWrite(rightUSSend, HIGH);// The PING is triggered by a HIGH pulse of 10 or more microseconds
+      delayMicroseconds(12);
+      digitalWrite(rightUSSend, LOW);
+      tmpUInt=pulseIn(rightUSRead, HIGH, 35000); // microseconds of (total) sound travel;
+      Serial.write(tmpUInt & 255);//11
+      Serial.write(tmpUInt / 256);//12
 
     } //..checkdigit
   } //..if Serial.available()==packetLen
 
   // if we lost communication with the computer stop the motors, dont let them in the last state or they will make ugly damage !
   if (millis() - lastSerialRecv > 200) { // 200 = 5 fps , lower than that and it will start bumping
-    pitchMotorPowerSpeed = 0;
-    rollMotorPowerSpeed = 0;
-    windMotorPowerSpeed = 0;
+    digitalWrite(leftMotorPower, LOW);
+    digitalWrite(rightMotorPower, LOW);
+    digitalWrite(windMotorPower, LOW);
     analogWrite(wheelMotorPower, 0);
+    leftMotorPowerSpeed = 0;
+    rightMotorPowerSpeed = 0;
+    windMotorPowerSpeed = 0;
   }
 
 } //...loop
@@ -269,43 +263,43 @@ void zero_cross_ISR()
 {
   //Serial.println( (int)( (float)(micros()-zero_cross) / (float)10 ) );
 
-  if (pitchMotorPowerSpeed == 0) { // zero:
-    dimmerPitchDelay = 0;
-    digitalWrite(pitchMotorPower, LOW);
+  if (leftMotorPowerSpeed == 0) { // zero:
+    dimmerLeftDelay = 0;
+    digitalWrite(leftMotorPower, LOW);
   } else {
-    if (pitchMotorPowerSpeed < 0) {
-      digitalWrite(pitchMotorDir1, HIGH);
-      digitalWrite(pitchMotorDir2, HIGH);
+    if (leftMotorPowerSpeed < 0) {
+      digitalWrite(leftMotorDir1, LOW);
+      digitalWrite(leftMotorDir2, LOW);
     } else {
-      digitalWrite(pitchMotorDir1, LOW);
-      digitalWrite(pitchMotorDir2, LOW);
+      digitalWrite(leftMotorDir1, HIGH);
+      digitalWrite(leftMotorDir2, HIGH);
     }
-    if (abs(pitchMotorPowerSpeed >= 127)) { // full power:
-      dimmerPitchDelay = 0;
-      digitalWrite(pitchMotorPower, HIGH);
+    if (abs(leftMotorPowerSpeed) >= 127) { // full power:
+      dimmerLeftDelay = 0;
+      digitalWrite(leftMotorPower, HIGH);
     } else { // dim:
-      dimmerPitchDelay = micros() + (127 - abs(pitchMotorPowerSpeed)) * 70;
-      digitalWrite(pitchMotorPower, LOW);
+      dimmerLeftDelay = micros() + (127 - abs(leftMotorPowerSpeed)) * 70;
+      digitalWrite(leftMotorPower, LOW);
     }
   }
 
-  if (rollMotorPowerSpeed == 0) { // zero:
-    dimmerRollDelay = 0;
-    digitalWrite(rollMotorPower, LOW);
+  if (rightMotorPowerSpeed == 0) { // zero:
+    dimmerRightDelay = 0;
+    digitalWrite(rightMotorPower, LOW);
   } else {
-    if (rollMotorPowerSpeed < 0) {
-      digitalWrite(rollMotorDir1, HIGH);
-      digitalWrite(rollMotorDir2, HIGH);
+    if (rightMotorPowerSpeed < 0) {
+      digitalWrite(rightMotorDir1, HIGH);
+      digitalWrite(rightMotorDir2, HIGH);
     } else {
-      digitalWrite(rollMotorDir1, LOW);
-      digitalWrite(rollMotorDir2, LOW);
+      digitalWrite(rightMotorDir1, LOW);
+      digitalWrite(rightMotorDir2, LOW);
     }
-    if (abs(rollMotorPowerSpeed >= 127)) { // full power:
-      dimmerRollDelay = 0;
-      digitalWrite(rollMotorPower, HIGH);
+    if (abs(rightMotorPowerSpeed) >= 127) { // full power:
+      dimmerRightDelay = 0;
+      digitalWrite(rightMotorPower, HIGH);
     } else { // dim:
-      dimmerRollDelay = micros() + (127 - abs(rollMotorPowerSpeed)) * 70;
-      digitalWrite(rollMotorPower, LOW);
+      dimmerRightDelay = micros() + (127 - abs(rightMotorPowerSpeed)) * 70;
+      digitalWrite(rightMotorPower, LOW);
     }
   }
 
@@ -329,17 +323,17 @@ void zero_cross_ISR()
 void timerIsr() {
   // manage TRIAC DIMMING:   learn on http://www.alfadex.com/2014/02/dimming-230v-ac-with-arduino-2/
 
-  if (dimmerPitchDelay != 0) {
-    if (micros() >= dimmerPitchDelay) {
-      digitalWrite(pitchMotorPower, HIGH);
-      dimmerPitchDelay = 0;
+  if (dimmerLeftDelay != 0) {
+    if (micros() >= dimmerLeftDelay) {
+      digitalWrite(leftMotorPower, HIGH);
+      dimmerLeftDelay = 0;
     }
   }
 
-  if (dimmerRollDelay != 0) {
-    if (micros() >= dimmerRollDelay) {
-      digitalWrite(rollMotorPower, HIGH);
-      dimmerRollDelay = 0;
+  if (dimmerRightDelay != 0) {
+    if (micros() >= dimmerRightDelay) {
+      digitalWrite(rightMotorPower, HIGH);
+      dimmerRightDelay = 0;
     }
   }
 

@@ -59,8 +59,8 @@ Public Class frmSetup
         txtSpeedMin.Text = My.Settings.SpeedMinPower
         txtSpeedGama.Text = My.Settings.SpeedGama
 
-        txtPitchOffset.Text = My.Settings.PitchOffset.ToString("+000.0;-000.0")
-        txtRollOffset.Text = My.Settings.RollOffset.ToString("+000.0;-000.0")
+        txtLeftScrewCenter.Text = My.Settings.GLeftScrewCenter
+        txtRightScrewCenter.Text = My.Settings.GRightScrewCenter
         txtMaxScrewUp.Text = My.Settings.GMaxScrewUp
         txtMaxScrewDown.Text = My.Settings.GMaxScrewDown
         txtGMinDiff.Text = My.Settings.GMinDiff
@@ -69,6 +69,8 @@ Public Class frmSetup
         txtGZDistance.Text = My.Settings.GZDistance
         txtGXDistance.Text = My.Settings.GXDistance
 
+        CalculateMaxAngleDown(Me, Nothing)
+        CalculateMaxAngleUp(Me, Nothing)
     End Sub
 
     Public Function txt_Validate(pShowMsg As Boolean) As String
@@ -98,17 +100,19 @@ Public Class frmSetup
         res &= ValidateNumber(txtSpeedGama, 0, 800, "Speed Power Gama")
         res &= ValidateNumber(txtSpeedMin, 0, 255, "Speed Power For Min")
 
-        res &= ValidateNumber(txtPitchOffset, -180, 180, "Pitch Offfset")
-        res &= ValidateNumber(txtRollOffset, -180, 180, "Roll Offfset")
+        res &= ValidateNumber(txtLeftScrewCenter, 1, 999, "Left screw distance from ground to Center position")
+        res &= ValidateNumber(txtRightScrewCenter, 1, 999, "Right screw distance from ground to Center position")
         res &= ValidateNumber(txtMaxScrewUp, 1, 999, "Max Screw Up")
         res &= ValidateNumber(txtMaxScrewDown, 1, 999, "Max Screw Down")
         res &= ValidateNumber(txtGMinDiff, 1, 999, "Min.Milimeters of Difference for moving with Minimum power")
         res &= ValidateNumber(txtGMaxDiff, 1, 999, "Min.Milimeters of Difference for moving with Maximum power")
         res &= ValidateNumber(txtGPowerForMin, 0, 255, "Power For Min")
-        res &= ValidateNumber(txtGZDistance, 1, 999, "Z Distance between motor and pivot")
-        res &= ValidateNumber(txtGXDistance, 1, 999, "Half X Distance between left and right motors")
+        res &= ValidateNumber(txtGZDistance, 1, 999, "Z Distance between motor and pivot, in milimeters")
+        res &= ValidateNumber(txtGXDistance, 1, 999, "Half X Distance between left and right motors, in milimeters")
 
         If String.IsNullOrEmpty(res) Then
+            If CInt(txtLeftScrewCenter.Text) <= CInt(txtMaxScrewDown.Text) Then res &= "Left screw distance from ground to Center position cant be less than Max Screw Down" & vbCrLf
+            If CInt(txtRightScrewCenter.Text) <= CInt(txtMaxScrewDown.Text) Then res &= "Left screw distance from ground to Center position cant be less than Max Screw Down" & vbCrLf
             If CInt(txtGMaxDiff.Text) <= CInt(txtGMinDiff.Text) Then res &= "Difference for Power Max cant be less than Difference for Power Min" & vbCrLf
             If CInt(txtAccelMax.Text) <= CInt(txtAccelMin.Text) Then res &= "Accelerator Max cant be less than Min" & vbCrLf
             If CInt(txtBrakeMax.Text) <= CInt(txtBrakeMin.Text) Then res &= "Brake Max cant be less than Min" & vbCrLf
@@ -155,15 +159,15 @@ Public Class frmSetup
         My.Settings.SpeedGama = txtSpeedGama.Text
         My.Settings.SpeedMinPower = txtSpeedMin.Text
 
-        My.Settings.PitchOffset = txtPitchOffset.Text.Replace("º", "")
-        My.Settings.RollOffset = txtRollOffset.Text.Replace("º", "")
+        My.Settings.GLeftScrewCenter = txtLeftScrewCenter.Text
+        My.Settings.GRightScrewCenter = txtRightScrewCenter.Text
         My.Settings.GMaxScrewUp = txtMaxScrewUp.Text
         My.Settings.GMaxScrewDown = txtMaxScrewDown.Text
         My.Settings.GMinDiff = txtGMinDiff.Text
         My.Settings.GMaxDiff = txtGMaxDiff.Text
         My.Settings.GPowerForMin = txtGPowerForMin.Text
         My.Settings.GZDistance = txtGZDistance.Text
-        My.Settings.GZDistance = txtGXDistance.Text
+        My.Settings.GXDistance = txtGXDistance.Text
 
         My.Settings.Save()
 
@@ -187,10 +191,10 @@ Public Class frmSetup
                 .TestValue = CInt(txtWheelPowerForMin.Text) * If(sender.Equals(btTestWheelLeft), 1, -1)
                 .TestMode = frmCVJoy.Motor.Wheel
             ElseIf sender.Equals(btTestGDown) OrElse sender.Equals(btTestGUp) Then
-                .TestValue = CInt(txtGPowerForMin.Text) * If(sender.Equals(btTestGDown), 1, -1)
+                .TestValue = CInt(txtGPowerForMin.Text) * If(sender.Equals(btTestGDown), 1, -1) ' positive = up (left down, right down)
                 .TestMode = frmCVJoy.Motor.Pitch
             ElseIf sender.Equals(btTestGLeft) OrElse sender.Equals(btTestGRight) Then
-                .TestValue = CInt(txtGPowerForMin.Text) * If(sender.Equals(btTestGLeft), -1, 1)
+                .TestValue = CInt(txtGPowerForMin.Text) * If(sender.Equals(btTestGLeft), -1, 1) ' positive = turn right (left up, right down)
                 .TestMode = frmCVJoy.Motor.Roll
             ElseIf sender.Equals(btTestSpeed) Then
                 .TestValue = CInt(txtSpeedMin.Text)
@@ -247,4 +251,29 @@ Public Class frmSetup
             Ggraph.Invalidate()
         End If
     End Sub
+
+
+    Private Sub CalculateMaxAngleDown(sender As Object, e As EventArgs) Handles txtGZDistance.Leave, txtMaxScrewUp.Leave
+        Try
+            lbMaxScrewUp.Text = $"mm {(90 - Math.Atan2(CInt(txtGZDistance.Text), CInt(txtMaxScrewUp.Text)) * 57.296).ToString("0")}ºDown"
+        Catch ex As Exception
+            lbMaxScrewUp.Text = "mm"
+        End Try
+    End Sub
+    Private Sub CalculateMaxAngleUp(sender As Object, e As EventArgs) Handles txtGZDistance.Leave, txtMaxScrewDown.Leave
+        Try
+            lbMaxScrewDown.Text = $"mm {(90 - Math.Atan2(CInt(txtGZDistance.Text), CInt(txtMaxScrewDown.Text)) * 57.296).ToString("0")}ºUp"
+        Catch ex As Exception
+            lbMaxScrewDown.Text = "mm"
+        End Try
+    End Sub
+    Private Sub CalculateSTOP(sender As Object, e As EventArgs) Handles txtMaxScrewUp.Leave, txtMaxScrewDown.Leave, txtGMinDiff.Leave
+        Try
+            lbAlarm.Text = $"mm   STOP! at  {(CInt(txtMaxScrewUp.Text) + CInt(txtGMinDiff.Text)).ToString("0")}mm Up  /  {(CInt(txtMaxScrewDown.Text) + CInt(txtGMinDiff.Text)).ToString("0")}mm Down"
+        Catch ex As Exception
+            lbMaxScrewDown.Text = "mm"
+        End Try
+    End Sub
+
+
 End Class

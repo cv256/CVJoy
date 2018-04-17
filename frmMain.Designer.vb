@@ -30,7 +30,6 @@ Partial Class frmCVJoy
         Me.lbSlipBack = New System.Windows.Forms.Label()
         Me.lbRPM2 = New System.Windows.Forms.Label()
         Me.lbRPM1 = New System.Windows.Forms.Label()
-        Me.bt5 = New System.Windows.Forms.Label()
         Me.G1 = New System.Windows.Forms.Label()
         Me.G2 = New System.Windows.Forms.Label()
         Me.G3 = New System.Windows.Forms.Label()
@@ -76,8 +75,7 @@ Partial Class frmCVJoy
         Me.Label28 = New System.Windows.Forms.Label()
         Me.lbACRoll = New System.Windows.Forms.Label()
         Me.Label30 = New System.Windows.Forms.Label()
-        Me.lbSimRoll = New System.Windows.Forms.Label()
-        Me.lbSimPitch = New System.Windows.Forms.Label()
+        Me.lbAttitude = New System.Windows.Forms.Label()
         Me.btSetup = New System.Windows.Forms.Button()
         Me.txtErrors = New System.Windows.Forms.TextBox()
         Me.btApply = New System.Windows.Forms.Button()
@@ -85,10 +83,6 @@ Partial Class frmCVJoy
         Me.btWheelCenter = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.ckDontShow = New System.Windows.Forms.CheckBox()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.lbGyroPitch = New System.Windows.Forms.Label()
-        Me.lbGyroRoll = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
         Me.lbAccel = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.lbBrake = New System.Windows.Forms.Label()
@@ -96,14 +90,15 @@ Partial Class frmCVJoy
         Me.lbClutch = New System.Windows.Forms.Label()
         Me.Label27 = New System.Windows.Forms.Label()
         Me.ckKeepVisible = New System.Windows.Forms.CheckBox()
-        Me.bt6 = New System.Windows.Forms.Label()
-        Me.bt4 = New System.Windows.Forms.Label()
         Me.bt1 = New System.Windows.Forms.Label()
-        Me.bt3 = New System.Windows.Forms.Label()
-        Me.bt2 = New System.Windows.Forms.Label()
-        Me.bt7 = New System.Windows.Forms.Label()
-        Me.bt9 = New System.Windows.Forms.Label()
-        Me.bt8 = New System.Windows.Forms.Label()
+        Me.bt2 = New System.Windows.Forms.TextBox()
+        Me.bt3 = New System.Windows.Forms.TextBox()
+        Me.bt4 = New System.Windows.Forms.TextBox()
+        Me.bt5 = New System.Windows.Forms.TextBox()
+        Me.bt6 = New System.Windows.Forms.TextBox()
+        Me.bt7 = New System.Windows.Forms.TextBox()
+        Me.bt8 = New System.Windows.Forms.TextBox()
+        Me.bt9 = New System.Windows.Forms.TextBox()
         Me.chkNoWind = New System.Windows.Forms.CheckBox()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.lbACJump = New System.Windows.Forms.Label()
@@ -149,10 +144,10 @@ Partial Class frmCVJoy
         Me.lbSlipFront.BackColor = System.Drawing.Color.Red
         Me.lbSlipFront.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lbSlipFront.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbSlipFront.Location = New System.Drawing.Point(248, 18)
+        Me.lbSlipFront.Location = New System.Drawing.Point(129, 18)
         Me.lbSlipFront.Name = "lbSlipFront"
         Me.lbSlipFront.Size = New System.Drawing.Size(27, 20)
-        Me.lbSlipFront.TabIndex = 10
+        Me.lbSlipFront.TabIndex = 9
         Me.lbSlipFront.Text = "Slip Front"
         Me.lbSlipFront.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -162,10 +157,10 @@ Partial Class frmCVJoy
         Me.lbSlipBack.BackColor = System.Drawing.Color.DeepSkyBlue
         Me.lbSlipBack.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lbSlipBack.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbSlipBack.Location = New System.Drawing.Point(248, 60)
+        Me.lbSlipBack.Location = New System.Drawing.Point(129, 60)
         Me.lbSlipBack.Name = "lbSlipBack"
         Me.lbSlipBack.Size = New System.Drawing.Size(27, 20)
-        Me.lbSlipBack.TabIndex = 11
+        Me.lbSlipBack.TabIndex = 12
         Me.lbSlipBack.Text = "Slip Back"
         Me.lbSlipBack.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -175,10 +170,10 @@ Partial Class frmCVJoy
         Me.lbRPM2.BackColor = System.Drawing.Color.Gold
         Me.lbRPM2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lbRPM2.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbRPM2.Location = New System.Drawing.Point(262, 39)
+        Me.lbRPM2.Location = New System.Drawing.Point(143, 39)
         Me.lbRPM2.Name = "lbRPM2"
         Me.lbRPM2.Size = New System.Drawing.Size(27, 20)
-        Me.lbRPM2.TabIndex = 12
+        Me.lbRPM2.TabIndex = 11
         Me.lbRPM2.Text = "RPM >"
         Me.lbRPM2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -188,22 +183,12 @@ Partial Class frmCVJoy
         Me.lbRPM1.BackColor = System.Drawing.Color.LimeGreen
         Me.lbRPM1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lbRPM1.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbRPM1.Location = New System.Drawing.Point(234, 39)
+        Me.lbRPM1.Location = New System.Drawing.Point(115, 39)
         Me.lbRPM1.Name = "lbRPM1"
         Me.lbRPM1.Size = New System.Drawing.Size(27, 20)
-        Me.lbRPM1.TabIndex = 14
+        Me.lbRPM1.TabIndex = 10
         Me.lbRPM1.Text = "RPM <"
         Me.lbRPM1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'bt5
-        '
-        Me.bt5.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bt5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.bt5.Location = New System.Drawing.Point(248, 3)
-        Me.bt5.Name = "bt5"
-        Me.bt5.Size = New System.Drawing.Size(27, 11)
-        Me.bt5.TabIndex = 18
-        Me.bt5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'G1
         '
@@ -211,10 +196,10 @@ Partial Class frmCVJoy
         Me.G1.BackColor = System.Drawing.Color.Gray
         Me.G1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G1.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.G1.Location = New System.Drawing.Point(190, 85)
+        Me.G1.Location = New System.Drawing.Point(98, 85)
         Me.G1.Name = "G1"
         Me.G1.Size = New System.Drawing.Size(11, 20)
-        Me.G1.TabIndex = 23
+        Me.G1.TabIndex = 13
         Me.G1.Text = "1"
         Me.G1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -224,10 +209,10 @@ Partial Class frmCVJoy
         Me.G2.BackColor = System.Drawing.Color.WhiteSmoke
         Me.G2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G2.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.G2.Location = New System.Drawing.Point(204, 85)
+        Me.G2.Location = New System.Drawing.Point(112, 85)
         Me.G2.Name = "G2"
         Me.G2.Size = New System.Drawing.Size(11, 20)
-        Me.G2.TabIndex = 24
+        Me.G2.TabIndex = 14
         Me.G2.Text = "2"
         Me.G2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -237,10 +222,10 @@ Partial Class frmCVJoy
         Me.G3.BackColor = System.Drawing.Color.WhiteSmoke
         Me.G3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G3.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.G3.Location = New System.Drawing.Point(218, 85)
+        Me.G3.Location = New System.Drawing.Point(126, 85)
         Me.G3.Name = "G3"
         Me.G3.Size = New System.Drawing.Size(11, 20)
-        Me.G3.TabIndex = 25
+        Me.G3.TabIndex = 15
         Me.G3.Text = "3"
         Me.G3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -250,10 +235,10 @@ Partial Class frmCVJoy
         Me.G4.BackColor = System.Drawing.Color.WhiteSmoke
         Me.G4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G4.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.G4.Location = New System.Drawing.Point(232, 85)
+        Me.G4.Location = New System.Drawing.Point(140, 85)
         Me.G4.Name = "G4"
         Me.G4.Size = New System.Drawing.Size(11, 20)
-        Me.G4.TabIndex = 26
+        Me.G4.TabIndex = 16
         Me.G4.Text = "4"
         Me.G4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -263,10 +248,10 @@ Partial Class frmCVJoy
         Me.G5.BackColor = System.Drawing.Color.WhiteSmoke
         Me.G5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G5.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.G5.Location = New System.Drawing.Point(246, 85)
+        Me.G5.Location = New System.Drawing.Point(154, 85)
         Me.G5.Name = "G5"
         Me.G5.Size = New System.Drawing.Size(11, 20)
-        Me.G5.TabIndex = 27
+        Me.G5.TabIndex = 17
         Me.G5.Text = "5"
         Me.G5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -276,10 +261,10 @@ Partial Class frmCVJoy
         Me.G6.BackColor = System.Drawing.Color.WhiteSmoke
         Me.G6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G6.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.G6.Location = New System.Drawing.Point(260, 85)
+        Me.G6.Location = New System.Drawing.Point(168, 85)
         Me.G6.Name = "G6"
         Me.G6.Size = New System.Drawing.Size(11, 20)
-        Me.G6.TabIndex = 28
+        Me.G6.TabIndex = 18
         Me.G6.Text = "6"
         Me.G6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -289,10 +274,10 @@ Partial Class frmCVJoy
         Me.GR.BackColor = System.Drawing.Color.WhiteSmoke
         Me.GR.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.GR.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GR.Location = New System.Drawing.Point(274, 85)
+        Me.GR.Location = New System.Drawing.Point(182, 85)
         Me.GR.Name = "GR"
         Me.GR.Size = New System.Drawing.Size(11, 20)
-        Me.GR.TabIndex = 29
+        Me.GR.TabIndex = 19
         Me.GR.Text = "R"
         Me.GR.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -302,10 +287,10 @@ Partial Class frmCVJoy
         Me.lbHandbrake.BackColor = System.Drawing.Color.WhiteSmoke
         Me.lbHandbrake.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lbHandbrake.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbHandbrake.Location = New System.Drawing.Point(288, 85)
+        Me.lbHandbrake.Location = New System.Drawing.Point(196, 85)
         Me.lbHandbrake.Name = "lbHandbrake"
         Me.lbHandbrake.Size = New System.Drawing.Size(45, 20)
-        Me.lbHandbrake.TabIndex = 30
+        Me.lbHandbrake.TabIndex = 20
         Me.lbHandbrake.Text = "Brake"
         Me.lbHandbrake.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -689,27 +674,16 @@ Partial Class frmCVJoy
         Me.Label30.TabIndex = 68
         Me.Label30.Text = "Roll:"
         '
-        'lbSimRoll
+        'lbAttitude
         '
-        Me.lbSimRoll.BackColor = System.Drawing.Color.White
-        Me.lbSimRoll.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.lbSimRoll.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbSimRoll.Location = New System.Drawing.Point(432, 3)
-        Me.lbSimRoll.Name = "lbSimRoll"
-        Me.lbSimRoll.Size = New System.Drawing.Size(85, 85)
-        Me.lbSimRoll.TabIndex = 80
-        Me.lbSimRoll.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        '
-        'lbSimPitch
-        '
-        Me.lbSimPitch.BackColor = System.Drawing.Color.White
-        Me.lbSimPitch.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.lbSimPitch.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbSimPitch.Location = New System.Drawing.Point(3, 3)
-        Me.lbSimPitch.Name = "lbSimPitch"
-        Me.lbSimPitch.Size = New System.Drawing.Size(85, 85)
-        Me.lbSimPitch.TabIndex = 81
-        Me.lbSimPitch.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.lbAttitude.BackColor = System.Drawing.Color.White
+        Me.lbAttitude.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.lbAttitude.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbAttitude.Location = New System.Drawing.Point(319, 2)
+        Me.lbAttitude.Name = "lbAttitude"
+        Me.lbAttitude.Size = New System.Drawing.Size(201, 125)
+        Me.lbAttitude.TabIndex = 81
+        Me.lbAttitude.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'btSetup
         '
@@ -768,7 +742,7 @@ Partial Class frmCVJoy
         Me.btWheelCenter.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btWheelCenter.BackColor = System.Drawing.Color.Gold
         Me.btWheelCenter.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btWheelCenter.Location = New System.Drawing.Point(231, 109)
+        Me.btWheelCenter.Location = New System.Drawing.Point(139, 109)
         Me.btWheelCenter.Name = "btWheelCenter"
         Me.btWheelCenter.Size = New System.Drawing.Size(59, 20)
         Me.btWheelCenter.TabIndex = 88
@@ -796,45 +770,9 @@ Partial Class frmCVJoy
         Me.ckDontShow.Text = "Dont Show"
         Me.ckDontShow.UseVisualStyleBackColor = False
         '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(-2, 92)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(67, 13)
-        Me.Label2.TabIndex = 95
-        Me.Label2.Text = "Actual Pitch:"
-        '
-        'lbGyroPitch
-        '
-        Me.lbGyroPitch.Location = New System.Drawing.Point(64, 92)
-        Me.lbGyroPitch.Name = "lbGyroPitch"
-        Me.lbGyroPitch.Size = New System.Drawing.Size(29, 13)
-        Me.lbGyroPitch.TabIndex = 96
-        Me.lbGyroPitch.Text = "-99º"
-        Me.lbGyroPitch.TextAlign = System.Drawing.ContentAlignment.TopRight
-        '
-        'lbGyroRoll
-        '
-        Me.lbGyroRoll.Location = New System.Drawing.Point(490, 92)
-        Me.lbGyroRoll.Name = "lbGyroRoll"
-        Me.lbGyroRoll.Size = New System.Drawing.Size(29, 13)
-        Me.lbGyroRoll.TabIndex = 98
-        Me.lbGyroRoll.Text = "-99º"
-        Me.lbGyroRoll.TextAlign = System.Drawing.ContentAlignment.TopRight
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(429, 92)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(61, 13)
-        Me.Label4.TabIndex = 97
-        Me.Label4.Text = "Actual Roll:"
-        '
         'lbAccel
         '
-        Me.lbAccel.Location = New System.Drawing.Point(134, 44)
+        Me.lbAccel.Location = New System.Drawing.Point(42, 30)
         Me.lbAccel.Name = "lbAccel"
         Me.lbAccel.Size = New System.Drawing.Size(34, 13)
         Me.lbAccel.TabIndex = 100
@@ -843,7 +781,7 @@ Partial Class frmCVJoy
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(93, 44)
+        Me.Label5.Location = New System.Drawing.Point(1, 30)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(37, 13)
         Me.Label5.TabIndex = 99
@@ -851,7 +789,7 @@ Partial Class frmCVJoy
         '
         'lbBrake
         '
-        Me.lbBrake.Location = New System.Drawing.Point(134, 61)
+        Me.lbBrake.Location = New System.Drawing.Point(42, 47)
         Me.lbBrake.Name = "lbBrake"
         Me.lbBrake.Size = New System.Drawing.Size(34, 13)
         Me.lbBrake.TabIndex = 102
@@ -860,7 +798,7 @@ Partial Class frmCVJoy
         'Label18
         '
         Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(93, 61)
+        Me.Label18.Location = New System.Drawing.Point(1, 47)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(38, 13)
         Me.Label18.TabIndex = 101
@@ -868,7 +806,7 @@ Partial Class frmCVJoy
         '
         'lbClutch
         '
-        Me.lbClutch.Location = New System.Drawing.Point(134, 78)
+        Me.lbClutch.Location = New System.Drawing.Point(42, 64)
         Me.lbClutch.Name = "lbClutch"
         Me.lbClutch.Size = New System.Drawing.Size(34, 13)
         Me.lbClutch.TabIndex = 104
@@ -877,7 +815,7 @@ Partial Class frmCVJoy
         'Label27
         '
         Me.Label27.AutoSize = True
-        Me.Label27.Location = New System.Drawing.Point(93, 78)
+        Me.Label27.Location = New System.Drawing.Point(1, 64)
         Me.Label27.Name = "Label27"
         Me.Label27.Size = New System.Drawing.Size(40, 13)
         Me.Label27.TabIndex = 103
@@ -894,85 +832,137 @@ Partial Class frmCVJoy
         Me.ckKeepVisible.Text = "Keep Visible"
         Me.ckKeepVisible.UseVisualStyleBackColor = False
         '
-        'bt6
-        '
-        Me.bt6.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bt6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.bt6.Location = New System.Drawing.Point(276, 3)
-        Me.bt6.Name = "bt6"
-        Me.bt6.Size = New System.Drawing.Size(27, 11)
-        Me.bt6.TabIndex = 106
-        Me.bt6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'bt4
-        '
-        Me.bt4.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bt4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.bt4.Location = New System.Drawing.Point(220, 3)
-        Me.bt4.Name = "bt4"
-        Me.bt4.Size = New System.Drawing.Size(27, 11)
-        Me.bt4.TabIndex = 107
-        Me.bt4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
         'bt1
         '
         Me.bt1.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.bt1.Location = New System.Drawing.Point(122, 3)
+        Me.bt1.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!)
+        Me.bt1.Location = New System.Drawing.Point(3, 3)
         Me.bt1.Name = "bt1"
-        Me.bt1.Size = New System.Drawing.Size(27, 11)
-        Me.bt1.TabIndex = 110
-        Me.bt1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'bt3
-        '
-        Me.bt3.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bt3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.bt3.Location = New System.Drawing.Point(178, 3)
-        Me.bt3.Name = "bt3"
-        Me.bt3.Size = New System.Drawing.Size(27, 11)
-        Me.bt3.TabIndex = 109
-        Me.bt3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.bt1.Size = New System.Drawing.Size(27, 17)
+        Me.bt1.TabIndex = 0
+        Me.bt1.Text = "Esc"
+        Me.bt1.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'bt2
         '
         Me.bt2.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.bt2.Location = New System.Drawing.Point(150, 3)
+        Me.bt2.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!)
+        Me.bt2.Location = New System.Drawing.Point(31, 3)
+        Me.bt2.MaxLength = 32000
         Me.bt2.Name = "bt2"
-        Me.bt2.Size = New System.Drawing.Size(27, 11)
-        Me.bt2.TabIndex = 108
-        Me.bt2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.bt2.ShortcutsEnabled = False
+        Me.bt2.Size = New System.Drawing.Size(27, 17)
+        Me.bt2.TabIndex = 1
+        Me.bt2.Text = "a"
+        Me.bt2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.bt2.WordWrap = False
+        '
+        'bt3
+        '
+        Me.bt3.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.bt3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.bt3.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!)
+        Me.bt3.Location = New System.Drawing.Point(59, 3)
+        Me.bt3.MaxLength = 32000
+        Me.bt3.Name = "bt3"
+        Me.bt3.ShortcutsEnabled = False
+        Me.bt3.Size = New System.Drawing.Size(27, 17)
+        Me.bt3.TabIndex = 2
+        Me.bt3.Text = "a"
+        Me.bt3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.bt3.WordWrap = False
+        '
+        'bt4
+        '
+        Me.bt4.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.bt4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.bt4.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!)
+        Me.bt4.Location = New System.Drawing.Point(101, 3)
+        Me.bt4.MaxLength = 32000
+        Me.bt4.Name = "bt4"
+        Me.bt4.ShortcutsEnabled = False
+        Me.bt4.Size = New System.Drawing.Size(27, 17)
+        Me.bt4.TabIndex = 3
+        Me.bt4.Text = "a"
+        Me.bt4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.bt4.WordWrap = False
+        '
+        'bt5
+        '
+        Me.bt5.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.bt5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.bt5.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!)
+        Me.bt5.Location = New System.Drawing.Point(129, 3)
+        Me.bt5.MaxLength = 32000
+        Me.bt5.Name = "bt5"
+        Me.bt5.ShortcutsEnabled = False
+        Me.bt5.Size = New System.Drawing.Size(27, 17)
+        Me.bt5.TabIndex = 4
+        Me.bt5.Text = "a"
+        Me.bt5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.bt5.WordWrap = False
+        '
+        'bt6
+        '
+        Me.bt6.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.bt6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.bt6.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!)
+        Me.bt6.Location = New System.Drawing.Point(157, 3)
+        Me.bt6.MaxLength = 32000
+        Me.bt6.Name = "bt6"
+        Me.bt6.ShortcutsEnabled = False
+        Me.bt6.Size = New System.Drawing.Size(27, 17)
+        Me.bt6.TabIndex = 5
+        Me.bt6.Text = "a"
+        Me.bt6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.bt6.WordWrap = False
         '
         'bt7
         '
         Me.bt7.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.bt7.Location = New System.Drawing.Point(318, 3)
+        Me.bt7.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!)
+        Me.bt7.Location = New System.Drawing.Point(199, 3)
+        Me.bt7.MaxLength = 32000
         Me.bt7.Name = "bt7"
-        Me.bt7.Size = New System.Drawing.Size(27, 11)
-        Me.bt7.TabIndex = 113
-        Me.bt7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'bt9
-        '
-        Me.bt9.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bt9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.bt9.Location = New System.Drawing.Point(374, 3)
-        Me.bt9.Name = "bt9"
-        Me.bt9.Size = New System.Drawing.Size(27, 11)
-        Me.bt9.TabIndex = 112
-        Me.bt9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.bt7.ShortcutsEnabled = False
+        Me.bt7.Size = New System.Drawing.Size(27, 17)
+        Me.bt7.TabIndex = 6
+        Me.bt7.Text = "a"
+        Me.bt7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.bt7.WordWrap = False
         '
         'bt8
         '
         Me.bt8.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.bt8.Location = New System.Drawing.Point(346, 3)
+        Me.bt8.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!)
+        Me.bt8.Location = New System.Drawing.Point(227, 3)
+        Me.bt8.MaxLength = 32000
         Me.bt8.Name = "bt8"
-        Me.bt8.Size = New System.Drawing.Size(27, 11)
-        Me.bt8.TabIndex = 111
-        Me.bt8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.bt8.ShortcutsEnabled = False
+        Me.bt8.Size = New System.Drawing.Size(27, 17)
+        Me.bt8.TabIndex = 7
+        Me.bt8.Text = "a"
+        Me.bt8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.bt8.WordWrap = False
+        '
+        'bt9
+        '
+        Me.bt9.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.bt9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.bt9.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!)
+        Me.bt9.Location = New System.Drawing.Point(255, 3)
+        Me.bt9.MaxLength = 32000
+        Me.bt9.Name = "bt9"
+        Me.bt9.ShortcutsEnabled = False
+        Me.bt9.Size = New System.Drawing.Size(27, 17)
+        Me.bt9.TabIndex = 8
+        Me.bt9.Text = "a"
+        Me.bt9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.bt9.WordWrap = False
         '
         'chkNoWind
         '
@@ -1041,7 +1031,7 @@ Partial Class frmCVJoy
         Me.chkFFConst.Checked = True
         Me.chkFFConst.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkFFConst.ForeColor = System.Drawing.Color.Green
-        Me.chkFFConst.Location = New System.Drawing.Point(150, 111)
+        Me.chkFFConst.Location = New System.Drawing.Point(58, 111)
         Me.chkFFConst.Margin = New System.Windows.Forms.Padding(0)
         Me.chkFFConst.Name = "chkFFConst"
         Me.chkFFConst.Size = New System.Drawing.Size(79, 17)
@@ -1055,7 +1045,7 @@ Partial Class frmCVJoy
         Me.chkFFCond.Checked = True
         Me.chkFFCond.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkFFCond.ForeColor = System.Drawing.Color.DarkOrchid
-        Me.chkFFCond.Location = New System.Drawing.Point(314, 111)
+        Me.chkFFCond.Location = New System.Drawing.Point(222, 111)
         Me.chkFFCond.Margin = New System.Windows.Forms.Padding(0)
         Me.chkFFCond.Name = "chkFFCond"
         Me.chkFFCond.Size = New System.Drawing.Size(79, 17)
@@ -1077,32 +1067,28 @@ Partial Class frmCVJoy
         Me.Controls.Add(Me.Label10)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.chkNoWind)
-        Me.Controls.Add(Me.bt7)
-        Me.Controls.Add(Me.bt9)
-        Me.Controls.Add(Me.bt8)
         Me.Controls.Add(Me.bt1)
-        Me.Controls.Add(Me.bt3)
         Me.Controls.Add(Me.bt2)
+        Me.Controls.Add(Me.bt3)
         Me.Controls.Add(Me.bt4)
+        Me.Controls.Add(Me.bt5)
         Me.Controls.Add(Me.bt6)
+        Me.Controls.Add(Me.bt7)
+        Me.Controls.Add(Me.bt8)
+        Me.Controls.Add(Me.bt9)
         Me.Controls.Add(Me.lbClutch)
         Me.Controls.Add(Me.Label27)
         Me.Controls.Add(Me.lbBrake)
         Me.Controls.Add(Me.Label18)
         Me.Controls.Add(Me.lbAccel)
         Me.Controls.Add(Me.Label5)
-        Me.Controls.Add(Me.lbGyroRoll)
-        Me.Controls.Add(Me.Label4)
-        Me.Controls.Add(Me.lbGyroPitch)
-        Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.btWheelCenter)
         Me.Controls.Add(Me.lbWheelPos)
         Me.Controls.Add(Me.btApply)
         Me.Controls.Add(Me.txtErrors)
         Me.Controls.Add(Me.btSetup)
-        Me.Controls.Add(Me.lbSimPitch)
-        Me.Controls.Add(Me.lbSimRoll)
+        Me.Controls.Add(Me.lbAttitude)
         Me.Controls.Add(Me.txtTurn)
         Me.Controls.Add(Me.Label25)
         Me.Controls.Add(Me.txtRoll)
@@ -1147,7 +1133,6 @@ Partial Class frmCVJoy
         Me.Controls.Add(Me.G3)
         Me.Controls.Add(Me.G2)
         Me.Controls.Add(Me.G1)
-        Me.Controls.Add(Me.bt5)
         Me.Controls.Add(Me.lbRPM1)
         Me.Controls.Add(Me.lbRPM2)
         Me.Controls.Add(Me.lbSlipBack)
@@ -1169,7 +1154,6 @@ Partial Class frmCVJoy
     Friend WithEvents lbSlipBack As Label
     Friend WithEvents lbRPM2 As Label
     Friend WithEvents lbRPM1 As Label
-    Friend WithEvents bt5 As Label
     Friend WithEvents G1 As Label
     Friend WithEvents G2 As Label
     Friend WithEvents G3 As Label
@@ -1215,8 +1199,7 @@ Partial Class frmCVJoy
     Friend WithEvents Label28 As Label
     Friend WithEvents lbACRoll As Label
     Friend WithEvents Label30 As Label
-    Friend WithEvents lbSimRoll As Label
-    Friend WithEvents lbSimPitch As Label
+    Friend WithEvents lbAttitude As Label
     Friend WithEvents btSetup As Button
     Public WithEvents SerialPort1 As IO.Ports.SerialPort
     Friend WithEvents btApply As Button
@@ -1225,10 +1208,6 @@ Partial Class frmCVJoy
     Friend WithEvents btWheelCenter As Button
     Friend WithEvents Label1 As Label
     Friend WithEvents ckDontShow As CheckBox
-    Friend WithEvents Label2 As Label
-    Friend WithEvents lbGyroPitch As Label
-    Friend WithEvents lbGyroRoll As Label
-    Friend WithEvents Label4 As Label
     Friend WithEvents lbAccel As Label
     Friend WithEvents Label5 As Label
     Friend WithEvents lbBrake As Label
@@ -1236,14 +1215,15 @@ Partial Class frmCVJoy
     Friend WithEvents lbClutch As Label
     Friend WithEvents Label27 As Label
     Friend WithEvents ckKeepVisible As CheckBox
-    Friend WithEvents bt6 As Label
-    Friend WithEvents bt4 As Label
     Friend WithEvents bt1 As Label
-    Friend WithEvents bt3 As Label
-    Friend WithEvents bt2 As Label
-    Friend WithEvents bt7 As Label
-    Friend WithEvents bt9 As Label
-    Friend WithEvents bt8 As Label
+    Friend WithEvents bt2 As TextBox
+    Friend WithEvents bt3 As TextBox
+    Friend WithEvents bt4 As TextBox
+    Friend WithEvents bt5 As TextBox
+    Friend WithEvents bt6 As TextBox
+    Friend WithEvents bt7 As TextBox
+    Friend WithEvents bt8 As TextBox
+    Friend WithEvents bt9 As TextBox
     Friend WithEvents chkNoWind As CheckBox
     Friend WithEvents Label6 As Label
     Friend WithEvents lbACJump As Label

@@ -45,10 +45,6 @@ Partial Class frmSetup
         Me.btTestGLeft = New System.Windows.Forms.Button()
         Me.btTestGRight = New System.Windows.Forms.Button()
         Me.txtGMinDiff = New System.Windows.Forms.MaskedTextBox()
-        Me.txtRollOffset = New System.Windows.Forms.MaskedTextBox()
-        Me.Label12 = New System.Windows.Forms.Label()
-        Me.txtPitchOffset = New System.Windows.Forms.MaskedTextBox()
-        Me.Label20 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.Label23 = New System.Windows.Forms.Label()
@@ -127,12 +123,16 @@ Partial Class frmSetup
         Me.btGGraph = New System.Windows.Forms.Button()
         Me.btClose = New System.Windows.Forms.Button()
         Me.txtGMaxDiff = New System.Windows.Forms.MaskedTextBox()
+        Me.lbMaxScrewUp = New System.Windows.Forms.Label()
+        Me.lbMaxScrewDown = New System.Windows.Forms.Label()
+        Me.lbAlarm = New System.Windows.Forms.Label()
+        Me.Label17 = New System.Windows.Forms.Label()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.txtLeftScrewCenter = New System.Windows.Forms.MaskedTextBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.txtRightScrewCenter = New System.Windows.Forms.MaskedTextBox()
         Me.UcControlGGraph1 = New CVJoy.ucControlGGraph()
         Me.UcControlGraph1 = New CVJoy.ucControlGraph()
-        Me.Label8 = New System.Windows.Forms.Label()
-        Me.Label9 = New System.Windows.Forms.Label()
-        Me.Label11 = New System.Windows.Forms.Label()
-        Me.Label17 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'Label3
@@ -172,9 +172,9 @@ Partial Class frmSetup
         Me.Label21.AutoSize = True
         Me.Label21.Location = New System.Drawing.Point(4, 323)
         Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(28, 13)
+        Me.Label21.Size = New System.Drawing.Size(100, 13)
         Me.Label21.TabIndex = 84
-        Me.Label21.Text = "Roll:"
+        Me.Label21.Text = "Right bolt center at:"
         '
         'txtMaxScrewUp
         '
@@ -193,9 +193,9 @@ Partial Class frmSetup
         Me.Label18.AutoSize = True
         Me.Label18.Location = New System.Drawing.Point(4, 300)
         Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(34, 13)
+        Me.Label18.Size = New System.Drawing.Size(93, 13)
         Me.Label18.TabIndex = 82
-        Me.Label18.Text = "Pitch:"
+        Me.Label18.Text = "Left bolt center at:"
         '
         'txtWheelPowerForMin
         '
@@ -232,7 +232,7 @@ Partial Class frmSetup
         Me.txtGPowerForMin.AllowPromptAsInput = False
         Me.txtGPowerForMin.BeepOnError = True
         Me.txtGPowerForMin.HidePromptOnLeave = True
-        Me.txtGPowerForMin.Location = New System.Drawing.Point(266, 343)
+        Me.txtGPowerForMin.Location = New System.Drawing.Point(353, 344)
         Me.txtGPowerForMin.Mask = "#990"
         Me.txtGPowerForMin.Name = "txtGPowerForMin"
         Me.txtGPowerForMin.Size = New System.Drawing.Size(25, 20)
@@ -242,7 +242,7 @@ Partial Class frmSetup
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(203, 346)
+        Me.Label7.Location = New System.Drawing.Point(290, 347)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(60, 13)
         Me.Label7.TabIndex = 90
@@ -367,54 +367,12 @@ Partial Class frmSetup
         Me.txtGMinDiff.AsciiOnly = True
         Me.txtGMinDiff.BeepOnError = True
         Me.txtGMinDiff.HidePromptOnLeave = True
-        Me.txtGMinDiff.Location = New System.Drawing.Point(61, 344)
+        Me.txtGMinDiff.Location = New System.Drawing.Point(105, 344)
         Me.txtGMinDiff.Mask = "990"
         Me.txtGMinDiff.Name = "txtGMinDiff"
         Me.txtGMinDiff.Size = New System.Drawing.Size(25, 20)
         Me.txtGMinDiff.TabIndex = 122
         Me.txtGMinDiff.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'txtRollOffset
-        '
-        Me.txtRollOffset.AsciiOnly = True
-        Me.txtRollOffset.BeepOnError = True
-        Me.txtRollOffset.HidePromptOnLeave = True
-        Me.txtRollOffset.Location = New System.Drawing.Point(82, 320)
-        Me.txtRollOffset.Mask = "#000.0\º"
-        Me.txtRollOffset.Name = "txtRollOffset"
-        Me.txtRollOffset.Size = New System.Drawing.Size(45, 20)
-        Me.txtRollOffset.TabIndex = 128
-        Me.txtRollOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(44, 323)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(38, 13)
-        Me.Label12.TabIndex = 127
-        Me.Label12.Text = "Offset:"
-        '
-        'txtPitchOffset
-        '
-        Me.txtPitchOffset.AsciiOnly = True
-        Me.txtPitchOffset.BeepOnError = True
-        Me.txtPitchOffset.HidePromptOnLeave = True
-        Me.txtPitchOffset.Location = New System.Drawing.Point(82, 297)
-        Me.txtPitchOffset.Mask = "#000.0\º"
-        Me.txtPitchOffset.Name = "txtPitchOffset"
-        Me.txtPitchOffset.Size = New System.Drawing.Size(45, 20)
-        Me.txtPitchOffset.TabIndex = 126
-        Me.txtPitchOffset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'Label20
-        '
-        Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(44, 300)
-        Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(38, 13)
-        Me.Label20.TabIndex = 125
-        Me.Label20.Text = "Offset:"
         '
         'Label4
         '
@@ -924,7 +882,7 @@ Partial Class frmSetup
         '
         Me.Label46.AutoSize = True
         Me.Label46.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label46.Location = New System.Drawing.Point(89, 100)
+        Me.Label46.Location = New System.Drawing.Point(109, 100)
         Me.Label46.Name = "Label46"
         Me.Label46.Size = New System.Drawing.Size(28, 12)
         Me.Label46.TabIndex = 193
@@ -935,7 +893,7 @@ Partial Class frmSetup
         Me.txtWheelMinInput.AllowPromptAsInput = False
         Me.txtWheelMinInput.BeepOnError = True
         Me.txtWheelMinInput.HidePromptOnLeave = True
-        Me.txtWheelMinInput.Location = New System.Drawing.Point(61, 95)
+        Me.txtWheelMinInput.Location = New System.Drawing.Point(81, 95)
         Me.txtWheelMinInput.Mask = "9990"
         Me.txtWheelMinInput.Name = "txtWheelMinInput"
         Me.txtWheelMinInput.Size = New System.Drawing.Size(25, 20)
@@ -1085,7 +1043,7 @@ Partial Class frmSetup
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(4, 347)
+        Me.Label10.Location = New System.Drawing.Point(53, 347)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(49, 13)
         Me.Label10.TabIndex = 207
@@ -1096,15 +1054,15 @@ Partial Class frmSetup
         Me.Label61.AutoSize = True
         Me.Label61.Location = New System.Drawing.Point(417, 300)
         Me.Label61.Name = "Label61"
-        Me.Label61.Size = New System.Drawing.Size(80, 13)
+        Me.Label61.Size = New System.Drawing.Size(72, 13)
         Me.Label61.TabIndex = 209
-        Me.Label61.Text = "Max.Screw Up:"
+        Me.Label61.Text = "Max.bolts Up:"
         '
         'Label62
         '
         Me.Label62.AutoSize = True
         Me.Label62.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label62.Location = New System.Drawing.Point(294, 347)
+        Me.Label62.Location = New System.Drawing.Point(381, 348)
         Me.Label62.Name = "Label62"
         Me.Label62.Size = New System.Drawing.Size(28, 12)
         Me.Label62.TabIndex = 213
@@ -1115,9 +1073,9 @@ Partial Class frmSetup
         Me.Label63.AutoSize = True
         Me.Label63.Location = New System.Drawing.Point(417, 323)
         Me.Label63.Name = "Label63"
-        Me.Label63.Size = New System.Drawing.Size(94, 13)
+        Me.Label63.Size = New System.Drawing.Size(86, 13)
         Me.Label63.TabIndex = 215
-        Me.Label63.Text = "Max.Screw Down:"
+        Me.Label63.Text = "Max.bolts Down:"
         '
         'txtMaxScrewDown
         '
@@ -1147,7 +1105,7 @@ Partial Class frmSetup
         '
         Me.Label65.AutoSize = True
         Me.Label65.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label65.Location = New System.Drawing.Point(370, 324)
+        Me.Label65.Location = New System.Drawing.Point(381, 324)
         Me.Label65.Name = "Label65"
         Me.Label65.Size = New System.Drawing.Size(21, 12)
         Me.Label65.TabIndex = 219
@@ -1158,7 +1116,7 @@ Partial Class frmSetup
         Me.txtGXDistance.AllowPromptAsInput = False
         Me.txtGXDistance.BeepOnError = True
         Me.txtGXDistance.HidePromptOnLeave = True
-        Me.txtGXDistance.Location = New System.Drawing.Point(342, 320)
+        Me.txtGXDistance.Location = New System.Drawing.Point(353, 320)
         Me.txtGXDistance.Mask = "990"
         Me.txtGXDistance.Name = "txtGXDistance"
         Me.txtGXDistance.Size = New System.Drawing.Size(25, 20)
@@ -1168,7 +1126,7 @@ Partial Class frmSetup
         'Label66
         '
         Me.Label66.AutoSize = True
-        Me.Label66.Location = New System.Drawing.Point(159, 323)
+        Me.Label66.Location = New System.Drawing.Point(170, 323)
         Me.Label66.Name = "Label66"
         Me.Label66.Size = New System.Drawing.Size(160, 13)
         Me.Label66.TabIndex = 217
@@ -1178,7 +1136,7 @@ Partial Class frmSetup
         '
         Me.Label67.AutoSize = True
         Me.Label67.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label67.Location = New System.Drawing.Point(370, 301)
+        Me.Label67.Location = New System.Drawing.Point(381, 301)
         Me.Label67.Name = "Label67"
         Me.Label67.Size = New System.Drawing.Size(21, 12)
         Me.Label67.TabIndex = 222
@@ -1189,7 +1147,7 @@ Partial Class frmSetup
         Me.txtGZDistance.AllowPromptAsInput = False
         Me.txtGZDistance.BeepOnError = True
         Me.txtGZDistance.HidePromptOnLeave = True
-        Me.txtGZDistance.Location = New System.Drawing.Point(342, 297)
+        Me.txtGZDistance.Location = New System.Drawing.Point(353, 297)
         Me.txtGZDistance.Mask = "990"
         Me.txtGZDistance.Name = "txtGZDistance"
         Me.txtGZDistance.Size = New System.Drawing.Size(25, 20)
@@ -1199,7 +1157,7 @@ Partial Class frmSetup
         'Label68
         '
         Me.Label68.AutoSize = True
-        Me.Label68.Location = New System.Drawing.Point(159, 300)
+        Me.Label68.Location = New System.Drawing.Point(170, 300)
         Me.Label68.Name = "Label68"
         Me.Label68.Size = New System.Drawing.Size(180, 13)
         Me.Label68.TabIndex = 220
@@ -1251,6 +1209,90 @@ Partial Class frmSetup
         Me.txtGMaxDiff.TabIndex = 227
         Me.txtGMaxDiff.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
+        'lbMaxScrewUp
+        '
+        Me.lbMaxScrewUp.AutoSize = True
+        Me.lbMaxScrewUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbMaxScrewUp.Location = New System.Drawing.Point(542, 301)
+        Me.lbMaxScrewUp.Name = "lbMaxScrewUp"
+        Me.lbMaxScrewUp.Size = New System.Drawing.Size(61, 12)
+        Me.lbMaxScrewUp.TabIndex = 229
+        Me.lbMaxScrewUp.Text = "mm 99º down"
+        '
+        'lbMaxScrewDown
+        '
+        Me.lbMaxScrewDown.AutoSize = True
+        Me.lbMaxScrewDown.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbMaxScrewDown.Location = New System.Drawing.Point(542, 324)
+        Me.lbMaxScrewDown.Name = "lbMaxScrewDown"
+        Me.lbMaxScrewDown.Size = New System.Drawing.Size(48, 12)
+        Me.lbMaxScrewDown.TabIndex = 228
+        Me.lbMaxScrewDown.Text = "mm 99º up"
+        '
+        'lbAlarm
+        '
+        Me.lbAlarm.AutoSize = True
+        Me.lbAlarm.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbAlarm.Location = New System.Drawing.Point(133, 348)
+        Me.lbAlarm.Name = "lbAlarm"
+        Me.lbAlarm.Size = New System.Drawing.Size(21, 12)
+        Me.lbAlarm.TabIndex = 231
+        Me.lbAlarm.Text = "mm"
+        '
+        'Label17
+        '
+        Me.Label17.AutoSize = True
+        Me.Label17.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label17.Location = New System.Drawing.Point(542, 348)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(21, 12)
+        Me.Label17.TabIndex = 230
+        Me.Label17.Text = "mm"
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label9.Location = New System.Drawing.Point(133, 301)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(21, 12)
+        Me.Label9.TabIndex = 235
+        Me.Label9.Text = "mm"
+        '
+        'txtLeftScrewCenter
+        '
+        Me.txtLeftScrewCenter.AsciiOnly = True
+        Me.txtLeftScrewCenter.BeepOnError = True
+        Me.txtLeftScrewCenter.HidePromptOnLeave = True
+        Me.txtLeftScrewCenter.Location = New System.Drawing.Point(105, 297)
+        Me.txtLeftScrewCenter.Mask = "990"
+        Me.txtLeftScrewCenter.Name = "txtLeftScrewCenter"
+        Me.txtLeftScrewCenter.Size = New System.Drawing.Size(25, 20)
+        Me.txtLeftScrewCenter.TabIndex = 234
+        Me.txtLeftScrewCenter.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label12.Location = New System.Drawing.Point(133, 324)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(21, 12)
+        Me.Label12.TabIndex = 237
+        Me.Label12.Text = "mm"
+        '
+        'txtRightScrewCenter
+        '
+        Me.txtRightScrewCenter.AsciiOnly = True
+        Me.txtRightScrewCenter.BeepOnError = True
+        Me.txtRightScrewCenter.HidePromptOnLeave = True
+        Me.txtRightScrewCenter.Location = New System.Drawing.Point(105, 320)
+        Me.txtRightScrewCenter.Mask = "990"
+        Me.txtRightScrewCenter.Name = "txtRightScrewCenter"
+        Me.txtRightScrewCenter.Size = New System.Drawing.Size(25, 20)
+        Me.txtRightScrewCenter.TabIndex = 236
+        Me.txtRightScrewCenter.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
         'UcControlGGraph1
         '
         Me.UcControlGGraph1.BackColor = System.Drawing.Color.FromArgb(CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer))
@@ -1273,46 +1315,6 @@ Partial Class frmSetup
         Me.UcControlGraph1.TabStop = False
         Me.UcControlGraph1.Visible = False
         '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(542, 301)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(21, 12)
-        Me.Label8.TabIndex = 229
-        Me.Label8.Text = "mm"
-        '
-        'Label9
-        '
-        Me.Label9.AutoSize = True
-        Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(542, 324)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(21, 12)
-        Me.Label9.TabIndex = 228
-        Me.Label9.Text = "mm"
-        '
-        'Label11
-        '
-        Me.Label11.AutoSize = True
-        Me.Label11.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label11.Location = New System.Drawing.Point(89, 348)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(21, 12)
-        Me.Label11.TabIndex = 231
-        Me.Label11.Text = "mm"
-        '
-        'Label17
-        '
-        Me.Label17.AutoSize = True
-        Me.Label17.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.Location = New System.Drawing.Point(542, 348)
-        Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(21, 12)
-        Me.Label17.TabIndex = 230
-        Me.Label17.Text = "mm"
-        '
         'frmSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1320,10 +1322,14 @@ Partial Class frmSetup
         Me.ClientSize = New System.Drawing.Size(770, 421)
         Me.Controls.Add(Me.UcControlGGraph1)
         Me.Controls.Add(Me.UcControlGraph1)
-        Me.Controls.Add(Me.Label11)
-        Me.Controls.Add(Me.Label17)
-        Me.Controls.Add(Me.Label8)
+        Me.Controls.Add(Me.Label12)
+        Me.Controls.Add(Me.txtRightScrewCenter)
         Me.Controls.Add(Me.Label9)
+        Me.Controls.Add(Me.txtLeftScrewCenter)
+        Me.Controls.Add(Me.lbAlarm)
+        Me.Controls.Add(Me.Label17)
+        Me.Controls.Add(Me.lbMaxScrewUp)
+        Me.Controls.Add(Me.lbMaxScrewDown)
         Me.Controls.Add(Me.txtGMaxDiff)
         Me.Controls.Add(Me.btClose)
         Me.Controls.Add(Me.btSave)
@@ -1403,10 +1409,6 @@ Partial Class frmSetup
         Me.Controls.Add(Me.Label23)
         Me.Controls.Add(Me.Label15)
         Me.Controls.Add(Me.Label4)
-        Me.Controls.Add(Me.txtRollOffset)
-        Me.Controls.Add(Me.Label12)
-        Me.Controls.Add(Me.txtPitchOffset)
-        Me.Controls.Add(Me.Label20)
         Me.Controls.Add(Me.txtGMinDiff)
         Me.Controls.Add(Me.btTestGLeft)
         Me.Controls.Add(Me.btTestGRight)
@@ -1459,10 +1461,6 @@ Partial Class frmSetup
     Friend WithEvents btTestGLeft As Button
     Friend WithEvents btTestGRight As Button
     Friend WithEvents txtGMinDiff As MaskedTextBox
-    Friend WithEvents txtRollOffset As MaskedTextBox
-    Friend WithEvents Label12 As Label
-    Friend WithEvents txtPitchOffset As MaskedTextBox
-    Friend WithEvents Label20 As Label
     Friend WithEvents Label4 As Label
     Friend WithEvents Label15 As Label
     Friend WithEvents Label23 As Label
@@ -1543,8 +1541,12 @@ Partial Class frmSetup
     Friend WithEvents UcControlGGraph1 As ucControlGGraph
     Friend WithEvents btClose As Button
     Friend WithEvents txtGMaxDiff As MaskedTextBox
-    Friend WithEvents Label8 As Label
-    Friend WithEvents Label9 As Label
-    Friend WithEvents Label11 As Label
+    Friend WithEvents lbMaxScrewUp As Label
+    Friend WithEvents lbMaxScrewDown As Label
+    Friend WithEvents lbAlarm As Label
     Friend WithEvents Label17 As Label
+    Friend WithEvents Label9 As Label
+    Friend WithEvents txtLeftScrewCenter As MaskedTextBox
+    Friend WithEvents Label12 As Label
+    Friend WithEvents txtRightScrewCenter As MaskedTextBox
 End Class

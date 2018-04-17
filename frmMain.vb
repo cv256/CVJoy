@@ -15,8 +15,9 @@ Public Class frmCVJoy
     Public FFWheel_Cond As New vJoyInterfaceWrap.vJoy.FFB_EFF_COND
     Public FFWheel_Const As New vJoyInterfaceWrap.vJoy.FFB_EFF_CONSTANT
 
-    Private _realPitch As Single, _realRoll As Single ' RADIANS ' isto podia ser processado no Arduino, escusava de vir ao PC e voltar. No VBJoy faço Serial.Write, e depois Serial.Read, o que não dá jeito nenhum para isto. Para estar no CVJoy isto devia estar na classe SerialRead.
-    Private _realPitchTime As DateTime, _realRollTime As DateTime
+    Private _realLeft As Single, _realRight As Single ' position now   milimeters, tipically from   minus GMaxScrewDown    to    Zero (center)    to    GMaxScrewUp
+    Private _inertiaLeft As Single, _inertiaRight As Single ' -127~127
+    Private _realLeftTime As DateTime = Now.AddSeconds(-1), _realRightTime As DateTime = Now.AddSeconds(-1) ' time of last good reading
 
     Public Enum Motor
         None
@@ -50,7 +51,14 @@ Public Class frmCVJoy
         txtJump.Text = My.Settings.ACJump.ToString("+0.0;-0.0")
         txtAccel.Text = My.Settings.ACAccel
         txtTurn.Text = My.Settings.ACTurn
-
+        bt2.Text = My.Settings.bt2
+        bt3.Text = My.Settings.bt3
+        bt4.Text = My.Settings.bt4
+        bt5.Text = My.Settings.bt5
+        bt6.Text = My.Settings.bt6
+        bt7.Text = My.Settings.bt7
+        bt8.Text = My.Settings.bt8
+        bt9.Text = My.Settings.bt9
         Timer1.Interval = 1000 / My.Settings.RefreshRate
         Timer1.Enabled = True
 
@@ -98,7 +106,6 @@ Public Class frmCVJoy
 
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        'If Ggraph IsNot Nothing AndAlso Not Ggraph.chkPause.Checked Then Ggraph.UpdateValue(VBMath.Rnd * 30 - 15, VBMath.Rnd * 30 - 15, VBMath.Rnd, VBMath.Rnd * 30 - 15)
         If TimerProcessing Then
             ErrorAdd("Cant stand such hight Refresh Rate, lower it.")
             Return
@@ -127,7 +134,6 @@ Public Class frmCVJoy
                 End If
             End If
         End If
-
         If ACstopped Then
             acS.MaxRpm = 0 ' using  acS.MaxRpm=0  as a flag to indicate AC was not running
             acP = New Physics ' to clear all acp
@@ -142,7 +148,7 @@ Public Class frmCVJoy
 
         ' show raw AC data on screen:
         Dim desiredPitch As Single = acP.Pitch * My.Settings.ACPitch + acP.AccG(2) * My.Settings.ACAccel / 57.29 ' Radians
-        Dim desiredRoll As Single = acP.Roll * My.Settings.ACRoll + acP.AccG(0) * My.Settings.ACTurn / 57.29 ' Radians
+        Dim desiredRoll As Single = -acP.Roll * My.Settings.ACRoll + acP.AccG(0) * My.Settings.ACTurn / 57.29 ' Radians
         If Me.WindowState <> FormWindowState.Minimized AndAlso ckDontShow.Checked = False Then
             lbACSpeed.Text = acP.SpeedKmh
             lbACRPM.Text = acP.Rpms
@@ -172,8 +178,6 @@ Public Class frmCVJoy
                 End If
             End If
 
-            PowerFromAngle(desiredPitch, desiredRoll, OUTLeftPower:= .leftPower, OUTRightPower:= .rightPower)
-
             If TestMode = Motor.Wind Then
                 .windPower = TestValue
             ElseIf Not chkNoWind.Checked Then
@@ -181,6 +185,101 @@ Public Class frmCVJoy
             Else
                 .windPower = 0
             End If
+
+#Region "PowerFromAngle: calculates power to apply now, based on the previous position readings"
+            ' convert Desired Angles into Desired Screw Positions:
+            Dim DesiredLeftScrew As Integer = -My.Settings.GZDistance * Math.Sin(desiredPitch) + My.Settings.GXDistance * Math.Sin(desiredRoll) ' in mm
+            Dim DesiredRightScrew As Integer = -My.Settings.GZDistance * Math.Sin(desiredPitch) - My.Settings.GXDistance * Math.Sin(desiredRoll) ' in mm
+            If DesiredLeftScrew > My.Settings.GMaxScrewUp Then DesiredLeftScrew = My.Settings.GMaxScrewUp
+            If DesiredLeftScrew < -My.Settings.GMaxScrewDown Then DesiredLeftScrew = -My.Settings.GMaxScrewDown
+            If DesiredRightScrew > My.Settings.GMaxScrewUp Then DesiredRightScrew = My.Settings.GMaxScrewUp
+            If DesiredRightScrew < -My.Settings.GMaxScrewDown Then DesiredRightScrew = -My.Settings.GMaxScrewDown
+
+            ' calculate power to apply on Left and Right Motors:
+            If (Now.Subtract(_realLeftTime).TotalMilliseconds > 200 _
+            OrElse Now.Subtract(_realRightTime).TotalMilliseconds > 200) _
+            AndAlso SerialPort1.IsOpen Then
+                .leftPower = 0 ' SHIIIT, stop everything ! dont even try to correct it, wires, relays or screws may be swaped or broken !
+                .rightPower = 0 ' SHIIIT, stop everything ! dont even try to correct it, wires, relays or screws may be swaped or broken !
+                ErrorAdd($"NO POSITION DATA FROM ARDUINO !   Left={(Now.Subtract(_realLeftTime).TotalMilliseconds / 1000).ToString("0.00")} seconds     Right={(Now.Subtract(_realRightTime).TotalMilliseconds / 1000).ToString("0.00")} seconds")
+            ElseIf (_realLeft > (My.Settings.GMaxScrewUp + My.Settings.GMinDiff * 2) _
+            OrElse _realLeft < -(My.Settings.GMaxScrewDown + My.Settings.GMinDiff * 2) _
+            OrElse _realRight > (My.Settings.GMaxScrewUp + My.Settings.GMinDiff * 2) _
+            OrElse _realRight < -(My.Settings.GMaxScrewDown + My.Settings.GMinDiff * 2)) _
+            AndAlso SerialPort1.IsOpen Then
+                .leftPower = 0 ' SHIIIT, stop everything ! dont even try to correct it, wires, relays or screws may be swaped or broken !
+                .rightPower = 0 ' SHIIIT, stop everything ! dont even try to correct it, wires, relays or screws may be swaped or broken !
+                ErrorAdd($"OUT OF BOUNDS !   LeftPosition={CInt(_realLeft)}mm     RightPosition={CInt(_realRight)}mm")
+            Else
+                If TestMode = Motor.Pitch Then
+                    .leftPower = TestValue
+                    .rightPower = TestValue
+                ElseIf TestMode = Motor.Roll Then
+                    .leftPower = TestValue
+                    .rightPower = -TestValue
+                Else ' Normal situation:
+                    Dim leftDiff As Integer = DesiredLeftScrew - _realLeft
+                    If leftDiff > My.Settings.GMinDiff Then
+                        If _realLeft >= My.Settings.GMaxScrewUp Then
+                            .leftPower = 0 ' no more power up here, we are at the upper limit
+                        Else
+                            .leftPower = Math.Min(127, ScaleValue(leftDiff, My.Settings.GMinDiff, My.Settings.GMaxDiff, My.Settings.GPowerForMin, 127))
+                        End If
+                    ElseIf leftDiff < -My.Settings.GMinDiff Then
+                        If _realLeft <= -My.Settings.GMaxScrewDown Then
+                            .leftPower = 0 ' no more power down here, we are at the lower limit
+                        Else
+                            .leftPower = -Math.Min(127, ScaleValue(-leftDiff, My.Settings.GMinDiff, My.Settings.GMaxDiff, My.Settings.GPowerForMin, 127))
+                        End If
+                    Else
+                        .leftPower = 0
+                    End If
+                    Dim rightDiff As Integer = DesiredRightScrew - _realRight
+                    If rightDiff > My.Settings.GMinDiff Then
+                        If _realRight >= My.Settings.GMaxScrewUp Then
+                            .rightPower = 0 ' no more power up here, we are at the upper limit
+                        Else
+                            .rightPower = Math.Min(127, ScaleValue(rightDiff, My.Settings.GMinDiff, My.Settings.GMaxDiff, My.Settings.GPowerForMin, 127))
+                        End If
+                    ElseIf rightDiff < -My.Settings.GMinDiff Then
+                        If _realRight <= -My.Settings.GMaxScrewDown Then
+                            .rightPower = 0 ' no more power down here, we are at the lower limit
+                        Else
+                            .rightPower = -Math.Min(127, ScaleValue(-rightDiff, My.Settings.GMinDiff, My.Settings.GMaxDiff, My.Settings.GPowerForMin, 127))
+                        End If
+                    Else
+                        .rightPower = 0
+                    End If
+                End If
+            End If
+
+            _inertiaLeft = _inertiaLeft * 0.9 + .leftPower * 0.1
+            _inertiaRight = _inertiaRight * 0.9 + .rightPower * 0.1
+
+            ' graph:
+            If Ggraph IsNot Nothing Then Ggraph.UpdateValue(_realLeft, _realRight, DesiredLeftScrew, DesiredRightScrew, .leftPower, .rightPower)
+
+            ' draw Attitude:
+            If Me.WindowState <> FormWindowState.Minimized AndAlso ckDontShow.Checked = False Then
+                With lbAttitude.CreateGraphics()
+                    Dim centerX As Integer = lbAttitude.Width / 2, centerY As Integer = lbAttitude.Height / 2
+                    Dim backcolor As Color = Color.White ' If(_realPitch > My.Settings.MaxPitch OrElse _realPitch < -My.Settings.MinPitch, Color.Red, Color.White)
+                    .Clear(backcolor)
+                    ' paint red squares if overflowing:
+                    If DesiredLeftScrew >= My.Settings.GMaxScrewUp Then .FillRectangle(New SolidBrush(Color.Red), 0, 0, centerX, centerY)
+                    If DesiredLeftScrew <= -My.Settings.GMaxScrewDown Then .FillRectangle(New SolidBrush(Color.Red), 0, centerY, centerX, centerY)
+                    If DesiredRightScrew >= My.Settings.GMaxScrewUp Then .FillRectangle(New SolidBrush(Color.Red), centerX, 0, centerX, centerY)
+                    If DesiredRightScrew <= -My.Settings.GMaxScrewDown Then .FillRectangle(New SolidBrush(Color.Red), centerX, centerY, centerX, centerY)
+                    ' draw center cross:
+                    .DrawLine(Pens.Green, centerX - 8, centerY, centerX + 8, centerY) : .DrawLine(Pens.Green, centerX, centerY - 8, centerX, centerY + 8)
+                    Dim racioY As Single = centerY / Math.Max(My.Settings.GMaxScrewUp, My.Settings.GMaxScrewDown)
+                    ' draw desired position line:
+                    .DrawLine(Pens.Black, 0, centerY - CInt(DesiredLeftScrew * racioY), lbAttitude.Width, centerY - CInt(DesiredRightScrew * racioY))
+                    ' draw real position line:
+                    .DrawLine(Pens.Black, 0, centerY - CInt(_realLeft * racioY), lbAttitude.Width, centerY - CInt(_realRight * racioY))
+                End With
+            End If
+#End Region
 
             '.abs = acP.Abs >= 1
             '.tc = acP.TC >= 1
@@ -218,30 +317,90 @@ Public Class frmCVJoy
                     ErrorAdd("UNEXPECTED SerialPort1.buf(0)=" & buf(0))
                     Return
                 End If
-                fromArduino.SetSerialData(buf)
+                fromArduino.SetSerialData(buf) ' this fills fromArduino with the data red from the Arduino !!
             Catch ex As Exception
                 ErrorAdd("SerialPort1.DataReceived  " & ex.Message)
+                Return
             End Try
+
+            'If Math.Abs(.RealPitch - _realPitch) / (Now.Subtract(_realPitchTime).Ticks / 1000000000) < My.Settings.GyroMaxSpeed Then ' faster movements than the fastest we can really move, lets say 1º per second, can only be garabage
+            _realLeft = _realLeft * 0.7 + (fromArduino.RealLeft - My.Settings.GLeftScrewCenter) * 0.3 + _inertiaLeft / 127 * 6
+            _realLeftTime = Now
+            'Else
+            '_realPitch += If(.RealPitch > _realPitch, My.Settings.GyroMaxSpeed, -My.Settings.GyroMaxSpeed) * (Now.Subtract(_realPitchTime).Ticks / 1000000000)
+            'End If
+            'If Math.Abs(.RealRoll - _realRoll) / (Now.Subtract(_realRollTime).Ticks / 1000000000) < My.Settings.GyroMaxSpeed Then ' faster movements than the fastest we can really move, lets say 1º per second, can only be garabage
+            _realRight = _realRight * 0.7 + (fromArduino.RealRight - My.Settings.GRightScrewCenter) * 0.3 + _inertiaRight / 127 * 6
+            _realRightTime = Now
+            'Else
+            '_realRoll += If(.RealRoll > _realRoll, My.Settings.GyroMaxSpeed, -My.Settings.GyroMaxSpeed) * (Now.Subtract(_realRollTime).Ticks / 1000000000)
+            'End If
         End If
 
+#Region "buttons:  emulate keystrokes  or  send as joystick buttons"
+        Static oldbutton1 As Boolean, oldbutton2 As TriState  ' button being pressed
         With fromArduino
-            If Math.Abs(.RealPitch - _realPitch) * 10000000 / Now.Subtract(_realPitchTime).Ticks < 1 Then ' faster movements than the fastest we can really move, lets say 1º per second, can only be garabage
-                _realPitch = .RealPitch
-                _realPitchTime = Now
-            End If
-            If Math.Abs(.RealRoll - _realRoll) * 10000000 / Now.Subtract(_realRollTime).Ticks < 1 Then ' faster movements than the fastest we can really move, lets say 1º per second, can only be garabage
-                _realRoll = .RealRoll
-                _realRollTime = Now
-            End If
-
-            ' send to VJoy:
-            If Joy IsNot Nothing Then
-                Dim j As New vJoyInterfaceWrap.vJoy.JoystickState
-                j.AxisX = If(Math.Abs(WheelPosition) > My.Settings.WheelDead, Math.Max(0, Math.Min(32767, WheelPosition + 16384)), 16384)  ' 0-16384-32767
-                j.AxisY = .AccelCorrected * 32 ' 0-32767
-                j.AxisZ = .BrakeCorrected * 32 ' 0-32767
-                j.AxisXRot = .ClutchCorrected * 32 ' 0-32767
-                j.Buttons = If(.button1, 1, 0) _
+            If .button1 Then ' if button1 is being pressed:      https://msdn.microsoft.com/en-us/library/system.windows.forms.sendkeys.send(v=vs.110).aspx
+                If oldbutton1 = False Then ' if we just started pressing button1:
+                    oldbutton1 = True
+                    oldbutton2 = TriState.UseDefault
+                End If
+                If .button2 Then
+                    If oldbutton2 <> TriState.True Then
+                        If bt2.Text > "" Then SendKeys.Send(bt2.Text)
+                        oldbutton2 = TriState.True
+                    End If
+                ElseIf .button3 Then
+                    If oldbutton2 <> TriState.True Then
+                        If bt3.Text > "" Then SendKeys.Send(bt3.Text)
+                        oldbutton2 = TriState.True
+                    End If
+                ElseIf .button4 Then
+                    If oldbutton2 <> TriState.True Then
+                        If bt4.Text > "" Then SendKeys.Send(bt4.Text)
+                        oldbutton2 = TriState.True
+                    End If
+                ElseIf .button5 Then
+                    If oldbutton2 <> TriState.True Then
+                        If bt5.Text > "" Then SendKeys.Send(bt5.Text)
+                        oldbutton2 = TriState.True
+                    End If
+                ElseIf .button6 Then
+                    If oldbutton2 <> TriState.True Then
+                        If bt6.Text > "" Then SendKeys.Send(bt6.Text)
+                        oldbutton2 = TriState.True
+                    End If
+                ElseIf .button7 Then
+                    If oldbutton2 <> TriState.True Then
+                        If bt7.Text > "" Then SendKeys.Send(bt7.Text)
+                        oldbutton2 = TriState.True
+                    End If
+                ElseIf .button8 Then
+                    If oldbutton2 <> TriState.True Then
+                        If bt8.Text > "" Then SendKeys.Send(bt8.Text)
+                        oldbutton2 = TriState.True
+                    End If
+                ElseIf .button9 Then
+                    If oldbutton2 <> TriState.True Then
+                        If bt9.Text > "" Then SendKeys.Send(bt9.Text)
+                        oldbutton2 = TriState.True
+                    End If
+                Else
+                    If oldbutton2 = TriState.True Then oldbutton2 = TriState.False
+                End If
+            Else ' if button1 is not being pressed now:
+                If oldbutton1 = True Then ' if we just released it:
+                    oldbutton1 = False
+                    If oldbutton2 = TriState.UseDefault Then SendKeys.Send("{ESC}") ' if we simply press and depress button1 (no other buttons) send ESC
+                Else ' normal, send buttons as joystick buttons:
+                    ' send to VJoy:
+                    If Joy IsNot Nothing Then
+                        Dim j As New vJoyInterfaceWrap.vJoy.JoystickState
+                        j.AxisX = If(Math.Abs(WheelPosition) > My.Settings.WheelDead, Math.Max(0, Math.Min(32767, WheelPosition + 16384)), 16384)  ' 0-16384-32767
+                        j.AxisY = .AccelCorrected * 32 ' 0-32767
+                        j.AxisZ = .BrakeCorrected * 32 ' 0-32767
+                        j.AxisXRot = .ClutchCorrected * 32 ' 0-32767
+                        j.Buttons = If(.button1, 1, 0) _
                             + If(.button2, 2, 0) _
                             + If(.button3, 4, 0) _
                             + If(.button4, 8, 0) _
@@ -258,13 +417,12 @@ Public Class frmCVJoy
                             + If(.gear6, 32768, 0) _
                             + If(.gearR, 65536, 0) _
                             + If(.handbrake, 131072, 0)
-                Joy.UpdateVJD(My.Settings.vJoyId, j)
+                        Joy.UpdateVJD(My.Settings.vJoyId, j)
+                    End If
+                End If
             End If
-            ' buttons that emulate keystrokes:
-            Static oldbutton1 As Boolean
-            If .button1 = True AndAlso oldbutton1 = False Then SendKeys.Send("{ESC}")
-            oldbutton1 = .button1
         End With
+#End Region
 
         ' show lights on screen:
         If Me.WindowState <> FormWindowState.Minimized AndAlso ckDontShow.Checked = False Then
@@ -307,26 +465,6 @@ Public Class frmCVJoy
                 bt7.BackColor = If(.button7, Color.Green, Color.White)
                 bt8.BackColor = If(.button8, Color.Green, Color.White)
                 bt9.BackColor = If(.button9, Color.Green, Color.White)
-                lbGyroPitch.Text = (_realPitch * 57.29).ToString("0") & "º"
-                lbGyroRoll.Text = (_realRoll * 57.29).ToString("0") & "º"
-            End With
-            ' draw realPitch:
-            With lbSimPitch.CreateGraphics()
-                Dim backcolor As Color = Color.White ' If(_realPitch > My.Settings.MaxPitch OrElse _realPitch < -My.Settings.MinPitch, Color.Red, Color.White)
-                .Clear(BackColor)
-                Dim y As Integer = lbSimPitch.Height * desiredPitch / 1.5 ' diagonal at 43º
-                .DrawLine(Pens.Blue, 0, CInt(lbSimPitch.Height / 2 + y), lbSimPitch.Width, CInt(lbSimPitch.Height / 2 - y))
-                y = lbSimPitch.Height * _realPitch / 1.5 ' diagonal at 43º
-                .DrawLine(Pens.Black, 0, CInt(lbSimPitch.Height / 2 + y), lbSimPitch.Width, CInt(lbSimPitch.Height / 2 - y))
-            End With
-            ' draw realRoll:
-            With lbSimRoll.CreateGraphics()
-                Dim backcolor As Color = Color.White 'If(_realRoll > My.Settings.MaxRoll OrElse _realRoll < -My.Settings.MaxRoll, Color.Red, Color.White)
-                .Clear(BackColor)
-                Dim y As Integer = lbSimRoll.Height * desiredRoll / 1.5 ' diagonal at 43º
-                .DrawLine(Pens.Blue, 0, CInt(lbSimRoll.Height / 2 - y), lbSimRoll.Width, CInt(lbSimRoll.Height / 2 + y))
-                y = lbSimRoll.Height * _realRoll / 1.5 ' diagonal at 43º
-                .DrawLine(Pens.Black, 0, CInt(lbSimRoll.Height / 2 - y), lbSimRoll.Width, CInt(lbSimRoll.Height / 2 + y))
             End With
         End If
 
@@ -343,63 +481,6 @@ Public Class frmCVJoy
         WheelPosition = 0 'My.Settings.WheelCenter = CInt(lbWheelPosNr.Text)
     End Sub
 
-
-
-    Public Sub PowerFromAngle(pDesiredPitch As Single, pDesiredRoll As Single, ByRef OUTLeftPower As SByte, ByRef OUTRightPower As SByte)
-        ' convert Desired Angles into Desired Screw Positions:
-        Dim DesiredLeftScrew As Single = -My.Settings.GZDistance * Math.Sin(pDesiredPitch) + My.Settings.GXDistance * Math.Sin(pDesiredRoll) ' in mm
-        Dim DesiredRightScrew As Single = -My.Settings.GZDistance * Math.Sin(pDesiredPitch) - My.Settings.GXDistance * Math.Sin(pDesiredRoll) ' in mm
-        If DesiredLeftScrew > My.Settings.GMaxScrewUp Then DesiredLeftScrew = My.Settings.GMaxScrewUp
-        If DesiredLeftScrew < -My.Settings.GMaxScrewDown Then DesiredLeftScrew = -My.Settings.GMaxScrewDown
-        If DesiredRightScrew > My.Settings.GMaxScrewUp Then DesiredRightScrew = My.Settings.GMaxScrewUp
-        If DesiredRightScrew < -My.Settings.GMaxScrewDown Then DesiredRightScrew = -My.Settings.GMaxScrewDown
-
-        ' convert Real Angles into Real Screw Positions:
-        Dim RealLeftScrew As Single = -My.Settings.GZDistance * Math.Sin(_realPitch) + My.Settings.GXDistance * Math.Sin(_realRoll) ' in mm
-        Dim RealRightScrew As Single = -My.Settings.GZDistance * Math.Sin(_realPitch) - My.Settings.GXDistance * Math.Sin(_realRoll) ' in mm
-
-        ' calculate power to apply on Left and Right Motors:
-        If RealLeftScrew > My.Settings.GMaxScrewUp _
-            OrElse RealLeftScrew < -My.Settings.GMaxScrewDown _
-            OrElse RealRightScrew > My.Settings.GMaxScrewUp _
-            OrElse RealRightScrew < -My.Settings.GMaxScrewDown _
-            OrElse Now.Subtract(_realPitchTime).TotalMilliseconds > 100 _
-            OrElse Now.Subtract(_realRollTime).TotalMilliseconds > 100 _
-            Then
-            OUTLeftPower = 0 ' SHIIIT, stop everything ! dont even try to correct it, wires or screws may be swaped !
-            OUTRightPower = 0 ' SHIIIT, stop everything ! dont even try to correct it, wires or screws may be swaped !
-        Else
-            If TestMode = Motor.Pitch Then
-                OUTLeftPower = TestValue
-                OUTRightPower = TestValue
-            ElseIf TestMode = Motor.Roll Then
-                OUTLeftPower = TestValue
-                OUTRightPower = -TestValue
-            Else ' Normal situation:
-                Dim LeftDiff As Single = DesiredLeftScrew - RealLeftScrew
-                If LeftDiff > My.Settings.GMinDiff Then
-                    OUTLeftPower = Math.Min(127, ScaleValue(LeftDiff, My.Settings.GMinDiff, My.Settings.GMaxDiff, My.Settings.GPowerForMin, 127))
-                ElseIf LeftDiff < -My.Settings.GMinDiff Then
-                    OUTLeftPower = -Math.Min(127, ScaleValue(-LeftDiff, My.Settings.GMinDiff, My.Settings.GMaxDiff, My.Settings.GPowerForMin, 127))
-                Else
-                    OUTLeftPower = 0
-                End If
-                Dim RightDiff As Single = DesiredRightScrew - RealRightScrew
-                If RightDiff > My.Settings.GMinDiff Then
-                    OUTRightPower = Math.Min(127, ScaleValue(RightDiff, My.Settings.GMinDiff, My.Settings.GMaxDiff, My.Settings.GPowerForMin, 127))
-                ElseIf RightDiff < -My.Settings.GMinDiff Then
-                    OUTRightPower = -Math.Min(127, ScaleValue(-RightDiff, My.Settings.GMinDiff, My.Settings.GMaxDiff, My.Settings.GPowerForMin, 127))
-                Else
-                    OUTRightPower = 0
-                End If
-            End If
-        End If
-
-        ' graph:
-        If Ggraph IsNot Nothing AndAlso Not Ggraph.chkPause.Checked Then Ggraph.UpdateValue(RealLeftScrew, RealRightScrew, DesiredLeftScrew, DesiredRightScrew, OUTLeftPower, OUTRightPower)
-
-        Return
-    End Sub
 
 
 
@@ -469,11 +550,11 @@ Public Class frmCVJoy
         Public BrakeCorrected As Integer
         Public ClutchCorrected As Integer
 
-        Public RealPitch As Single
-        Public RealRoll As Single
+        Public RealLeft As Integer
+        Public RealRight As Integer
 
 
-        Public Const PacketLen As Byte = 15
+        Public Const PacketLen As Byte = 13
 
         Public Sub SetSerialData(pSerialData As Byte())
             button9 = (pSerialData(0) And 1) <> 0
@@ -498,29 +579,10 @@ Public Class frmCVJoy
             pedalBreak = pSerialData(5) + pSerialData(6) * 256
             pedalClutch = pSerialData(7) + pSerialData(8) * 256
 
-            ' read data from IMU, in two's complement dword format ' https://en.wikipedia.org/wiki/Two%27s_complement
-            Dim accelX As Single = (pSerialData(9) And 32767) * 256 + pSerialData(10)
-            If pSerialData(9) > 127 Then accelX = -(65536 - accelX)
-            Dim accelY As Single = (pSerialData(11) And 32767) * 256 + pSerialData(12)
-            If pSerialData(11) > 127 Then accelY = -(65536 - accelY)
-            Dim accelZ As Single = (pSerialData(13) And 32767) * 256 + pSerialData(14)
-            If pSerialData(13) > 127 Then accelZ = -(65536 - accelZ)
-
-            ' pitch & roll from Accelerometer :
-            accelX += 0
-            accelY += -11469
-            accelZ += 0
-            'txtErrors.Text = Now.ToLongTimeString _
-            '    & vbCrLf & accelX.ToString("00000") & "            " & accelY.ToString("00000") & "            " & accelZ.ToString("00000") 
-            accelX /= 16384 ' in G
-            accelY /= 16384 ' in G
-            accelZ /= 16384 ' in G
-            RealPitch = -Math.Atan2(-accelX, Math.Sqrt(accelY ^ 2 + accelZ ^ 2)) + My.Settings.PitchOffset / 57.296  ' 57.296 = 180/PI
-            RealRoll = 3.1416 - Math.Atan2(-accelY, accelZ) + My.Settings.RollOffset / 57.296
-            'If RealPitch > 3.1416 Then RealPitch = RealPitch Mod 3.1416 - 3.1416 ' -180~180 degrees
-            'If RealPitch < -3.1416 Then RealPitch = RealPitch Mod 3.1416 + 3.1416 ' -180~180 degrees
-            'If RealRoll > 3.1416 Then RealRoll = RealRoll Mod 3.1416 - 3.1416 ' -180~180 degrees
-            'If RealRoll < -3.1416 Then RealRoll = RealRoll Mod 3.1416 + 3.1416 ' -180~180 degrees
+            ' TODO: 
+            Const soundSpeed As Single = 0.172922 ' 331300 + 606 * tempAirCelsius / 1000000 / 2   =   mm per microsecond , go and return  <=>  34cm =  0,002 seconds
+            RealLeft = CSng(pSerialData(9) + pSerialData(10) * 256) * soundSpeed
+            RealRight = CSng(pSerialData(11) + pSerialData(12) * 256) * soundSpeed
 
             ' corrected analogic values:
             AccelCorrected = ScaleValue(pedalAccel, My.Settings.AccelMin, My.Settings.AccelMax, 0, 1023, My.Settings.AccelGama)
@@ -542,7 +604,7 @@ Public Class frmCVJoy
 
     Public Sub ErrorAdd(pNewErrorDescr As String)
         If cbLog.SelectedIndex < 1 Then Return
-        txtErrors.Text &= vbCrLf & Now.ToLongTimeString & "  " & pNewErrorDescr
+        txtErrors.Text = Strings.Right(txtErrors.Text & vbCrLf & Now.ToLongTimeString & "  " & pNewErrorDescr, 32767)
         txtErrors.SelectionStart = 32767 : txtErrors.ScrollToCaret()
     End Sub
 
@@ -588,6 +650,14 @@ Public Class frmCVJoy
         My.Settings.ACJump = txtJump.Text.Replace("G", "")
         My.Settings.ACAccel = txtAccel.Text
         My.Settings.ACTurn = txtTurn.Text
+        My.Settings.bt2 = bt2.Text
+        My.Settings.bt3 = bt3.Text
+        My.Settings.bt4 = bt4.Text
+        My.Settings.bt5 = bt5.Text
+        My.Settings.bt6 = bt6.Text
+        My.Settings.bt7 = bt7.Text
+        My.Settings.bt8 = bt8.Text
+        My.Settings.bt9 = bt9.Text
         If btSave.Equals(sender) Then My.Settings.Save()
     End Sub
 

@@ -38,12 +38,6 @@
     <Setting Name="vJoyId" Type="System.Byte" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
-    <Setting Name="PitchOffset" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="RollOffset" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
     <Setting Name="AccelMin" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">290</Value>
     </Setting>
@@ -127,6 +121,36 @@
     </Setting>
     <Setting Name="GMaxScrewDown" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">65</Value>
+    </Setting>
+    <Setting Name="bt2" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="bt3" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="bt4" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="bt5" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="bt6" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="bt7" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="bt8" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="bt9" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="GLeftScrewCenter" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">350</Value>
+    </Setting>
+    <Setting Name="GRightScrewCenter" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">350</Value>
     </Setting>
   </Settings>
 </SettingsFile>
