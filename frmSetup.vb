@@ -11,15 +11,15 @@ Public Class frmSetup
         mouses = MouseRaw.GetMouses
         For n As Integer = 0 To mouses.Count - 1
             cbMouse.Items.Add($"Mouse {n + 1}   ({mouses(n)})")
-            If mouses(n) = My.Settings.MouseSteering Then cbMouse.SelectedIndex = n
+            If mouses(n) = SettingsMain.MouseSteering Then cbMouse.SelectedIndex = n
         Next
 
         cbComPort.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames())
-        cbComPort.SelectedValue = My.Settings.ArduinoComPort
+        cbComPort.SelectedValue = SettingsMain.ArduinoComPort
         If cbComPort.SelectedIndex = -1 AndAlso cbComPort.Items.Count = 1 Then cbComPort.SelectedIndex = 0
 
         For n As Integer = 1 To 16 : cbVjoy.Items.Add(n) : Next
-        cbVjoy.SelectedIndex = My.Settings.vJoyId - 1
+        cbVjoy.SelectedIndex = SettingsMain.vJoyId - 1
         If cbVjoy.SelectedIndex = -1 Then cbVjoy.SelectedIndex = 0
 
         For Each ct As Control In Me.Controls ' to automaticaly refresh the graphs when textboxes change values
@@ -29,45 +29,46 @@ Public Class frmSetup
 
         ShowSettings()
 
-        'Me.TopMost = True
         Me.Show(pOwner)
     End Sub
 
     Private Sub ShowSettings()
-        txtFreq.Text = My.Settings.RefreshRate
+        txtFreq.Text = SettingsMain.RefreshRate
 
-        txtWheelSensitivity.Text = (My.Settings.WheelSensitivity * 100).ToString("+0000;-0000")
-        txtWheelDead.Text = My.Settings.WheelDead
+        txtWheelSensitivity.Text = (SettingsMain.WheelSensitivity * 100).ToString("+0000;-0000")
+        txtWheelDead.Text = SettingsMain.WheelDead
 
-        txtWheelMinInput.Text = My.Settings.WheelMinInput
-        txtWheelPowerForMin.Text = My.Settings.WheelPowerForMin
-        txtWheelPowerGama.Text = My.Settings.WheelPowerGama
-        txtWheelPowerFactor.Text = My.Settings.WheelPowerFactor.ToString("0.00")
-        txtWheelDampFactor.Text = My.Settings.WheelDampFactor.ToString("+0000;-0000")
+        txtWheelMinInput.Text = SettingsMain.WheelMinInput
+        txtWheelPowerForMin.Text = SettingsMain.WheelPowerForMin
+        txtWheelPowerGama.Text = SettingsMain.WheelPowerGama
+        txtWheelPowerFactor.Text = SettingsMain.WheelPowerFactor.ToString("0.00")
+        txtWheelDampFactor.Text = SettingsMain.WheelDampFactor.ToString("+0000;-0000")
 
-        txtAccelMin.Text = My.Settings.AccelMin
-        txtAccelMax.Text = My.Settings.AccelMax
-        txtAccelGama.Text = My.Settings.AccelGama * 100
-        txtBrakeMin.Text = My.Settings.BrakeMin
-        txtBrakeMax.Text = My.Settings.BrakeMax
-        txtBrakeGama.Text = My.Settings.BrakeGama * 100
-        txtClutchMin.Text = My.Settings.ClutchMin
-        txtClutchMax.Text = My.Settings.ClutchMax
-        txtClutchGama.Text = My.Settings.ClutchGama * 100
+        txtAccelMin.Text = SettingsMain.AccelMin
+        txtAccelMax.Text = SettingsMain.AccelMax
+        txtAccelGama.Text = SettingsMain.AccelGama * 100
+        txtBrakeMin.Text = SettingsMain.BrakeMin
+        txtBrakeMax.Text = SettingsMain.BrakeMax
+        txtBrakeGama.Text = SettingsMain.BrakeGama * 100
+        txtClutchMin.Text = SettingsMain.ClutchMin
+        txtClutchMax.Text = SettingsMain.ClutchMax
+        txtClutchGama.Text = SettingsMain.ClutchGama * 100
 
-        txtSpeedMinInput.Text = My.Settings.ACMinSpeed
-        txtSpeedMin.Text = My.Settings.SpeedMinPower
-        txtSpeedGama.Text = My.Settings.SpeedGama
+        txtSpeedMin.Text = SettingsMain.SpeedMinPower
+        txtSpeedGama.Text = SettingsMain.SpeedGama
 
-        txtLeftScrewCenter.Text = My.Settings.GLeftScrewCenter
-        txtRightScrewCenter.Text = My.Settings.GRightScrewCenter
-        txtMaxScrewUp.Text = My.Settings.GMaxScrewUp
-        txtMaxScrewDown.Text = My.Settings.GMaxScrewDown
-        txtGMinDiff.Text = My.Settings.GMinDiff
-        txtGMaxDiff.Text = My.Settings.GMaxDiff
-        txtGPowerForMin.Text = My.Settings.GPowerForMin
-        txtGZDistance.Text = My.Settings.GZDistance
-        txtGXDistance.Text = My.Settings.GXDistance
+        txtLeftScrewCenter.Text = SettingsMain.GLeftScrewCenter
+        txtRightScrewCenter.Text = SettingsMain.GRightScrewCenter
+        txtMaxScrewUp.Text = SettingsMain.GMaxScrewUp
+        txtMaxScrewDown.Text = SettingsMain.GMaxScrewDown
+        txtGMinDiff.Text = SettingsMain.GMinDiff
+        txtGMaxDiff.Text = SettingsMain.GMaxDiff
+        txtGPowerForMin.Text = SettingsMain.GPowerForMin
+        txtGZDistance.Text = SettingsMain.GZDistance
+        txtGXDistance.Text = SettingsMain.GXDistance
+        txtUltrasonicDamper.Text = SettingsMain.UltrasonicDamper * 100
+        txtUltrasonicDamperOK.Text = SettingsMain.UltrasonicDamperOK * 100
+        txtGMotorEfficiency.Text = SettingsMain.GMotorEfficiency * 1000
 
         CalculateMaxAngleDown(Me, Nothing)
         CalculateMaxAngleUp(Me, Nothing)
@@ -96,7 +97,6 @@ Public Class frmSetup
         res &= ValidateNumber(txtClutchMax, 0, 1023, "Clutch Max")
         res &= ValidateNumber(txtClutchGama, 1, 999, "Clutch Gama")
 
-        res &= ValidateNumber(txtSpeedMinInput, 0, 255, "Speed Min Input")
         res &= ValidateNumber(txtSpeedGama, 0, 800, "Speed Power Gama")
         res &= ValidateNumber(txtSpeedMin, 0, 255, "Speed Power For Min")
 
@@ -127,51 +127,53 @@ Public Class frmSetup
 
     Private Function SaveSettings() As Boolean
         If txt_Validate(pShowMsg:=True) > "" Then Return False
-        If cbComPort.SelectedIndex >= 0 Then My.Settings.ArduinoComPort = cbComPort.SelectedItem
-        If cbVjoy.SelectedIndex >= 0 Then My.Settings.vJoyId = cbVjoy.SelectedItem
+        If cbComPort.SelectedIndex >= 0 Then SettingsMain.ArduinoComPort = cbComPort.SelectedItem
+        If cbVjoy.SelectedIndex >= 0 Then SettingsMain.vJoyId = cbVjoy.SelectedItem
         If cbMouse.SelectedIndex >= 0 Then
-            My.Settings.MouseSteering = mouses(cbMouse.SelectedIndex)
+            SettingsMain.MouseSteering = mouses(cbMouse.SelectedIndex)
         Else
-            My.Settings.MouseSteering = 0
+            SettingsMain.MouseSteering = 0
         End If
-        My.Settings.RefreshRate = txtFreq.Text
+        SettingsMain.RefreshRate = txtFreq.Text
 
-        My.Settings.WheelSensitivity = CInt(txtWheelSensitivity.Text) / 100
-        My.Settings.WheelDead = txtWheelDead.Text
+        SettingsMain.WheelSensitivity = CInt(txtWheelSensitivity.Text) / 100
+        SettingsMain.WheelDead = txtWheelDead.Text
 
-        My.Settings.WheelMinInput = txtWheelMinInput.Text
-        My.Settings.WheelPowerForMin = txtWheelPowerForMin.Text
-        My.Settings.WheelPowerGama = txtWheelPowerGama.Text
-        My.Settings.WheelPowerFactor = txtWheelPowerFactor.Text
-        My.Settings.WheelDampFactor = txtWheelDampFactor.Text
+        SettingsMain.WheelMinInput = txtWheelMinInput.Text
+        SettingsMain.WheelPowerForMin = txtWheelPowerForMin.Text
+        SettingsMain.WheelPowerGama = txtWheelPowerGama.Text
+        SettingsMain.WheelPowerFactor = txtWheelPowerFactor.Text
+        SettingsMain.WheelDampFactor = txtWheelDampFactor.Text
 
-        My.Settings.AccelMin = txtAccelMin.Text
-        My.Settings.AccelMax = txtAccelMax.Text
-        My.Settings.AccelGama = CInt(txtAccelGama.Text) / 100
-        My.Settings.BrakeMin = txtBrakeMin.Text
-        My.Settings.BrakeMax = txtBrakeMax.Text
-        My.Settings.BrakeGama = CInt(txtBrakeGama.Text) / 100
-        My.Settings.ClutchMin = txtClutchMin.Text
-        My.Settings.ClutchMax = txtClutchMax.Text
-        My.Settings.ClutchGama = CInt(txtClutchGama.Text) / 100
+        SettingsMain.AccelMin = txtAccelMin.Text
+        SettingsMain.AccelMax = txtAccelMax.Text
+        SettingsMain.AccelGama = CInt(txtAccelGama.Text) / 100
+        SettingsMain.BrakeMin = txtBrakeMin.Text
+        SettingsMain.BrakeMax = txtBrakeMax.Text
+        SettingsMain.BrakeGama = CInt(txtBrakeGama.Text) / 100
+        SettingsMain.ClutchMin = txtClutchMin.Text
+        SettingsMain.ClutchMax = txtClutchMax.Text
+        SettingsMain.ClutchGama = CInt(txtClutchGama.Text) / 100
 
-        My.Settings.ACMinSpeed = txtSpeedMinInput.Text
-        My.Settings.SpeedGama = txtSpeedGama.Text
-        My.Settings.SpeedMinPower = txtSpeedMin.Text
+        SettingsMain.SpeedGama = txtSpeedGama.Text
+        SettingsMain.SpeedMinPower = txtSpeedMin.Text
 
-        My.Settings.GLeftScrewCenter = txtLeftScrewCenter.Text
-        My.Settings.GRightScrewCenter = txtRightScrewCenter.Text
-        My.Settings.GMaxScrewUp = txtMaxScrewUp.Text
-        My.Settings.GMaxScrewDown = txtMaxScrewDown.Text
-        My.Settings.GMinDiff = txtGMinDiff.Text
-        My.Settings.GMaxDiff = txtGMaxDiff.Text
-        My.Settings.GPowerForMin = txtGPowerForMin.Text
-        My.Settings.GZDistance = txtGZDistance.Text
-        My.Settings.GXDistance = txtGXDistance.Text
+        SettingsMain.GLeftScrewCenter = txtLeftScrewCenter.Text
+        SettingsMain.GRightScrewCenter = txtRightScrewCenter.Text
+        SettingsMain.GMaxScrewUp = txtMaxScrewUp.Text
+        SettingsMain.GMaxScrewDown = txtMaxScrewDown.Text
+        SettingsMain.GMinDiff = txtGMinDiff.Text
+        SettingsMain.GMaxDiff = txtGMaxDiff.Text
+        SettingsMain.GPowerForMin = txtGPowerForMin.Text
+        SettingsMain.GZDistance = txtGZDistance.Text
+        SettingsMain.GXDistance = txtGXDistance.Text
+        SettingsMain.UltrasonicDamper = CInt(txtUltrasonicDamper.Text) / 100
+        SettingsMain.UltrasonicDamperOK = CInt(txtUltrasonicDamperOK.Text) / 100
+        SettingsMain.GMotorEfficiency = CInt(txtGMotorEfficiency.Text) / 1000
 
-        My.Settings.Save()
+        SettingsMain.SaveSettingstoFile()
 
-        _FrmCVJoy.Timer1.Interval = 1000 / My.Settings.RefreshRate
+        _FrmCVJoy.Timer1.Interval = 1000 / SettingsMain.RefreshRate
         Return True
     End Function
 
@@ -207,7 +209,7 @@ Public Class frmSetup
     End Sub
 
     Private Sub btDefaults_Click(sender As Object, e As EventArgs) Handles btDefaults.Click
-        My.Settings.Reset()
+        SettingsMain = New clSettingsMain
         ShowSettings()
     End Sub
 

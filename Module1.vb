@@ -1,5 +1,8 @@
 ﻿Module Module1
 
+    Public SettingsMain As New clSettingsMain
+    Public Game As clGame
+
     Public graph As ucControlGraph, Ggraph As ucControlGGraph
     'Public timeStart As DateTime, timeSent As DateTime, timeRead As DateTime
 

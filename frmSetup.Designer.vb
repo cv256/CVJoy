@@ -85,9 +85,6 @@ Partial Class frmSetup
         Me.btAccelGraph = New System.Windows.Forms.Button()
         Me.btBrakeGraph = New System.Windows.Forms.Button()
         Me.btClutchGraph = New System.Windows.Forms.Button()
-        Me.Label42 = New System.Windows.Forms.Label()
-        Me.txtSpeedMinInput = New System.Windows.Forms.MaskedTextBox()
-        Me.Label43 = New System.Windows.Forms.Label()
         Me.Label44 = New System.Windows.Forms.Label()
         Me.btWheelGraph = New System.Windows.Forms.Button()
         Me.Label45 = New System.Windows.Forms.Label()
@@ -133,6 +130,14 @@ Partial Class frmSetup
         Me.txtRightScrewCenter = New System.Windows.Forms.MaskedTextBox()
         Me.UcControlGGraph1 = New CVJoy.ucControlGGraph()
         Me.UcControlGraph1 = New CVJoy.ucControlGraph()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.txtUltrasonicDamper = New System.Windows.Forms.MaskedTextBox()
+        Me.Label19 = New System.Windows.Forms.Label()
+        Me.Label20 = New System.Windows.Forms.Label()
+        Me.txtUltrasonicDamperOK = New System.Windows.Forms.MaskedTextBox()
+        Me.lbGMotorEfficiency = New System.Windows.Forms.Label()
+        Me.txtGMotorEfficiency = New System.Windows.Forms.MaskedTextBox()
         Me.SuspendLayout()
         '
         'Label3
@@ -812,37 +817,6 @@ Partial Class frmSetup
         Me.btClutchGraph.Text = "Graph"
         Me.btClutchGraph.UseVisualStyleBackColor = False
         '
-        'Label42
-        '
-        Me.Label42.AutoSize = True
-        Me.Label42.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label42.Location = New System.Drawing.Point(89, 257)
-        Me.Label42.Name = "Label42"
-        Me.Label42.Size = New System.Drawing.Size(27, 12)
-        Me.Label42.TabIndex = 187
-        Me.Label42.Text = "Km/h"
-        '
-        'txtSpeedMinInput
-        '
-        Me.txtSpeedMinInput.AllowPromptAsInput = False
-        Me.txtSpeedMinInput.BeepOnError = True
-        Me.txtSpeedMinInput.HidePromptOnLeave = True
-        Me.txtSpeedMinInput.Location = New System.Drawing.Point(61, 252)
-        Me.txtSpeedMinInput.Mask = "#990"
-        Me.txtSpeedMinInput.Name = "txtSpeedMinInput"
-        Me.txtSpeedMinInput.Size = New System.Drawing.Size(25, 20)
-        Me.txtSpeedMinInput.TabIndex = 186
-        Me.txtSpeedMinInput.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'Label43
-        '
-        Me.Label43.AutoSize = True
-        Me.Label43.Location = New System.Drawing.Point(4, 256)
-        Me.Label43.Name = "Label43"
-        Me.Label43.Size = New System.Drawing.Size(54, 13)
-        Me.Label43.TabIndex = 185
-        Me.Label43.Text = "Min.Input:"
-        '
         'Label44
         '
         Me.Label44.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -1095,7 +1069,7 @@ Partial Class frmSetup
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label64.BackColor = System.Drawing.SystemColors.Info
         Me.Label64.ForeColor = System.Drawing.SystemColors.InfoText
-        Me.Label64.Location = New System.Drawing.Point(2, 389)
+        Me.Label64.Location = New System.Drawing.Point(2, 391)
         Me.Label64.Name = "Label64"
         Me.Label64.Size = New System.Drawing.Size(767, 2)
         Me.Label64.TabIndex = 216
@@ -1315,13 +1289,104 @@ Partial Class frmSetup
         Me.UcControlGraph1.TabStop = False
         Me.UcControlGraph1.Visible = False
         '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Location = New System.Drawing.Point(381, 371)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(13, 12)
+        Me.Label8.TabIndex = 240
+        Me.Label8.Text = "%"
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(256, 371)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(95, 13)
+        Me.Label11.TabIndex = 239
+        Me.Label11.Text = "Ultrasonic damper:"
+        '
+        'txtUltrasonicDamper
+        '
+        Me.txtUltrasonicDamper.AsciiOnly = True
+        Me.txtUltrasonicDamper.BeepOnError = True
+        Me.txtUltrasonicDamper.HidePromptOnLeave = True
+        Me.txtUltrasonicDamper.Location = New System.Drawing.Point(353, 368)
+        Me.txtUltrasonicDamper.Mask = "90"
+        Me.txtUltrasonicDamper.Name = "txtUltrasonicDamper"
+        Me.txtUltrasonicDamper.Size = New System.Drawing.Size(25, 20)
+        Me.txtUltrasonicDamper.TabIndex = 238
+        Me.txtUltrasonicDamper.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label19.Location = New System.Drawing.Point(542, 371)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(13, 12)
+        Me.Label19.TabIndex = 243
+        Me.Label19.Text = "%"
+        '
+        'Label20
+        '
+        Me.Label20.AutoSize = True
+        Me.Label20.Location = New System.Drawing.Point(413, 371)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(98, 13)
+        Me.Label20.TabIndex = 242
+        Me.Label20.Text = "Lag Compensation:"
+        '
+        'txtUltrasonicDamperOK
+        '
+        Me.txtUltrasonicDamperOK.AsciiOnly = True
+        Me.txtUltrasonicDamperOK.BeepOnError = True
+        Me.txtUltrasonicDamperOK.HidePromptOnLeave = True
+        Me.txtUltrasonicDamperOK.Location = New System.Drawing.Point(514, 368)
+        Me.txtUltrasonicDamperOK.Mask = "90"
+        Me.txtUltrasonicDamperOK.Name = "txtUltrasonicDamperOK"
+        Me.txtUltrasonicDamperOK.Size = New System.Drawing.Size(25, 20)
+        Me.txtUltrasonicDamperOK.TabIndex = 241
+        Me.txtUltrasonicDamperOK.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'lbGMotorEfficiency
+        '
+        Me.lbGMotorEfficiency.AutoSize = True
+        Me.lbGMotorEfficiency.Location = New System.Drawing.Point(9, 370)
+        Me.lbGMotorEfficiency.Name = "lbGMotorEfficiency"
+        Me.lbGMotorEfficiency.Size = New System.Drawing.Size(86, 13)
+        Me.lbGMotorEfficiency.TabIndex = 245
+        Me.lbGMotorEfficiency.Text = "Motor Efficiency:"
+        '
+        'txtGMotorEfficiency
+        '
+        Me.txtGMotorEfficiency.AsciiOnly = True
+        Me.txtGMotorEfficiency.BeepOnError = True
+        Me.txtGMotorEfficiency.HidePromptOnLeave = True
+        Me.txtGMotorEfficiency.Location = New System.Drawing.Point(106, 367)
+        Me.txtGMotorEfficiency.Mask = "990"
+        Me.txtGMotorEfficiency.Name = "txtGMotorEfficiency"
+        Me.txtGMotorEfficiency.Size = New System.Drawing.Size(25, 20)
+        Me.txtGMotorEfficiency.TabIndex = 244
+        Me.txtGMotorEfficiency.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
         'frmSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(770, 421)
-        Me.Controls.Add(Me.UcControlGGraph1)
         Me.Controls.Add(Me.UcControlGraph1)
+        Me.Controls.Add(Me.UcControlGGraph1)
+        Me.Controls.Add(Me.lbGMotorEfficiency)
+        Me.Controls.Add(Me.txtGMotorEfficiency)
+        Me.Controls.Add(Me.Label19)
+        Me.Controls.Add(Me.Label20)
+        Me.Controls.Add(Me.txtUltrasonicDamperOK)
+        Me.Controls.Add(Me.Label8)
+        Me.Controls.Add(Me.Label11)
+        Me.Controls.Add(Me.txtUltrasonicDamper)
         Me.Controls.Add(Me.Label12)
         Me.Controls.Add(Me.txtRightScrewCenter)
         Me.Controls.Add(Me.Label9)
@@ -1366,9 +1431,6 @@ Partial Class frmSetup
         Me.Controls.Add(Me.Label45)
         Me.Controls.Add(Me.btWheelGraph)
         Me.Controls.Add(Me.Label44)
-        Me.Controls.Add(Me.Label42)
-        Me.Controls.Add(Me.txtSpeedMinInput)
-        Me.Controls.Add(Me.Label43)
         Me.Controls.Add(Me.btClutchGraph)
         Me.Controls.Add(Me.btBrakeGraph)
         Me.Controls.Add(Me.btAccelGraph)
@@ -1502,9 +1564,6 @@ Partial Class frmSetup
     Friend WithEvents btBrakeGraph As Button
     Friend WithEvents btClutchGraph As Button
     Friend WithEvents UcControlGraph1 As ucControlGraph
-    Friend WithEvents Label42 As Label
-    Friend WithEvents txtSpeedMinInput As MaskedTextBox
-    Friend WithEvents Label43 As Label
     Friend WithEvents Label44 As Label
     Friend WithEvents btWheelGraph As Button
     Friend WithEvents Label45 As Label
@@ -1549,4 +1608,12 @@ Partial Class frmSetup
     Friend WithEvents txtLeftScrewCenter As MaskedTextBox
     Friend WithEvents Label12 As Label
     Friend WithEvents txtRightScrewCenter As MaskedTextBox
+    Friend WithEvents Label8 As Label
+    Friend WithEvents Label11 As Label
+    Friend WithEvents txtUltrasonicDamper As MaskedTextBox
+    Friend WithEvents Label19 As Label
+    Friend WithEvents Label20 As Label
+    Friend WithEvents txtUltrasonicDamperOK As MaskedTextBox
+    Friend WithEvents lbGMotorEfficiency As Label
+    Friend WithEvents txtGMotorEfficiency As MaskedTextBox
 End Class

@@ -34,7 +34,7 @@
                 Single.TryParse(frmSetup.txtWheelPowerFactor.Text, .Factor)
             ElseIf ParentButton Is frmSetup.btSpeedGraph Then
                 .Range = 255
-                Integer.TryParse(frmSetup.txtSpeedMinInput.Text, .MinInput)
+                Integer.TryParse(1, .MinInput) ' Game.txtSpeedMinInput.Text
                 Integer.TryParse(frmSetup.txtSpeedMin.Text, .MinPower)
                 Integer.TryParse(frmSetup.txtSpeedGama.Text, .Gama)
             End If
