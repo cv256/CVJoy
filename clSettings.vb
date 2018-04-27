@@ -37,21 +37,57 @@
     Public GPowerForMin As Byte = 50
     Public GMinDiff As Integer = 3
     Public GMaxDiff As Integer = 45
-    Public UltrasonicDamper As Single = 0.4
-    Public UltrasonicDamperOK As Single = 0.8
-    Public GMotorEfficiency As Single = 0.03
+    Private _ultrasonicDamper As Single = 0.4
+    Private _gMotorEfficiency As Single = 0.03
 
     Public Overrides Function FileName() As String
         Return "Settings.INI"
     End Function
+
+    Public Sub New()
+        Calculate_GMotorEfficiencyOK()
+    End Sub
+
+    Public Property GMotorEfficiency As Single
+        Get
+            Return _gMotorEfficiency
+        End Get
+        Set(value As Single)
+            _gMotorEfficiency = value
+            Calculate_GMotorEfficiencyOK()
+        End Set
+    End Property
+    Public Property UltrasonicDamper As Single
+        Get
+            Return _ultrasonicDamper
+        End Get
+        Set(value As Single)
+            _ultrasonicDamper = value
+            Calculate_GMotorEfficiencyOK()
+        End Set
+    End Property
+
+    Private _gMotorEfficiencyOK As Single
+    Private Sub Calculate_GMotorEfficiencyOK()
+        _gMotorEfficiencyOK = GMotorEfficiency * UltrasonicDamper / (1 - UltrasonicDamper)
+    End Sub
+    Public ReadOnly Property GMotorEfficiencyOK As Single
+        Get
+            Return _gMotorEfficiencyOK
+        End Get
+    End Property
+
 End Class
 
 
 Public MustInherit Class clSettings
     Public Sub SaveSettingstoFile()
         Dim res As String = ""
-        For Each p As Reflection.FieldInfo In Me.GetType.GetFields
+        For Each p As Reflection.FieldInfo In Me.GetType.GetFields()
             res &= p.Name & "=" & p.GetValue(Me) & vbCrLf
+        Next
+        For Each p As Reflection.PropertyInfo In Me.GetType.GetProperties()
+            If p.CanRead AndAlso p.CanWrite Then res &= p.Name & "=" & p.GetValue(Me) & vbCrLf
         Next
         If Not IO.Directory.Exists(Path) Then
             IO.Directory.CreateDirectory(Path)
@@ -63,11 +99,19 @@ Public MustInherit Class clSettings
         Try
             If Not IO.Directory.Exists(Path) Then IO.Directory.CreateDirectory(Path)
             Dim res As String() = IO.File.ReadAllLines(Path() & FileName())
-            For Each p As Reflection.FieldInfo In Me.GetType.GetFields
+            For Each p As Reflection.FieldInfo In Me.GetType.GetFields()
                 Dim v As String = res.Where(Function(f) f.ToUpper.StartsWith(p.Name.ToUpper & "=")).FirstOrDefault
                 If v Is Nothing Then Continue For
                 v = v.Substring(Len(p.Name) + 1)
                 p.SetValue(Me, Convert.ChangeType(v, p.FieldType))
+            Next
+            For Each p As Reflection.PropertyInfo In Me.GetType.GetProperties()
+                If p.CanRead AndAlso p.CanWrite Then
+                    Dim v As String = res.Where(Function(f) f.ToUpper.StartsWith(p.Name.ToUpper & "=")).FirstOrDefault
+                If v Is Nothing Then Continue For
+                v = v.Substring(Len(p.Name) + 1)
+                    p.SetValue(Me, Convert.ChangeType(v, p.PropertyType))
+                End If
             Next
         Catch ex As Exception
 

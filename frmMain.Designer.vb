@@ -60,6 +60,9 @@ Partial Class frmCVJoy
         Me.btGameSetup = New System.Windows.Forms.Button()
         Me.UcButtons1 = New CVJoy.ucButtons()
         Me.cbGames = New System.Windows.Forms.ComboBox()
+        Me.lbTemperature = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'btArduinoStart
@@ -476,12 +479,45 @@ Partial Class frmCVJoy
         Me.cbGames.Size = New System.Drawing.Size(199, 21)
         Me.cbGames.TabIndex = 133
         '
+        'lbTemperature
+        '
+        Me.lbTemperature.BackColor = System.Drawing.Color.Transparent
+        Me.lbTemperature.Location = New System.Drawing.Point(279, 64)
+        Me.lbTemperature.Name = "lbTemperature"
+        Me.lbTemperature.Size = New System.Drawing.Size(23, 13)
+        Me.lbTemperature.TabIndex = 135
+        Me.lbTemperature.Text = "9.9"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.BackColor = System.Drawing.Color.Transparent
+        Me.Label2.Location = New System.Drawing.Point(229, 64)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(54, 13)
+        Me.Label2.TabIndex = 134
+        Me.Label2.Text = "Overheat:"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.BackColor = System.Drawing.Color.Transparent
+        Me.Label3.Location = New System.Drawing.Point(298, 64)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(23, 13)
+        Me.Label3.TabIndex = 136
+        Me.Label3.Text = "mm"
+        '
         'frmCVJoy
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ClientSize = New System.Drawing.Size(521, 315)
+        Me.Controls.Add(Me.lbAttitude)
+        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.lbTemperature)
+        Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.cbGames)
         Me.Controls.Add(Me.UcButtons1)
         Me.Controls.Add(Me.btGameSetup)
@@ -501,7 +537,6 @@ Partial Class frmCVJoy
         Me.Controls.Add(Me.lbWheelPos)
         Me.Controls.Add(Me.txtErrors)
         Me.Controls.Add(Me.btSetup)
-        Me.Controls.Add(Me.lbAttitude)
         Me.Controls.Add(Me.lbHandbrake)
         Me.Controls.Add(Me.GR)
         Me.Controls.Add(Me.G6)
@@ -561,4 +596,7 @@ Partial Class frmCVJoy
     Friend WithEvents btGameSetup As Button
     Friend WithEvents UcButtons1 As ucButtons
     Friend WithEvents cbGames As ComboBox
+    Friend WithEvents lbTemperature As Label
+    Friend WithEvents Label2 As Label
+    Friend WithEvents Label3 As Label
 End Class

@@ -67,7 +67,6 @@ Public Class frmSetup
         txtGZDistance.Text = SettingsMain.GZDistance
         txtGXDistance.Text = SettingsMain.GXDistance
         txtUltrasonicDamper.Text = SettingsMain.UltrasonicDamper * 100
-        txtUltrasonicDamperOK.Text = SettingsMain.UltrasonicDamperOK * 100
         txtGMotorEfficiency.Text = SettingsMain.GMotorEfficiency * 1000
 
         CalculateMaxAngleDown(Me, Nothing)
@@ -168,7 +167,6 @@ Public Class frmSetup
         SettingsMain.GZDistance = txtGZDistance.Text
         SettingsMain.GXDistance = txtGXDistance.Text
         SettingsMain.UltrasonicDamper = CInt(txtUltrasonicDamper.Text) / 100
-        SettingsMain.UltrasonicDamperOK = CInt(txtUltrasonicDamperOK.Text) / 100
         SettingsMain.GMotorEfficiency = CInt(txtGMotorEfficiency.Text) / 1000
 
         SettingsMain.SaveSettingstoFile()
@@ -193,10 +191,10 @@ Public Class frmSetup
                 .TestValue = CInt(txtWheelPowerForMin.Text) * If(sender.Equals(btTestWheelLeft), 1, -1)
                 .TestMode = frmCVJoy.Motor.Wheel
             ElseIf sender.Equals(btTestGDown) OrElse sender.Equals(btTestGUp) Then
-                .TestValue = CInt(txtGPowerForMin.Text) * If(sender.Equals(btTestGDown), 1, -1) ' positive = up (left down, right down)
+                .TestValue = CInt(txtGMinDiff.Text) * If(sender.Equals(btTestGDown), 1, -1) ' positive = up (left down, right down)
                 .TestMode = frmCVJoy.Motor.Pitch
             ElseIf sender.Equals(btTestGLeft) OrElse sender.Equals(btTestGRight) Then
-                .TestValue = CInt(txtGPowerForMin.Text) * If(sender.Equals(btTestGLeft), -1, 1) ' positive = turn right (left up, right down)
+                .TestValue = CInt(txtGMinDiff.Text) * If(sender.Equals(btTestGLeft), -1, 1) ' positive = turn right (left up, right down)
                 .TestMode = frmCVJoy.Motor.Roll
             ElseIf sender.Equals(btTestSpeed) Then
                 .TestValue = CInt(txtSpeedMin.Text)

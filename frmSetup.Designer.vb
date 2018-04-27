@@ -133,9 +133,6 @@ Partial Class frmSetup
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.txtUltrasonicDamper = New System.Windows.Forms.MaskedTextBox()
-        Me.Label19 = New System.Windows.Forms.Label()
-        Me.Label20 = New System.Windows.Forms.Label()
-        Me.txtUltrasonicDamperOK = New System.Windows.Forms.MaskedTextBox()
         Me.lbGMotorEfficiency = New System.Windows.Forms.Label()
         Me.txtGMotorEfficiency = New System.Windows.Forms.MaskedTextBox()
         Me.SuspendLayout()
@@ -1320,37 +1317,6 @@ Partial Class frmSetup
         Me.txtUltrasonicDamper.TabIndex = 238
         Me.txtUltrasonicDamper.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
-        'Label19
-        '
-        Me.Label19.AutoSize = True
-        Me.Label19.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label19.Location = New System.Drawing.Point(542, 371)
-        Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(13, 12)
-        Me.Label19.TabIndex = 243
-        Me.Label19.Text = "%"
-        '
-        'Label20
-        '
-        Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(413, 371)
-        Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(98, 13)
-        Me.Label20.TabIndex = 242
-        Me.Label20.Text = "Lag Compensation:"
-        '
-        'txtUltrasonicDamperOK
-        '
-        Me.txtUltrasonicDamperOK.AsciiOnly = True
-        Me.txtUltrasonicDamperOK.BeepOnError = True
-        Me.txtUltrasonicDamperOK.HidePromptOnLeave = True
-        Me.txtUltrasonicDamperOK.Location = New System.Drawing.Point(514, 368)
-        Me.txtUltrasonicDamperOK.Mask = "90"
-        Me.txtUltrasonicDamperOK.Name = "txtUltrasonicDamperOK"
-        Me.txtUltrasonicDamperOK.Size = New System.Drawing.Size(25, 20)
-        Me.txtUltrasonicDamperOK.TabIndex = 241
-        Me.txtUltrasonicDamperOK.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
         'lbGMotorEfficiency
         '
         Me.lbGMotorEfficiency.AutoSize = True
@@ -1381,9 +1347,6 @@ Partial Class frmSetup
         Me.Controls.Add(Me.UcControlGGraph1)
         Me.Controls.Add(Me.lbGMotorEfficiency)
         Me.Controls.Add(Me.txtGMotorEfficiency)
-        Me.Controls.Add(Me.Label19)
-        Me.Controls.Add(Me.Label20)
-        Me.Controls.Add(Me.txtUltrasonicDamperOK)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.Label11)
         Me.Controls.Add(Me.txtUltrasonicDamper)
@@ -1611,9 +1574,6 @@ Partial Class frmSetup
     Friend WithEvents Label8 As Label
     Friend WithEvents Label11 As Label
     Friend WithEvents txtUltrasonicDamper As MaskedTextBox
-    Friend WithEvents Label19 As Label
-    Friend WithEvents Label20 As Label
-    Friend WithEvents txtUltrasonicDamperOK As MaskedTextBox
     Friend WithEvents lbGMotorEfficiency As Label
     Friend WithEvents txtGMotorEfficiency As MaskedTextBox
 End Class

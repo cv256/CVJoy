@@ -87,8 +87,8 @@ Public Class GameAC
         End If
 
         ' Set Output :
-        res.Pitch = acP.Pitch * Me.Pitch + (acP.AccG(2) ^ 2 * Math.Sign(acP.AccG(2)) + acP.AccG(2) * 0.4) / 2 * Me.Accel ' everything in Radians
-        res.Roll = -acP.Roll * Me.Roll + (acP.AccG(0) ^ 2 * Math.Sign(acP.AccG(0)) + acP.AccG(0) * 0.4) / 2 * Me.Turn ' everything in Radians
+        res.Pitch = acP.Pitch * Me.Pitch + acP.AccG(2) * Me.Accel ' (acP.AccG(2) ^ 2 * Math.Sign(acP.AccG(2)) + acP.AccG(2) * 0.4) / 2 * Me.Accel ' everything in Radians
+        res.Roll = -acP.Roll * Me.Roll + acP.AccG(0) * Me.Turn ' (acP.AccG(0) ^ 2 * Math.Sign(acP.AccG(0)) + acP.AccG(0) * 0.4) / 2 * Me.Turn ' everything in Radians
         res.Wind = FFWind(SpeedKmh:=acP.SpeedKmh, Jump:=acP.AccG(1))
         res.LedTop = Math.Min(acP.WheelSlip(0), acP.WheelSlip(1)) > Me.Slip
         res.LedBottom = Math.Min(acP.WheelSlip(2), acP.WheelSlip(3)) > Me.Slip
