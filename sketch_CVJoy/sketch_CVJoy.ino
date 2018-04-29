@@ -20,7 +20,7 @@
 // 0x06       256          122.55
 // 0x07       1024          30.64
 
-#define packetLen 6 // must be equal to CVJoyAc.SerialSend.PacketLen
+#define packetLen 7 // must be equal to CVJoyAc.SerialSend.PacketLen
 
 
 // external hardware -> arduino :
@@ -68,7 +68,8 @@
 #define rightMotorDir1  48
 #define rightMotorDir2  49
 
-#define windMotorPower  24
+#define windMotorPower  46
+#define shakeMotorPower  24
 
 
 //unsigned long lastLoop;
@@ -77,10 +78,12 @@ unsigned long lastSerialRecv;
 unsigned long dimmerLeftDelay;
 unsigned long dimmerRightDelay;
 unsigned long dimmerWindDelay;
+unsigned long dimmerShakeDelay;
 
 char leftMotorPowerSpeed;// -127 to 127
 char rightMotorPowerSpeed;// -127 to 127
 byte windMotorPowerSpeed;// 0-255
+byte shakeMotorPowerSpeed;// 0-255
 
 
 
@@ -134,6 +137,7 @@ void setup()
   pinMode(rightMotorDir1, OUTPUT);
   pinMode(rightMotorDir2, OUTPUT);
   pinMode(windMotorPower, OUTPUT);
+  pinMode(shakeMotorPower, OUTPUT);
   // preparing the mains Dimmers :
   attachInterrupt(digitalPinToInterrupt(zeroCrossDetector), zero_cross_ISR, RISING);
   Timer1.initialize(100); // 100 microseconds = 10KHz = 200 times each 50Hz
@@ -149,15 +153,16 @@ void loop()
 
   //react to serial commands received:
   if (Serial.available() == packetLen) {
-    byte wheelMotorPowerDir = Serial.read();
+    byte wheelMotorPowerDir = Serial.read(); // 0
     if (wheelMotorPowerDir >= 254) { // checkdigit + wheelMotorPowerDir
       lastSerialRecv = millis();
-      byte wheelMotorPowerSpeed = Serial.read();
-      leftMotorPowerSpeed = Serial.read() - 128; //pitchDesiredPos
-      rightMotorPowerSpeed = Serial.read() - 128; //rollDesiredPos
-      windMotorPowerSpeed = Serial.read();
+      byte wheelMotorPowerSpeed = Serial.read(); // 1
+      leftMotorPowerSpeed = Serial.read() - 128; // 2 pitchDesiredPos
+      rightMotorPowerSpeed = Serial.read() - 128; // 3 rollDesiredPos
+      windMotorPowerSpeed = Serial.read(); // 4
+      shakeMotorPowerSpeed = Serial.read(); // 5
       //leds:
-      byte tmpByte = Serial.read();
+      byte tmpByte = Serial.read(); // 6
       if (tmpByte & 1) {
         digitalWrite(rpm1, HIGH);
       } else {
@@ -247,10 +252,12 @@ void loop()
     digitalWrite(leftMotorPower, LOW);
     digitalWrite(rightMotorPower, LOW);
     digitalWrite(windMotorPower, LOW);
+    digitalWrite(shakeMotorPower, LOW);
     analogWrite(wheelMotorPower, 0);
     leftMotorPowerSpeed = 0;
     rightMotorPowerSpeed = 0;
     windMotorPowerSpeed = 0;
+    shakeMotorPowerSpeed = 0;
   }
 
 } //...loop
@@ -316,6 +323,19 @@ void zero_cross_ISR()
     }
   }
 
+  if (shakeMotorPowerSpeed == 0) { // zero:
+    dimmerShakeDelay = 0;
+    digitalWrite(shakeMotorPower, LOW);
+  } else {
+    if (shakeMotorPowerSpeed == 255) { // full power:
+      dimmerShakeDelay = 0;
+      digitalWrite(shakeMotorPower, HIGH);
+    } else { // dim:
+      dimmerShakeDelay = micros() + (255 - shakeMotorPowerSpeed) * 35;
+      digitalWrite(shakeMotorPower, LOW);
+    }
+  }
+  
 }
 
 
@@ -341,6 +361,13 @@ void timerIsr() {
     if (micros() >= dimmerWindDelay) {
       digitalWrite(windMotorPower, HIGH);
       dimmerWindDelay = 0;
+    }
+  }
+  
+  if (dimmerShakeDelay != 0) {
+    if (micros() >= dimmerShakeDelay) {
+      digitalWrite(shakeMotorPower, HIGH);
+      dimmerShakeDelay = 0;
     }
   }
 

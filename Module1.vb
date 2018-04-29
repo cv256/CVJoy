@@ -38,9 +38,11 @@
 
 
     Public Function ScaleValue(pValue As Single, pFromMin As Integer, pFromMax As Integer, pToMin As Integer, pToMax As Integer) As Integer
+        If pValue = 0 Then Return 0
         Return Math.Min(pToMax, Math.Max(pToMin, (pValue - pFromMin) * pToMax / (pFromMax - pFromMin) + pToMin))
     End Function
     Public Function ScaleValue(pValue As Single, pFromMin As Integer, pFromMax As Integer, pToMin As Integer, pToMax As Integer, pGama As Single) As Integer
+        If pValue = 0 Then Return 0
         Return (ScaleValue(pValue, pFromMin, pFromMax, pToMin, pToMax) / pToMax) ^ pGama * pToMax
     End Function
 

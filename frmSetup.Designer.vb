@@ -73,12 +73,12 @@ Partial Class frmSetup
         Me.txtWheelPowerFactor = New System.Windows.Forms.MaskedTextBox()
         Me.Label32 = New System.Windows.Forms.Label()
         Me.Label37 = New System.Windows.Forms.Label()
-        Me.txtSpeedGama = New System.Windows.Forms.MaskedTextBox()
+        Me.txtWindGama = New System.Windows.Forms.MaskedTextBox()
         Me.Label38 = New System.Windows.Forms.Label()
         Me.Label39 = New System.Windows.Forms.Label()
-        Me.txtSpeedMin = New System.Windows.Forms.MaskedTextBox()
+        Me.txtWindMin = New System.Windows.Forms.MaskedTextBox()
         Me.Label40 = New System.Windows.Forms.Label()
-        Me.btTestSpeed = New System.Windows.Forms.Button()
+        Me.btTestWind = New System.Windows.Forms.Button()
         Me.txtClutchGama = New System.Windows.Forms.MaskedTextBox()
         Me.txtBrakeGama = New System.Windows.Forms.MaskedTextBox()
         Me.txtAccelGama = New System.Windows.Forms.MaskedTextBox()
@@ -116,7 +116,7 @@ Partial Class frmSetup
         Me.Label67 = New System.Windows.Forms.Label()
         Me.txtGZDistance = New System.Windows.Forms.MaskedTextBox()
         Me.Label68 = New System.Windows.Forms.Label()
-        Me.btSpeedGraph = New System.Windows.Forms.Button()
+        Me.btWindGraph = New System.Windows.Forms.Button()
         Me.btGGraph = New System.Windows.Forms.Button()
         Me.btClose = New System.Windows.Forms.Button()
         Me.txtGMaxDiff = New System.Windows.Forms.MaskedTextBox()
@@ -133,8 +133,23 @@ Partial Class frmSetup
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.txtUltrasonicDamper = New System.Windows.Forms.MaskedTextBox()
-        Me.lbGMotorEfficiency = New System.Windows.Forms.Label()
-        Me.txtGMotorEfficiency = New System.Windows.Forms.MaskedTextBox()
+        Me.lbGLeftMotorEfficiency = New System.Windows.Forms.Label()
+        Me.txtGLeftMotorEfficiency = New System.Windows.Forms.MaskedTextBox()
+        Me.btShakeGraph = New System.Windows.Forms.Button()
+        Me.Label19 = New System.Windows.Forms.Label()
+        Me.btTestShake = New System.Windows.Forms.Button()
+        Me.Label20 = New System.Windows.Forms.Label()
+        Me.txtShakeMin = New System.Windows.Forms.MaskedTextBox()
+        Me.Label22 = New System.Windows.Forms.Label()
+        Me.Label33 = New System.Windows.Forms.Label()
+        Me.txtShakeGama = New System.Windows.Forms.MaskedTextBox()
+        Me.Label34 = New System.Windows.Forms.Label()
+        Me.txtGRightMotorEfficiency = New System.Windows.Forms.MaskedTextBox()
+        Me.Label35 = New System.Windows.Forms.Label()
+        Me.btTestGLeftDown = New System.Windows.Forms.Button()
+        Me.btTestGLeftUp = New System.Windows.Forms.Button()
+        Me.btTestGRightDown = New System.Windows.Forms.Button()
+        Me.btTestGRightUp = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Label3
@@ -172,7 +187,7 @@ Partial Class frmSetup
         'Label21
         '
         Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(4, 323)
+        Me.Label21.Location = New System.Drawing.Point(4, 362)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(100, 13)
         Me.Label21.TabIndex = 84
@@ -183,7 +198,7 @@ Partial Class frmSetup
         Me.txtMaxScrewUp.AsciiOnly = True
         Me.txtMaxScrewUp.BeepOnError = True
         Me.txtMaxScrewUp.HidePromptOnLeave = True
-        Me.txtMaxScrewUp.Location = New System.Drawing.Point(514, 297)
+        Me.txtMaxScrewUp.Location = New System.Drawing.Point(514, 336)
         Me.txtMaxScrewUp.Mask = "990"
         Me.txtMaxScrewUp.Name = "txtMaxScrewUp"
         Me.txtMaxScrewUp.Size = New System.Drawing.Size(25, 20)
@@ -193,7 +208,7 @@ Partial Class frmSetup
         'Label18
         '
         Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(4, 300)
+        Me.Label18.Location = New System.Drawing.Point(4, 339)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(93, 13)
         Me.Label18.TabIndex = 82
@@ -223,7 +238,7 @@ Partial Class frmSetup
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(417, 347)
+        Me.Label6.Location = New System.Drawing.Point(417, 386)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(94, 13)
         Me.Label6.TabIndex = 92
@@ -234,7 +249,7 @@ Partial Class frmSetup
         Me.txtGPowerForMin.AllowPromptAsInput = False
         Me.txtGPowerForMin.BeepOnError = True
         Me.txtGPowerForMin.HidePromptOnLeave = True
-        Me.txtGPowerForMin.Location = New System.Drawing.Point(353, 344)
+        Me.txtGPowerForMin.Location = New System.Drawing.Point(353, 383)
         Me.txtGPowerForMin.Mask = "#990"
         Me.txtGPowerForMin.Name = "txtGPowerForMin"
         Me.txtGPowerForMin.Size = New System.Drawing.Size(25, 20)
@@ -244,7 +259,7 @@ Partial Class frmSetup
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(290, 347)
+        Me.Label7.Location = New System.Drawing.Point(290, 386)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(60, 13)
         Me.Label7.TabIndex = 90
@@ -255,7 +270,7 @@ Partial Class frmSetup
         Me.btSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btSave.BackColor = System.Drawing.Color.Gold
         Me.btSave.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btSave.Location = New System.Drawing.Point(640, 396)
+        Me.btSave.Location = New System.Drawing.Point(640, 438)
         Me.btSave.Name = "btSave"
         Me.btSave.Size = New System.Drawing.Size(59, 22)
         Me.btSave.TabIndex = 103
@@ -324,7 +339,7 @@ Partial Class frmSetup
         '
         Me.btTestGDown.BackColor = System.Drawing.Color.Gold
         Me.btTestGDown.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btTestGDown.Location = New System.Drawing.Point(627, 297)
+        Me.btTestGDown.Location = New System.Drawing.Point(627, 337)
         Me.btTestGDown.Name = "btTestGDown"
         Me.btTestGDown.Size = New System.Drawing.Size(59, 20)
         Me.btTestGDown.TabIndex = 118
@@ -335,7 +350,7 @@ Partial Class frmSetup
         '
         Me.btTestGUp.BackColor = System.Drawing.Color.Gold
         Me.btTestGUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btTestGUp.Location = New System.Drawing.Point(627, 343)
+        Me.btTestGUp.Location = New System.Drawing.Point(627, 381)
         Me.btTestGUp.Name = "btTestGUp"
         Me.btTestGUp.Size = New System.Drawing.Size(59, 20)
         Me.btTestGUp.TabIndex = 117
@@ -346,9 +361,9 @@ Partial Class frmSetup
         '
         Me.btTestGLeft.BackColor = System.Drawing.Color.Gold
         Me.btTestGLeft.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btTestGLeft.Location = New System.Drawing.Point(594, 320)
+        Me.btTestGLeft.Location = New System.Drawing.Point(594, 359)
         Me.btTestGLeft.Name = "btTestGLeft"
-        Me.btTestGLeft.Size = New System.Drawing.Size(59, 20)
+        Me.btTestGLeft.Size = New System.Drawing.Size(61, 20)
         Me.btTestGLeft.TabIndex = 120
         Me.btTestGLeft.Text = "Test Left"
         Me.btTestGLeft.UseVisualStyleBackColor = False
@@ -357,9 +372,9 @@ Partial Class frmSetup
         '
         Me.btTestGRight.BackColor = System.Drawing.Color.Gold
         Me.btTestGRight.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btTestGRight.Location = New System.Drawing.Point(656, 320)
+        Me.btTestGRight.Location = New System.Drawing.Point(658, 359)
         Me.btTestGRight.Name = "btTestGRight"
-        Me.btTestGRight.Size = New System.Drawing.Size(59, 20)
+        Me.btTestGRight.Size = New System.Drawing.Size(61, 20)
         Me.btTestGRight.TabIndex = 119
         Me.btTestGRight.Text = "Test Right"
         Me.btTestGRight.UseVisualStyleBackColor = False
@@ -369,7 +384,7 @@ Partial Class frmSetup
         Me.txtGMinDiff.AsciiOnly = True
         Me.txtGMinDiff.BeepOnError = True
         Me.txtGMinDiff.HidePromptOnLeave = True
-        Me.txtGMinDiff.Location = New System.Drawing.Point(105, 344)
+        Me.txtGMinDiff.Location = New System.Drawing.Point(221, 383)
         Me.txtGMinDiff.Mask = "990"
         Me.txtGMinDiff.Name = "txtGMinDiff"
         Me.txtGMinDiff.Size = New System.Drawing.Size(25, 20)
@@ -598,7 +613,7 @@ Partial Class frmSetup
         '
         Me.btDefaults.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btDefaults.BackColor = System.Drawing.Color.Gold
-        Me.btDefaults.Location = New System.Drawing.Point(555, 396)
+        Me.btDefaults.Location = New System.Drawing.Point(555, 438)
         Me.btDefaults.Name = "btDefaults"
         Me.btDefaults.Size = New System.Drawing.Size(59, 22)
         Me.btDefaults.TabIndex = 155
@@ -677,17 +692,17 @@ Partial Class frmSetup
         Me.Label37.TabIndex = 172
         Me.Label37.Text = "0-800 (100)"
         '
-        'txtSpeedGama
+        'txtWindGama
         '
-        Me.txtSpeedGama.AllowPromptAsInput = False
-        Me.txtSpeedGama.BeepOnError = True
-        Me.txtSpeedGama.HidePromptOnLeave = True
-        Me.txtSpeedGama.Location = New System.Drawing.Point(525, 252)
-        Me.txtSpeedGama.Mask = "#990"
-        Me.txtSpeedGama.Name = "txtSpeedGama"
-        Me.txtSpeedGama.Size = New System.Drawing.Size(25, 20)
-        Me.txtSpeedGama.TabIndex = 171
-        Me.txtSpeedGama.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtWindGama.AllowPromptAsInput = False
+        Me.txtWindGama.BeepOnError = True
+        Me.txtWindGama.HidePromptOnLeave = True
+        Me.txtWindGama.Location = New System.Drawing.Point(525, 252)
+        Me.txtWindGama.Mask = "#990"
+        Me.txtWindGama.Name = "txtWindGama"
+        Me.txtWindGama.Size = New System.Drawing.Size(25, 20)
+        Me.txtWindGama.TabIndex = 171
+        Me.txtWindGama.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label38
         '
@@ -708,17 +723,17 @@ Partial Class frmSetup
         Me.Label39.TabIndex = 175
         Me.Label39.Text = "0-255"
         '
-        'txtSpeedMin
+        'txtWindMin
         '
-        Me.txtSpeedMin.AllowPromptAsInput = False
-        Me.txtSpeedMin.BeepOnError = True
-        Me.txtSpeedMin.HidePromptOnLeave = True
-        Me.txtSpeedMin.Location = New System.Drawing.Point(295, 252)
-        Me.txtSpeedMin.Mask = "#990"
-        Me.txtSpeedMin.Name = "txtSpeedMin"
-        Me.txtSpeedMin.Size = New System.Drawing.Size(25, 20)
-        Me.txtSpeedMin.TabIndex = 174
-        Me.txtSpeedMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtWindMin.AllowPromptAsInput = False
+        Me.txtWindMin.BeepOnError = True
+        Me.txtWindMin.HidePromptOnLeave = True
+        Me.txtWindMin.Location = New System.Drawing.Point(295, 252)
+        Me.txtWindMin.Mask = "#990"
+        Me.txtWindMin.Name = "txtWindMin"
+        Me.txtWindMin.Size = New System.Drawing.Size(25, 20)
+        Me.txtWindMin.TabIndex = 174
+        Me.txtWindMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label40
         '
@@ -729,18 +744,18 @@ Partial Class frmSetup
         Me.Label40.TabIndex = 173
         Me.Label40.Text = "Min.Power:"
         '
-        'btTestSpeed
+        'btTestWind
         '
-        Me.btTestSpeed.BackColor = System.Drawing.Color.Gold
-        Me.btTestSpeed.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.btTestSpeed.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btTestSpeed.Location = New System.Drawing.Point(353, 253)
-        Me.btTestSpeed.Name = "btTestSpeed"
-        Me.btTestSpeed.Size = New System.Drawing.Size(59, 20)
-        Me.btTestSpeed.TabIndex = 176
-        Me.btTestSpeed.Text = "Test"
-        Me.btTestSpeed.UseMnemonic = False
-        Me.btTestSpeed.UseVisualStyleBackColor = False
+        Me.btTestWind.BackColor = System.Drawing.Color.Gold
+        Me.btTestWind.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.btTestWind.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btTestWind.Location = New System.Drawing.Point(353, 253)
+        Me.btTestWind.Name = "btTestWind"
+        Me.btTestWind.Size = New System.Drawing.Size(59, 20)
+        Me.btTestWind.TabIndex = 176
+        Me.btTestWind.Text = "Test"
+        Me.btTestWind.UseMnemonic = False
+        Me.btTestWind.UseVisualStyleBackColor = False
         '
         'txtClutchGama
         '
@@ -902,7 +917,7 @@ Partial Class frmSetup
         Me.Label49.Name = "Label49"
         Me.Label49.Size = New System.Drawing.Size(767, 13)
         Me.Label49.TabIndex = 195
-        Me.Label49.Text = "Speed/Suspension Wind & Shake :"
+        Me.Label49.Text = "Speed/Wind :"
         Me.Label49.UseMnemonic = False
         '
         'Label50
@@ -911,7 +926,7 @@ Partial Class frmSetup
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label50.BackColor = System.Drawing.SystemColors.Info
         Me.Label50.ForeColor = System.Drawing.SystemColors.InfoText
-        Me.Label50.Location = New System.Drawing.Point(2, 281)
+        Me.Label50.Location = New System.Drawing.Point(2, 320)
         Me.Label50.Name = "Label50"
         Me.Label50.Size = New System.Drawing.Size(767, 13)
         Me.Label50.TabIndex = 196
@@ -1014,7 +1029,7 @@ Partial Class frmSetup
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(53, 347)
+        Me.Label10.Location = New System.Drawing.Point(169, 386)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(49, 13)
         Me.Label10.TabIndex = 207
@@ -1023,7 +1038,7 @@ Partial Class frmSetup
         'Label61
         '
         Me.Label61.AutoSize = True
-        Me.Label61.Location = New System.Drawing.Point(417, 300)
+        Me.Label61.Location = New System.Drawing.Point(417, 339)
         Me.Label61.Name = "Label61"
         Me.Label61.Size = New System.Drawing.Size(72, 13)
         Me.Label61.TabIndex = 209
@@ -1033,7 +1048,7 @@ Partial Class frmSetup
         '
         Me.Label62.AutoSize = True
         Me.Label62.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label62.Location = New System.Drawing.Point(381, 348)
+        Me.Label62.Location = New System.Drawing.Point(381, 387)
         Me.Label62.Name = "Label62"
         Me.Label62.Size = New System.Drawing.Size(28, 12)
         Me.Label62.TabIndex = 213
@@ -1042,7 +1057,7 @@ Partial Class frmSetup
         'Label63
         '
         Me.Label63.AutoSize = True
-        Me.Label63.Location = New System.Drawing.Point(417, 323)
+        Me.Label63.Location = New System.Drawing.Point(417, 362)
         Me.Label63.Name = "Label63"
         Me.Label63.Size = New System.Drawing.Size(86, 13)
         Me.Label63.TabIndex = 215
@@ -1053,7 +1068,7 @@ Partial Class frmSetup
         Me.txtMaxScrewDown.AsciiOnly = True
         Me.txtMaxScrewDown.BeepOnError = True
         Me.txtMaxScrewDown.HidePromptOnLeave = True
-        Me.txtMaxScrewDown.Location = New System.Drawing.Point(514, 320)
+        Me.txtMaxScrewDown.Location = New System.Drawing.Point(514, 359)
         Me.txtMaxScrewDown.Mask = "990"
         Me.txtMaxScrewDown.Name = "txtMaxScrewDown"
         Me.txtMaxScrewDown.Size = New System.Drawing.Size(25, 20)
@@ -1066,7 +1081,7 @@ Partial Class frmSetup
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label64.BackColor = System.Drawing.SystemColors.Info
         Me.Label64.ForeColor = System.Drawing.SystemColors.InfoText
-        Me.Label64.Location = New System.Drawing.Point(2, 391)
+        Me.Label64.Location = New System.Drawing.Point(2, 433)
         Me.Label64.Name = "Label64"
         Me.Label64.Size = New System.Drawing.Size(767, 2)
         Me.Label64.TabIndex = 216
@@ -1076,7 +1091,7 @@ Partial Class frmSetup
         '
         Me.Label65.AutoSize = True
         Me.Label65.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label65.Location = New System.Drawing.Point(381, 324)
+        Me.Label65.Location = New System.Drawing.Point(381, 363)
         Me.Label65.Name = "Label65"
         Me.Label65.Size = New System.Drawing.Size(21, 12)
         Me.Label65.TabIndex = 219
@@ -1087,7 +1102,7 @@ Partial Class frmSetup
         Me.txtGXDistance.AllowPromptAsInput = False
         Me.txtGXDistance.BeepOnError = True
         Me.txtGXDistance.HidePromptOnLeave = True
-        Me.txtGXDistance.Location = New System.Drawing.Point(353, 320)
+        Me.txtGXDistance.Location = New System.Drawing.Point(353, 359)
         Me.txtGXDistance.Mask = "990"
         Me.txtGXDistance.Name = "txtGXDistance"
         Me.txtGXDistance.Size = New System.Drawing.Size(25, 20)
@@ -1097,7 +1112,7 @@ Partial Class frmSetup
         'Label66
         '
         Me.Label66.AutoSize = True
-        Me.Label66.Location = New System.Drawing.Point(170, 323)
+        Me.Label66.Location = New System.Drawing.Point(170, 362)
         Me.Label66.Name = "Label66"
         Me.Label66.Size = New System.Drawing.Size(160, 13)
         Me.Label66.TabIndex = 217
@@ -1107,7 +1122,7 @@ Partial Class frmSetup
         '
         Me.Label67.AutoSize = True
         Me.Label67.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label67.Location = New System.Drawing.Point(381, 301)
+        Me.Label67.Location = New System.Drawing.Point(381, 340)
         Me.Label67.Name = "Label67"
         Me.Label67.Size = New System.Drawing.Size(21, 12)
         Me.Label67.TabIndex = 222
@@ -1118,7 +1133,7 @@ Partial Class frmSetup
         Me.txtGZDistance.AllowPromptAsInput = False
         Me.txtGZDistance.BeepOnError = True
         Me.txtGZDistance.HidePromptOnLeave = True
-        Me.txtGZDistance.Location = New System.Drawing.Point(353, 297)
+        Me.txtGZDistance.Location = New System.Drawing.Point(353, 336)
         Me.txtGZDistance.Mask = "990"
         Me.txtGZDistance.Name = "txtGZDistance"
         Me.txtGZDistance.Size = New System.Drawing.Size(25, 20)
@@ -1128,28 +1143,28 @@ Partial Class frmSetup
         'Label68
         '
         Me.Label68.AutoSize = True
-        Me.Label68.Location = New System.Drawing.Point(170, 300)
+        Me.Label68.Location = New System.Drawing.Point(170, 339)
         Me.Label68.Name = "Label68"
         Me.Label68.Size = New System.Drawing.Size(180, 13)
         Me.Label68.TabIndex = 220
         Me.Label68.Text = "Z distance between motor and pivot:"
         '
-        'btSpeedGraph
+        'btWindGraph
         '
-        Me.btSpeedGraph.BackColor = System.Drawing.Color.Gold
-        Me.btSpeedGraph.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btSpeedGraph.Location = New System.Drawing.Point(723, 253)
-        Me.btSpeedGraph.Name = "btSpeedGraph"
-        Me.btSpeedGraph.Size = New System.Drawing.Size(44, 20)
-        Me.btSpeedGraph.TabIndex = 223
-        Me.btSpeedGraph.Text = "Graph"
-        Me.btSpeedGraph.UseVisualStyleBackColor = False
+        Me.btWindGraph.BackColor = System.Drawing.Color.Gold
+        Me.btWindGraph.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btWindGraph.Location = New System.Drawing.Point(723, 253)
+        Me.btWindGraph.Name = "btWindGraph"
+        Me.btWindGraph.Size = New System.Drawing.Size(44, 20)
+        Me.btWindGraph.TabIndex = 223
+        Me.btWindGraph.Text = "Graph"
+        Me.btWindGraph.UseVisualStyleBackColor = False
         '
         'btGGraph
         '
         Me.btGGraph.BackColor = System.Drawing.Color.Gold
         Me.btGGraph.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btGGraph.Location = New System.Drawing.Point(723, 320)
+        Me.btGGraph.Location = New System.Drawing.Point(723, 359)
         Me.btGGraph.Name = "btGGraph"
         Me.btGGraph.Size = New System.Drawing.Size(44, 20)
         Me.btGGraph.TabIndex = 224
@@ -1161,7 +1176,7 @@ Partial Class frmSetup
         Me.btClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btClose.BackColor = System.Drawing.Color.Gold
         Me.btClose.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btClose.Location = New System.Drawing.Point(705, 396)
+        Me.btClose.Location = New System.Drawing.Point(705, 438)
         Me.btClose.Name = "btClose"
         Me.btClose.Size = New System.Drawing.Size(59, 22)
         Me.btClose.TabIndex = 226
@@ -1173,7 +1188,7 @@ Partial Class frmSetup
         Me.txtGMaxDiff.AsciiOnly = True
         Me.txtGMaxDiff.BeepOnError = True
         Me.txtGMaxDiff.HidePromptOnLeave = True
-        Me.txtGMaxDiff.Location = New System.Drawing.Point(514, 344)
+        Me.txtGMaxDiff.Location = New System.Drawing.Point(514, 383)
         Me.txtGMaxDiff.Mask = "990"
         Me.txtGMaxDiff.Name = "txtGMaxDiff"
         Me.txtGMaxDiff.Size = New System.Drawing.Size(25, 20)
@@ -1184,7 +1199,7 @@ Partial Class frmSetup
         '
         Me.lbMaxScrewUp.AutoSize = True
         Me.lbMaxScrewUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbMaxScrewUp.Location = New System.Drawing.Point(542, 301)
+        Me.lbMaxScrewUp.Location = New System.Drawing.Point(542, 340)
         Me.lbMaxScrewUp.Name = "lbMaxScrewUp"
         Me.lbMaxScrewUp.Size = New System.Drawing.Size(61, 12)
         Me.lbMaxScrewUp.TabIndex = 229
@@ -1194,7 +1209,7 @@ Partial Class frmSetup
         '
         Me.lbMaxScrewDown.AutoSize = True
         Me.lbMaxScrewDown.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbMaxScrewDown.Location = New System.Drawing.Point(542, 324)
+        Me.lbMaxScrewDown.Location = New System.Drawing.Point(542, 363)
         Me.lbMaxScrewDown.Name = "lbMaxScrewDown"
         Me.lbMaxScrewDown.Size = New System.Drawing.Size(48, 12)
         Me.lbMaxScrewDown.TabIndex = 228
@@ -1204,7 +1219,7 @@ Partial Class frmSetup
         '
         Me.lbAlarm.AutoSize = True
         Me.lbAlarm.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbAlarm.Location = New System.Drawing.Point(133, 348)
+        Me.lbAlarm.Location = New System.Drawing.Point(249, 387)
         Me.lbAlarm.Name = "lbAlarm"
         Me.lbAlarm.Size = New System.Drawing.Size(21, 12)
         Me.lbAlarm.TabIndex = 231
@@ -1214,7 +1229,7 @@ Partial Class frmSetup
         '
         Me.Label17.AutoSize = True
         Me.Label17.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.Location = New System.Drawing.Point(542, 348)
+        Me.Label17.Location = New System.Drawing.Point(542, 387)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(21, 12)
         Me.Label17.TabIndex = 230
@@ -1224,7 +1239,7 @@ Partial Class frmSetup
         '
         Me.Label9.AutoSize = True
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(133, 301)
+        Me.Label9.Location = New System.Drawing.Point(137, 340)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(21, 12)
         Me.Label9.TabIndex = 235
@@ -1235,7 +1250,7 @@ Partial Class frmSetup
         Me.txtLeftScrewCenter.AsciiOnly = True
         Me.txtLeftScrewCenter.BeepOnError = True
         Me.txtLeftScrewCenter.HidePromptOnLeave = True
-        Me.txtLeftScrewCenter.Location = New System.Drawing.Point(105, 297)
+        Me.txtLeftScrewCenter.Location = New System.Drawing.Point(110, 336)
         Me.txtLeftScrewCenter.Mask = "990"
         Me.txtLeftScrewCenter.Name = "txtLeftScrewCenter"
         Me.txtLeftScrewCenter.Size = New System.Drawing.Size(25, 20)
@@ -1246,7 +1261,7 @@ Partial Class frmSetup
         '
         Me.Label12.AutoSize = True
         Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.Location = New System.Drawing.Point(133, 324)
+        Me.Label12.Location = New System.Drawing.Point(137, 363)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(21, 12)
         Me.Label12.TabIndex = 237
@@ -1257,7 +1272,7 @@ Partial Class frmSetup
         Me.txtRightScrewCenter.AsciiOnly = True
         Me.txtRightScrewCenter.BeepOnError = True
         Me.txtRightScrewCenter.HidePromptOnLeave = True
-        Me.txtRightScrewCenter.Location = New System.Drawing.Point(105, 320)
+        Me.txtRightScrewCenter.Location = New System.Drawing.Point(110, 359)
         Me.txtRightScrewCenter.Mask = "990"
         Me.txtRightScrewCenter.Name = "txtRightScrewCenter"
         Me.txtRightScrewCenter.Size = New System.Drawing.Size(25, 20)
@@ -1278,7 +1293,7 @@ Partial Class frmSetup
         '
         Me.UcControlGraph1.BackColor = System.Drawing.Color.FromArgb(CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer))
         Me.UcControlGraph1.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.UcControlGraph1.Location = New System.Drawing.Point(0, 410)
+        Me.UcControlGraph1.Location = New System.Drawing.Point(0, 452)
         Me.UcControlGraph1.Margin = New System.Windows.Forms.Padding(0)
         Me.UcControlGraph1.Name = "UcControlGraph1"
         Me.UcControlGraph1.Size = New System.Drawing.Size(770, 11)
@@ -1290,7 +1305,7 @@ Partial Class frmSetup
         '
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(381, 371)
+        Me.Label8.Location = New System.Drawing.Point(381, 410)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(13, 12)
         Me.Label8.TabIndex = 240
@@ -1299,54 +1314,232 @@ Partial Class frmSetup
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(256, 371)
+        Me.Label11.Location = New System.Drawing.Point(256, 410)
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(95, 13)
+        Me.Label11.Size = New System.Drawing.Size(91, 13)
         Me.Label11.TabIndex = 239
-        Me.Label11.Text = "Ultrasonic damper:"
+        Me.Label11.Text = "Sensors damping:"
         '
         'txtUltrasonicDamper
         '
         Me.txtUltrasonicDamper.AsciiOnly = True
         Me.txtUltrasonicDamper.BeepOnError = True
         Me.txtUltrasonicDamper.HidePromptOnLeave = True
-        Me.txtUltrasonicDamper.Location = New System.Drawing.Point(353, 368)
+        Me.txtUltrasonicDamper.Location = New System.Drawing.Point(353, 407)
         Me.txtUltrasonicDamper.Mask = "90"
         Me.txtUltrasonicDamper.Name = "txtUltrasonicDamper"
         Me.txtUltrasonicDamper.Size = New System.Drawing.Size(25, 20)
         Me.txtUltrasonicDamper.TabIndex = 238
         Me.txtUltrasonicDamper.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
-        'lbGMotorEfficiency
+        'lbGLeftMotorEfficiency
         '
-        Me.lbGMotorEfficiency.AutoSize = True
-        Me.lbGMotorEfficiency.Location = New System.Drawing.Point(9, 370)
-        Me.lbGMotorEfficiency.Name = "lbGMotorEfficiency"
-        Me.lbGMotorEfficiency.Size = New System.Drawing.Size(86, 13)
-        Me.lbGMotorEfficiency.TabIndex = 245
-        Me.lbGMotorEfficiency.Text = "Motor Efficiency:"
+        Me.lbGLeftMotorEfficiency.AutoSize = True
+        Me.lbGLeftMotorEfficiency.Location = New System.Drawing.Point(4, 386)
+        Me.lbGLeftMotorEfficiency.Name = "lbGLeftMotorEfficiency"
+        Me.lbGLeftMotorEfficiency.Size = New System.Drawing.Size(107, 13)
+        Me.lbGLeftMotorEfficiency.TabIndex = 245
+        Me.lbGLeftMotorEfficiency.Text = "Left Motor Efficiency:"
         '
-        'txtGMotorEfficiency
+        'txtGLeftMotorEfficiency
         '
-        Me.txtGMotorEfficiency.AsciiOnly = True
-        Me.txtGMotorEfficiency.BeepOnError = True
-        Me.txtGMotorEfficiency.HidePromptOnLeave = True
-        Me.txtGMotorEfficiency.Location = New System.Drawing.Point(106, 367)
-        Me.txtGMotorEfficiency.Mask = "990"
-        Me.txtGMotorEfficiency.Name = "txtGMotorEfficiency"
-        Me.txtGMotorEfficiency.Size = New System.Drawing.Size(25, 20)
-        Me.txtGMotorEfficiency.TabIndex = 244
-        Me.txtGMotorEfficiency.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtGLeftMotorEfficiency.AsciiOnly = True
+        Me.txtGLeftMotorEfficiency.BeepOnError = True
+        Me.txtGLeftMotorEfficiency.HidePromptOnLeave = True
+        Me.txtGLeftMotorEfficiency.Location = New System.Drawing.Point(110, 383)
+        Me.txtGLeftMotorEfficiency.Mask = "990"
+        Me.txtGLeftMotorEfficiency.Name = "txtGLeftMotorEfficiency"
+        Me.txtGLeftMotorEfficiency.Size = New System.Drawing.Size(25, 20)
+        Me.txtGLeftMotorEfficiency.TabIndex = 244
+        Me.txtGLeftMotorEfficiency.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'btShakeGraph
+        '
+        Me.btShakeGraph.BackColor = System.Drawing.Color.Gold
+        Me.btShakeGraph.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btShakeGraph.Location = New System.Drawing.Point(723, 296)
+        Me.btShakeGraph.Name = "btShakeGraph"
+        Me.btShakeGraph.Size = New System.Drawing.Size(44, 20)
+        Me.btShakeGraph.TabIndex = 254
+        Me.btShakeGraph.Text = "Graph"
+        Me.btShakeGraph.UseVisualStyleBackColor = False
+        '
+        'Label19
+        '
+        Me.Label19.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label19.BackColor = System.Drawing.SystemColors.Info
+        Me.Label19.ForeColor = System.Drawing.SystemColors.InfoText
+        Me.Label19.Location = New System.Drawing.Point(2, 279)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(767, 13)
+        Me.Label19.TabIndex = 253
+        Me.Label19.Text = "Suspension/Shake :"
+        Me.Label19.UseMnemonic = False
+        '
+        'btTestShake
+        '
+        Me.btTestShake.BackColor = System.Drawing.Color.Gold
+        Me.btTestShake.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.btTestShake.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btTestShake.Location = New System.Drawing.Point(353, 296)
+        Me.btTestShake.Name = "btTestShake"
+        Me.btTestShake.Size = New System.Drawing.Size(59, 20)
+        Me.btTestShake.TabIndex = 252
+        Me.btTestShake.Text = "Test"
+        Me.btTestShake.UseMnemonic = False
+        Me.btTestShake.UseVisualStyleBackColor = False
+        '
+        'Label20
+        '
+        Me.Label20.AutoSize = True
+        Me.Label20.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label20.Location = New System.Drawing.Point(323, 300)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(28, 12)
+        Me.Label20.TabIndex = 251
+        Me.Label20.Text = "0-255"
+        '
+        'txtShakeMin
+        '
+        Me.txtShakeMin.AllowPromptAsInput = False
+        Me.txtShakeMin.BeepOnError = True
+        Me.txtShakeMin.HidePromptOnLeave = True
+        Me.txtShakeMin.Location = New System.Drawing.Point(295, 295)
+        Me.txtShakeMin.Mask = "#990"
+        Me.txtShakeMin.Name = "txtShakeMin"
+        Me.txtShakeMin.Size = New System.Drawing.Size(25, 20)
+        Me.txtShakeMin.TabIndex = 250
+        Me.txtShakeMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label22
+        '
+        Me.Label22.AutoSize = True
+        Me.Label22.Location = New System.Drawing.Point(231, 299)
+        Me.Label22.Name = "Label22"
+        Me.Label22.Size = New System.Drawing.Size(60, 13)
+        Me.Label22.TabIndex = 249
+        Me.Label22.Text = "Min.Power:"
+        '
+        'Label33
+        '
+        Me.Label33.AutoSize = True
+        Me.Label33.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label33.Location = New System.Drawing.Point(553, 300)
+        Me.Label33.Name = "Label33"
+        Me.Label33.Size = New System.Drawing.Size(51, 12)
+        Me.Label33.TabIndex = 248
+        Me.Label33.Text = "0-800 (100)"
+        '
+        'txtShakeGama
+        '
+        Me.txtShakeGama.AllowPromptAsInput = False
+        Me.txtShakeGama.BeepOnError = True
+        Me.txtShakeGama.HidePromptOnLeave = True
+        Me.txtShakeGama.Location = New System.Drawing.Point(525, 295)
+        Me.txtShakeGama.Mask = "#990"
+        Me.txtShakeGama.Name = "txtShakeGama"
+        Me.txtShakeGama.Size = New System.Drawing.Size(25, 20)
+        Me.txtShakeGama.TabIndex = 247
+        Me.txtShakeGama.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label34
+        '
+        Me.Label34.AutoSize = True
+        Me.Label34.Location = New System.Drawing.Point(484, 299)
+        Me.Label34.Name = "Label34"
+        Me.Label34.Size = New System.Drawing.Size(38, 13)
+        Me.Label34.TabIndex = 246
+        Me.Label34.Text = "Gama:"
+        '
+        'txtGRightMotorEfficiency
+        '
+        Me.txtGRightMotorEfficiency.AsciiOnly = True
+        Me.txtGRightMotorEfficiency.BeepOnError = True
+        Me.txtGRightMotorEfficiency.HidePromptOnLeave = True
+        Me.txtGRightMotorEfficiency.Location = New System.Drawing.Point(110, 407)
+        Me.txtGRightMotorEfficiency.Mask = "990"
+        Me.txtGRightMotorEfficiency.Name = "txtGRightMotorEfficiency"
+        Me.txtGRightMotorEfficiency.Size = New System.Drawing.Size(25, 20)
+        Me.txtGRightMotorEfficiency.TabIndex = 255
+        Me.txtGRightMotorEfficiency.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label35
+        '
+        Me.Label35.AutoSize = True
+        Me.Label35.Location = New System.Drawing.Point(4, 410)
+        Me.Label35.Name = "Label35"
+        Me.Label35.Size = New System.Drawing.Size(114, 13)
+        Me.Label35.TabIndex = 256
+        Me.Label35.Text = "Right Motor Efficiency:"
+        '
+        'btTestGLeftDown
+        '
+        Me.btTestGLeftDown.BackColor = System.Drawing.Color.Gold
+        Me.btTestGLeftDown.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btTestGLeftDown.Location = New System.Drawing.Point(594, 337)
+        Me.btTestGLeftDown.Name = "btTestGLeftDown"
+        Me.btTestGLeftDown.Size = New System.Drawing.Size(31, 20)
+        Me.btTestGLeftDown.TabIndex = 257
+        Me.btTestGLeftDown.Text = "Test"
+        Me.btTestGLeftDown.UseVisualStyleBackColor = False
+        '
+        'btTestGLeftUp
+        '
+        Me.btTestGLeftUp.BackColor = System.Drawing.Color.Gold
+        Me.btTestGLeftUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btTestGLeftUp.Location = New System.Drawing.Point(594, 381)
+        Me.btTestGLeftUp.Name = "btTestGLeftUp"
+        Me.btTestGLeftUp.Size = New System.Drawing.Size(31, 20)
+        Me.btTestGLeftUp.TabIndex = 258
+        Me.btTestGLeftUp.Text = "Test"
+        Me.btTestGLeftUp.UseVisualStyleBackColor = False
+        '
+        'btTestGRightDown
+        '
+        Me.btTestGRightDown.BackColor = System.Drawing.Color.Gold
+        Me.btTestGRightDown.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btTestGRightDown.Location = New System.Drawing.Point(688, 337)
+        Me.btTestGRightDown.Name = "btTestGRightDown"
+        Me.btTestGRightDown.Size = New System.Drawing.Size(31, 20)
+        Me.btTestGRightDown.TabIndex = 259
+        Me.btTestGRightDown.Text = "Test"
+        Me.btTestGRightDown.UseVisualStyleBackColor = False
+        '
+        'btTestGRightUp
+        '
+        Me.btTestGRightUp.BackColor = System.Drawing.Color.Gold
+        Me.btTestGRightUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btTestGRightUp.Location = New System.Drawing.Point(688, 381)
+        Me.btTestGRightUp.Name = "btTestGRightUp"
+        Me.btTestGRightUp.Size = New System.Drawing.Size(31, 20)
+        Me.btTestGRightUp.TabIndex = 260
+        Me.btTestGRightUp.Text = "Test"
+        Me.btTestGRightUp.UseVisualStyleBackColor = False
         '
         'frmSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(770, 421)
+        Me.ClientSize = New System.Drawing.Size(770, 463)
+        Me.Controls.Add(Me.btTestGRightUp)
+        Me.Controls.Add(Me.btTestGRightDown)
+        Me.Controls.Add(Me.btTestGLeftUp)
+        Me.Controls.Add(Me.btTestGLeftDown)
+        Me.Controls.Add(Me.txtGRightMotorEfficiency)
+        Me.Controls.Add(Me.Label35)
         Me.Controls.Add(Me.UcControlGraph1)
         Me.Controls.Add(Me.UcControlGGraph1)
-        Me.Controls.Add(Me.lbGMotorEfficiency)
-        Me.Controls.Add(Me.txtGMotorEfficiency)
+        Me.Controls.Add(Me.btShakeGraph)
+        Me.Controls.Add(Me.Label19)
+        Me.Controls.Add(Me.btTestShake)
+        Me.Controls.Add(Me.Label20)
+        Me.Controls.Add(Me.txtShakeMin)
+        Me.Controls.Add(Me.Label22)
+        Me.Controls.Add(Me.Label33)
+        Me.Controls.Add(Me.txtShakeGama)
+        Me.Controls.Add(Me.Label34)
+        Me.Controls.Add(Me.txtGLeftMotorEfficiency)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.Label11)
         Me.Controls.Add(Me.txtUltrasonicDamper)
@@ -1362,7 +1555,7 @@ Partial Class frmSetup
         Me.Controls.Add(Me.btClose)
         Me.Controls.Add(Me.btSave)
         Me.Controls.Add(Me.btGGraph)
-        Me.Controls.Add(Me.btSpeedGraph)
+        Me.Controls.Add(Me.btWindGraph)
         Me.Controls.Add(Me.Label67)
         Me.Controls.Add(Me.txtGZDistance)
         Me.Controls.Add(Me.Label68)
@@ -1400,12 +1593,12 @@ Partial Class frmSetup
         Me.Controls.Add(Me.txtClutchGama)
         Me.Controls.Add(Me.txtBrakeGama)
         Me.Controls.Add(Me.txtAccelGama)
-        Me.Controls.Add(Me.btTestSpeed)
+        Me.Controls.Add(Me.btTestWind)
         Me.Controls.Add(Me.Label39)
-        Me.Controls.Add(Me.txtSpeedMin)
+        Me.Controls.Add(Me.txtWindMin)
         Me.Controls.Add(Me.Label40)
         Me.Controls.Add(Me.Label37)
-        Me.Controls.Add(Me.txtSpeedGama)
+        Me.Controls.Add(Me.txtWindGama)
         Me.Controls.Add(Me.Label38)
         Me.Controls.Add(Me.Label29)
         Me.Controls.Add(Me.txtWheelPowerFactor)
@@ -1456,6 +1649,7 @@ Partial Class frmSetup
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.txtFreq)
         Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.lbGLeftMotorEfficiency)
         Me.Name = "frmSetup"
         Me.Text = "frmSetup"
         Me.ResumeLayout(False)
@@ -1514,12 +1708,12 @@ Partial Class frmSetup
     Friend WithEvents txtWheelPowerFactor As MaskedTextBox
     Friend WithEvents Label32 As Label
     Friend WithEvents Label37 As Label
-    Friend WithEvents txtSpeedGama As MaskedTextBox
+    Friend WithEvents txtWindGama As MaskedTextBox
     Friend WithEvents Label38 As Label
     Friend WithEvents Label39 As Label
-    Friend WithEvents txtSpeedMin As MaskedTextBox
+    Friend WithEvents txtWindMin As MaskedTextBox
     Friend WithEvents Label40 As Label
-    Friend WithEvents btTestSpeed As Button
+    Friend WithEvents btTestWind As Button
     Friend WithEvents txtClutchGama As MaskedTextBox
     Friend WithEvents txtBrakeGama As MaskedTextBox
     Friend WithEvents txtAccelGama As MaskedTextBox
@@ -1558,7 +1752,7 @@ Partial Class frmSetup
     Friend WithEvents Label67 As Label
     Friend WithEvents txtGZDistance As MaskedTextBox
     Friend WithEvents Label68 As Label
-    Friend WithEvents btSpeedGraph As Button
+    Friend WithEvents btWindGraph As Button
     Friend WithEvents btGGraph As Button
     Friend WithEvents UcControlGGraph1 As ucControlGGraph
     Friend WithEvents btClose As Button
@@ -1574,6 +1768,21 @@ Partial Class frmSetup
     Friend WithEvents Label8 As Label
     Friend WithEvents Label11 As Label
     Friend WithEvents txtUltrasonicDamper As MaskedTextBox
-    Friend WithEvents lbGMotorEfficiency As Label
-    Friend WithEvents txtGMotorEfficiency As MaskedTextBox
+    Friend WithEvents lbGLeftMotorEfficiency As Label
+    Friend WithEvents txtGLeftMotorEfficiency As MaskedTextBox
+    Friend WithEvents btShakeGraph As Button
+    Friend WithEvents Label19 As Label
+    Friend WithEvents btTestShake As Button
+    Friend WithEvents Label20 As Label
+    Friend WithEvents txtShakeMin As MaskedTextBox
+    Friend WithEvents Label22 As Label
+    Friend WithEvents Label33 As Label
+    Friend WithEvents txtShakeGama As MaskedTextBox
+    Friend WithEvents Label34 As Label
+    Friend WithEvents txtGRightMotorEfficiency As MaskedTextBox
+    Friend WithEvents Label35 As Label
+    Friend WithEvents btTestGLeftDown As Button
+    Friend WithEvents btTestGLeftUp As Button
+    Friend WithEvents btTestGRightDown As Button
+    Friend WithEvents btTestGRightUp As Button
 End Class

@@ -36,7 +36,7 @@ Partial Class frmSetupAC
         Me.Label11 = New System.Windows.Forms.Label()
         Me.lbACSlipBack = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
-        Me.txtMaxSpeed = New System.Windows.Forms.MaskedTextBox()
+        Me.txtSpeedMaxSpeed = New System.Windows.Forms.MaskedTextBox()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.txtRPM1 = New System.Windows.Forms.MaskedTextBox()
         Me.Label15 = New System.Windows.Forms.Label()
@@ -65,12 +65,15 @@ Partial Class frmSetupAC
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.lbACJump = New System.Windows.Forms.Label()
-        Me.txtJump = New System.Windows.Forms.MaskedTextBox()
+        Me.txtSpeedMaxJump = New System.Windows.Forms.MaskedTextBox()
         Me.UcButtons1 = New CVJoy.ucButtons()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label43 = New System.Windows.Forms.Label()
         Me.txtSpeedMinInput = New System.Windows.Forms.MaskedTextBox()
         Me.Label42 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.txtShakeMaxJump = New System.Windows.Forms.MaskedTextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'ckKeepVisible
@@ -219,17 +222,17 @@ Partial Class frmSetupAC
         Me.Label8.TabIndex = 47
         Me.Label8.Text = "Max.Wind at:"
         '
-        'txtMaxSpeed
+        'txtSpeedMaxSpeed
         '
-        Me.txtMaxSpeed.AllowPromptAsInput = False
-        Me.txtMaxSpeed.BeepOnError = True
-        Me.txtMaxSpeed.HidePromptOnLeave = True
-        Me.txtMaxSpeed.Location = New System.Drawing.Point(363, 6)
-        Me.txtMaxSpeed.Mask = "000"
-        Me.txtMaxSpeed.Name = "txtMaxSpeed"
-        Me.txtMaxSpeed.Size = New System.Drawing.Size(28, 20)
-        Me.txtMaxSpeed.TabIndex = 48
-        Me.txtMaxSpeed.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtSpeedMaxSpeed.AllowPromptAsInput = False
+        Me.txtSpeedMaxSpeed.BeepOnError = True
+        Me.txtSpeedMaxSpeed.HidePromptOnLeave = True
+        Me.txtSpeedMaxSpeed.Location = New System.Drawing.Point(363, 6)
+        Me.txtSpeedMaxSpeed.Mask = "000"
+        Me.txtSpeedMaxSpeed.Name = "txtSpeedMaxSpeed"
+        Me.txtSpeedMaxSpeed.Size = New System.Drawing.Size(28, 20)
+        Me.txtSpeedMaxSpeed.TabIndex = 48
+        Me.txtSpeedMaxSpeed.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label13
         '
@@ -523,17 +526,17 @@ Partial Class frmSetupAC
         Me.lbACJump.Text = "?"
         Me.lbACJump.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'txtJump
+        'txtSpeedMaxJump
         '
-        Me.txtJump.AsciiOnly = True
-        Me.txtJump.BeepOnError = True
-        Me.txtJump.HidePromptOnLeave = True
-        Me.txtJump.Location = New System.Drawing.Point(483, 6)
-        Me.txtJump.Mask = "#0.0\G"
-        Me.txtJump.Name = "txtJump"
-        Me.txtJump.Size = New System.Drawing.Size(37, 20)
-        Me.txtJump.TabIndex = 123
-        Me.txtJump.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtSpeedMaxJump.AsciiOnly = True
+        Me.txtSpeedMaxJump.BeepOnError = True
+        Me.txtSpeedMaxJump.HidePromptOnLeave = True
+        Me.txtSpeedMaxJump.Location = New System.Drawing.Point(483, 6)
+        Me.txtSpeedMaxJump.Mask = "#0.0\G"
+        Me.txtSpeedMaxJump.Name = "txtSpeedMaxJump"
+        Me.txtSpeedMaxJump.Size = New System.Drawing.Size(37, 20)
+        Me.txtSpeedMaxJump.TabIndex = 123
+        Me.txtSpeedMaxJump.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'UcButtons1
         '
@@ -583,12 +586,45 @@ Partial Class frmSetupAC
         Me.Label42.TabIndex = 234
         Me.Label42.Text = "Km/h"
         '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(290, 29)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(64, 13)
+        Me.Label3.TabIndex = 235
+        Me.Label3.Text = "Max.Shake:"
+        '
+        'txtShakeMaxJump
+        '
+        Me.txtShakeMaxJump.AsciiOnly = True
+        Me.txtShakeMaxJump.BeepOnError = True
+        Me.txtShakeMaxJump.HidePromptOnLeave = True
+        Me.txtShakeMaxJump.Location = New System.Drawing.Point(483, 26)
+        Me.txtShakeMaxJump.Mask = "#0.0\G"
+        Me.txtShakeMaxJump.Name = "txtShakeMaxJump"
+        Me.txtShakeMaxJump.Size = New System.Drawing.Size(37, 20)
+        Me.txtShakeMaxJump.TabIndex = 237
+        Me.txtShakeMaxJump.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(429, 29)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(52, 13)
+        Me.Label4.TabIndex = 236
+        Me.Label4.Text = "at Jumps:"
+        '
         'frmSetupAC
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ClientSize = New System.Drawing.Size(521, 276)
+        Me.Controls.Add(Me.txtShakeMaxJump)
+        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Label42)
         Me.Controls.Add(Me.txtSpeedMinInput)
         Me.Controls.Add(Me.Label43)
@@ -597,7 +633,7 @@ Partial Class frmSetupAC
         Me.Controls.Add(Me.btClose)
         Me.Controls.Add(Me.btSave)
         Me.Controls.Add(Me.btDefaults)
-        Me.Controls.Add(Me.txtJump)
+        Me.Controls.Add(Me.txtSpeedMaxJump)
         Me.Controls.Add(Me.lbACJump)
         Me.Controls.Add(Me.Label10)
         Me.Controls.Add(Me.Label6)
@@ -627,7 +663,7 @@ Partial Class frmSetupAC
         Me.Controls.Add(Me.Label15)
         Me.Controls.Add(Me.txtRPM1)
         Me.Controls.Add(Me.Label13)
-        Me.Controls.Add(Me.txtMaxSpeed)
+        Me.Controls.Add(Me.txtSpeedMaxSpeed)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.lbACSlipBack)
         Me.Controls.Add(Me.Label11)
@@ -659,7 +695,7 @@ Partial Class frmSetupAC
     Friend WithEvents Label11 As Label
     Friend WithEvents lbACSlipBack As Label
     Friend WithEvents Label8 As Label
-    Friend WithEvents txtMaxSpeed As MaskedTextBox
+    Friend WithEvents txtSpeedMaxSpeed As MaskedTextBox
     Friend WithEvents Label13 As Label
     Friend WithEvents txtRPM1 As MaskedTextBox
     Friend WithEvents Label15 As Label
@@ -688,10 +724,13 @@ Partial Class frmSetupAC
     Friend WithEvents Label6 As Label
     Friend WithEvents Label10 As Label
     Friend WithEvents lbACJump As Label
-    Friend WithEvents txtJump As MaskedTextBox
+    Friend WithEvents txtSpeedMaxJump As MaskedTextBox
     Friend WithEvents UcButtons1 As ucButtons
     Friend WithEvents Label2 As Label
     Friend WithEvents Label43 As Label
     Friend WithEvents txtSpeedMinInput As MaskedTextBox
     Friend WithEvents Label42 As Label
+    Friend WithEvents Label3 As Label
+    Friend WithEvents txtShakeMaxJump As MaskedTextBox
+    Friend WithEvents Label4 As Label
 End Class

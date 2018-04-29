@@ -25,20 +25,23 @@
     Public WheelPowerFactor As Single = 1.05
     Public WheelDampFactor As Integer = 500
 
-    Public SpeedMinPower As Integer = 32
-    Public SpeedGama As Single = 150
+    Public WindMinPower As Integer = 32
+    Public WindGama As Single = 150
+    Public ShakeMinPower As Integer = 32
+    Public ShakeGama As Single = 150
 
     Public GZDistance As Integer = 310
     Public GXDistance As Integer = 293
-    Public GLeftScrewCenter As Integer = 92
+    Public GLeftScrewCenter As Integer = 95
     Public GRightScrewCenter As Integer = 110
     Public GMaxScrewUp As Integer = 38
     Public GMaxScrewDown As Integer = 28
     Public GPowerForMin As Byte = 50
     Public GMinDiff As Integer = 3
-    Public GMaxDiff As Integer = 45
-    Private _ultrasonicDamper As Single = 0.4
-    Private _gMotorEfficiency As Single = 0.03
+    Public GMaxDiff As Integer = 30
+    Private _ultrasonicDamper As Single = 0.9
+    Private _gLeftMotorEfficiency As Single = 0.035
+    Private _gRightMotorEfficiency As Single = 0.03
 
     Public Overrides Function FileName() As String
         Return "Settings.INI"
@@ -48,12 +51,21 @@
         Calculate_GMotorEfficiencyOK()
     End Sub
 
-    Public Property GMotorEfficiency As Single
+    Public Property GLeftMotorEfficiency As Single
         Get
-            Return _gMotorEfficiency
+            Return _gLeftMotorEfficiency
         End Get
         Set(value As Single)
-            _gMotorEfficiency = value
+            _gLeftMotorEfficiency = value
+            Calculate_GMotorEfficiencyOK()
+        End Set
+    End Property
+    Public Property GRightMotorEfficiency As Single
+        Get
+            Return _gRightMotorEfficiency
+        End Get
+        Set(value As Single)
+            _gRightMotorEfficiency = value
             Calculate_GMotorEfficiencyOK()
         End Set
     End Property
@@ -67,13 +79,19 @@
         End Set
     End Property
 
-    Private _gMotorEfficiencyOK As Single
+    Private _gLeftMotorEfficiencyOK As Single, _gRightMotorEfficiencyOK As Single
     Private Sub Calculate_GMotorEfficiencyOK()
-        _gMotorEfficiencyOK = GMotorEfficiency * UltrasonicDamper / (1 - UltrasonicDamper)
+        _gLeftMotorEfficiencyOK = GLeftMotorEfficiency * UltrasonicDamper / (1 - UltrasonicDamper)
+        _gRightMotorEfficiencyOK = GRightMotorEfficiency * UltrasonicDamper / (1 - UltrasonicDamper)
     End Sub
-    Public ReadOnly Property GMotorEfficiencyOK As Single
+    Public ReadOnly Property GLeftMotorEfficiencyOK As Single
         Get
-            Return _gMotorEfficiencyOK
+            Return _gLeftMotorEfficiencyOK
+        End Get
+    End Property
+    Public ReadOnly Property GRightMotorEfficiencyOK As Single
+        Get
+            Return _gRightMotorEfficiencyOK
         End Get
     End Property
 

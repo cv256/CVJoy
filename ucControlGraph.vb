@@ -32,11 +32,16 @@
                 Integer.TryParse(frmSetup.txtWheelPowerForMin.Text, .MinPower)
                 Integer.TryParse(frmSetup.txtWheelPowerGama.Text, .Gama)
                 Single.TryParse(frmSetup.txtWheelPowerFactor.Text, .Factor)
-            ElseIf ParentButton Is frmSetup.btSpeedGraph Then
+            ElseIf ParentButton Is frmSetup.btWindGraph Then
                 .Range = 255
                 Integer.TryParse(1, .MinInput) ' Game.txtSpeedMinInput.Text
-                Integer.TryParse(frmSetup.txtSpeedMin.Text, .MinPower)
-                Integer.TryParse(frmSetup.txtSpeedGama.Text, .Gama)
+                Integer.TryParse(frmSetup.txtWindMin.Text, .MinPower)
+                Integer.TryParse(frmSetup.txtWindGama.Text, .Gama)
+            ElseIf ParentButton Is frmSetup.btShakeGraph Then
+                .Range = 255
+                Integer.TryParse(1, .MinInput) ' Game.txtSpeedMinInput.Text
+                Integer.TryParse(frmSetup.txtShakeMin.Text, .MinPower)
+                Integer.TryParse(frmSetup.txtShakeGama.Text, .Gama)
             End If
         End With
         Return res
@@ -101,10 +106,16 @@
         UpdateValue(FFWheel)
     End Sub
 
-    Public Sub UpdateSpeed(FFWind As Integer)
+    Public Sub UpdateWind(FFWind As Integer)
         If ParentButton Is Nothing Then Return
-        If ParentButton.Name <> frmSetup.btSpeedGraph.Name Then Return
+        If ParentButton.Name <> frmSetup.btWindGraph.Name Then Return
         UpdateValue(FFWind)
+    End Sub
+
+    Public Sub UpdateShake(FFShake As Integer)
+        If ParentButton Is Nothing Then Return
+        If ParentButton.Name <> frmSetup.btShakeGraph.Name Then Return
+        UpdateValue(FFShake)
     End Sub
 
 

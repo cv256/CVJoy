@@ -54,8 +54,10 @@ Public Class frmSetup
         txtClutchMax.Text = SettingsMain.ClutchMax
         txtClutchGama.Text = SettingsMain.ClutchGama * 100
 
-        txtSpeedMin.Text = SettingsMain.SpeedMinPower
-        txtSpeedGama.Text = SettingsMain.SpeedGama
+        txtWindMin.Text = SettingsMain.WindMinPower
+        txtWindGama.Text = SettingsMain.WindGama
+        txtShakeMin.Text = SettingsMain.ShakeMinPower
+        txtShakeGama.Text = SettingsMain.ShakeGama
 
         txtLeftScrewCenter.Text = SettingsMain.GLeftScrewCenter
         txtRightScrewCenter.Text = SettingsMain.GRightScrewCenter
@@ -67,7 +69,8 @@ Public Class frmSetup
         txtGZDistance.Text = SettingsMain.GZDistance
         txtGXDistance.Text = SettingsMain.GXDistance
         txtUltrasonicDamper.Text = SettingsMain.UltrasonicDamper * 100
-        txtGMotorEfficiency.Text = SettingsMain.GMotorEfficiency * 1000
+        txtGLeftMotorEfficiency.Text = SettingsMain.GLeftMotorEfficiency * 1000
+        txtGRightMotorEfficiency.Text = SettingsMain.GRightMotorEfficiency * 1000
 
         CalculateMaxAngleDown(Me, Nothing)
         CalculateMaxAngleUp(Me, Nothing)
@@ -96,8 +99,10 @@ Public Class frmSetup
         res &= ValidateNumber(txtClutchMax, 0, 1023, "Clutch Max")
         res &= ValidateNumber(txtClutchGama, 1, 999, "Clutch Gama")
 
-        res &= ValidateNumber(txtSpeedGama, 0, 800, "Speed Power Gama")
-        res &= ValidateNumber(txtSpeedMin, 0, 255, "Speed Power For Min")
+        res &= ValidateNumber(txtWindGama, 0, 800, "Speed Power Gama")
+        res &= ValidateNumber(txtWindMin, 0, 255, "Speed Power For Min")
+        res &= ValidateNumber(txtShakeGama, 0, 800, "Shake Power Gama")
+        res &= ValidateNumber(txtShakeMin, 0, 255, "Shake Power For Min")
 
         res &= ValidateNumber(txtLeftScrewCenter, 1, 999, "Left screw distance from ground to Center position")
         res &= ValidateNumber(txtRightScrewCenter, 1, 999, "Right screw distance from ground to Center position")
@@ -154,8 +159,10 @@ Public Class frmSetup
         SettingsMain.ClutchMax = txtClutchMax.Text
         SettingsMain.ClutchGama = CInt(txtClutchGama.Text) / 100
 
-        SettingsMain.SpeedGama = txtSpeedGama.Text
-        SettingsMain.SpeedMinPower = txtSpeedMin.Text
+        SettingsMain.WindGama = txtWindGama.Text
+        SettingsMain.WindMinPower = txtWindMin.Text
+        SettingsMain.ShakeGama = txtShakeGama.Text
+        SettingsMain.ShakeMinPower = txtShakeMin.Text
 
         SettingsMain.GLeftScrewCenter = txtLeftScrewCenter.Text
         SettingsMain.GRightScrewCenter = txtRightScrewCenter.Text
@@ -167,7 +174,8 @@ Public Class frmSetup
         SettingsMain.GZDistance = txtGZDistance.Text
         SettingsMain.GXDistance = txtGXDistance.Text
         SettingsMain.UltrasonicDamper = CInt(txtUltrasonicDamper.Text) / 100
-        SettingsMain.GMotorEfficiency = CInt(txtGMotorEfficiency.Text) / 1000
+        SettingsMain.GLeftMotorEfficiency = CInt(txtGLeftMotorEfficiency.Text) / 1000
+        SettingsMain.GRightMotorEfficiency = CInt(txtGRightMotorEfficiency.Text) / 1000
 
         SettingsMain.SaveSettingstoFile()
 
@@ -184,25 +192,42 @@ Public Class frmSetup
     End Sub
 
 
-    Private Sub btTest_MouseDown(sender As Object, e As MouseEventArgs) Handles btTestWheelLeft.MouseDown, btTestWheelRight.MouseDown, btTestGDown.MouseDown, btTestGUp.MouseDown, btTestGLeft.MouseDown, btTestGRight.MouseDown, btTestSpeed.MouseDown
+
+    Private Sub btTest_MouseDown(sender As Object, e As MouseEventArgs) Handles btTestWheelLeft.MouseDown, btTestWheelRight.MouseDown _
+            , btTestGDown.MouseDown, btTestGUp.MouseDown, btTestGLeft.MouseDown, btTestGRight.MouseDown _
+            , btTestGLeftDown.MouseDown, btTestGLeftUp.MouseDown, btTestGRightDown.MouseDown, btTestGRightUp.MouseDown _
+            , btTestWind.MouseDown, btTestShake.MouseDown
         If txt_Validate(pShowMsg:=True) > "" Then Return
         With CType(Me.Owner, frmCVJoy)
             If sender.Equals(btTestWheelLeft) OrElse sender.Equals(btTestWheelRight) Then
                 .TestValue = CInt(txtWheelPowerForMin.Text) * If(sender.Equals(btTestWheelLeft), 1, -1)
                 .TestMode = frmCVJoy.Motor.Wheel
             ElseIf sender.Equals(btTestGDown) OrElse sender.Equals(btTestGUp) Then
-                .TestValue = CInt(txtGMinDiff.Text) * If(sender.Equals(btTestGDown), 1, -1) ' positive = up (left down, right down)
+                .TestValue = CInt(txtGMinDiff.Text) * If(sender.Equals(btTestGDown), 1, -1)
                 .TestMode = frmCVJoy.Motor.Pitch
             ElseIf sender.Equals(btTestGLeft) OrElse sender.Equals(btTestGRight) Then
-                .TestValue = CInt(txtGMinDiff.Text) * If(sender.Equals(btTestGLeft), -1, 1) ' positive = turn right (left up, right down)
+                .TestValue = CInt(txtGMinDiff.Text) * If(sender.Equals(btTestGLeft), -1, 1)
                 .TestMode = frmCVJoy.Motor.Roll
-            ElseIf sender.Equals(btTestSpeed) Then
-                .TestValue = CInt(txtSpeedMin.Text)
+            ElseIf sender.Equals(btTestGLeftDown) OrElse sender.Equals(btTestGLeftUp) Then
+                .TestValue = CInt(txtGMinDiff.Text) * If(sender.Equals(btTestGLeftDown), 1, -1)
+                .TestMode = frmCVJoy.Motor.Left
+            ElseIf sender.Equals(btTestGRightDown) OrElse sender.Equals(btTestGRightUp) Then
+                .TestValue = CInt(txtGMinDiff.Text) * If(sender.Equals(btTestGRightDown), 1, -1)
+                .TestMode = frmCVJoy.Motor.Right
+            ElseIf sender.Equals(btTestWind) Then
+                .TestValue = CInt(txtWindMin.Text)
                 .TestMode = frmCVJoy.Motor.Wind
+            ElseIf sender.Equals(btTestShake) Then
+                .TestValue = CInt(txtShakeMin.Text)
+                .TestMode = frmCVJoy.Motor.Shake
             End If
         End With
     End Sub
-    Private Sub btTest_MouseUp(sender As Object, e As MouseEventArgs) Handles btTestWheelLeft.MouseUp, btTestWheelRight.MouseUp, btTestGDown.MouseUp, btTestGUp.MouseUp, btTestGLeft.MouseUp, btTestGRight.MouseUp, Me.MouseUp, btTestSpeed.MouseUp
+    Private Sub btTest_MouseUp(sender As Object, e As MouseEventArgs) Handles Me.MouseUp, Me.MouseMove, UcControlGGraph1.MouseMove, UcControlGraph1.MouseMove _
+        , btTestWheelLeft.MouseUp, btTestWheelRight.MouseUp _
+        , btTestGDown.MouseUp, btTestGUp.MouseUp, btTestGLeft.MouseUp, btTestGRight.MouseUp _
+        , btTestGLeftDown.MouseUp, btTestGLeftUp.MouseUp, btTestGRightDown.MouseUp, btTestGRightUp.MouseUp _
+        , btTestWind.MouseUp, btTestShake.MouseUp
         CType(Me.Owner, frmCVJoy).TestMode = frmCVJoy.Motor.None
     End Sub
 
@@ -211,7 +236,7 @@ Public Class frmSetup
         ShowSettings()
     End Sub
 
-    Private Sub btGraph_Click(sender As Object, e As EventArgs) Handles btAccelGraph.Click, btBrakeGraph.Click, btClutchGraph.Click, btWheelGraph.Click, btSpeedGraph.Click, btGGraph.Click
+    Private Sub btGraph_Click(sender As Object, e As EventArgs) Handles btAccelGraph.Click, btBrakeGraph.Click, btClutchGraph.Click, btWheelGraph.Click, btWindGraph.Click, btShakeGraph.Click, btGGraph.Click
         If graph IsNot Nothing OrElse Ggraph IsNot Nothing Then
             graph = Nothing ' stop updating graph data from frmMain
             Ggraph = Nothing ' stop updating graph data from frmMain
@@ -267,13 +292,14 @@ Public Class frmSetup
             lbMaxScrewDown.Text = "mm"
         End Try
     End Sub
-    Private Sub CalculateSTOP(sender As Object, e As EventArgs) Handles txtMaxScrewUp.Leave, txtMaxScrewDown.Leave, txtGMinDiff.Leave
-        Try
-            lbAlarm.Text = $"mm   STOP! at  {(CInt(txtMaxScrewUp.Text) + CInt(txtGMinDiff.Text)).ToString("0")}mm Up  /  {(CInt(txtMaxScrewDown.Text) + CInt(txtGMinDiff.Text)).ToString("0")}mm Down"
-        Catch ex As Exception
-            lbMaxScrewDown.Text = "mm"
-        End Try
-    End Sub
+
+    'Private Sub CalculateSTOP(sender As Object, e As EventArgs) Handles txtMaxScrewUp.Leave, txtMaxScrewDown.Leave, txtGMinDiff.Leave
+    '    Try
+    '        lbAlarm.Text = $"mm   STOP! at  {(CInt(txtMaxScrewUp.Text) + CInt(txtGMinDiff.Text)).ToString("0")}mm Up  /  {(CInt(txtMaxScrewDown.Text) + CInt(txtGMinDiff.Text)).ToString("0")}mm Down"
+    '    Catch ex As Exception
+    '        lbMaxScrewDown.Text = "mm"
+    '    End Try
+    'End Sub
 
 
 End Class

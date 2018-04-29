@@ -63,6 +63,7 @@ Partial Class frmCVJoy
         Me.lbTemperature = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
+        Me.chkNoMotors = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'btArduinoStart
@@ -383,7 +384,7 @@ Partial Class frmCVJoy
         '
         Me.chkNoWind.AutoSize = True
         Me.chkNoWind.BackColor = System.Drawing.Color.Transparent
-        Me.chkNoWind.Location = New System.Drawing.Point(144, 143)
+        Me.chkNoWind.Location = New System.Drawing.Point(257, 143)
         Me.chkNoWind.Name = "chkNoWind"
         Me.chkNoWind.Size = New System.Drawing.Size(89, 17)
         Me.chkNoWind.TabIndex = 114
@@ -508,12 +509,25 @@ Partial Class frmCVJoy
         Me.Label3.TabIndex = 136
         Me.Label3.Text = "mm"
         '
+        'chkNoMotors
+        '
+        Me.chkNoMotors.AutoSize = True
+        Me.chkNoMotors.BackColor = System.Drawing.Color.Transparent
+        Me.chkNoMotors.Location = New System.Drawing.Point(129, 143)
+        Me.chkNoMotors.Name = "chkNoMotors"
+        Me.chkNoMotors.Size = New System.Drawing.Size(112, 17)
+        Me.chkNoMotors.TabIndex = 137
+        Me.chkNoMotors.Text = "Disable Pitch&Roll"
+        Me.chkNoMotors.UseMnemonic = False
+        Me.chkNoMotors.UseVisualStyleBackColor = False
+        '
         'frmCVJoy
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ClientSize = New System.Drawing.Size(521, 315)
+        Me.Controls.Add(Me.chkNoMotors)
         Me.Controls.Add(Me.lbAttitude)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.lbTemperature)
@@ -599,4 +613,5 @@ Partial Class frmCVJoy
     Friend WithEvents lbTemperature As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents Label3 As Label
+    Friend WithEvents chkNoMotors As CheckBox
 End Class
