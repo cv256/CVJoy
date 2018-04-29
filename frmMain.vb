@@ -191,9 +191,9 @@ Public Class frmCVJoy
                 ElseIf TestMode = Motor.Roll Then
                     leftDiff = TestValue
                     rightDiff = -TestValue
-                ElseIf TestMode = Motor.left Then
+                ElseIf TestMode = Motor.Left Then
                     leftDiff = TestValue
-                ElseIf TestMode = Motor.right Then
+                ElseIf TestMode = Motor.Right Then
                     rightDiff = TestValue
                 ElseIf Not chkNoMotors.Checked Then
                     leftDiff = DesiredLeftScrew - _realOKLeft
