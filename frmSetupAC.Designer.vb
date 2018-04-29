@@ -74,6 +74,7 @@ Partial Class frmSetupAC
         Me.Label3 = New System.Windows.Forms.Label()
         Me.txtShakeMaxJump = New System.Windows.Forms.MaskedTextBox()
         Me.Label4 = New System.Windows.Forms.Label()
+        Me.txtShakeMinJump = New System.Windows.Forms.MaskedTextBox()
         Me.SuspendLayout()
         '
         'ckKeepVisible
@@ -558,7 +559,7 @@ Partial Class frmSetupAC
         'Label43
         '
         Me.Label43.AutoSize = True
-        Me.Label43.Location = New System.Drawing.Point(147, 9)
+        Me.Label43.Location = New System.Drawing.Point(144, 9)
         Me.Label43.Name = "Label43"
         Me.Label43.Size = New System.Drawing.Size(75, 13)
         Me.Label43.TabIndex = 232
@@ -589,11 +590,11 @@ Partial Class frmSetupAC
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(290, 29)
+        Me.Label3.Location = New System.Drawing.Point(144, 29)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(64, 13)
+        Me.Label3.Size = New System.Drawing.Size(81, 13)
         Me.Label3.TabIndex = 235
-        Me.Label3.Text = "Max.Shake:"
+        Me.Label3.Text = "Shake starts at:"
         '
         'txtShakeMaxJump
         '
@@ -610,11 +611,23 @@ Partial Class frmSetupAC
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(429, 29)
+        Me.Label4.Location = New System.Drawing.Point(405, 29)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(52, 13)
+        Me.Label4.Size = New System.Drawing.Size(76, 13)
         Me.Label4.TabIndex = 236
-        Me.Label4.Text = "at Jumps:"
+        Me.Label4.Text = "Max Shake at:"
+        '
+        'txtShakeMinJump
+        '
+        Me.txtShakeMinJump.AsciiOnly = True
+        Me.txtShakeMinJump.BeepOnError = True
+        Me.txtShakeMinJump.HidePromptOnLeave = True
+        Me.txtShakeMinJump.Location = New System.Drawing.Point(225, 26)
+        Me.txtShakeMinJump.Mask = "#0.0\G"
+        Me.txtShakeMinJump.Name = "txtShakeMinJump"
+        Me.txtShakeMinJump.Size = New System.Drawing.Size(37, 20)
+        Me.txtShakeMinJump.TabIndex = 238
+        Me.txtShakeMinJump.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'frmSetupAC
         '
@@ -622,12 +635,11 @@ Partial Class frmSetupAC
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ClientSize = New System.Drawing.Size(521, 276)
+        Me.Controls.Add(Me.txtShakeMinJump)
         Me.Controls.Add(Me.txtShakeMaxJump)
         Me.Controls.Add(Me.Label4)
-        Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Label42)
         Me.Controls.Add(Me.txtSpeedMinInput)
-        Me.Controls.Add(Me.Label43)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.UcButtons1)
         Me.Controls.Add(Me.btClose)
@@ -674,6 +686,8 @@ Partial Class frmSetupAC
         Me.Controls.Add(Me.lbACSpeed)
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.ckKeepVisible)
+        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.Label43)
         Me.Name = "frmSetupAC"
         Me.Text = "CV Joy - Setup Asseto Corsa"
         Me.ResumeLayout(False)
@@ -733,4 +747,5 @@ Partial Class frmSetupAC
     Friend WithEvents Label3 As Label
     Friend WithEvents txtShakeMaxJump As MaskedTextBox
     Friend WithEvents Label4 As Label
+    Friend WithEvents txtShakeMinJump As MaskedTextBox
 End Class

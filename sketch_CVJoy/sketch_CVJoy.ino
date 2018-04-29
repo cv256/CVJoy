@@ -60,11 +60,11 @@
 #define wheelMotorDir1  52
 #define wheelMotorDir2  53
 
-#define leftMotorPower  22
+#define leftMotorPower  25 //22
 #define leftMotorDir1  50
 #define leftMotorDir2  51
 
-#define rightMotorPower  25
+#define rightMotorPower  22 //25
 #define rightMotorDir1  48
 #define rightMotorDir2  49
 
@@ -372,5 +372,4 @@ void timerIsr() {
   }
 
 }
-
 

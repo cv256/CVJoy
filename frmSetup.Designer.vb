@@ -270,7 +270,7 @@ Partial Class frmSetup
         Me.btSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btSave.BackColor = System.Drawing.Color.Gold
         Me.btSave.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btSave.Location = New System.Drawing.Point(640, 438)
+        Me.btSave.Location = New System.Drawing.Point(640, 441)
         Me.btSave.Name = "btSave"
         Me.btSave.Size = New System.Drawing.Size(59, 22)
         Me.btSave.TabIndex = 103
@@ -613,7 +613,7 @@ Partial Class frmSetup
         '
         Me.btDefaults.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btDefaults.BackColor = System.Drawing.Color.Gold
-        Me.btDefaults.Location = New System.Drawing.Point(555, 438)
+        Me.btDefaults.Location = New System.Drawing.Point(555, 441)
         Me.btDefaults.Name = "btDefaults"
         Me.btDefaults.Size = New System.Drawing.Size(59, 22)
         Me.btDefaults.TabIndex = 155
@@ -1081,7 +1081,7 @@ Partial Class frmSetup
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label64.BackColor = System.Drawing.SystemColors.Info
         Me.Label64.ForeColor = System.Drawing.SystemColors.InfoText
-        Me.Label64.Location = New System.Drawing.Point(2, 433)
+        Me.Label64.Location = New System.Drawing.Point(2, 436)
         Me.Label64.Name = "Label64"
         Me.Label64.Size = New System.Drawing.Size(767, 2)
         Me.Label64.TabIndex = 216
@@ -1176,7 +1176,7 @@ Partial Class frmSetup
         Me.btClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btClose.BackColor = System.Drawing.Color.Gold
         Me.btClose.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btClose.Location = New System.Drawing.Point(705, 438)
+        Me.btClose.Location = New System.Drawing.Point(705, 441)
         Me.btClose.Name = "btClose"
         Me.btClose.Size = New System.Drawing.Size(59, 22)
         Me.btClose.TabIndex = 226
@@ -1293,7 +1293,7 @@ Partial Class frmSetup
         '
         Me.UcControlGraph1.BackColor = System.Drawing.Color.FromArgb(CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer))
         Me.UcControlGraph1.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.UcControlGraph1.Location = New System.Drawing.Point(0, 452)
+        Me.UcControlGraph1.Location = New System.Drawing.Point(0, 455)
         Me.UcControlGraph1.Margin = New System.Windows.Forms.Padding(0)
         Me.UcControlGraph1.Name = "UcControlGraph1"
         Me.UcControlGraph1.Size = New System.Drawing.Size(770, 11)
@@ -1521,7 +1521,7 @@ Partial Class frmSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(770, 463)
+        Me.ClientSize = New System.Drawing.Size(770, 466)
         Me.Controls.Add(Me.btTestGRightUp)
         Me.Controls.Add(Me.btTestGRightDown)
         Me.Controls.Add(Me.btTestGLeftUp)

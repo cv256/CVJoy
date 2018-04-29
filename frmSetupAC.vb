@@ -20,6 +20,7 @@
         txtRoll.Text = pGame.Roll * 100
         txtSpeedMaxJump.Text = pGame.SpeedMaxJump.ToString("+0.0;-0.0")
         txtShakeMaxJump.Text = pGame.ShakeMaxJump.ToString("+0.0;-0.0")
+        txtShakeMinJump.Text = pGame.ShakeMinJump.ToString("+0.0;-0.0")
         txtAccel.Text = (pGame.Accel * 57.3).ToString("00.0")
         txtTurn.Text = (pGame.Turn * 57.3).ToString("00.0")
         UcButtons1.ShowSettings(pGame)
@@ -54,6 +55,7 @@
         Game.Roll = txtRoll.Text / 100
         Game.SpeedMaxJump = txtSpeedMaxJump.Text.Replace("G", "")
         Game.ShakeMaxJump = txtShakeMaxJump.Text.Replace("G", "")
+        Game.ShakeMinJump = txtShakeMinJump.Text.Replace("G", "")
         Game.Accel = CDec(txtAccel.Text) / 10 / 57.3
         Game.Turn = CDec(txtTurn.Text) / 10 / 57.3
         UcButtons1.UseSettings()

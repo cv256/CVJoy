@@ -20,28 +20,28 @@
     Public WheelSensitivity As Single = 8.5
     Public WheelDead As Integer = 0
 
-    Public WheelPowerGama As Single = 30
-    Public WheelPowerForMin As Integer = 95
-    Public WheelPowerFactor As Single = 1.05
+    Public WheelPowerGama As Single = 40
+    Public WheelPowerForMin As Integer = 88
+    Public WheelPowerFactor As Single = 1.08
     Public WheelDampFactor As Integer = 500
 
     Public WindMinPower As Integer = 32
     Public WindGama As Single = 150
-    Public ShakeMinPower As Integer = 32
+    Public ShakeMinPower As Integer = 70
     Public ShakeGama As Single = 150
 
     Public GZDistance As Integer = 310
     Public GXDistance As Integer = 293
-    Public GLeftScrewCenter As Integer = 95
-    Public GRightScrewCenter As Integer = 110
-    Public GMaxScrewUp As Integer = 38
-    Public GMaxScrewDown As Integer = 28
-    Public GPowerForMin As Byte = 50
-    Public GMinDiff As Integer = 3
+    Public GLeftScrewCenter As Integer = 100
+    Public GRightScrewCenter As Integer = 107
+    Public GMaxScrewUp As Integer = 35
+    Public GMaxScrewDown As Integer = 31
+    Public GPowerForMin As Byte = 40
+    Public GMinDiff As Integer = 4
     Public GMaxDiff As Integer = 30
-    Private _ultrasonicDamper As Single = 0.9
-    Private _gLeftMotorEfficiency As Single = 0.035
-    Private _gRightMotorEfficiency As Single = 0.03
+    Private _ultrasonicDamper As Single = 0.92
+    Private _gLeftMotorEfficiency As Single = 0.022
+    Private _gRightMotorEfficiency As Single = 0.022
 
     Public Overrides Function FileName() As String
         Return "Settings.INI"

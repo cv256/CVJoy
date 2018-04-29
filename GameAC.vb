@@ -13,12 +13,13 @@ Public Class GameAC
     Public MinSpeed As Integer = 60
     Public MaxSpeed As Integer = 230
     Public SpeedMaxJump As Single = 0.7
-    Public ShakeMaxJump As Single = 0.7
+    Public ShakeMaxJump As Single = 1.0
+    Public ShakeMinJump As Single = 0.3
 
-    Public Pitch As Single = 0.28
-    Public Roll As Single = 0.28
-    Public Accel As Single = 0.07678883
-    Public Turn As Single = 0.07678883
+    Public Pitch As Single = 0.26
+    Public Roll As Single = 0.65
+    Public Accel As Single = 0.07155323
+    Public Turn As Single = 0.05235602
 
     Public Sub New(pOwner As frmCVJoy)
         MyBase.New(pOwner)
@@ -92,6 +93,7 @@ Public Class GameAC
         res.Roll = -acP.Roll * Me.Roll + acP.AccG(0) * Me.Turn ' (acP.AccG(0) ^ 2 * Math.Sign(acP.AccG(0)) + acP.AccG(0) * 0.4) / 2 * Me.Turn ' everything in Radians
         res.Wind = FFWind(SpeedKmh:=acP.SpeedKmh, pAccG1:=acP.AccG(1), pACLastAccG1:=ACLastAccG1)
         res.Shake = FFShake(pAccG1:=acP.AccG(1), pACLastAccG1:=ACLastAccG1)
+        ACLastAccG1 = acP.AccG(1)
         res.LedTop = Math.Min(acP.WheelSlip(0), acP.WheelSlip(1)) > Me.Slip
         res.LedBottom = Math.Min(acP.WheelSlip(2), acP.WheelSlip(3)) > Me.Slip
         res.LedLeft = acP.Rpms < ACS.MaxRpm * Me.Rpm1
@@ -139,7 +141,12 @@ Public Class GameAC
     End Function
 
     Private Function FFShake(pAccG1 As Single, pACLastAccG1 As Single) As Integer
-        Dim res As Integer = Math.Abs(pAccG1 - pACLastAccG1) / Me.ShakeMaxJump * 255 ' typical 0~255, but can get to something like 0~1000
+        Dim res As Integer = (pAccG1 - pACLastAccG1) ^ 2 * 10 ' here its still in Gs
+        If res < ShakeMinJump Then
+            res = 0
+        Else
+            res = res / Me.ShakeMaxJump * 255 ' typical 0~255, but can get to something like 0~1000
+        End If
         If graph IsNot Nothing Then graph.UpdateShake(res)
         Return res
     End Function
