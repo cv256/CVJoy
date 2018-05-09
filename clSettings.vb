@@ -39,61 +39,61 @@
     Public GPowerForMin As Byte = 40
     Public GMinDiff As Integer = 4
     Public GMaxDiff As Integer = 30
-    Private _ultrasonicDamper As Single = 0.92
-    Private _gLeftMotorEfficiency As Single = 0.022
-    Private _gRightMotorEfficiency As Single = 0.022
+    Public UltrasonicDamper As Single = 0.92
+    Public GMinMotorEfficiency As Single = 20
+    Public GMaxMotorEfficiency As Single = 127
 
     Public Overrides Function FileName() As String
         Return "Settings.INI"
     End Function
 
-    Public Sub New()
-        Calculate_GMotorEfficiencyOK()
-    End Sub
+    'Public Sub New()
+    '    Calculate_GMotorEfficiencyOK()
+    'End Sub
 
-    Public Property GLeftMotorEfficiency As Single
-        Get
-            Return _gLeftMotorEfficiency
-        End Get
-        Set(value As Single)
-            _gLeftMotorEfficiency = value
-            Calculate_GMotorEfficiencyOK()
-        End Set
-    End Property
-    Public Property GRightMotorEfficiency As Single
-        Get
-            Return _gRightMotorEfficiency
-        End Get
-        Set(value As Single)
-            _gRightMotorEfficiency = value
-            Calculate_GMotorEfficiencyOK()
-        End Set
-    End Property
-    Public Property UltrasonicDamper As Single
-        Get
-            Return _ultrasonicDamper
-        End Get
-        Set(value As Single)
-            _ultrasonicDamper = value
-            Calculate_GMotorEfficiencyOK()
-        End Set
-    End Property
+    'Public Property GMinMotorEfficiency As Single
+    '    Get
+    '        Return _gMinMotorEfficiency
+    '    End Get
+    '    Set(value As Single)
+    '        _gMinMotorEfficiency = value
+    '        Calculate_GMotorEfficiencyOK()
+    '    End Set
+    'End Property
+    'Public Property GMaxMotorEfficiency As Single
+    '    Get
+    '        Return _gMaxMotorEfficiency
+    '    End Get
+    '    Set(value As Single)
+    '        _gMaxMotorEfficiency = value
+    '        Calculate_GMotorEfficiencyOK()
+    '    End Set
+    'End Property
+    'Public Property UltrasonicDamper As Single
+    '    Get
+    '        Return _ultrasonicDamper
+    '    End Get
+    '    Set(value As Single)
+    '        _ultrasonicDamper = value
+    '        Calculate_GMotorEfficiencyOK()
+    '    End Set
+    'End Property
 
-    Private _gLeftMotorEfficiencyOK As Single, _gRightMotorEfficiencyOK As Single
-    Private Sub Calculate_GMotorEfficiencyOK()
-        _gLeftMotorEfficiencyOK = GLeftMotorEfficiency * UltrasonicDamper / (1 - UltrasonicDamper)
-        _gRightMotorEfficiencyOK = GRightMotorEfficiency * UltrasonicDamper / (1 - UltrasonicDamper)
-    End Sub
-    Public ReadOnly Property GLeftMotorEfficiencyOK As Single
-        Get
-            Return _gLeftMotorEfficiencyOK
-        End Get
-    End Property
-    Public ReadOnly Property GRightMotorEfficiencyOK As Single
-        Get
-            Return _gRightMotorEfficiencyOK
-        End Get
-    End Property
+    'Private _gMinMotorEfficiencyOK As Single, _gMaxMotorEfficiencyOK As Single
+    'Private Sub Calculate_GMotorEfficiencyOK()
+    '    _gMinMotorEfficiencyOK = GMinMotorEfficiency * UltrasonicDamper / (1 - UltrasonicDamper)
+    '    _gMaxMotorEfficiencyOK = GMaxMotorEfficiency * UltrasonicDamper / (1 - UltrasonicDamper)
+    'End Sub
+    'Public ReadOnly Property GMinMotorEfficiencyOK As Single
+    '    Get
+    '        Return _gMinMotorEfficiencyOK
+    '    End Get
+    'End Property
+    'Public ReadOnly Property GMaxMotorEfficiencyOK As Single
+    '    Get
+    '        Return _gMaxMotorEfficiencyOK
+    '    End Get
+    'End Property
 
 End Class
 
@@ -179,8 +179,8 @@ Public MustInherit Class clGame
 End Class
 
 Public Structure clGameOutputs
-    Public Wind As Integer ' nominal is 0~255
-    Public Shake As Integer ' nominal is 0~255
+    Public Wind As Integer  ' nominal is 0~255
+    Public Shake As Integer  ' nominal is 0~255
     Public Pitch As Single ' radians
     Public Roll As Single ' radians
     Public LedTop As Boolean

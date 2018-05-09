@@ -117,4 +117,142 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="ToolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="btTestGDown.ToolTip" xml:space="preserve">
+    <value>How to calibrate Motor Efficiency:
+- set sensors damping to 99%
+- disable Pitch and Roll
+- set Min.Power
+- test with min.diff, adjust Efficiency@Min.Power so that when motor stops
+   , the calculated sensor line is at tha same level the real sensor will be when it stabilises
+- test with big diff, adjust Efficiency@Max.Power so that when stops
+   , the calculated sensor line is at tha same level the real sensor will be when it stabilises
+
+After calibrating:
+- set sensors damping to good value (90~94%)
+- enable Pitch and Roll
+- redo de tests and calibrations until it doesnt bounce</value>
+  </data>
+  <data name="btTestGUp.ToolTip" xml:space="preserve">
+    <value>How to calibrate Motor Efficiency:
+- set sensors damping to 99%
+- disable Pitch and Roll
+- set Min.Power
+- test with min.diff, adjust Efficiency@Min.Power so that when motor stops
+   , the calculated sensor line is at tha same level the real sensor will be when it stabilises
+- test with big diff, adjust Efficiency@Max.Power so that when stops
+   , the calculated sensor line is at tha same level the real sensor will be when it stabilises
+
+After calibrating:
+- set sensors damping to good value (90~94%)
+- enable Pitch and Roll
+- redo de tests and calibrations until it doesnt bounce</value>
+  </data>
+  <data name="btTestGLeft.ToolTip" xml:space="preserve">
+    <value>How to calibrate Motor Efficiency:
+- set sensors damping to 99%
+- disable Pitch and Roll
+- set Min.Power
+- test with min.diff, adjust Efficiency@Min.Power so that when motor stops
+   , the calculated sensor line is at tha same level the real sensor will be when it stabilises
+- test with big diff, adjust Efficiency@Max.Power so that when stops
+   , the calculated sensor line is at tha same level the real sensor will be when it stabilises
+
+After calibrating:
+- set sensors damping to good value (90~94%)
+- enable Pitch and Roll
+- redo de tests and calibrations until it doesnt bounce</value>
+  </data>
+  <data name="btTestGRight.ToolTip" xml:space="preserve">
+    <value>How to calibrate Motor Efficiency:
+- set sensors damping to 99%
+- disable Pitch and Roll
+- set Min.Power
+- test with min.diff, adjust Efficiency@Min.Power so that when motor stops
+   , the calculated sensor line is at tha same level the real sensor will be when it stabilises
+- test with big diff, adjust Efficiency@Max.Power so that when stops
+   , the calculated sensor line is at tha same level the real sensor will be when it stabilises
+
+After calibrating:
+- set sensors damping to good value (90~94%)
+- enable Pitch and Roll
+- redo de tests and calibrations until it doesnt bounce</value>
+  </data>
+  <data name="btGGraph.ToolTip" xml:space="preserve">
+    <value>How to calibrate Motor Efficiency:
+- set sensors damping to 99%
+- disable Pitch and Roll
+- set Min.Power
+- test with min.diff, adjust Efficiency@Min.Power so that when motor stops
+   , the calculated sensor line is at tha same level the real sensor will be when it stabilises
+- test with big diff, adjust Efficiency@Max.Power so that when stops
+   , the calculated sensor line is at tha same level the real sensor will be when it stabilises
+
+After calibrating:
+- set sensors damping to good value (90~94%)
+- enable Pitch and Roll
+- redo de tests and calibrations until it doesnt bounce</value>
+  </data>
+  <data name="btTestGLeftDown.ToolTip" xml:space="preserve">
+    <value>How to calibrate Motor Efficiency:
+- set sensors damping to 99%
+- disable Pitch and Roll
+- set Min.Power
+- test with min.diff, adjust Efficiency@Min.Power so that when motor stops
+   , the calculated sensor line is at tha same level the real sensor will be when it stabilises
+- test with big diff, adjust Efficiency@Max.Power so that when stops
+   , the calculated sensor line is at tha same level the real sensor will be when it stabilises
+
+After calibrating:
+- set sensors damping to good value (90~94%)
+- enable Pitch and Roll
+- redo de tests and calibrations until it doesnt bounce</value>
+  </data>
+  <data name="btTestGLeftUp.ToolTip" xml:space="preserve">
+    <value>How to calibrate Motor Efficiency:
+- set sensors damping to 99%
+- disable Pitch and Roll
+- set Min.Power
+- test with min.diff, adjust Efficiency@Min.Power so that when motor stops
+   , the calculated sensor line is at tha same level the real sensor will be when it stabilises
+- test with big diff, adjust Efficiency@Max.Power so that when stops
+   , the calculated sensor line is at tha same level the real sensor will be when it stabilises
+
+After calibrating:
+- set sensors damping to good value (90~94%)
+- enable Pitch and Roll
+- redo de tests and calibrations until it doesnt bounce</value>
+  </data>
+  <data name="btTestGRightDown.ToolTip" xml:space="preserve">
+    <value>How to calibrate Motor Efficiency:
+- set sensors damping to 99%
+- disable Pitch and Roll
+- set Min.Power
+- test with min.diff, adjust Efficiency@Min.Power so that when motor stops
+   , the calculated sensor line is at tha same level the real sensor will be when it stabilises
+- test with big diff, adjust Efficiency@Max.Power so that when stops
+   , the calculated sensor line is at tha same level the real sensor will be when it stabilises
+
+After calibrating:
+- set sensors damping to good value (90~94%)
+- enable Pitch and Roll
+- redo de tests and calibrations until it doesnt bounce</value>
+  </data>
+  <data name="btTestGRightUp.ToolTip" xml:space="preserve">
+    <value>How to calibrate Motor Efficiency:
+- set sensors damping to 99%
+- disable Pitch and Roll
+- set Min.Power
+- test with min.diff, adjust Efficiency@Min.Power so that when motor stops
+   , the calculated sensor line is at tha same level the real sensor will be when it stabilises
+- test with big diff, adjust Efficiency@Max.Power so that when stops
+   , the calculated sensor line is at tha same level the real sensor will be when it stabilises
+
+After calibrating:
+- set sensors damping to good value (90~94%)
+- enable Pitch and Roll
+- redo de tests and calibrations until it doesnt bounce</value>
+  </data>
 </root>

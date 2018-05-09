@@ -22,6 +22,8 @@ Partial Class frmSetup
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSetup))
         Me.Label3 = New System.Windows.Forms.Label()
         Me.txtFreq = New System.Windows.Forms.MaskedTextBox()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -134,7 +136,7 @@ Partial Class frmSetup
         Me.Label11 = New System.Windows.Forms.Label()
         Me.txtUltrasonicDamper = New System.Windows.Forms.MaskedTextBox()
         Me.lbGLeftMotorEfficiency = New System.Windows.Forms.Label()
-        Me.txtGLeftMotorEfficiency = New System.Windows.Forms.MaskedTextBox()
+        Me.txtGMaxMotorEfficiency = New System.Windows.Forms.MaskedTextBox()
         Me.btShakeGraph = New System.Windows.Forms.Button()
         Me.Label19 = New System.Windows.Forms.Label()
         Me.btTestShake = New System.Windows.Forms.Button()
@@ -144,12 +146,17 @@ Partial Class frmSetup
         Me.Label33 = New System.Windows.Forms.Label()
         Me.txtShakeGama = New System.Windows.Forms.MaskedTextBox()
         Me.Label34 = New System.Windows.Forms.Label()
-        Me.txtGRightMotorEfficiency = New System.Windows.Forms.MaskedTextBox()
-        Me.Label35 = New System.Windows.Forms.Label()
+        Me.txtGMinMotorEfficiency = New System.Windows.Forms.MaskedTextBox()
         Me.btTestGLeftDown = New System.Windows.Forms.Button()
         Me.btTestGLeftUp = New System.Windows.Forms.Button()
         Me.btTestGRightDown = New System.Windows.Forms.Button()
         Me.btTestGRightUp = New System.Windows.Forms.Button()
+        Me.Label36 = New System.Windows.Forms.Label()
+        Me.Label60 = New System.Windows.Forms.Label()
+        Me.Label35 = New System.Windows.Forms.Label()
+        Me.Label42 = New System.Windows.Forms.Label()
+        Me.txtGTestDiff = New System.Windows.Forms.MaskedTextBox()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.SuspendLayout()
         '
         'Label3
@@ -339,44 +346,48 @@ Partial Class frmSetup
         '
         Me.btTestGDown.BackColor = System.Drawing.Color.Gold
         Me.btTestGDown.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btTestGDown.Location = New System.Drawing.Point(627, 337)
+        Me.btTestGDown.Location = New System.Drawing.Point(629, 360)
         Me.btTestGDown.Name = "btTestGDown"
         Me.btTestGDown.Size = New System.Drawing.Size(59, 20)
         Me.btTestGDown.TabIndex = 118
         Me.btTestGDown.Text = "Test Down"
+        Me.ToolTip1.SetToolTip(Me.btTestGDown, resources.GetString("btTestGDown.ToolTip"))
         Me.btTestGDown.UseVisualStyleBackColor = False
         '
         'btTestGUp
         '
         Me.btTestGUp.BackColor = System.Drawing.Color.Gold
         Me.btTestGUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btTestGUp.Location = New System.Drawing.Point(627, 381)
+        Me.btTestGUp.Location = New System.Drawing.Point(629, 404)
         Me.btTestGUp.Name = "btTestGUp"
         Me.btTestGUp.Size = New System.Drawing.Size(59, 20)
         Me.btTestGUp.TabIndex = 117
         Me.btTestGUp.Text = "Test Up"
+        Me.ToolTip1.SetToolTip(Me.btTestGUp, resources.GetString("btTestGUp.ToolTip"))
         Me.btTestGUp.UseVisualStyleBackColor = False
         '
         'btTestGLeft
         '
         Me.btTestGLeft.BackColor = System.Drawing.Color.Gold
         Me.btTestGLeft.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btTestGLeft.Location = New System.Drawing.Point(594, 359)
+        Me.btTestGLeft.Location = New System.Drawing.Point(596, 382)
         Me.btTestGLeft.Name = "btTestGLeft"
-        Me.btTestGLeft.Size = New System.Drawing.Size(61, 20)
+        Me.btTestGLeft.Size = New System.Drawing.Size(62, 20)
         Me.btTestGLeft.TabIndex = 120
         Me.btTestGLeft.Text = "Test Left"
+        Me.ToolTip1.SetToolTip(Me.btTestGLeft, resources.GetString("btTestGLeft.ToolTip"))
         Me.btTestGLeft.UseVisualStyleBackColor = False
         '
         'btTestGRight
         '
         Me.btTestGRight.BackColor = System.Drawing.Color.Gold
         Me.btTestGRight.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btTestGRight.Location = New System.Drawing.Point(658, 359)
+        Me.btTestGRight.Location = New System.Drawing.Point(660, 382)
         Me.btTestGRight.Name = "btTestGRight"
         Me.btTestGRight.Size = New System.Drawing.Size(61, 20)
         Me.btTestGRight.TabIndex = 119
         Me.btTestGRight.Text = "Test Right"
+        Me.ToolTip1.SetToolTip(Me.btTestGRight, resources.GetString("btTestGRight.ToolTip"))
         Me.btTestGRight.UseVisualStyleBackColor = False
         '
         'txtGMinDiff
@@ -1164,11 +1175,12 @@ Partial Class frmSetup
         '
         Me.btGGraph.BackColor = System.Drawing.Color.Gold
         Me.btGGraph.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btGGraph.Location = New System.Drawing.Point(723, 359)
+        Me.btGGraph.Location = New System.Drawing.Point(723, 382)
         Me.btGGraph.Name = "btGGraph"
         Me.btGGraph.Size = New System.Drawing.Size(44, 20)
         Me.btGGraph.TabIndex = 224
         Me.btGGraph.Text = "Graph"
+        Me.ToolTip1.SetToolTip(Me.btGGraph, resources.GetString("btGGraph.ToolTip"))
         Me.btGGraph.UseVisualStyleBackColor = False
         '
         'btClose
@@ -1305,7 +1317,7 @@ Partial Class frmSetup
         '
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(381, 410)
+        Me.Label8.Location = New System.Drawing.Point(138, 410)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(13, 12)
         Me.Label8.TabIndex = 240
@@ -1314,7 +1326,7 @@ Partial Class frmSetup
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(256, 410)
+        Me.Label11.Location = New System.Drawing.Point(4, 410)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(91, 13)
         Me.Label11.TabIndex = 239
@@ -1325,7 +1337,7 @@ Partial Class frmSetup
         Me.txtUltrasonicDamper.AsciiOnly = True
         Me.txtUltrasonicDamper.BeepOnError = True
         Me.txtUltrasonicDamper.HidePromptOnLeave = True
-        Me.txtUltrasonicDamper.Location = New System.Drawing.Point(353, 407)
+        Me.txtUltrasonicDamper.Location = New System.Drawing.Point(110, 407)
         Me.txtUltrasonicDamper.Mask = "90"
         Me.txtUltrasonicDamper.Name = "txtUltrasonicDamper"
         Me.txtUltrasonicDamper.Size = New System.Drawing.Size(25, 20)
@@ -1335,23 +1347,23 @@ Partial Class frmSetup
         'lbGLeftMotorEfficiency
         '
         Me.lbGLeftMotorEfficiency.AutoSize = True
-        Me.lbGLeftMotorEfficiency.Location = New System.Drawing.Point(4, 386)
+        Me.lbGLeftMotorEfficiency.Location = New System.Drawing.Point(169, 410)
         Me.lbGLeftMotorEfficiency.Name = "lbGLeftMotorEfficiency"
-        Me.lbGLeftMotorEfficiency.Size = New System.Drawing.Size(107, 13)
+        Me.lbGLeftMotorEfficiency.Size = New System.Drawing.Size(86, 13)
         Me.lbGLeftMotorEfficiency.TabIndex = 245
-        Me.lbGLeftMotorEfficiency.Text = "Left Motor Efficiency:"
+        Me.lbGLeftMotorEfficiency.Text = "Motor Efficiency:"
         '
-        'txtGLeftMotorEfficiency
+        'txtGMaxMotorEfficiency
         '
-        Me.txtGLeftMotorEfficiency.AsciiOnly = True
-        Me.txtGLeftMotorEfficiency.BeepOnError = True
-        Me.txtGLeftMotorEfficiency.HidePromptOnLeave = True
-        Me.txtGLeftMotorEfficiency.Location = New System.Drawing.Point(110, 383)
-        Me.txtGLeftMotorEfficiency.Mask = "990"
-        Me.txtGLeftMotorEfficiency.Name = "txtGLeftMotorEfficiency"
-        Me.txtGLeftMotorEfficiency.Size = New System.Drawing.Size(25, 20)
-        Me.txtGLeftMotorEfficiency.TabIndex = 244
-        Me.txtGLeftMotorEfficiency.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtGMaxMotorEfficiency.AsciiOnly = True
+        Me.txtGMaxMotorEfficiency.BeepOnError = True
+        Me.txtGMaxMotorEfficiency.HidePromptOnLeave = True
+        Me.txtGMaxMotorEfficiency.Location = New System.Drawing.Point(514, 407)
+        Me.txtGMaxMotorEfficiency.Mask = "990"
+        Me.txtGMaxMotorEfficiency.Name = "txtGMaxMotorEfficiency"
+        Me.txtGMaxMotorEfficiency.Size = New System.Drawing.Size(25, 20)
+        Me.txtGMaxMotorEfficiency.TabIndex = 244
+        Me.txtGMaxMotorEfficiency.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'btShakeGraph
         '
@@ -1452,84 +1464,134 @@ Partial Class frmSetup
         Me.Label34.TabIndex = 246
         Me.Label34.Text = "Gama:"
         '
-        'txtGRightMotorEfficiency
+        'txtGMinMotorEfficiency
         '
-        Me.txtGRightMotorEfficiency.AsciiOnly = True
-        Me.txtGRightMotorEfficiency.BeepOnError = True
-        Me.txtGRightMotorEfficiency.HidePromptOnLeave = True
-        Me.txtGRightMotorEfficiency.Location = New System.Drawing.Point(110, 407)
-        Me.txtGRightMotorEfficiency.Mask = "990"
-        Me.txtGRightMotorEfficiency.Name = "txtGRightMotorEfficiency"
-        Me.txtGRightMotorEfficiency.Size = New System.Drawing.Size(25, 20)
-        Me.txtGRightMotorEfficiency.TabIndex = 255
-        Me.txtGRightMotorEfficiency.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'Label35
-        '
-        Me.Label35.AutoSize = True
-        Me.Label35.Location = New System.Drawing.Point(4, 410)
-        Me.Label35.Name = "Label35"
-        Me.Label35.Size = New System.Drawing.Size(114, 13)
-        Me.Label35.TabIndex = 256
-        Me.Label35.Text = "Right Motor Efficiency:"
+        Me.txtGMinMotorEfficiency.AsciiOnly = True
+        Me.txtGMinMotorEfficiency.BeepOnError = True
+        Me.txtGMinMotorEfficiency.HidePromptOnLeave = True
+        Me.txtGMinMotorEfficiency.Location = New System.Drawing.Point(353, 407)
+        Me.txtGMinMotorEfficiency.Mask = "990"
+        Me.txtGMinMotorEfficiency.Name = "txtGMinMotorEfficiency"
+        Me.txtGMinMotorEfficiency.Size = New System.Drawing.Size(25, 20)
+        Me.txtGMinMotorEfficiency.TabIndex = 255
+        Me.txtGMinMotorEfficiency.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'btTestGLeftDown
         '
         Me.btTestGLeftDown.BackColor = System.Drawing.Color.Gold
         Me.btTestGLeftDown.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btTestGLeftDown.Location = New System.Drawing.Point(594, 337)
+        Me.btTestGLeftDown.Location = New System.Drawing.Point(596, 360)
         Me.btTestGLeftDown.Name = "btTestGLeftDown"
         Me.btTestGLeftDown.Size = New System.Drawing.Size(31, 20)
         Me.btTestGLeftDown.TabIndex = 257
         Me.btTestGLeftDown.Text = "Test"
+        Me.ToolTip1.SetToolTip(Me.btTestGLeftDown, resources.GetString("btTestGLeftDown.ToolTip"))
         Me.btTestGLeftDown.UseVisualStyleBackColor = False
         '
         'btTestGLeftUp
         '
         Me.btTestGLeftUp.BackColor = System.Drawing.Color.Gold
         Me.btTestGLeftUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btTestGLeftUp.Location = New System.Drawing.Point(594, 381)
+        Me.btTestGLeftUp.Location = New System.Drawing.Point(596, 404)
         Me.btTestGLeftUp.Name = "btTestGLeftUp"
         Me.btTestGLeftUp.Size = New System.Drawing.Size(31, 20)
         Me.btTestGLeftUp.TabIndex = 258
         Me.btTestGLeftUp.Text = "Test"
+        Me.ToolTip1.SetToolTip(Me.btTestGLeftUp, resources.GetString("btTestGLeftUp.ToolTip"))
         Me.btTestGLeftUp.UseVisualStyleBackColor = False
         '
         'btTestGRightDown
         '
         Me.btTestGRightDown.BackColor = System.Drawing.Color.Gold
         Me.btTestGRightDown.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btTestGRightDown.Location = New System.Drawing.Point(688, 337)
+        Me.btTestGRightDown.Location = New System.Drawing.Point(690, 360)
         Me.btTestGRightDown.Name = "btTestGRightDown"
         Me.btTestGRightDown.Size = New System.Drawing.Size(31, 20)
         Me.btTestGRightDown.TabIndex = 259
         Me.btTestGRightDown.Text = "Test"
+        Me.ToolTip1.SetToolTip(Me.btTestGRightDown, resources.GetString("btTestGRightDown.ToolTip"))
         Me.btTestGRightDown.UseVisualStyleBackColor = False
         '
         'btTestGRightUp
         '
         Me.btTestGRightUp.BackColor = System.Drawing.Color.Gold
         Me.btTestGRightUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btTestGRightUp.Location = New System.Drawing.Point(688, 381)
+        Me.btTestGRightUp.Location = New System.Drawing.Point(690, 404)
         Me.btTestGRightUp.Name = "btTestGRightUp"
         Me.btTestGRightUp.Size = New System.Drawing.Size(31, 20)
         Me.btTestGRightUp.TabIndex = 260
         Me.btTestGRightUp.Text = "Test"
+        Me.ToolTip1.SetToolTip(Me.btTestGRightUp, resources.GetString("btTestGRightUp.ToolTip"))
         Me.btTestGRightUp.UseVisualStyleBackColor = False
+        '
+        'Label36
+        '
+        Me.Label36.AutoSize = True
+        Me.Label36.Location = New System.Drawing.Point(282, 410)
+        Me.Label36.Name = "Label36"
+        Me.Label36.Size = New System.Drawing.Size(69, 13)
+        Me.Label36.TabIndex = 263
+        Me.Label36.Text = "@min.power:"
+        '
+        'Label60
+        '
+        Me.Label60.AutoSize = True
+        Me.Label60.Location = New System.Drawing.Point(442, 410)
+        Me.Label60.Name = "Label60"
+        Me.Label60.Size = New System.Drawing.Size(72, 13)
+        Me.Label60.TabIndex = 265
+        Me.Label60.Text = "@max.power:"
+        '
+        'Label35
+        '
+        Me.Label35.AutoSize = True
+        Me.Label35.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label35.Location = New System.Drawing.Point(697, 341)
+        Me.Label35.Name = "Label35"
+        Me.Label35.Size = New System.Drawing.Size(21, 12)
+        Me.Label35.TabIndex = 268
+        Me.Label35.Text = "mm"
+        '
+        'Label42
+        '
+        Me.Label42.AutoSize = True
+        Me.Label42.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!)
+        Me.Label42.Location = New System.Drawing.Point(620, 342)
+        Me.Label42.Name = "Label42"
+        Me.Label42.Size = New System.Drawing.Size(46, 12)
+        Me.Label42.TabIndex = 267
+        Me.Label42.Text = "Test Diff.:"
+        '
+        'txtGTestDiff
+        '
+        Me.txtGTestDiff.AsciiOnly = True
+        Me.txtGTestDiff.BackColor = System.Drawing.Color.Gold
+        Me.txtGTestDiff.BeepOnError = True
+        Me.txtGTestDiff.HidePromptOnLeave = True
+        Me.txtGTestDiff.Location = New System.Drawing.Point(669, 337)
+        Me.txtGTestDiff.Mask = "990"
+        Me.txtGTestDiff.Name = "txtGTestDiff"
+        Me.txtGTestDiff.Size = New System.Drawing.Size(25, 20)
+        Me.txtGTestDiff.TabIndex = 266
+        Me.txtGTestDiff.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'frmSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(770, 466)
+        Me.Controls.Add(Me.UcControlGraph1)
+        Me.Controls.Add(Me.UcControlGGraph1)
+        Me.Controls.Add(Me.Label35)
+        Me.Controls.Add(Me.Label42)
+        Me.Controls.Add(Me.txtGTestDiff)
+        Me.Controls.Add(Me.Label60)
+        Me.Controls.Add(Me.Label36)
         Me.Controls.Add(Me.btTestGRightUp)
         Me.Controls.Add(Me.btTestGRightDown)
         Me.Controls.Add(Me.btTestGLeftUp)
         Me.Controls.Add(Me.btTestGLeftDown)
-        Me.Controls.Add(Me.txtGRightMotorEfficiency)
-        Me.Controls.Add(Me.Label35)
-        Me.Controls.Add(Me.UcControlGraph1)
-        Me.Controls.Add(Me.UcControlGGraph1)
+        Me.Controls.Add(Me.txtGMinMotorEfficiency)
         Me.Controls.Add(Me.btShakeGraph)
         Me.Controls.Add(Me.Label19)
         Me.Controls.Add(Me.btTestShake)
@@ -1539,7 +1601,7 @@ Partial Class frmSetup
         Me.Controls.Add(Me.Label33)
         Me.Controls.Add(Me.txtShakeGama)
         Me.Controls.Add(Me.Label34)
-        Me.Controls.Add(Me.txtGLeftMotorEfficiency)
+        Me.Controls.Add(Me.txtGMaxMotorEfficiency)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.Label11)
         Me.Controls.Add(Me.txtUltrasonicDamper)
@@ -1769,7 +1831,7 @@ Partial Class frmSetup
     Friend WithEvents Label11 As Label
     Friend WithEvents txtUltrasonicDamper As MaskedTextBox
     Friend WithEvents lbGLeftMotorEfficiency As Label
-    Friend WithEvents txtGLeftMotorEfficiency As MaskedTextBox
+    Friend WithEvents txtGMaxMotorEfficiency As MaskedTextBox
     Friend WithEvents btShakeGraph As Button
     Friend WithEvents Label19 As Label
     Friend WithEvents btTestShake As Button
@@ -1779,10 +1841,15 @@ Partial Class frmSetup
     Friend WithEvents Label33 As Label
     Friend WithEvents txtShakeGama As MaskedTextBox
     Friend WithEvents Label34 As Label
-    Friend WithEvents txtGRightMotorEfficiency As MaskedTextBox
-    Friend WithEvents Label35 As Label
+    Friend WithEvents txtGMinMotorEfficiency As MaskedTextBox
     Friend WithEvents btTestGLeftDown As Button
     Friend WithEvents btTestGLeftUp As Button
     Friend WithEvents btTestGRightDown As Button
     Friend WithEvents btTestGRightUp As Button
+    Friend WithEvents Label36 As Label
+    Friend WithEvents Label60 As Label
+    Friend WithEvents Label35 As Label
+    Friend WithEvents Label42 As Label
+    Friend WithEvents txtGTestDiff As MaskedTextBox
+    Friend WithEvents ToolTip1 As ToolTip
 End Class

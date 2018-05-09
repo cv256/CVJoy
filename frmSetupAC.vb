@@ -36,8 +36,8 @@
         res &= ValidateNumber(txtRoll, -300, 300, "Car Roll effect on Simulator Roll")
         res &= ValidateNumber(txtSpeedMaxJump, -9.9, 9.9, "Car Up/Down effect on Wind")
         res &= ValidateNumber(txtShakeMaxJump, -9.9, 9.9, "Car Up/Down effect on Shake")
-        res &= ValidateNumber(txtAccel, -90, 90, "Car Acceleration effect on Simulator Pitch")
-        res &= ValidateNumber(txtTurn, -90, 90, "Car Turning effect on Simulator Roll")
+        'res &= ValidateNumber(txtAccel, -90, 90, "Car Acceleration effect on Simulator Pitch")
+        'res &= ValidateNumber(txtTurn, -90, 90, "Car Turning effect on Simulator Roll")
         If Not String.IsNullOrEmpty(res) Then
             MsgBox(res)
         End If

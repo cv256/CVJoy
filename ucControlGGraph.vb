@@ -7,7 +7,7 @@
     Private lastMotorLeft As Integer, lastMotorRight As Integer
     Private lastSpeedLeft As Integer, lastSpeedRight As Integer
 
-    Public Sub UpdateValue(pSensorLeft As Single, pSensorRight As Single, pOKLeft As Single, pOKRight As Single, pDesiredLeft As Single, pDesiredRight As Single, pMotorLeft As SByte, pMotorRight As SByte, pSpeedLeft As Single, pSpeedRight As Single)
+    Public Sub UpdateValue(pGMinDiffProtected As Integer, pSensorLeft As Single, pSensorRight As Single, pOKLeft As Single, pOKRight As Single, pDesiredLeft As Single, pDesiredRight As Single, pMotorLeft As SByte, pMotorRight As SByte, pSpeedLeft As Single, pSpeedRight As Single)
         If chkPause.Checked Then Return
         Dim mm2screen As Single = Me.Height / (Math.Max(SettingsMain.GMaxScrewUp, SettingsMain.GMaxScrewDown) * 2 * 1.1)
         If mm2screen = 0 Then Return
@@ -21,8 +21,8 @@
                 g.DrawLine(Drawing.Pens.Gray, X, screenYCenter, X + 1, screenYCenter)
                 g.DrawLine(Drawing.Pens.Gray, X, screenYCenter - SettingsMain.GMaxScrewUp * mm2screen, X + 1, screenYCenter - SettingsMain.GMaxScrewUp * mm2screen)
                 g.DrawLine(Drawing.Pens.Gray, X, screenYCenter + SettingsMain.GMaxScrewDown * mm2screen, X + 1, screenYCenter + SettingsMain.GMaxScrewDown * mm2screen)
-                g.DrawLine(Drawing.Pens.Gray, X, screenYCenter - CInt(SettingsMain.GMinDiff * mm2screen), X + 1, screenYCenter - CInt(SettingsMain.GMinDiff * mm2screen))
-                g.DrawLine(Drawing.Pens.Gray, X, screenYCenter + CInt(SettingsMain.GMinDiff * mm2screen), X + 1, screenYCenter + CInt(SettingsMain.GMinDiff * mm2screen))
+                g.DrawLine(Drawing.Pens.Gray, X, screenYCenter - CInt(pGMinDiffProtected * mm2screen), X + 1, screenYCenter - CInt(pGMinDiffProtected * mm2screen))
+                g.DrawLine(Drawing.Pens.Gray, X, screenYCenter + CInt(pGMinDiffProtected * mm2screen), X + 1, screenYCenter + CInt(pGMinDiffProtected * mm2screen))
             End If
             'Motors:
             tmpLeft = screenYCenter - pMotorLeft / 127 * screenYCenter / 1.1
@@ -34,8 +34,8 @@
             lastMotorLeft = tmpLeft
             lastMotorRight = tmpRight
             'Speed:
-            tmpLeft = screenYCenter - pSpeedLeft / 100 * screenYCenter / 1.1
-            tmpRight = screenYCenter - pSpeedRight / 100 * screenYCenter / 1.1
+            tmpLeft = screenYCenter - pSpeedLeft / 127 * screenYCenter / 1.1
+            tmpRight = screenYCenter - pSpeedRight / 127 * screenYCenter / 1.1
             If chkSpeed.Checked Then
                 If Not rdRight.Checked Then g.DrawLine(Drawing.Pens.Magenta, X - 1, lastSpeedLeft, X, tmpLeft)
                 If Not rdLeft.Checked Then g.DrawLine(Drawing.Pens.Magenta, X - 1, lastSpeedRight, X, tmpRight)

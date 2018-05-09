@@ -69,8 +69,8 @@ Public Class frmSetup
         txtGZDistance.Text = SettingsMain.GZDistance
         txtGXDistance.Text = SettingsMain.GXDistance
         txtUltrasonicDamper.Text = SettingsMain.UltrasonicDamper * 100
-        txtGLeftMotorEfficiency.Text = SettingsMain.GLeftMotorEfficiency * 1000
-        txtGRightMotorEfficiency.Text = SettingsMain.GRightMotorEfficiency * 1000
+        txtGMinMotorEfficiency.Text = SettingsMain.GMinMotorEfficiency
+        txtGMaxMotorEfficiency.Text = SettingsMain.GMaxMotorEfficiency
 
         CalculateMaxAngleDown(Me, Nothing)
         CalculateMaxAngleUp(Me, Nothing)
@@ -110,7 +110,7 @@ Public Class frmSetup
         res &= ValidateNumber(txtMaxScrewDown, 1, 999, "Max Screw Down")
         res &= ValidateNumber(txtGMinDiff, 1, 999, "Min.Milimeters of Difference for moving with Minimum power")
         res &= ValidateNumber(txtGMaxDiff, 1, 999, "Min.Milimeters of Difference for moving with Maximum power")
-        res &= ValidateNumber(txtGPowerForMin, 0, 255, "Power For Min")
+        res &= ValidateNumber(txtGPowerForMin, 0, 126, "Power For Min")
         res &= ValidateNumber(txtGZDistance, 1, 999, "Z Distance between motor and pivot, in milimeters")
         res &= ValidateNumber(txtGXDistance, 1, 999, "Half X Distance between left and right motors, in milimeters")
 
@@ -174,8 +174,8 @@ Public Class frmSetup
         SettingsMain.GZDistance = txtGZDistance.Text
         SettingsMain.GXDistance = txtGXDistance.Text
         SettingsMain.UltrasonicDamper = CInt(txtUltrasonicDamper.Text) / 100
-        SettingsMain.GLeftMotorEfficiency = CInt(txtGLeftMotorEfficiency.Text) / 1000
-        SettingsMain.GRightMotorEfficiency = CInt(txtGRightMotorEfficiency.Text) / 1000
+        SettingsMain.GMaxMotorEfficiency = CInt(txtGMaxMotorEfficiency.Text)
+        SettingsMain.GMinMotorEfficiency = CInt(txtGMinMotorEfficiency.Text)
 
         SettingsMain.SaveSettingstoFile()
 
@@ -193,33 +193,45 @@ Public Class frmSetup
 
 
 
-    Private Sub btTest_MouseDown(sender As Object, e As MouseEventArgs) Handles btTestWheelLeft.MouseDown, btTestWheelRight.MouseDown _
-            , btTestGDown.MouseDown, btTestGUp.MouseDown, btTestGLeft.MouseDown, btTestGRight.MouseDown _
-            , btTestGLeftDown.MouseDown, btTestGLeftUp.MouseDown, btTestGRightDown.MouseDown, btTestGRightUp.MouseDown _
-            , btTestWind.MouseDown, btTestShake.MouseDown
+    Private Sub btTest_MouseDown(sender As Object, e As MouseEventArgs) Handles _
+            btTestWheelLeft.MouseDown, btTestWheelRight.MouseDown, btTestWind.MouseDown, btTestShake.MouseDown
         If txt_Validate(pShowMsg:=True) > "" Then Return
         With CType(Me.Owner, frmCVJoy)
             If sender.Equals(btTestWheelLeft) OrElse sender.Equals(btTestWheelRight) Then
                 .TestValue = CInt(txtWheelPowerForMin.Text) * If(sender.Equals(btTestWheelLeft), 1, -1)
                 .TestMode = frmCVJoy.Motor.Wheel
-            ElseIf sender.Equals(btTestGDown) OrElse sender.Equals(btTestGUp) Then
-                .TestValue = CInt(txtGMinDiff.Text) * If(sender.Equals(btTestGDown), 1, -1)
-                .TestMode = frmCVJoy.Motor.Pitch
-            ElseIf sender.Equals(btTestGLeft) OrElse sender.Equals(btTestGRight) Then
-                .TestValue = CInt(txtGMinDiff.Text) * If(sender.Equals(btTestGLeft), -1, 1)
-                .TestMode = frmCVJoy.Motor.Roll
-            ElseIf sender.Equals(btTestGLeftDown) OrElse sender.Equals(btTestGLeftUp) Then
-                .TestValue = CInt(txtGMinDiff.Text) * If(sender.Equals(btTestGLeftDown), 1, -1)
-                .TestMode = frmCVJoy.Motor.Left
-            ElseIf sender.Equals(btTestGRightDown) OrElse sender.Equals(btTestGRightUp) Then
-                .TestValue = CInt(txtGMinDiff.Text) * If(sender.Equals(btTestGRightDown), 1, -1)
-                .TestMode = frmCVJoy.Motor.Right
             ElseIf sender.Equals(btTestWind) Then
                 .TestValue = CInt(txtWindMin.Text)
                 .TestMode = frmCVJoy.Motor.Wind
             ElseIf sender.Equals(btTestShake) Then
                 .TestValue = CInt(txtShakeMin.Text)
                 .TestMode = frmCVJoy.Motor.Shake
+            End If
+        End With
+    End Sub
+    Private Sub btGTest_MouseDown(sender As Object, e As MouseEventArgs) Handles _
+             btTestGDown.MouseDown, btTestGUp.MouseDown, btTestGLeft.MouseDown, btTestGRight.MouseDown _
+            , btTestGLeftDown.MouseDown, btTestGLeftUp.MouseDown, btTestGRightDown.MouseDown, btTestGRightUp.MouseDown
+        If txt_Validate(pShowMsg:=True) > "" Then Return
+        Dim msg As String = ValidateNumber(txtGTestDiff, 0, 99, "if you want to test, enter a difference in millimeters")
+        If Not String.IsNullOrEmpty(msg) Then
+            MsgBox(msg)
+            Return
+        End If
+
+        With CType(Me.Owner, frmCVJoy)
+            If sender.Equals(btTestGDown) OrElse sender.Equals(btTestGUp) Then
+                .TestValue = CInt(txtGTestDiff.Text) * If(sender.Equals(btTestGDown), 1, -1)
+                .TestMode = frmCVJoy.Motor.Pitch
+            ElseIf sender.Equals(btTestGLeft) OrElse sender.Equals(btTestGRight) Then
+                .TestValue = CInt(txtGTestDiff.Text) * If(sender.Equals(btTestGLeft), -1, 1)
+                .TestMode = frmCVJoy.Motor.Roll
+            ElseIf sender.Equals(btTestGLeftDown) OrElse sender.Equals(btTestGLeftUp) Then
+                .TestValue = CInt(txtGTestDiff.Text) * If(sender.Equals(btTestGLeftDown), 1, -1)
+                .TestMode = frmCVJoy.Motor.Left
+            ElseIf sender.Equals(btTestGRightDown) OrElse sender.Equals(btTestGRightUp) Then
+                .TestValue = CInt(txtGTestDiff.Text) * If(sender.Equals(btTestGRightDown), 1, -1)
+                .TestMode = frmCVJoy.Motor.Right
             End If
         End With
     End Sub
@@ -244,7 +256,7 @@ Public Class frmSetup
             UcControlGraph1.Visible = False
         Else
             If sender.Equals(btGGraph) Then
-                UcControlGGraph1.Height = btTestGDown.Top
+                UcControlGGraph1.Height = txtGTestDiff.Top
                 UcControlGGraph1.Visible = True
                 Ggraph = UcControlGGraph1 ' start updating graph data from frmMain
             Else
