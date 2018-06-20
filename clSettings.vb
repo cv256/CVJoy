@@ -30,6 +30,7 @@
     Public ShakeMinPower As Integer = 70
     Public ShakeGama As Single = 150
 
+    Public UltrasonicGama As Single = 1
     Public GZDistance As Integer = 310
     Public GXDistance As Integer = 293
     Public GLeftScrewCenter As Integer = 100

@@ -59,6 +59,7 @@ Public Class frmSetup
         txtShakeMin.Text = SettingsMain.ShakeMinPower
         txtShakeGama.Text = SettingsMain.ShakeGama
 
+        txtUltrasonicGama.Text = SettingsMain.UltrasonicGama * 100
         txtLeftScrewCenter.Text = SettingsMain.GLeftScrewCenter
         txtRightScrewCenter.Text = SettingsMain.GRightScrewCenter
         txtMaxScrewUp.Text = SettingsMain.GMaxScrewUp
@@ -164,6 +165,7 @@ Public Class frmSetup
         SettingsMain.ShakeGama = txtShakeGama.Text
         SettingsMain.ShakeMinPower = txtShakeMin.Text
 
+        SettingsMain.UltrasonicGama = CInt(txtUltrasonicGama.Text) / 100
         SettingsMain.GLeftScrewCenter = txtLeftScrewCenter.Text
         SettingsMain.GRightScrewCenter = txtRightScrewCenter.Text
         SettingsMain.GMaxScrewUp = txtMaxScrewUp.Text

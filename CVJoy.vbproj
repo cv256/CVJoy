@@ -200,6 +200,7 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
+    <None Include="sketch_CVJoy.ino" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\assettocorsasharedmemory\AssettoCorsaSharedMemory.csproj">

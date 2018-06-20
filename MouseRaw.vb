@@ -147,14 +147,17 @@ Public Class MouseRaw
     End Function
 
     Public Shared Function GetMove(lParam) As RAWINPUT
-        Dim dwSize As Int32
-        GetRawInputData(lParam, RID_INPUT, IntPtr.Zero, dwSize, Marshal.SizeOf(GetType(RawInputHeader)))
-        If dwSize < 1 Then
-            Debug.Print("GetRawInputData 0 failed")
-            Return Nothing
-        End If
+        'Dim dwSize As Int32 
+        'GetRawInputData(lParam, RID_INPUT, IntPtr.Zero, dwSize, Marshal.SizeOf(GetType(RawInputHeader)))
+        'If dwSize < 1 Then
+        '    Debug.Print("GetRawInputData 0 failed")
+        '    Return Nothing
+        'End If
+        'Debug.Print(dwSize) ' checked thhat dwSize was allways 40
+        'Dim buffer As IntPtr = Marshal.AllocHGlobal(dwSize)
+        Dim dwSize As Int32 = 40
         Dim buffer As IntPtr = Marshal.AllocHGlobal(dwSize)
-        If GetRawInputData(lParam, RID_INPUT, buffer, dwSize, Marshal.SizeOf(GetType(RawInputHeader))) <> dwSize Then
+        If GetRawInputData(lParam, RID_INPUT, Buffer, dwSize, Marshal.SizeOf(GetType(RawInputHeader))) <> dwSize Then
             Debug.Print("GetRawInputData 1 does not return correct size !\n")
         End If
         Dim res As RAWINPUT = Marshal.PtrToStructure(New IntPtr(buffer.ToInt32()), GetType(RAWINPUT))

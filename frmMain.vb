@@ -43,14 +43,13 @@ Public Class frmCVJoy
         SettingsMain.LoadSettingsFromFile()
         cbGames.SelectedIndex = 0 ' TODO: SettingsMain should keep that last cbGames.SelectedIndex used, and here we should use that
 
+        MouseRaw.Register(Me.Handle) ' this will call our Sub WndProc everytime the mouse moves
+
         Timer1.Interval = 1000 / SettingsMain.RefreshRate
         Timer1.Enabled = True
 
-        MouseRaw.Register(Me.Handle)
-
         btVJoy_Click()
     End Sub
-
 
     Private Sub cbGames_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbGames.SelectedIndexChanged
         If Game IsNot Nothing Then Game.Stop()
@@ -146,6 +145,7 @@ Public Class frmCVJoy
 #Region "PowerFromAngle: calculates power to apply now, based on the previous position readings"
 
             ' convert Desired Angles into Desired Screw Positions:
+            If GameOutputs.Pitch > 0 Then GameOutputs.Pitch = (GameOutputs.Pitch * 20) ^ SettingsMain.UltrasonicGama / 12
             Dim DesiredLeftScrew As Integer = -SettingsMain.GZDistance * Math.Sin(GameOutputs.Pitch) + SettingsMain.GXDistance * Math.Sin(GameOutputs.Roll) ' in mm
             Dim DesiredRightScrew As Integer = -SettingsMain.GZDistance * Math.Sin(GameOutputs.Pitch) - SettingsMain.GXDistance * Math.Sin(GameOutputs.Roll) ' in mm
             If DesiredLeftScrew > SettingsMain.GMaxScrewUp Then DesiredLeftScrew = SettingsMain.GMaxScrewUp
@@ -161,7 +161,7 @@ Public Class frmCVJoy
             .rightPower = 0
             Dim GMinDiffProtected As Integer = SettingsMain.GMinDiff
             If Now.Subtract(ArduinoLastRead).TotalMilliseconds > 200 _
-            AndAlso SerialPort1.IsOpen Then ' SHIIIT, stop everything ! dont even try to correct it, wires, relays or screws may be swaped or broken !
+                AndAlso SerialPort1.IsOpen Then ' SHIIIT, stop everything ! dont even try to correct it, wires, relays or screws may be swaped or broken !
                 ErrorAdd($"NO POSITION DATA FROM ARDUINO !   last read {(Now.Subtract(ArduinoLastRead).TotalMilliseconds / 1000).ToString("0.00")} seconds ago")
             ElseIf (_realOKLeft > (SettingsMain.GMaxScrewUp + SettingsMain.GMinDiff * 2) _
             OrElse _realOKLeft < -(SettingsMain.GMaxScrewDown + SettingsMain.GMinDiff * 2) _
@@ -283,13 +283,28 @@ Public Class frmCVJoy
                 End If
                 Dim buf(BytesToRead - 1) As Byte
                 SerialPort1.Read(buf, 0, buf.Length)
-                If buf(0) <> 170 AndAlso buf(0) <> 171 Then
+                If buf(0) < 192 Then
                     ErrorAdd("UNEXPECTED SerialPort1.buf(0)=" & buf(0))
                     GoTo goReturn
                 End If
+                Static _MainsPowerOK As Boolean
+                If (buf(0) And 1) = 1 AndAlso _MainsPowerOK = True Then
+                    _MainsPowerOK = False
+                    lbMainsPower.Text = "Mains Power OFF"
+                    lbMainsPower.BackColor = Color.DeepSkyBlue
+                    ErrorAdd("No Mains power / MainsPower freq lower than 50Hz+5%")
+                ElseIf (buf(0) And 1) = 0 AndAlso _MainsPowerOK = False Then
+                    _MainsPowerOK = True
+                    lbMainsPower.Text = "Mains Power ON"
+                    lbMainsPower.BackColor = Color.HotPink
+                    ErrorAdd("Mains power OK")
+                End If
+                If (buf(0) And 2) <> 0 Then
+                    ErrorAdd(" ARDUINO GOT INVALID DATA FROM COMPUTER")
+                End If
                 fromArduino.SetSerialData(buf) ' this fills fromArduino with the data red from the Arduino !!
             Catch ex As Exception
-                ErrorAdd("SerialPort1.DataReceived  " & ex.Message)
+                ErrorAdd("EXCEPTION SerialPort1.DataReceived  " & ex.Message)
                 GoTo goReturn
             End Try
 
@@ -519,7 +534,7 @@ goReturn:
         Public Const PacketLen As Byte = 13
 
         Public Sub SetSerialData(pSerialData As Byte())
-            button9 = (pSerialData(0) And 1) <> 0
+            button9 = (pSerialData(0) And 32) <> 0
             button1 = (pSerialData(1) And 1) <> 0
             button2 = (pSerialData(1) And 2) <> 0
             button3 = (pSerialData(1) And 4) <> 0

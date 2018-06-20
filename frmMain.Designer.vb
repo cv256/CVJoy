@@ -64,6 +64,7 @@ Partial Class frmCVJoy
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.chkNoMotors = New System.Windows.Forms.CheckBox()
+        Me.lbMainsPower = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'btArduinoStart
@@ -521,6 +522,15 @@ Partial Class frmCVJoy
         Me.chkNoMotors.UseMnemonic = False
         Me.chkNoMotors.UseVisualStyleBackColor = False
         '
+        'lbMainsPower
+        '
+        Me.lbMainsPower.BackColor = System.Drawing.Color.Transparent
+        Me.lbMainsPower.Location = New System.Drawing.Point(229, 46)
+        Me.lbMainsPower.Name = "lbMainsPower"
+        Me.lbMainsPower.Size = New System.Drawing.Size(93, 13)
+        Me.lbMainsPower.TabIndex = 138
+        Me.lbMainsPower.Text = "Mains Power OFF"
+        '
         'frmCVJoy
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -566,6 +576,7 @@ Partial Class frmCVJoy
         Me.Controls.Add(Me.btArduinoStart)
         Me.Controls.Add(Me.ckKeepVisible)
         Me.Controls.Add(Me.ckDontShow)
+        Me.Controls.Add(Me.lbMainsPower)
         Me.Name = "frmCVJoy"
         Me.Text = "CV Joy"
         Me.ResumeLayout(False)
@@ -614,4 +625,5 @@ Partial Class frmCVJoy
     Friend WithEvents Label2 As Label
     Friend WithEvents Label3 As Label
     Friend WithEvents chkNoMotors As CheckBox
+    Friend WithEvents lbMainsPower As Label
 End Class

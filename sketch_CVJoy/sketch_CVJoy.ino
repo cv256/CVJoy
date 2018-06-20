@@ -22,6 +22,7 @@
 
 #define packetLen 7 // must be equal to CVJoyAc.SerialSend.PacketLen
 
+//  LIVRES  pins digitais : 47, 18, 20, 21 -----------------------------------
 
 // external hardware -> arduino :
 #define zeroCrossDetector  19 //on Mega, Mega2560, MegaADK interrupt pins are 2, 3, 18, 19, 20, 21
@@ -60,11 +61,11 @@
 #define wheelMotorDir1  52
 #define wheelMotorDir2  53
 
-#define leftMotorPower  25 //22
+#define leftMotorPower  25
 #define leftMotorDir1  50
 #define leftMotorDir2  51
 
-#define rightMotorPower  22 //25
+#define rightMotorPower  22 
 #define rightMotorDir1  48
 #define rightMotorDir2  49
 
@@ -74,7 +75,7 @@
 
 //unsigned long lastLoop;
 unsigned long lastSerialRecv;
-
+unsigned long lastMainsZero;
 unsigned long dimmerLeftDelay;
 unsigned long dimmerRightDelay;
 unsigned long dimmerWindDelay;
@@ -151,14 +152,14 @@ void setup()
 void loop()
 {
 
-  //react to serial commands received:
   if (Serial.available() == packetLen) {
+    // READ from computer / write to hardware: --------------------- must be equal to CVJoyAc.SerialSend
     byte wheelMotorPowerDir = Serial.read(); // 0
     if (wheelMotorPowerDir >= 254) { // checkdigit + wheelMotorPowerDir
       lastSerialRecv = millis();
       byte wheelMotorPowerSpeed = Serial.read(); // 1
-      leftMotorPowerSpeed = Serial.read() - 128; // 2 pitchDesiredPos
-      rightMotorPowerSpeed = Serial.read() - 128; // 3 rollDesiredPos
+      leftMotorPowerSpeed = Serial.read() - 128; // 2 
+      rightMotorPowerSpeed = Serial.read() - 128; // 3
       windMotorPowerSpeed = Serial.read(); // 4
       shakeMotorPowerSpeed = Serial.read(); // 5
       //leds:
@@ -194,9 +195,11 @@ void loop()
       }
       analogWrite(wheelMotorPower, wheelMotorPowerSpeed);
 
-      //send data to serial:   must be equal to CVJoyAc.SerialRead
-      tmpByte = 170; // checkdigit
-      if (digitalRead(button9) == LOW) tmpByte += 1;
+      // read from hardware / SEND to computer : --------------------- must be equal to CVJoyAc.SerialRead
+      tmpByte = 192; // checkdigit (64+128)
+      if (digitalRead(button9) == LOW) tmpByte += 32;
+      if (micros()-lastMainsZero > 11000) tmpByte += 1; // No Mains power / MainsPower freq lower than 50Hz+10%
+      if (wheelMotorPowerDir<254) tmpByte += 2; // Arduino got invalid data from computer
       Serial.write(tmpByte); //0
       tmpByte = 0;
       if (digitalRead(button1) == LOW) tmpByte += 1;
@@ -269,7 +272,7 @@ void loop()
 void zero_cross_ISR()
 {
   //Serial.println( (int)( (float)(micros()-zero_cross) / (float)10 ) );
-
+  lastMainsZero=micros();
   if (leftMotorPowerSpeed == 0) { // zero:
     dimmerLeftDelay = 0;
     digitalWrite(leftMotorPower, LOW);
@@ -285,7 +288,7 @@ void zero_cross_ISR()
       dimmerLeftDelay = 0;
       digitalWrite(leftMotorPower, HIGH);
     } else { // dim:
-      dimmerLeftDelay = micros() + (127 - abs(leftMotorPowerSpeed)) * 70;
+      dimmerLeftDelay = lastMainsZero + (127 - abs(leftMotorPowerSpeed)) * 70;
       digitalWrite(leftMotorPower, LOW);
     }
   }
@@ -305,7 +308,7 @@ void zero_cross_ISR()
       dimmerRightDelay = 0;
       digitalWrite(rightMotorPower, HIGH);
     } else { // dim:
-      dimmerRightDelay = micros() + (127 - abs(rightMotorPowerSpeed)) * 70;
+      dimmerRightDelay = lastMainsZero + (127 - abs(rightMotorPowerSpeed)) * 70;
       digitalWrite(rightMotorPower, LOW);
     }
   }
@@ -318,7 +321,7 @@ void zero_cross_ISR()
       dimmerWindDelay = 0;
       digitalWrite(windMotorPower, HIGH);
     } else { // dim:
-      dimmerWindDelay = micros() + (255 - windMotorPowerSpeed) * 35;
+      dimmerWindDelay = lastMainsZero + (255 - windMotorPowerSpeed) * 35;
       digitalWrite(windMotorPower, LOW);
     }
   }
@@ -331,7 +334,7 @@ void zero_cross_ISR()
       dimmerShakeDelay = 0;
       digitalWrite(shakeMotorPower, HIGH);
     } else { // dim:
-      dimmerShakeDelay = micros() + (255 - shakeMotorPowerSpeed) * 35;
+      dimmerShakeDelay = lastMainsZero + (255 - shakeMotorPowerSpeed) * 35;
       digitalWrite(shakeMotorPower, LOW);
     }
   }

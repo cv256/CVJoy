@@ -157,6 +157,9 @@ Partial Class frmSetup
         Me.Label42 = New System.Windows.Forms.Label()
         Me.txtGTestDiff = New System.Windows.Forms.MaskedTextBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.Label43 = New System.Windows.Forms.Label()
+        Me.txtUltrasonicGama = New System.Windows.Forms.MaskedTextBox()
+        Me.Label69 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'Label3
@@ -194,7 +197,7 @@ Partial Class frmSetup
         'Label21
         '
         Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(4, 362)
+        Me.Label21.Location = New System.Drawing.Point(4, 386)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(100, 13)
         Me.Label21.TabIndex = 84
@@ -215,7 +218,7 @@ Partial Class frmSetup
         'Label18
         '
         Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(4, 339)
+        Me.Label18.Location = New System.Drawing.Point(4, 362)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(93, 13)
         Me.Label18.TabIndex = 82
@@ -1251,7 +1254,7 @@ Partial Class frmSetup
         '
         Me.Label9.AutoSize = True
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(137, 340)
+        Me.Label9.Location = New System.Drawing.Point(137, 363)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(21, 12)
         Me.Label9.TabIndex = 235
@@ -1262,7 +1265,7 @@ Partial Class frmSetup
         Me.txtLeftScrewCenter.AsciiOnly = True
         Me.txtLeftScrewCenter.BeepOnError = True
         Me.txtLeftScrewCenter.HidePromptOnLeave = True
-        Me.txtLeftScrewCenter.Location = New System.Drawing.Point(110, 336)
+        Me.txtLeftScrewCenter.Location = New System.Drawing.Point(110, 359)
         Me.txtLeftScrewCenter.Mask = "990"
         Me.txtLeftScrewCenter.Name = "txtLeftScrewCenter"
         Me.txtLeftScrewCenter.Size = New System.Drawing.Size(25, 20)
@@ -1273,7 +1276,7 @@ Partial Class frmSetup
         '
         Me.Label12.AutoSize = True
         Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.Location = New System.Drawing.Point(137, 363)
+        Me.Label12.Location = New System.Drawing.Point(137, 387)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(21, 12)
         Me.Label12.TabIndex = 237
@@ -1284,7 +1287,7 @@ Partial Class frmSetup
         Me.txtRightScrewCenter.AsciiOnly = True
         Me.txtRightScrewCenter.BeepOnError = True
         Me.txtRightScrewCenter.HidePromptOnLeave = True
-        Me.txtRightScrewCenter.Location = New System.Drawing.Point(110, 359)
+        Me.txtRightScrewCenter.Location = New System.Drawing.Point(110, 383)
         Me.txtRightScrewCenter.Mask = "990"
         Me.txtRightScrewCenter.Name = "txtRightScrewCenter"
         Me.txtRightScrewCenter.Size = New System.Drawing.Size(25, 20)
@@ -1347,7 +1350,7 @@ Partial Class frmSetup
         'lbGLeftMotorEfficiency
         '
         Me.lbGLeftMotorEfficiency.AutoSize = True
-        Me.lbGLeftMotorEfficiency.Location = New System.Drawing.Point(169, 410)
+        Me.lbGLeftMotorEfficiency.Location = New System.Drawing.Point(181, 410)
         Me.lbGLeftMotorEfficiency.Name = "lbGLeftMotorEfficiency"
         Me.lbGLeftMotorEfficiency.Size = New System.Drawing.Size(86, 13)
         Me.lbGLeftMotorEfficiency.TabIndex = 245
@@ -1527,20 +1530,20 @@ Partial Class frmSetup
         'Label36
         '
         Me.Label36.AutoSize = True
-        Me.Label36.Location = New System.Drawing.Point(282, 410)
+        Me.Label36.Location = New System.Drawing.Point(273, 410)
         Me.Label36.Name = "Label36"
-        Me.Label36.Size = New System.Drawing.Size(69, 13)
+        Me.Label36.Size = New System.Drawing.Size(76, 13)
         Me.Label36.TabIndex = 263
-        Me.Label36.Text = "@min.power:"
+        Me.Label36.Text = "..at min.power:"
         '
         'Label60
         '
         Me.Label60.AutoSize = True
-        Me.Label60.Location = New System.Drawing.Point(442, 410)
+        Me.Label60.Location = New System.Drawing.Point(428, 410)
         Me.Label60.Name = "Label60"
-        Me.Label60.Size = New System.Drawing.Size(72, 13)
+        Me.Label60.Size = New System.Drawing.Size(82, 13)
         Me.Label60.TabIndex = 265
-        Me.Label60.Text = "@max.power:"
+        Me.Label60.Text = "...at max.power:"
         '
         'Label35
         '
@@ -1575,13 +1578,47 @@ Partial Class frmSetup
         Me.txtGTestDiff.TabIndex = 266
         Me.txtGTestDiff.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
+        'Label43
+        '
+        Me.Label43.AutoSize = True
+        Me.Label43.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label43.Location = New System.Drawing.Point(138, 340)
+        Me.Label43.Name = "Label43"
+        Me.Label43.Size = New System.Drawing.Size(51, 12)
+        Me.Label43.TabIndex = 271
+        Me.Label43.Text = "0-800 (100)"
+        '
+        'txtUltrasonicGama
+        '
+        Me.txtUltrasonicGama.AllowPromptAsInput = False
+        Me.txtUltrasonicGama.BeepOnError = True
+        Me.txtUltrasonicGama.HidePromptOnLeave = True
+        Me.txtUltrasonicGama.Location = New System.Drawing.Point(110, 336)
+        Me.txtUltrasonicGama.Mask = "#990"
+        Me.txtUltrasonicGama.Name = "txtUltrasonicGama"
+        Me.txtUltrasonicGama.Size = New System.Drawing.Size(25, 20)
+        Me.txtUltrasonicGama.TabIndex = 270
+        Me.txtUltrasonicGama.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label69
+        '
+        Me.Label69.AutoSize = True
+        Me.Label69.Location = New System.Drawing.Point(4, 339)
+        Me.Label69.Name = "Label69"
+        Me.Label69.Size = New System.Drawing.Size(79, 13)
+        Me.Label69.TabIndex = 269
+        Me.Label69.Text = "Sensors Gama:"
+        '
         'frmSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(770, 466)
-        Me.Controls.Add(Me.UcControlGraph1)
         Me.Controls.Add(Me.UcControlGGraph1)
+        Me.Controls.Add(Me.UcControlGraph1)
+        Me.Controls.Add(Me.Label43)
+        Me.Controls.Add(Me.txtUltrasonicGama)
+        Me.Controls.Add(Me.Label69)
         Me.Controls.Add(Me.Label35)
         Me.Controls.Add(Me.Label42)
         Me.Controls.Add(Me.txtGTestDiff)
@@ -1852,4 +1889,7 @@ Partial Class frmSetup
     Friend WithEvents Label42 As Label
     Friend WithEvents txtGTestDiff As MaskedTextBox
     Friend WithEvents ToolTip1 As ToolTip
+    Friend WithEvents Label43 As Label
+    Friend WithEvents txtUltrasonicGama As MaskedTextBox
+    Friend WithEvents Label69 As Label
 End Class
