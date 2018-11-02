@@ -66,6 +66,7 @@ Public Class GameAC
                 ACstopped = True
             Else
                 acP = AC.ReadPhysics()
+
                 If acP.SpeedKmh <> ACLastSpeedKmh Then
                     Const damping As Single = 0.7
                     Acceleration = Acceleration * damping + (acP.SpeedKmh - ACLastSpeedKmh) / Now.Subtract(ACLastRead).TotalMilliseconds * 15 * (1 - damping)
@@ -105,15 +106,7 @@ Public Class GameAC
 
         '' show raw AC data on screen:
         If tmpFrm IsNot Nothing AndAlso tmpFrm.WindowState <> FormWindowState.Minimized Then
-            tmpFrm.lbACSpeed.Text = acP.SpeedKmh
-            tmpFrm.lbACRPM.Text = acP.Rpms
-            tmpFrm.lbACSlipFront.Text = Math.Min(acP.WheelSlip(0), acP.WheelSlip(1))
-            tmpFrm.lbACSlipBack.Text = Math.Min(acP.WheelSlip(2), acP.WheelSlip(3))
-            tmpFrm.lbACJump.Text = acP.AccG(1).ToString("0.0") & "G"
-            tmpFrm.lbACAccel.Text = acP.AccG(2).ToString("0.0") & "G"
-            tmpFrm.lbACTurn.Text = acP.AccG(0).ToString("0.0") & "G"
-            tmpFrm.lbACPitch.Text = (acP.Pitch * 57.29).ToString("0.0") & "º"
-            tmpFrm.lbACRoll.Text = (acP.Roll * 57.29).ToString("0.0") & "º"
+            tmpFrm.UpdateACValues(acP)
         End If
 
         Return res
@@ -125,7 +118,6 @@ Public Class GameAC
         End If
         Return Nothing
     End Function
-
 
     Public Overrides Sub ShowSetup()
         Dim tmpFrm As frmSetupAC = SetupForm()

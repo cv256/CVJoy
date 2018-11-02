@@ -1,4 +1,6 @@
-﻿Public Class frmSetupAC
+﻿Imports AssettoCorsaSharedMemory
+
+Public Class frmSetupAC
     Public _FrmCVJoy As frmCVJoy, Game As GameAC
 
     Public Sub Init(pOwner As frmCVJoy, pGame As GameAC)
@@ -70,7 +72,7 @@
         UseSettings()
     End Sub
 
-    Private Sub btSave_Click(sender As Object, e As EventArgs) Handles btsave.click
+    Private Sub btSave_Click(sender As Object, e As EventArgs) Handles btSave.Click
         If Not UseSettings() Then Return
         Game.SaveSettingstoFile()
     End Sub
@@ -81,6 +83,19 @@
 
     Private Sub ckKeepVisible_CheckedChanged(sender As Object, e As EventArgs) Handles ckKeepVisible.CheckedChanged
         Me.TopMost = ckKeepVisible.Checked
+    End Sub
+
+    Public Sub UpdateACValues(acP As Physics)
+        lbACSpeed.Text = acP.SpeedKmh
+        lbACRPM.Text = acP.Rpms
+        lbACSlipFront.Text = Math.Min(acP.WheelSlip(0), acP.WheelSlip(1))
+        lbACSlipBack.Text = Math.Min(acP.WheelSlip(2), acP.WheelSlip(3))
+        lbACJump.Text = acP.AccG(1).ToString("0.0") & "G"
+        lbACAccel.Text = acP.AccG(2).ToString("0.0") & "G"
+        lbACTurn.Text = acP.AccG(0).ToString("0.0") & "G"
+        lbACPitch.Text = (acP.Pitch * 57.29).ToString("0.0") & "º"
+        lbACRoll.Text = (acP.Roll * 57.29).ToString("0.0") & "º"
+        UcACGraph1.UpdateValues(acP)
     End Sub
 
 End Class

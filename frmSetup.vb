@@ -2,7 +2,7 @@
 
 Public Class frmSetup
     Public _FrmCVJoy As frmCVJoy
-    Private mouses As List(Of Integer)
+    Private mouses As List(Of MouseRaw.GetMousesResult)
 
     Public Sub Init(pOwner As frmCVJoy)
         Me.Owner = pOwner
@@ -10,8 +10,8 @@ Public Class frmSetup
 
         mouses = MouseRaw.GetMouses
         For n As Integer = 0 To mouses.Count - 1
-            cbMouse.Items.Add($"Mouse {n + 1}   ({mouses(n)})")
-            If mouses(n) = SettingsMain.MouseSteering Then cbMouse.SelectedIndex = n
+            cbMouse.Items.Add(mouses(n).Type.ToString & " " & n + 1 & " - " & mouses(n).ToString)
+            If mouses(n).Cod = SettingsMain.MouseSteering Then cbMouse.SelectedIndex = n
         Next
 
         cbComPort.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames())
@@ -135,7 +135,7 @@ Public Class frmSetup
         If cbComPort.SelectedIndex >= 0 Then SettingsMain.ArduinoComPort = cbComPort.SelectedItem
         If cbVjoy.SelectedIndex >= 0 Then SettingsMain.vJoyId = cbVjoy.SelectedItem
         If cbMouse.SelectedIndex >= 0 Then
-            SettingsMain.MouseSteering = mouses(cbMouse.SelectedIndex)
+            SettingsMain.MouseSteering = mouses(cbMouse.SelectedIndex).Cod
         Else
             SettingsMain.MouseSteering = 0
         End If
