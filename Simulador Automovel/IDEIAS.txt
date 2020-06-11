@@ -1,7 +1,16 @@
 diy force feedback wheel
+é preciso ter muita corrente disponivel no transformador, tipo 12V/8A
+80RPM parece-me o ideal, já com o atrito , o quer dizer que tem de ter muito torque , ou entao tem de ter mais RPMs
+o volante T300 tem 3,9NM é belt, mas os pros dizem que o ideal é direct drive com 20NM
+
+Se usamos muito redutor a direção fica pesada. Se usamos motor com magnetos fixos fica aos solavancos.
+
+
 
 motores com redutor aqui:
 https://mauser.pt/catalog/index.php?cPath=324_1667_1750&sort=2a&page=1
+https://www.motiondynamics.com.au/zd1430-70w-12v-dc-wormdrive-motor-with-front-mounting-bracket.html
+
 
 
 Um rato de bola (antigo, nao laser) costuma ter 2 Optical Rotary Encoders. 

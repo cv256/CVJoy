@@ -5,7 +5,7 @@ Public Class GameAC
 
     Private AC As AssettoCorsaSharedMemory.AssettoCorsa
     Private ACS As AssettoCorsaSharedMemory.StaticInfo
-    Private ACLastRead As DateTime, ACLastSpeedKmh As Single, Acceleration As Single, Rotation As Single
+    Private ACLastRead As Date, ACLastSpeedKmh As Single, Acceleration As Single, Rotation As Single
 
     Public Rpm1 As Single = 0.4
     Public Rpm2 As Single = 0.93
@@ -85,7 +85,7 @@ Public Class GameAC
         If ACstopped Then
             ACS.MaxRpm = 0 ' using  acS.MaxRpm=0  as a flag to indicate AC was not running
             acP = New Physics ' to clear all acp
-            If tmpFrm IsNot Nothing Then Int32.TryParse(tmpFrm.lbACSpeed.Text, acP.SpeedKmh) ' if not connected to AC, user can input data to simulate AC
+            If tmpFrm IsNot Nothing Then Integer.TryParse(tmpFrm.lbACSpeed.Text, acP.SpeedKmh) ' if not connected to AC, user can input data to simulate AC
             Dim dummyAccG(2) As Single : acP.AccG = dummyAccG
             Dim dummyWheelSlip(3) As Single : acP.WheelSlip = dummyWheelSlip
         ElseIf ACS.MaxRpm = 0 Then ' if AC just started or restarted:

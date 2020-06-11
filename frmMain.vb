@@ -4,8 +4,6 @@
 Public Class frmCVJoy
     Public TimerProcessing As Boolean = False
     Public Joy As vJoyInterfaceWrap.vJoy ' http://vjoystick.sourceforge.net/site/includes/SDK_ReadMe.pdf
-    Private WheelPosition As Single ' -16380 ~ 0 ~ 16380
-    Private LastWheelDate As DateTime, LastWheelPosition As Integer
     Private FFGain As Single = 255
     Public FFWheel_Type As FFBEType
     Public FFWheel_Cond As New vJoyInterfaceWrap.vJoy.FFB_EFF_COND
@@ -15,7 +13,8 @@ Public Class frmCVJoy
     Private _realOKLeft As Single, _realOKRight As Single ' position now (from sensor plus corrections) in milimeters, tipically from   minus GMaxScrewDown    to    Zero (center)    to    GMaxScrewUp
     Private _lastLeftMotorSpeed As Single, _lastRightMotorSpeed As Single ' -100~100 negative=bolt going down
     Private _motorOverHeat As Single
-    Private ArduinoLastRead As DateTime = Now.AddSeconds(-1) ' time of last good reading
+    Private ArduinoLastRead As Date = Now.AddSeconds(-1) ' time of last good reading
+    Private WheelPosition As Integer, PreviousWheelPosition As Integer, PreviousArduinoLastRead As Date = Now.AddSeconds(-1), WheelPositionOffset As Integer
 
     Public Enum Motor
         None
@@ -42,8 +41,6 @@ Public Class frmCVJoy
 
         SettingsMain.LoadSettingsFromFile()
         cbGames.SelectedIndex = 0 ' TODO: SettingsMain should keep that last cbGames.SelectedIndex used, and here we should use that
-
-        MouseRaw.Register(Me.Handle) ' this will call our Sub WndProc everytime the mouse moves
 
         Timer1.Interval = 1000 / SettingsMain.RefreshRate
         Timer1.Enabled = True
@@ -96,7 +93,7 @@ Public Class frmCVJoy
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         If TimerProcessing Then
-            ErrorAdd("Cant stand such hight Refresh Rate, lower it.")
+            ErrorAdd("Cant stand such hight Refresh Rate", ", lower it.")
             Return
         End If
         TimerProcessing = True ' NEVER use RETURN   ,  use  GoTo goReturn  !!!!!
@@ -162,13 +159,13 @@ Public Class frmCVJoy
             Dim GMinDiffProtected As Integer = SettingsMain.GMinDiff
             If Now.Subtract(ArduinoLastRead).TotalMilliseconds > 200 _
                 AndAlso SerialPort1.IsOpen Then ' SHIIIT, stop everything ! dont even try to correct it, wires, relays or screws may be swaped or broken !
-                ErrorAdd($"NO POSITION DATA FROM ARDUINO !   last read {(Now.Subtract(ArduinoLastRead).TotalMilliseconds / 1000).ToString("0.00")} seconds ago")
+                ErrorAdd("NO POSITION DATA FROM ARDUINO !", $"   last read {(Now.Subtract(ArduinoLastRead).TotalMilliseconds / 1000).ToString("0.00")} seconds ago")
             ElseIf (_realOKLeft > (SettingsMain.GMaxScrewUp + SettingsMain.GMinDiff * 2) _
             OrElse _realOKLeft < -(SettingsMain.GMaxScrewDown + SettingsMain.GMinDiff * 2) _
             OrElse _realOKRight > (SettingsMain.GMaxScrewUp + SettingsMain.GMinDiff * 2) _
             OrElse _realOKRight < -(SettingsMain.GMaxScrewDown + SettingsMain.GMinDiff * 2)) _
             AndAlso SerialPort1.IsOpen Then ' SHIIIT, stop everything ! dont even try to correct it, wires, relays or screws may be swaped or broken !
-                ErrorAdd($"OUT OF BOUNDS !   LeftPosition={CInt(_realOKLeft)}mm     RightPosition={CInt(_realOKRight)}mm")
+                If Not chkNoMotors.Checked Then ErrorAdd("OUT OF BOUNDS !", $"   LeftPosition={CInt(_realOKLeft)}mm     RightPosition={CInt(_realOKRight)}mm")
             Else ' No shit, normal :
                 Dim leftDiff As Integer = 0 ' positive = bolt is downer than what we want (car attitude is too up)
                 Dim rightDiff As Integer = 0
@@ -258,7 +255,7 @@ Public Class frmCVJoy
         If SerialPort1.IsOpen Then
             ' SEND SERIAL DATA TO ARDUINO:
             SerialPort1.DiscardOutBuffer()
-            'timeSent = Now
+            Dim timeSent As Date = Now
             SerialPort1.Write(toArduino.GetSerialData, 0, SerialSend.PacketLen)
 
             ' READ SERIAL DATA FROM ARDUINO:
@@ -266,25 +263,21 @@ Public Class frmCVJoy
             Do Until SerialPort1.BytesToRead >= SerialRead.PacketLen
                 Threading.Thread.Sleep(10)
                 If Now.Subtract(timeRead).TotalMilliseconds > 500 Then
-                    ErrorAdd("NORESPONSE SerialPort1.BytesToRead=" & SerialPort1.BytesToRead)
+                    ErrorAdd("NORESPONSE SerialPort1", ".BytesToRead=" & SerialPort1.BytesToRead)
                     GoTo goReturn
                 End If
             Loop
-            'timeRead = Now
+            If chkArduinoTime.Checked Then lbArduinoTime.Text = Now.Subtract(timeSent).TotalMilliseconds
             Try
                 Dim BytesToRead As Integer = SerialPort1.BytesToRead
-                If BytesToRead <> SerialRead.PacketLen Then
-                    ErrorAdd("UNEXPECTED SerialPort1.BytesToRead=" & BytesToRead)
-                    If BytesToRead > 0 Then ' discard this lost bytes
-                        Dim xbuf(BytesToRead - 1) As Byte
-                        SerialPort1.Read(xbuf, 0, xbuf.Length)
-                    End If
-                    GoTo goReturn
-                End If
                 Dim buf(BytesToRead - 1) As Byte
                 SerialPort1.Read(buf, 0, buf.Length)
+                If BytesToRead <> SerialRead.PacketLen Then
+                    ErrorAdd("UNEXPECTED SerialPort1", ".BytesToRead=" & BytesToRead & " discarding them")
+                    GoTo goReturn ' discard this lost bytes
+                End If
                 If buf(0) < 192 Then
-                    ErrorAdd("UNEXPECTED SerialPort1.buf(0)=" & buf(0))
+                    ErrorAdd("UNEXPECTED SerialPort1", ".buf(0)=" & buf(0) & " discarding them")
                     GoTo goReturn
                 End If
                 Static _MainsPowerOK As Boolean
@@ -292,30 +285,37 @@ Public Class frmCVJoy
                     _MainsPowerOK = False
                     lbMainsPower.Text = "Mains Power OFF"
                     lbMainsPower.BackColor = Color.DeepSkyBlue
-                    ErrorAdd("No Mains power / MainsPower freq lower than 50Hz+5%")
+                    ErrorAdd("No Mains power / MainsPower freq lower", "than 50Hz+5%")
                 ElseIf (buf(0) And 1) = 0 AndAlso _MainsPowerOK = False Then
                     _MainsPowerOK = True
                     lbMainsPower.Text = "Mains Power ON"
                     lbMainsPower.BackColor = Color.HotPink
-                    ErrorAdd("Mains power OK")
+                    ErrorAdd("Mains power OK", "")
                 End If
                 If (buf(0) And 2) <> 0 Then
-                    ErrorAdd(" ARDUINO GOT INVALID DATA FROM COMPUTER")
+                    ErrorAdd(" ARDUINO GOT INVALID DATA FROM COMPUTER", "")
                 End If
-                fromArduino.SetSerialData(buf) ' this fills fromArduino with the data red from the Arduino !!
+
+                ' this fills fromArduino with the data red from the Arduino !!
+                fromArduino.SetSerialData(buf)
+
             Catch ex As Exception
-                ErrorAdd("EXCEPTION SerialPort1.DataReceived  " & ex.Message)
+                ErrorAdd("EXCEPTION SerialPort1", ".DataReceived  " & ex.Message)
                 GoTo goReturn
             End Try
 
+            PreviousArduinoLastRead = ArduinoLastRead
             ArduinoLastRead = Now
+            PreviousWheelPosition = WheelPosition
+            WheelPosition = fromArduino.WheelPosition - WheelPositionOffset
             _realLeft = fromArduino.RealLeft - SettingsMain.GLeftScrewCenter
             _realRight = fromArduino.RealRight - SettingsMain.GRightScrewCenter
         End If
 
-#Region "buttons:  emulate keystrokes  or  send as joystick buttons"
         Static oldbutton1 As Boolean, oldbutton2 As TriState  ' button being pressed
         With fromArduino
+            Dim j As New vJoyInterfaceWrap.vJoy.JoystickState
+#Region "buttons:  emulate keystrokes  or  send as joystick buttons"
             If .button1 Then ' if button1 is being pressed:      https://msdn.microsoft.com/en-us/library/system.windows.forms.sendkeys.send(v=vs.110).aspx
                 If oldbutton1 = False Then ' if we just started pressing button1:
                     oldbutton1 = True
@@ -370,38 +370,36 @@ Public Class frmCVJoy
                     If oldbutton2 = TriState.UseDefault Then SendKeys.Send("{ESC}") ' if we simply press and depress button1 (no other buttons) send ESC
                 Else ' normal, send buttons as joystick buttons:
                     ' send to VJoy:
-                    If Joy IsNot Nothing Then
-                        Dim j As New vJoyInterfaceWrap.vJoy.JoystickState
-                        j.AxisX = If(Math.Abs(WheelPosition) > SettingsMain.WheelDead, Math.Max(0, Math.Min(32767, WheelPosition + 16384)), 16384)  ' 0-16384-32767
-                        j.AxisY = .AccelCorrected * 32 ' 0-32767
-                        j.AxisZ = .BrakeCorrected * 32 ' 0-32767
-                        j.AxisXRot = .ClutchCorrected * 32 ' 0-32767
-                        j.Buttons = If(.button1, 1, 0) _
-                            + If(.button2, 2, 0) _
-                            + If(.button3, 4, 0) _
-                            + If(.button4, 8, 0) _
-                            + If(.button5, 16, 0) _
-                            + If(.button6, 32, 0) _
-                            + If(.button7, 64, 0) _
-                            + If(.button8, 128, 0) _
-                            + If(.button9, 256, 0) _
-                            + If(.gear1, 1024, 0) _
-                            + If(.gear2, 2048, 0) _
-                            + If(.gear3, 4096, 0) _
-                            + If(.gear4, 8192, 0) _
-                            + If(.gear5, 16384, 0) _
-                            + If(.gear6, 32768, 0) _
-                            + If(.gearR, 65536, 0) _
-                            + If(.handbrake, 131072, 0)
-                        Joy.UpdateVJD(SettingsMain.vJoyId, j)
-                    End If
+                    j.Buttons = If(.button1, 1, 0) _
+                        + If(.button2, 2, 0) _
+                        + If(.button3, 4, 0) _
+                        + If(.button4, 8, 0) _
+                        + If(.button5, 16, 0) _
+                        + If(.button6, 32, 0) _
+                        + If(.button7, 64, 0) _
+                        + If(.button8, 128, 0) _
+                        + If(.button9, 256, 0) _
+                        + If(.gear1, 1024, 0) _
+                        + If(.gear2, 2048, 0) _
+                        + If(.gear3, 4096, 0) _
+                        + If(.gear4, 8192, 0) _
+                        + If(.gear5, 16384, 0) _
+                        + If(.gear6, 32768, 0) _
+                        + If(.gearR, 65536, 0)
                 End If
             End If
-        End With
 #End Region
+            If Joy IsNot Nothing Then
+                j.AxisX = Math.Max(Math.Min(WheelPosition + 16384, 32767), 0)  ' 0-16384-32767
+                j.AxisY = .AccelCorrected * 32 ' 0-32767
+                j.AxisZ = .BrakeCorrected * 32 ' 0-32767
+                j.AxisXRot = .ClutchCorrected * 32 ' 0-32767
+                Joy.UpdateVJD(SettingsMain.vJoyId, j)
+            End If
+        End With
 
         ' show lights on screen:
-        If Me.WindowState <> FormWindowState.Minimized AndAlso ckDontShow.Checked = False Then
+        If Me.WindowState <> FormWindowState.Minimized AndAlso Not ckDontShow.Checked Then
             With toArduino
                 lbLedLeft.BackColor = If(.LedLeft, Color.Green, Color.White)
                 lbLedRight.BackColor = If(.LedRight, Color.Orange, Color.White)
@@ -453,7 +451,7 @@ goReturn:
 
 
     Private Sub btWheelCenter_Click(sender As Object, e As EventArgs) Handles btWheelCenter.Click
-        WheelPosition = 0 'SettingsMain.WheelCenter = CInt(lbWheelPosNr.Text)
+        WheelPositionOffset = WheelPosition
     End Sub
 
 
@@ -526,12 +524,13 @@ goReturn:
         Public AccelCorrected As Integer
         Public BrakeCorrected As Integer
         Public ClutchCorrected As Integer
+        Public WheelPosition As Integer ' -16380 ~ 0 ~ 16380
 
         Public RealLeft As Single
         Public RealRight As Single
 
 
-        Public Const PacketLen As Byte = 13
+        Public Const PacketLen As Byte = 15
 
         Public Sub SetSerialData(pSerialData As Byte())
             button9 = (pSerialData(0) And 32) <> 0
@@ -556,9 +555,11 @@ goReturn:
             pedalBreak = pSerialData(5) + pSerialData(6) * 256
             pedalClutch = pSerialData(7) + pSerialData(8) * 256
 
+            WheelPosition = (pSerialData(9) + pSerialData(10) * 256 - 32768) * SettingsMain.WheelSensitivity
+
             Const soundSpeed As Single = 0.172922 ' 331300 + 606 * tempAirCelsius / 1000000 / 2   =   mm per microsecond , go and return  <=>  34cm =  0,002 seconds
-            RealLeft = CSng(pSerialData(9) + pSerialData(10) * 256) * soundSpeed
-            RealRight = CSng(pSerialData(11) + pSerialData(12) * 256) * soundSpeed
+            RealLeft = CSng(pSerialData(11) + pSerialData(12) * 256) * soundSpeed
+            RealRight = CSng(pSerialData(13) + pSerialData(14) * 256) * soundSpeed
 
             ' corrected analogic values:
             AccelCorrected = ScaleValue(pedalAccel, SettingsMain.AccelMin, SettingsMain.AccelMax, 0, 1023, SettingsMain.AccelGama)
@@ -578,9 +579,13 @@ goReturn:
         End If
     End Sub
 
-    Public Sub ErrorAdd(pNewErrorDescr As String)
-        If cbLog.SelectedIndex < 1 Then Return
-        txtErrors.Text = Strings.Left(Now.ToLongTimeString & "  " & pNewErrorDescr & vbCrLf & txtErrors.Text, 1000)
+    Public Sub ErrorAdd(pNewErrorDescr As String, pExtraInfo As String)
+        If cbLog.SelectedIndex < 1 Then
+            If txtErrors.Text.Contains(pNewErrorDescr) Then Return
+            txtErrors.Text = Strings.Left(pNewErrorDescr & "  " & pExtraInfo & vbCrLf & txtErrors.Text, 1000)
+        Else
+            txtErrors.Text = Strings.Left(Now.ToLongTimeString & "  " & pNewErrorDescr & "  " & pExtraInfo & vbCrLf & txtErrors.Text, 1000)
+        End If
         'txtErrors.SelectionStart = 32767 : txtErrors.ScrollToCaret()
     End Sub
 
@@ -644,6 +649,7 @@ goReturn:
         ' https://github.com/shauleiz/vJoy/blob/master/SDK/src/vJoyClient.cpp
         ' https://msdn.microsoft.com/en-us/library/windows/desktop/ee416335%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
         'https://www.kaskus.co.id/thread/54c59a266208812a798b456b
+        If chkFFIgnore.Checked Then Return
         Dim devI As Integer
         Joy.Ffb_h_DeviceID(pData, devI)
         If devI <> SettingsMain.vJoyId Then Return
@@ -729,33 +735,12 @@ goReturn:
             If Not String.IsNullOrEmpty(thisCase) Then
                 If Not FFCases.Contains(thisCase) Then
                     FFCases.Add(thisCase)
-                    ErrorAdd(thisCase)
+                    ErrorAdd(thisCase, "")
                 End If
             End If
         End If
     End Sub
 
-
-
-    <System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptions>
-    Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
-        Const WM_INPUT As Integer = &HFF
-        Select Case m.Msg
-            Case WM_INPUT
-                Dim r As MouseRaw.RAWINPUT = MouseRaw.GetMove(m.LParam)
-                If r.header.Device = SettingsMain.MouseSteering Then
-                    WheelPosition += r.data.LastX * SettingsMain.WheelSensitivity
-                    'Debug.Print(WheelPosition & "                " & r.header.Device.ToString & "   x=" & r.data.LastX & "   y=" & r.data.LastY)
-                    'Cursor.Position = New Point(0, 0)
-                    Return ' dont want this to be processed by windows
-                End If
-        End Select
-
-        Try
-            MyBase.WndProc(m)
-        Catch ave As AccessViolationException
-        End Try
-    End Sub
 
     Private Sub frmCVJoy_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         Timer1.Interval = 60000
@@ -785,6 +770,8 @@ goReturn:
         End If
         'txtErrors.Text = FFWheel_Const.Magnitude.ToString("00000") & "       " & FFWheel_Cond.PosCoeff.ToString("00000") & "       " & FFWheel_Cond.CenterPointOffset.ToString("00000")
 
+        Dim q As Single = 0 ' aprox. -1~1
+        Dim timeElapsed As Single = ArduinoLastRead.Subtract(PreviousArduinoLastRead).Ticks
         If chkFFCond.Checked Then
             'If the metric Is less than CP Offset - Dead Band, Then the resulting force Is given by the following formula:
             '   FFWheel += Negative Coefficient * (q - (CP Offset – Dead Band))
@@ -795,24 +782,22 @@ goReturn:
             '  - damper = axis velocity as the metric
             '  - inertia = axis acceleration as the metric
             '  - friction = when the axis is moved and depends on the defined friction coefficient
-            Dim q As Single = 0 ' aprox. -1~1
             If FFWheel_Type = FFBEType.ET_DMPR OrElse FFWheel_Type = FFBEType.ET_FRCTN Then ' I have not underestand yet the difference between Damper and Friction
-                Dim newPosition As Integer
-                If pWheelPosition > SettingsMain.WheelDead Then
-                    newPosition = pWheelPosition - SettingsMain.WheelDead
-                ElseIf pWheelPosition < -SettingsMain.WheelDead Then
-                    newPosition = pWheelPosition + SettingsMain.WheelDead
-                End If
-                Dim timeElapsed As Single = Now.Subtract(LastWheelDate).Ticks
-                'If Not ckDontShow.Checked Then lbTicks.Text = timeElapsed
-                q = (newPosition - LastWheelPosition) * SettingsMain.WheelDampFactor / timeElapsed 'q = (Math.Abs(pWheelPosition - LastWheelPosition) * SettingsMain.WheelDampFactor / timeElapsed) ^ (SettingsMain.WheelInertia / 100.0F) * Math.Sign(pWheelPosition - LastWheelPosition)
-                LastWheelDate = Now : LastWheelPosition = newPosition
+                'Dim newPosition As Integer = 0
+                'If pWheelPosition > SettingsMain.WheelDead Then
+                '    newPosition = pWheelPosition - SettingsMain.WheelDead
+                'ElseIf pWheelPosition < -SettingsMain.WheelDead Then
+                '    newPosition = pWheelPosition + SettingsMain.WheelDead
+                'End If
+                q = (pWheelPosition - PreviousWheelPosition) / timeElapsed * SettingsMain.WheelDampFactor 'q = (Math.Abs(pWheelPosition - LastWheelPosition) * SettingsMain.WheelDampFactor / timeElapsed) ^ (SettingsMain.WheelInertia / 100.0F) * Math.Sign(pWheelPosition - LastWheelPosition)
+                'If pWheelPosition <> PreviousWheelPosition Then txtErrors.Text &= (pWheelPosition - PreviousWheelPosition) & "       " & timeElapsed & vbCrLf
             ElseIf FFWheel_Type = FFBEType.ET_SPRNG Then
-                If pWheelPosition > SettingsMain.WheelDead Then
-                    q = (pWheelPosition - SettingsMain.WheelDead) / 1.637
-                ElseIf pWheelPosition < -SettingsMain.WheelDead Then
-                    q = (pWheelPosition + SettingsMain.WheelDead) / 1.637
-                End If
+                q = pWheelPosition / 1.637
+                'If pWheelPosition > SettingsMain.WheelDead Then
+                '    q = (pWheelPosition - SettingsMain.WheelDead) / 1.637
+                'ElseIf pWheelPosition < -SettingsMain.WheelDead Then
+                '    q = (pWheelPosition + SettingsMain.WheelDead) / 1.637
+                'End If
             End If
             If q < 0 Then ' if Q is negative: I am not using FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand  because they are allways zero, and their range would be -10000~10000 while Q range is -1~1 , and CVJoy has its own DeadZone
                 desiredTotalStrength += FFWheel_Cond.NegCoeff * q '(q - (FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand))
@@ -821,12 +806,16 @@ goReturn:
             End If
         End If
 
-        desiredTotalStrength = desiredTotalStrength / 10000 * FFGain
+        desiredTotalStrength = desiredTotalStrength / 10000 * FFGain '  now becomes  -255 ~ 255 (but can get to a lot more by summing up FF effects)
         If graph IsNot Nothing Then graph.UpdateFFWheel(Math.Abs(desiredTotalStrength))
 
         ' final output:
-        Dim powerToApply As Integer = CalculateOutput(Math.Abs(desiredTotalStrength), 255, SettingsMain.WheelMinInput, SettingsMain.WheelPowerForMin, SettingsMain.WheelPowerGama, SettingsMain.WheelPowerFactor) * Math.Sign(desiredTotalStrength)
-        'txtErrors.Text = "Res=" & res.ToString("000") & "      FFWheel=" & Math.Abs(FFWheel).ToString("000") & "   q=" & Math.Abs(q).ToString("00000") & "   PosCoeff=" & FFWheel_Cond.PosCoeff.ToString("00000") '& "     CenterPointOffset=" & FFWheel_Cond.CenterPointOffset.ToString("00000") & "     DeadBand=" & FFWheel_Cond.DeadBand.ToString("00000")
+        Dim powerToApply As Integer = 0
+        Try
+            powerToApply = CalculateOutput(Math.Min(Math.Abs(desiredTotalStrength), 255), 255, SettingsMain.WheelMinInput, SettingsMain.WheelPowerForMin, SettingsMain.WheelPowerGama, SettingsMain.WheelPowerFactor) * Math.Sign(desiredTotalStrength)
+        Catch ex As Exception
+            txtErrors.Text = $"808 : desiredTotalStrength={desiredTotalStrength}   pWheelPosition={pWheelPosition}  timeElapsed={timeElapsed}  q={Math.Abs(q).ToString("00000")}  {ex.Message}" & vbCrLf & txtErrors.Text
+        End Try
         Return powerToApply
     End Function
 

@@ -1,0 +1,58 @@
+********************************************************************************
+***                   Micro-Cap 9.0.5.0 Evaluation Version                   ***
+***                                                                          ***
+***                                                                          ***
+***                          Dynamic AC of circuit1                          ***
+********************************************************************************
+
+*****************************************************
+***                Temperature=27                 ***
+*****************************************************
+
+Temperature=27 
+
+AC Voltages at Frequency=1e+006 (Mag, Degrees)
+==============================================
+Node         Voltage  Node         Voltage  Node         Voltage 
+1                0,0  2                0,0  3                0,0 
+4                0,0  5                0,0  6                0,0 
+7                0,0 
+
+
+AC values for Diode (Mag, Degrees)
+==================================
+Instance:               D1            D2            D3            D4
+Using model:        1N4148        1N4148        1N4148        1N4148
+
+AC Power Terms:
+PD                     0,0           0,0           0,0           0,0
+PS                     0,0           0,0           0,0           0,0
+
+AC Pin Currents:
+Id                     0,0           0,0           0,0           0,0
+
+
+
+AC values for Resistor (Mag, Degrees)
+=====================================
+Instance:                R1      R_METER1            R2            R3      R_METER2
+
+AC Power Terms:
+PD                      0,0           0,0           0,0           0,0           0,0
+
+AC Pin Currents:
+Ir                      0,0           0,0           0,0           0,0           0,0
+
+
+
+AC values for SPICE Source (Mag, Degrees)
+=========================================
+Instance:               V1      V_METER1            V2      V_METER2
+
+AC Power Terms:
+PG                     0,0           0,0           0,0           0,0
+
+AC Pin Currents:
+ISource                0,0           0,0           0,0           0,0
+
+

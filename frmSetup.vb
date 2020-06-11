@@ -2,17 +2,10 @@
 
 Public Class frmSetup
     Public _FrmCVJoy As frmCVJoy
-    Private mouses As List(Of MouseRaw.GetMousesResult)
 
     Public Sub Init(pOwner As frmCVJoy)
         Me.Owner = pOwner
         _FrmCVJoy = pOwner
-
-        mouses = MouseRaw.GetMouses
-        For n As Integer = 0 To mouses.Count - 1
-            cbMouse.Items.Add(mouses(n).Type.ToString & " " & n + 1 & " - " & mouses(n).ToString)
-            If mouses(n).Cod = SettingsMain.MouseSteering Then cbMouse.SelectedIndex = n
-        Next
 
         cbComPort.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames())
         cbComPort.SelectedValue = SettingsMain.ArduinoComPort
@@ -36,7 +29,6 @@ Public Class frmSetup
         txtFreq.Text = SettingsMain.RefreshRate
 
         txtWheelSensitivity.Text = (SettingsMain.WheelSensitivity * 100).ToString("+0000;-0000")
-        txtWheelDead.Text = SettingsMain.WheelDead
 
         txtWheelMinInput.Text = SettingsMain.WheelMinInput
         txtWheelPowerForMin.Text = SettingsMain.WheelPowerForMin
@@ -82,7 +74,6 @@ Public Class frmSetup
         res &= ValidateNumber(txtFreq, 11, 80, "Refresh Rate")
 
         res &= ValidateNumber(txtWheelSensitivity, -9999, 9999, "Wheel Sensitivity (when using mouse)")
-        res &= ValidateNumber(txtWheelDead, 0, 9999, "Wheel Dead Band")
 
         res &= ValidateNumber(txtWheelMinInput, 0, 1023, "Wheel FF Min Input")
         res &= ValidateNumber(txtWheelPowerForMin, 0, 255, "Wheel FF Power For Min")
@@ -134,15 +125,9 @@ Public Class frmSetup
         If txt_Validate(pShowMsg:=True) > "" Then Return False
         If cbComPort.SelectedIndex >= 0 Then SettingsMain.ArduinoComPort = cbComPort.SelectedItem
         If cbVjoy.SelectedIndex >= 0 Then SettingsMain.vJoyId = cbVjoy.SelectedItem
-        If cbMouse.SelectedIndex >= 0 Then
-            SettingsMain.MouseSteering = mouses(cbMouse.SelectedIndex).Cod
-        Else
-            SettingsMain.MouseSteering = 0
-        End If
         SettingsMain.RefreshRate = txtFreq.Text
 
         SettingsMain.WheelSensitivity = CInt(txtWheelSensitivity.Text) / 100
-        SettingsMain.WheelDead = txtWheelDead.Text
 
         SettingsMain.WheelMinInput = txtWheelMinInput.Text
         SettingsMain.WheelPowerForMin = txtWheelPowerForMin.Text

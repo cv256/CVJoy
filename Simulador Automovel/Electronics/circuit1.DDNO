@@ -1,0 +1,97 @@
+********************************************************************************
+***              Micro-Cap 12.0.2.0 (32 bit) Evaluation Version              ***
+***                                                                          ***
+***                                                                          ***
+***                          Dynamic DC of circuit1                          ***
+***                           30/11/2018 10:45:27                            ***
+********************************************************************************
+
+*****************************************************
+***                Temperature=27                 ***
+*****************************************************
+
+Temperature=27
+
+DC Operating Point Voltages
+===========================
+Node         Voltage  Node         Voltage  Node         Voltage 
+1            42.422   2            35.910   3            80.000  
+4            29.000   5           983.995u  6            17.955  
+7            17.955  
+
+
+Operating Point for Devices of Type Diode
+=========================================
+Instance:               D5            D6            D7            D8            D9
+Using model:        1N5391        1N5391        1N5391        1N5391      $GENERIC
+
+Capacitance Terms:
+CAP               106.010u      106.010u      106.607u      106.607u        1.851p
+
+Current Terms:
+ID               -983.995m     -983.995m     -989.532m     -989.532m      -10.698n
+
+Resistance Terms:
+REQ                50.079m       50.079m       49.799m       49.799m        4.975G
+
+Voltage Terms:
+VD                -17.954       -17.954       -17.955       -17.955       -13.422 
+
+Power DC Terms:
+PD                 17.667        17.667        17.767        17.767       143.591n
+PS                  0.000         0.000         0.000         0.000         0.000 
+
+DC Pin Currents:
+Id               -983.995m     -983.995m     -989.532m     -989.532m      -10.698n
+
+Condition:
+State                  HOT           HOT           HOT           HOT           OFF
+
+Device Variables:
+area                1.000         1.000         1.000         1.000         1.000 
+ic                  0.000         0.000         0.000         0.000         0.000 
+
+
+
+Operating Point for Devices of Type Resistor
+============================================
+Instance:                R1      METER1.R            R2            R3      METER2.R
+V                   42.422        42.422         6.513       -37.578       983.995u
+Power DC Terms:
+PD                 179.966m        1.800n       12.853        74.320       968.246u
+
+DC Pin Currents:
+Ir                   4.242m       42.422p        1.974        -1.978       983.995m
+
+Device Variables:
+tc1                  0.000         0.000         0.000         0.000         0.000 
+tc2                  0.000         0.000         0.000         0.000         0.000 
+
+
+
+Operating Point for Devices of Type Capacitor
+=============================================
+Instance:                C1
+V                   42.422 
+Power DC Terms:
+PS                   0.000 
+
+DC Pin Currents:
+Ic                   0.000 
+
+Device Variables:
+ic                   0.000 
+
+
+
+Operating Point for Devices of Type SPICE Source
+================================================
+Instance:         METER1.V            V2      METER2.V            V1
+V                   0.000        29.000        -0.029f       80.000 
+Power DC Terms:
+PG                  0.000      -310.239n        0.028f      158.222 
+
+DC Pin Currents:
+ISource            42.423p       10.698n      983.995m       -1.978 
+
+

@@ -1,0 +1,233 @@
+********************************************************************************
+***              Micro-Cap 12.0.2.0 (32 bit) Evaluation Version              ***
+***                                                                          ***
+***                                                                          ***
+***                      Transient Analysis of circuit1                      ***
+********************************************************************************
+Limits
+======
+Maximum Run Time           2
+Output Start Time (tstart) 0
+Maximum Time Step          0
+Number of Points           51
+Temperature                Linear 27
+Retrace Runs               1
+Run Options                Normal
+State Variables            Zero
+Operating Point            On
+Operating Point Only       Off
+Auto Scale Ranges          Off
+Accumulate Plots           Off
+Fixed Time Step            Off
+Periodic Steady State      Off
+Ignore Expression Errors   Off
+
+
+*****************************************************
+***                Temperature=27                 ***
+*****************************************************
+
+Temperature=27
+
+Model parameters for devices of type Diode
+==========================================
+Instance:              D5              D6              D7              D8   
+Using model:       1N5391          1N5391          1N5391          1N5391   
+LEVEL                   1(*)            1(*)            1(*)            1(*)
+AF                 1.000 (*)       1.000 (*)       1.000 (*)       1.000 (*)
+BV                17.000          17.000          17.000          17.000    
+CJO               50.313p         50.313p         50.313p         50.313p   
+EG                 1.110 (*)       1.110 (*)       1.110 (*)       1.110 (*)
+FC               500.000m(*)     500.000m(*)     500.000m(*)     500.000m(*)
+IBV              100.000p        100.000p        100.000p        100.000p   
+IBVL               0.000 (*)       0.000 (*)       0.000 (*)       0.000 (*)
+IKF                0.000 (*)       0.000 (*)       0.000 (*)       0.000 (*)
+IS                 8.304n          8.304n          8.304n          8.304n   
+ISR                0.000 (*)       0.000 (*)       0.000 (*)       0.000 (*)
+KF                 0.000 (*)       0.000 (*)       0.000 (*)       0.000 (*)
+M                492.102m        492.102m        492.102m        492.102m   
+N                  1.905           1.905           1.905           1.905    
+NBV                1.000 (*)       1.000 (*)       1.000 (*)       1.000 (*)
+NBVL               1.000 (*)       1.000 (*)       1.000 (*)       1.000 (*)
+NR                 2.000 (*)       2.000 (*)       2.000 (*)       2.000 (*)
+RL                 1.000G          1.000G          1.000G          1.000G   
+RS                38.910m         38.910m         38.910m         38.910m   
+T_ABS           UNDEFINED(*)    UNDEFINED(*)    UNDEFINED(*)    UNDEFINED(*)
+T_MEASURED      UNDEFINED(*)    UNDEFINED(*)    UNDEFINED(*)    UNDEFINED(*)
+T_REL_GLOBAL    UNDEFINED(*)    UNDEFINED(*)    UNDEFINED(*)    UNDEFINED(*)
+T_REL_LOCAL     UNDEFINED(*)    UNDEFINED(*)    UNDEFINED(*)    UNDEFINED(*)
+TBV1               0.000 (*)       0.000 (*)       0.000 (*)       0.000 (*)
+TBV2               0.000 (*)       0.000 (*)       0.000 (*)       0.000 (*)
+TIKF               0.000 (*)       0.000 (*)       0.000 (*)       0.000 (*)
+TRS1               0.000 (*)       0.000 (*)       0.000 (*)       0.000 (*)
+TRS2               0.000 (*)       0.000 (*)       0.000 (*)       0.000 (*)
+TT                 5.309u          5.309u          5.309u          5.309u   
+VJ               700.000m        700.000m        700.000m        700.000m   
+XTI                3.000 (*)       3.000 (*)       3.000 (*)       3.000 (*)
+(*) Default Parameter
+
+
+
+Instance:              D9   
+Using model:     $GENERIC   
+LEVEL                   1(*)
+AF                 1.000 (*)
+BV               500.000    
+CJO                2.500p   
+EG                 1.110 (*)
+FC               500.000m(*)
+IBV              100.000p(*)
+IBVL               0.000 (*)
+IKF                0.000 (*)
+IS                 8.000n   
+ISR                0.000 (*)
+KF                 0.000 (*)
+M                100.000m   
+N                  2.000    
+NBV                1.000 (*)
+NBVL               1.000 (*)
+NR                 2.000 (*)
+RL                 5.000G   
+RS               400.000m   
+T_ABS           UNDEFINED(*)
+T_MEASURED      UNDEFINED(*)
+T_REL_GLOBAL    UNDEFINED(*)
+T_REL_LOCAL     UNDEFINED(*)
+TBV1               0.000 (*)
+TBV2               0.000 (*)
+TIKF               0.000 (*)
+TRS1               0.000 (*)
+TRS2               0.000 (*)
+TT                 1.000n   
+VJ               700.000m   
+XTI                3.000 (*)
+(*) Default Parameter
+
+
+
+DC Operating Point Voltages
+===========================
+Node         Voltage  Node         Voltage  Node         Voltage 
+1            42.422   2            35.910   3            80.000  
+4            29.000   5           983.995u  6            17.955  
+7            17.955  
+
+
+Operating Point for Devices of Type Diode
+=========================================
+Instance:                 D5              D6              D7              D8
+Using model:          1N5391          1N5391          1N5391          1N5391
+
+Capacitance Terms:
+CAP                 106.010u        106.010u        106.607u        106.607u
+
+Current Terms:
+ID                 -983.995m       -983.995m       -989.532m       -989.532m
+
+Resistance Terms:
+REQ                  50.079m         50.079m         49.799m         49.799m
+
+Voltage Terms:
+VD                  -17.954         -17.954         -17.955         -17.955 
+
+Power DC Terms:
+PD                   17.667          17.667          17.767          17.767 
+PS                    0.000           0.000           0.000           0.000 
+
+DC Pin Currents:
+Id                 -983.995m       -983.995m       -989.532m       -989.532m
+
+Condition:
+State                    HOT             HOT             HOT             HOT
+
+Device Variables:
+area                  1.000           1.000           1.000           1.000 
+ic                    0.000           0.000           0.000           0.000 
+
+
+Instance:                 D9
+Using model:        $GENERIC
+
+Capacitance Terms:
+CAP                   1.851p
+
+Current Terms:
+ID                  -10.698n
+
+Resistance Terms:
+REQ                   4.975G
+
+Voltage Terms:
+VD                  -13.422 
+
+Power DC Terms:
+PD                  143.591n
+PS                    0.000 
+
+DC Pin Currents:
+Id                  -10.698n
+
+Condition:
+State                    OFF
+
+Device Variables:
+area                  1.000 
+ic                    0.000 
+
+
+
+Operating Point for Devices of Type Resistor
+============================================
+Instance:                  R1        METER1.R              R2              R3
+V                     42.422          42.422           6.513         -37.578 
+Power DC Terms:
+PD                   179.966m          1.800n         12.853          74.320 
+
+DC Pin Currents:
+Ir                     4.242m         42.422p          1.974          -1.978 
+
+Device Variables:
+tc1                    0.000           0.000           0.000           0.000 
+tc2                    0.000           0.000           0.000           0.000 
+
+
+Instance:            METER2.R
+V                    983.995u
+Power DC Terms:
+PD                   968.246u
+
+DC Pin Currents:
+Ir                   983.995m
+
+Device Variables:
+tc1                    0.000 
+tc2                    0.000 
+
+
+
+Operating Point for Devices of Type Capacitor
+=============================================
+Instance:                  C1
+V                     42.422 
+Power DC Terms:
+PS                     0.000 
+
+DC Pin Currents:
+Ic                     0.000 
+
+Device Variables:
+ic                     0.000 
+
+
+
+Operating Point for Devices of Type SPICE Source
+================================================
+Instance:           METER1.V              V2        METER2.V              V1
+V                     0.000          29.000          -0.029f         80.000 
+Power DC Terms:
+PG                    0.000        -310.239n          0.028f        158.222 
+
+DC Pin Currents:
+ISource              42.423p         10.698n        983.995m         -1.978 
+
+

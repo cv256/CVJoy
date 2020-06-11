@@ -58,13 +58,16 @@ Partial Class frmCVJoy
         Me.btGameStart = New System.Windows.Forms.Button()
         Me.lbGameInfo = New System.Windows.Forms.Label()
         Me.btGameSetup = New System.Windows.Forms.Button()
-        Me.UcButtons1 = New CVJoy.ucButtons()
         Me.cbGames = New System.Windows.Forms.ComboBox()
         Me.lbTemperature = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.chkNoMotors = New System.Windows.Forms.CheckBox()
         Me.lbMainsPower = New System.Windows.Forms.Label()
+        Me.UcButtons1 = New CVJoy.ucButtons()
+        Me.chkFFIgnore = New System.Windows.Forms.CheckBox()
+        Me.chkArduinoTime = New System.Windows.Forms.CheckBox()
+        Me.lbArduinoTime = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'btArduinoStart
@@ -301,7 +304,7 @@ Partial Class frmCVJoy
         Me.btWheelCenter.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btWheelCenter.BackColor = System.Drawing.Color.Gold
         Me.btWheelCenter.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btWheelCenter.Location = New System.Drawing.Point(139, 109)
+        Me.btWheelCenter.Location = New System.Drawing.Point(257, 109)
         Me.btWheelCenter.Name = "btWheelCenter"
         Me.btWheelCenter.Size = New System.Drawing.Size(59, 20)
         Me.btWheelCenter.TabIndex = 88
@@ -407,7 +410,7 @@ Partial Class frmCVJoy
         Me.chkFFConst.Checked = True
         Me.chkFFConst.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkFFConst.ForeColor = System.Drawing.Color.Green
-        Me.chkFFConst.Location = New System.Drawing.Point(58, 111)
+        Me.chkFFConst.Location = New System.Drawing.Point(87, 111)
         Me.chkFFConst.Margin = New System.Windows.Forms.Padding(0)
         Me.chkFFConst.Name = "chkFFConst"
         Me.chkFFConst.Size = New System.Drawing.Size(79, 17)
@@ -421,7 +424,7 @@ Partial Class frmCVJoy
         Me.chkFFCond.Checked = True
         Me.chkFFCond.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkFFCond.ForeColor = System.Drawing.Color.DarkOrchid
-        Me.chkFFCond.Location = New System.Drawing.Point(222, 111)
+        Me.chkFFCond.Location = New System.Drawing.Point(167, 111)
         Me.chkFFCond.Margin = New System.Windows.Forms.Padding(0)
         Me.chkFFCond.Name = "chkFFCond"
         Me.chkFFCond.Size = New System.Drawing.Size(79, 17)
@@ -463,14 +466,6 @@ Partial Class frmCVJoy
         Me.btGameSetup.TabIndex = 130
         Me.btGameSetup.Text = "Setup"
         Me.btGameSetup.UseVisualStyleBackColor = False
-        '
-        'UcButtons1
-        '
-        Me.UcButtons1.Location = New System.Drawing.Point(1, 0)
-        Me.UcButtons1.Name = "UcButtons1"
-        Me.UcButtons1.ReadOnly = False
-        Me.UcButtons1.Size = New System.Drawing.Size(282, 19)
-        Me.UcButtons1.TabIndex = 131
         '
         'cbGames
         '
@@ -531,12 +526,55 @@ Partial Class frmCVJoy
         Me.lbMainsPower.TabIndex = 138
         Me.lbMainsPower.Text = "Mains Power OFF"
         '
+        'UcButtons1
+        '
+        Me.UcButtons1.Location = New System.Drawing.Point(1, 0)
+        Me.UcButtons1.Name = "UcButtons1"
+        Me.UcButtons1.ReadOnly = False
+        Me.UcButtons1.Size = New System.Drawing.Size(282, 19)
+        Me.UcButtons1.TabIndex = 131
+        '
+        'chkFFIgnore
+        '
+        Me.chkFFIgnore.AutoSize = True
+        Me.chkFFIgnore.BackColor = System.Drawing.Color.Transparent
+        Me.chkFFIgnore.Location = New System.Drawing.Point(3, 111)
+        Me.chkFFIgnore.Name = "chkFFIgnore"
+        Me.chkFFIgnore.Size = New System.Drawing.Size(71, 17)
+        Me.chkFFIgnore.TabIndex = 139
+        Me.chkFFIgnore.Text = "Ignore FF"
+        Me.chkFFIgnore.UseMnemonic = False
+        Me.chkFFIgnore.UseVisualStyleBackColor = False
+        '
+        'chkArduinoTime
+        '
+        Me.chkArduinoTime.AutoSize = True
+        Me.chkArduinoTime.BackColor = System.Drawing.Color.Transparent
+        Me.chkArduinoTime.Location = New System.Drawing.Point(175, 29)
+        Me.chkArduinoTime.Name = "chkArduinoTime"
+        Me.chkArduinoTime.Size = New System.Drawing.Size(108, 17)
+        Me.chkArduinoTime.TabIndex = 140
+        Me.chkArduinoTime.Text = "Show Arduino ms"
+        Me.chkArduinoTime.UseVisualStyleBackColor = False
+        '
+        'lbArduinoTime
+        '
+        Me.lbArduinoTime.BackColor = System.Drawing.Color.Transparent
+        Me.lbArduinoTime.Location = New System.Drawing.Point(279, 31)
+        Me.lbArduinoTime.Name = "lbArduinoTime"
+        Me.lbArduinoTime.Size = New System.Drawing.Size(37, 12)
+        Me.lbArduinoTime.TabIndex = 141
+        Me.lbArduinoTime.Text = "000"
+        '
         'frmCVJoy
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ClientSize = New System.Drawing.Size(521, 315)
+        Me.Controls.Add(Me.lbArduinoTime)
+        Me.Controls.Add(Me.chkArduinoTime)
+        Me.Controls.Add(Me.chkFFIgnore)
         Me.Controls.Add(Me.chkNoMotors)
         Me.Controls.Add(Me.lbAttitude)
         Me.Controls.Add(Me.Label3)
@@ -626,4 +664,7 @@ Partial Class frmCVJoy
     Friend WithEvents Label3 As Label
     Friend WithEvents chkNoMotors As CheckBox
     Friend WithEvents lbMainsPower As Label
+    Friend WithEvents chkFFIgnore As CheckBox
+    Friend WithEvents chkArduinoTime As CheckBox
+    Friend WithEvents lbArduinoTime As Label
 End Class

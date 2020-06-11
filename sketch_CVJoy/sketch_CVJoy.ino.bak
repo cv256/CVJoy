@@ -40,11 +40,11 @@
 #define pinButton8 41 // direita
 #define pinButton9 42 // direita
 #define pinGear1 43
-#define pinGear2 48
-#define pinGear3 46
-#define pinGear4 44
+#define pinGear2 44
+#define pinGear3 45
+#define pinGear4 46
 #define pinGear5 47
-#define pinGear6 45
+#define pinGear6 48
 #define pinGearR 49
 #define pinLeftUSSend 14
 #define pinLeftUSRead 15

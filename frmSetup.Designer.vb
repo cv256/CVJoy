@@ -47,7 +47,6 @@ Partial Class frmSetup
         Me.btTestGLeft = New System.Windows.Forms.Button()
         Me.btTestGRight = New System.Windows.Forms.Button()
         Me.txtGMinDiff = New System.Windows.Forms.MaskedTextBox()
-        Me.Label4 = New System.Windows.Forms.Label()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.Label23 = New System.Windows.Forms.Label()
         Me.Label24 = New System.Windows.Forms.Label()
@@ -59,14 +58,10 @@ Partial Class frmSetup
         Me.txtBrakeMin = New System.Windows.Forms.MaskedTextBox()
         Me.txtClutchMax = New System.Windows.Forms.MaskedTextBox()
         Me.txtClutchMin = New System.Windows.Forms.MaskedTextBox()
-        Me.Label27 = New System.Windows.Forms.Label()
-        Me.cbMouse = New System.Windows.Forms.ComboBox()
         Me.txtWheelDampFactor = New System.Windows.Forms.MaskedTextBox()
         Me.Label28 = New System.Windows.Forms.Label()
         Me.txtWheelSensitivity = New System.Windows.Forms.MaskedTextBox()
         Me.Label5 = New System.Windows.Forms.Label()
-        Me.Label16 = New System.Windows.Forms.Label()
-        Me.txtWheelDead = New System.Windows.Forms.MaskedTextBox()
         Me.btDefaults = New System.Windows.Forms.Button()
         Me.Label30 = New System.Windows.Forms.Label()
         Me.txtWheelPowerGama = New System.Windows.Forms.MaskedTextBox()
@@ -160,6 +155,7 @@ Partial Class frmSetup
         Me.Label43 = New System.Windows.Forms.Label()
         Me.txtUltrasonicGama = New System.Windows.Forms.MaskedTextBox()
         Me.Label69 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'Label3
@@ -405,15 +401,6 @@ Partial Class frmSetup
         Me.txtGMinDiff.TabIndex = 122
         Me.txtGMinDiff.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(451, 54)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(57, 13)
-        Me.Label4.TabIndex = 131
-        Me.Label4.Text = "Sensitivity:"
-        '
         'Label15
         '
         Me.Label15.AutoSize = True
@@ -537,24 +524,6 @@ Partial Class frmSetup
         Me.txtClutchMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.txtClutchMin.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals
         '
-        'Label27
-        '
-        Me.Label27.AutoSize = True
-        Me.Label27.Location = New System.Drawing.Point(4, 54)
-        Me.Label27.Name = "Label27"
-        Me.Label27.Size = New System.Drawing.Size(128, 13)
-        Me.Label27.TabIndex = 146
-        Me.Label27.Text = "Mouse for steering wheel:"
-        '
-        'cbMouse
-        '
-        Me.cbMouse.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMouse.FormattingEnabled = True
-        Me.cbMouse.Location = New System.Drawing.Point(135, 50)
-        Me.cbMouse.Name = "cbMouse"
-        Me.cbMouse.Size = New System.Drawing.Size(219, 21)
-        Me.cbMouse.TabIndex = 145
-        '
         'txtWheelDampFactor
         '
         Me.txtWheelDampFactor.AllowPromptAsInput = False
@@ -601,27 +570,6 @@ Partial Class frmSetup
         Me.Label5.Size = New System.Drawing.Size(28, 12)
         Me.Label5.TabIndex = 150
         Me.Label5.Text = "0-255"
-        '
-        'Label16
-        '
-        Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(645, 54)
-        Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(60, 13)
-        Me.Label16.TabIndex = 152
-        Me.Label16.Text = "Deadband:"
-        '
-        'txtWheelDead
-        '
-        Me.txtWheelDead.AllowPromptAsInput = False
-        Me.txtWheelDead.BeepOnError = True
-        Me.txtWheelDead.HidePromptOnLeave = True
-        Me.txtWheelDead.Location = New System.Drawing.Point(717, 51)
-        Me.txtWheelDead.Mask = "9999"
-        Me.txtWheelDead.Name = "txtWheelDead"
-        Me.txtWheelDead.Size = New System.Drawing.Size(40, 20)
-        Me.txtWheelDead.TabIndex = 151
-        Me.txtWheelDead.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'btDefaults
         '
@@ -1609,6 +1557,15 @@ Partial Class frmSetup
         Me.Label69.TabIndex = 269
         Me.Label69.Text = "Sensors Gama:"
         '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(451, 54)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(57, 13)
+        Me.Label4.TabIndex = 131
+        Me.Label4.Text = "Sensitivity:"
+        '
         'frmSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1706,14 +1663,10 @@ Partial Class frmSetup
         Me.Controls.Add(Me.txtWheelPowerGama)
         Me.Controls.Add(Me.Label31)
         Me.Controls.Add(Me.btDefaults)
-        Me.Controls.Add(Me.Label16)
-        Me.Controls.Add(Me.txtWheelDead)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.txtWheelSensitivity)
         Me.Controls.Add(Me.Label28)
         Me.Controls.Add(Me.txtWheelDampFactor)
-        Me.Controls.Add(Me.Label27)
-        Me.Controls.Add(Me.cbMouse)
         Me.Controls.Add(Me.txtClutchMax)
         Me.Controls.Add(Me.txtClutchMin)
         Me.Controls.Add(Me.txtBrakeMax)
@@ -1779,7 +1732,6 @@ Partial Class frmSetup
     Friend WithEvents btTestGLeft As Button
     Friend WithEvents btTestGRight As Button
     Friend WithEvents txtGMinDiff As MaskedTextBox
-    Friend WithEvents Label4 As Label
     Friend WithEvents Label15 As Label
     Friend WithEvents Label23 As Label
     Friend WithEvents Label24 As Label
@@ -1791,14 +1743,10 @@ Partial Class frmSetup
     Friend WithEvents txtBrakeMin As MaskedTextBox
     Friend WithEvents txtClutchMax As MaskedTextBox
     Friend WithEvents txtClutchMin As MaskedTextBox
-    Friend WithEvents Label27 As Label
-    Friend WithEvents cbMouse As ComboBox
     Friend WithEvents txtWheelDampFactor As MaskedTextBox
     Friend WithEvents Label28 As Label
     Friend WithEvents txtWheelSensitivity As MaskedTextBox
     Friend WithEvents Label5 As Label
-    Friend WithEvents Label16 As Label
-    Friend WithEvents txtWheelDead As MaskedTextBox
     Friend WithEvents btDefaults As Button
     Friend WithEvents Label30 As Label
     Friend WithEvents txtWheelPowerGama As MaskedTextBox
@@ -1892,4 +1840,5 @@ Partial Class frmSetup
     Friend WithEvents Label43 As Label
     Friend WithEvents txtUltrasonicGama As MaskedTextBox
     Friend WithEvents Label69 As Label
+    Friend WithEvents Label4 As Label
 End Class

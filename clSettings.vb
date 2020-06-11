@@ -15,10 +15,8 @@
     Public ClutchMax As Integer = 810
     Public ClutchGama As Single = 1
 
-    Public MouseSteering As Integer = 0
     Public WheelMinInput As Integer = 3
     Public WheelSensitivity As Single = 8.5
-    Public WheelDead As Integer = 0
 
     Public WheelPowerGama As Single = 40
     Public WheelPowerForMin As Integer = 88
