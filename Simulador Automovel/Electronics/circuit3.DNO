@@ -1,0 +1,29 @@
+********************************************************************************
+***              Micro-Cap 12.0.2.0 (32 bit) Evaluation Version              ***
+***                                                                          ***
+***                                                                          ***
+***                         DC Analysis of circuit3                          ***
+***                           12/06/2020 16:41:05                            ***
+********************************************************************************
+Limits
+======
+Variable 1 Method        List
+Variable 1 Name          TEMP
+Variable 1 Range         12
+Variable 2 Method        None
+Variable 2 Name          
+Variable 2 Range         
+Temperature              Linear 27
+Number of Points         51
+Maximum Change %         5
+Run Options              Normal
+Auto Scale Ranges        Off
+Accumulate Plots         Off
+Ignore Expression Errors Off
+
+
+*****************************************************
+*****************************************************
+
+
+

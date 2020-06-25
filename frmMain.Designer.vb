@@ -52,7 +52,7 @@ Partial Class frmCVJoy
         Me.Label27 = New System.Windows.Forms.Label()
         Me.ckKeepVisible = New System.Windows.Forms.CheckBox()
         Me.chkNoWind = New System.Windows.Forms.CheckBox()
-        Me.cbLog = New System.Windows.Forms.ComboBox()
+        Me.cbLogFF = New System.Windows.Forms.ComboBox()
         Me.chkFFConst = New System.Windows.Forms.CheckBox()
         Me.chkFFCond = New System.Windows.Forms.CheckBox()
         Me.btGameStart = New System.Windows.Forms.Button()
@@ -64,10 +64,12 @@ Partial Class frmCVJoy
         Me.Label3 = New System.Windows.Forms.Label()
         Me.chkNoMotors = New System.Windows.Forms.CheckBox()
         Me.lbMainsPower = New System.Windows.Forms.Label()
-        Me.UcButtons1 = New CVJoy.ucButtons()
         Me.chkFFIgnore = New System.Windows.Forms.CheckBox()
         Me.chkArduinoTime = New System.Windows.Forms.CheckBox()
         Me.lbArduinoTime = New System.Windows.Forms.Label()
+        Me.chkLog = New System.Windows.Forms.CheckBox()
+        Me.btLogClear = New System.Windows.Forms.Button()
+        Me.UcButtons1 = New CVJoy.ucButtons()
         Me.SuspendLayout()
         '
         'btArduinoStart
@@ -395,14 +397,14 @@ Partial Class frmCVJoy
         Me.chkNoWind.Text = "Disable Wind"
         Me.chkNoWind.UseVisualStyleBackColor = False
         '
-        'cbLog
+        'cbLogFF
         '
-        Me.cbLog.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cbLog.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbLog.Location = New System.Drawing.Point(383, 200)
-        Me.cbLog.Name = "cbLog"
-        Me.cbLog.Size = New System.Drawing.Size(121, 21)
-        Me.cbLog.TabIndex = 125
+        Me.cbLogFF.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cbLogFF.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbLogFF.Location = New System.Drawing.Point(429, 219)
+        Me.cbLogFF.Name = "cbLogFF"
+        Me.cbLogFF.Size = New System.Drawing.Size(75, 21)
+        Me.cbLogFF.TabIndex = 125
         '
         'chkFFConst
         '
@@ -526,14 +528,6 @@ Partial Class frmCVJoy
         Me.lbMainsPower.TabIndex = 138
         Me.lbMainsPower.Text = "Mains Power OFF"
         '
-        'UcButtons1
-        '
-        Me.UcButtons1.Location = New System.Drawing.Point(1, 0)
-        Me.UcButtons1.Name = "UcButtons1"
-        Me.UcButtons1.ReadOnly = False
-        Me.UcButtons1.Size = New System.Drawing.Size(282, 19)
-        Me.UcButtons1.TabIndex = 131
-        '
         'chkFFIgnore
         '
         Me.chkFFIgnore.AutoSize = True
@@ -566,12 +560,49 @@ Partial Class frmCVJoy
         Me.lbArduinoTime.TabIndex = 141
         Me.lbArduinoTime.Text = "000"
         '
+        'chkLog
+        '
+        Me.chkLog.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.chkLog.BackColor = System.Drawing.Color.Transparent
+        Me.chkLog.Checked = True
+        Me.chkLog.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkLog.Location = New System.Drawing.Point(429, 201)
+        Me.chkLog.Name = "chkLog"
+        Me.chkLog.Size = New System.Drawing.Size(75, 17)
+        Me.chkLog.TabIndex = 142
+        Me.chkLog.Text = "Log Errors"
+        Me.chkLog.UseMnemonic = False
+        Me.chkLog.UseVisualStyleBackColor = False
+        '
+        'btLogClear
+        '
+        Me.btLogClear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btLogClear.BackColor = System.Drawing.Color.Gold
+        Me.btLogClear.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btLogClear.Location = New System.Drawing.Point(429, 241)
+        Me.btLogClear.Name = "btLogClear"
+        Me.btLogClear.Size = New System.Drawing.Size(75, 20)
+        Me.btLogClear.TabIndex = 143
+        Me.btLogClear.Text = "Clear"
+        Me.btLogClear.UseVisualStyleBackColor = False
+        '
+        'UcButtons1
+        '
+        Me.UcButtons1.Location = New System.Drawing.Point(2, 0)
+        Me.UcButtons1.Name = "UcButtons1"
+        Me.UcButtons1.ReadOnly = False
+        Me.UcButtons1.Size = New System.Drawing.Size(282, 19)
+        Me.UcButtons1.TabIndex = 144
+        '
         'frmCVJoy
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ClientSize = New System.Drawing.Size(521, 315)
+        Me.Controls.Add(Me.UcButtons1)
+        Me.Controls.Add(Me.btLogClear)
+        Me.Controls.Add(Me.chkLog)
         Me.Controls.Add(Me.lbArduinoTime)
         Me.Controls.Add(Me.chkArduinoTime)
         Me.Controls.Add(Me.chkFFIgnore)
@@ -581,13 +612,12 @@ Partial Class frmCVJoy
         Me.Controls.Add(Me.lbTemperature)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.cbGames)
-        Me.Controls.Add(Me.UcButtons1)
         Me.Controls.Add(Me.btGameSetup)
         Me.Controls.Add(Me.btGameStart)
         Me.Controls.Add(Me.lbGameInfo)
         Me.Controls.Add(Me.chkFFCond)
         Me.Controls.Add(Me.chkFFConst)
-        Me.Controls.Add(Me.cbLog)
+        Me.Controls.Add(Me.cbLogFF)
         Me.Controls.Add(Me.chkNoWind)
         Me.Controls.Add(Me.lbClutch)
         Me.Controls.Add(Me.Label27)
@@ -651,13 +681,12 @@ Partial Class frmCVJoy
     Friend WithEvents Label27 As Label
     Friend WithEvents ckKeepVisible As CheckBox
     Friend WithEvents chkNoWind As CheckBox
-    Friend WithEvents cbLog As ComboBox
+    Friend WithEvents cbLogFF As ComboBox
     Friend WithEvents chkFFConst As CheckBox
     Friend WithEvents chkFFCond As CheckBox
     Friend WithEvents btGameStart As Button
     Friend WithEvents lbGameInfo As Label
     Friend WithEvents btGameSetup As Button
-    Friend WithEvents UcButtons1 As ucButtons
     Friend WithEvents cbGames As ComboBox
     Friend WithEvents lbTemperature As Label
     Friend WithEvents Label2 As Label
@@ -667,4 +696,7 @@ Partial Class frmCVJoy
     Friend WithEvents chkFFIgnore As CheckBox
     Friend WithEvents chkArduinoTime As CheckBox
     Friend WithEvents lbArduinoTime As Label
+    Friend WithEvents chkLog As CheckBox
+    Friend WithEvents btLogClear As Button
+    Friend WithEvents UcButtons1 As ucButtons
 End Class

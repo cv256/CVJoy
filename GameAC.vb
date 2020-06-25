@@ -88,21 +88,27 @@ Public Class GameAC
             If tmpFrm IsNot Nothing Then Integer.TryParse(tmpFrm.lbACSpeed.Text, acP.SpeedKmh) ' if not connected to AC, user can input data to simulate AC
             Dim dummyAccG(2) As Single : acP.AccG = dummyAccG
             Dim dummyWheelSlip(3) As Single : acP.WheelSlip = dummyWheelSlip
-        ElseIf ACS.MaxRpm = 0 Then ' if AC just started or restarted:
-            ACS = AC.ReadStaticInfo
-            State = ACS.ACVersion & "   " & ACS.CarModel & "   " & ACS.Track & "   " & ACS.TrackConfiguration
-            If tmpFrm IsNot Nothing Then tmpFrm.lbMaxRPM.Text = ACS.MaxRpm
+            res.LedTop = False
+            res.LedBottom = False
+            res.LedLeft = False
+            res.LedRight = False
+        Else
+            If ACS.MaxRpm = 0 Then ' if AC just started or restarted:
+                ACS = AC.ReadStaticInfo
+                State = ACS.ACVersion & "   " & ACS.CarModel & "   " & ACS.Track & "   " & ACS.TrackConfiguration
+                If tmpFrm IsNot Nothing Then tmpFrm.lbMaxRPM.Text = ACS.MaxRpm
+            End If
+            res.LedTop = Math.Min(acP.WheelSlip(0), acP.WheelSlip(1)) > Me.Slip
+            res.LedBottom = Math.Min(acP.WheelSlip(2), acP.WheelSlip(3)) > Me.Slip
+            res.LedLeft = acP.Rpms < ACS.MaxRpm * Me.Rpm1
+            res.LedRight = acP.Rpms > ACS.MaxRpm * Me.Rpm2
         End If
 
         ' Set Output :
-        res.Pitch = acP.Pitch * Me.Pitch + acceleration * Me.Accel ' everything in Radians (me.accel has allready been converted) ' acP.AccG(2) has lots of noise, unusable!
-        res.Roll = -acP.Roll * Me.Roll + rotation * Me.Turn '' everything in Radians (me.turn has allready been converted)
+        res.Pitch = acP.Pitch * Me.Pitch + Acceleration * Me.Accel ' everything in Radians (me.accel has allready been converted) ' acP.AccG(2) has lots of noise, unusable!
+        res.Roll = -acP.Roll * Me.Roll + Rotation * Me.Turn '' everything in Radians (me.turn has allready been converted)
         res.Wind = FFWind(SpeedKmh:=acP.SpeedKmh, pAccG1:=acP.AccG(1))
         res.Shake = FFShake(pAccG1:=acP.AccG(1))
-        res.LedTop = Math.Min(acP.WheelSlip(0), acP.WheelSlip(1)) > Me.Slip
-        res.LedBottom = Math.Min(acP.WheelSlip(2), acP.WheelSlip(3)) > Me.Slip
-        res.LedLeft = acP.Rpms < ACS.MaxRpm * Me.Rpm1
-        res.LedRight = acP.Rpms > ACS.MaxRpm * Me.Rpm2
 
         '' show raw AC data on screen:
         If tmpFrm IsNot Nothing AndAlso tmpFrm.WindowState <> FormWindowState.Minimized Then

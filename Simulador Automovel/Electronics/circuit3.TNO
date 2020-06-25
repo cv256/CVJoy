@@ -1,0 +1,214 @@
+********************************************************************************
+***              Micro-Cap 12.0.2.0 (32 bit) Evaluation Version              ***
+***                                                                          ***
+***                                                                          ***
+***                      Transient Analysis of circuit3                      ***
+***                           13/06/2020 23:18:22                            ***
+********************************************************************************
+Limits
+======
+Maximum Run Time           1
+Output Start Time (tstart) 0
+Maximum Time Step          0
+Number of Points           51
+Temperature                Linear 27
+Retrace Runs               1
+Run Options                Normal
+State Variables            Zero
+Operating Point            On
+Operating Point Only       Off
+Auto Scale Ranges          Off
+Accumulate Plots           Off
+Fixed Time Step            Off
+Periodic Steady State      Off
+Ignore Expression Errors   Off
+
+
+*****************************************************
+***                Temperature=27                 ***
+*****************************************************
+
+Temperature=27
+
+DC Operating Point Voltages
+===========================
+Node         Voltage  Node         Voltage  Node         Voltage 
+1        -7.278E-037  2            -0.001f  3            -0.001f 
+4            -0.001f  5            -0.001f  6        -1.073E-036 
+7            -0.001f  8            -0.001f 
+
+DC Operating Point Inductor Current
+===================================
+Inductor     Current 
+RELAY3.L -2.363E-025 
+
+
+Operating Point for Devices of Type Diode
+=========================================
+Instance:                D5             D6             D7             D8
+Using model:       $GENERIC       $GENERIC       $GENERIC       $GENERIC
+
+Capacitance Terms:
+CAP                  2.500p         2.500p         2.500p         2.500p
+
+Current Terms:
+ID               2.759E-028    -2.759E-028    -2.759E-028     2.759E-028
+
+Resistance Terms:
+REQ                6.458MEG       6.458MEG       6.458MEG       6.458MEG
+
+Voltage Terms:
+VD                   0.001f        -0.001f        -0.001f         0.001f
+
+Power DC Terms:
+PD               3.786E-046     3.786E-046     3.786E-046     3.786E-046
+PS                   0.000          0.000          0.000          0.000 
+
+DC Pin Currents:
+Id               2.759E-028    -2.759E-028    -2.759E-028     2.759E-028
+
+Condition:
+State                   OFF            OFF            OFF            OFF
+
+Device Variables:
+area                 1.000          1.000          1.000          1.000 
+ic                   0.000          0.000          0.000          0.000 
+
+
+Instance:                D9            D10            D11            D12
+Using model:       $GENERIC       $GENERIC       $GENERIC       $GENERIC
+
+Capacitance Terms:
+CAP                  2.500p         2.500p         2.500p         2.500p
+
+Current Terms:
+ID               1.378E-028    -1.378E-028    -1.378E-028     1.378E-028
+
+Resistance Terms:
+REQ                6.458MEG       6.458MEG       6.458MEG       6.458MEG
+
+Voltage Terms:
+VD                   0.001f        -0.001f        -0.001f         0.001f
+
+Power DC Terms:
+PD               9.450E-047     9.449E-047     9.449E-047     9.450E-047
+PS                   0.000          0.000          0.000          0.000 
+
+DC Pin Currents:
+Id               1.378E-028    -1.378E-028    -1.378E-028     1.378E-028
+
+Condition:
+State                   OFF            OFF            OFF            OFF
+
+Device Variables:
+area                 1.000          1.000          1.000          1.000 
+ic                   0.000          0.000          0.000          0.000 
+
+
+
+Operating Point for Devices of Type Resistor
+============================================
+Instance:              V1.RS       METER1.R       METER2.R          V2.RS
+V                -7.278E-037    -1.288E-030    -2.371E-023    -3.456E-037
+Power DC Terms:
+PD                5.296E-070     1.660E-072     5.624E-058     1.194E-070
+
+DC Pin Currents:
+Ir               -7.278E-034    -1.288E-042    -2.371E-035    -3.456E-034
+
+Device Variables:
+tc1                   0.000          0.000          0.000          0.000 
+tc2                   0.000          0.000          0.000          0.000 
+
+
+Instance:                 R1             R2       RELAY3.R
+V                -2.363E-023    -1.288E-030    -2.363E-023
+Power DC Terms:
+PD                1.596E-047     2.074E-061     5.585E-048
+
+DC Pin Currents:
+Ir               -6.752E-025    -1.610E-031    -2.363E-025
+
+Device Variables:
+tc1                   0.000          0.000          0.000 
+tc2                   0.000          0.000          0.000 
+
+
+
+Operating Point for Devices of Type Inductor
+============================================
+Instance:           RELAY3.L
+V                     0.000 
+Power DC Terms:
+PS                    0.000 
+
+DC Pin Currents:
+Il               -2.363E-025
+
+Device Variables:
+ic                    0.000 
+
+
+
+Operating Point for Devices of Type Capacitor
+=============================================
+Instance:                 C2             C3             C4
+V                -1.288E-030    -2.371E-023    -1.288E-030
+Power DC Terms:
+PS                    0.000          0.000          0.000 
+
+DC Pin Currents:
+Ic                    0.000          0.000          0.000 
+
+Device Variables:
+ic                    0.000          0.000          0.000 
+
+
+
+Operating Point for Devices of Type W
+=====================================
+Instance:           RELAY3.W
+Power DC Terms:
+PD                7.478E-050
+
+DC Pin Currents:
+ISource           9.115E-025
+
+Condition:
+State                    OFF
+
+
+
+Operating Point for Devices of Type Sine Source
+===============================================
+Instance:                 V1             V2
+Using model:         GENERAL        GENERAL
+V                -7.278E-037    -3.456E-037
+Power DC Terms:
+PG                    0.000          0.000 
+
+DC Pin Currents:
+ISource          -7.278E-034    -3.456E-034
+
+
+
+Operating Point for Devices of Type SPICE Source
+================================================
+Instance:          METER1.V       METER2.V           EMF2      RELAY3.V1
+V                    0.000          0.000          0.000          0.000 
+Power DC Terms:
+PG                   0.000          0.000          0.000          0.000 
+
+DC Pin Currents:
+ISource              0.000          0.000     -6.752E-025    -2.363E-025
+
+
+Instance:         RELAY3.V2
+V                    0.000 
+Power DC Terms:
+PG                   0.000 
+
+DC Pin Currents:
+ISource          9.115E-025
+
+

@@ -52,22 +52,22 @@
 #define pinRightUSRead 16
 
 // arduino -> external hardware:
-#define pinRpm1  24
-#define pinRpm2  26
-#define pinSlipFront  25
-#define pinSlipBack  27
+#define pinRpm1       29
+#define pinRpm2       30
+#define pinSlipFront  28
+#define pinSlipBack   31
 
 #define pinWheelMotorPower  6
-#define pinWheelMotorDir1  23
-#define pinWheelMotorDir2  22
+#define pinWheelMotorDir1  22
+#define pinWheelMotorDir2  23
 
 #define pinLeftMotorPower  8
-#define pinLeftMotorDir1  28
-#define pinLeftMotorDir2  29
+#define pinLeftMotorDir1  24
+#define pinLeftMotorDir2  25
 
 #define pinRightMotorPower  9 
-#define pinRightMotorDir1  30
-#define pinRightMotorDir2  31
+#define pinRightMotorDir1  26
+#define pinRightMotorDir2  27
 
 #define pinWindMotorPower  10
 #define pinShakeMotorPower  11
@@ -88,7 +88,7 @@ byte shakeMotorPowerSpeed;// 0-255
 
 // volatile byte WheelEncAFlag = 0; // let's us know when we're expecting a rising edge on pinA to signal that the encoder has arrived at a detent
 // volatile byte WheelEncBFlag = 0; // let's us know when we're expecting a rising edge on pinB to signal that the encoder has arrived at a detent (opposite direction to when aFlag is set)
-volatile unsigned int wheelPosition = 32768; //this variable stores our current value of encoder position. Change to int or uin16_t instead of byte if you want to record a larger range than 0-255
+volatile unsigned int wheelPosition = 32768; //this variable stores our current value of encoder position
 
 void setup()
 {
@@ -162,8 +162,11 @@ void loop()
   if (Serial.available() == packetLen) {
     // READ from computer / write to hardware: --------------------- must be equal to CVJoyAc.SerialSend
     byte wheelMotorPowerDir = Serial.read(); // 0
-    if (wheelMotorPowerDir >= 254) { // checkdigit + wheelMotorPowerDir
+    if (wheelMotorPowerDir >= 253) { // checkdigit + wheelMotorPowerDir
       lastSerialRecv = millis();
+      if (wheelMotorPowerDir = 253) { // reset whell position
+        wheelPosition = 32768;
+      }
       byte wheelMotorPowerSpeed = Serial.read(); // 1
       leftMotorPowerSpeed = Serial.read() - 128; // 2 
       rightMotorPowerSpeed = Serial.read() - 128; // 3
@@ -256,7 +259,7 @@ void loop()
       Serial.write(tmpUInt & 255);//13
       Serial.write(tmpUInt / 256);//14
 
-    } //..checkdigit
+    }//..checkdigit
   } //..if Serial.available()==packetLen
 
   // if we lost communication with the computer stop the motors, dont let them in the last state or they will make ugly damage !

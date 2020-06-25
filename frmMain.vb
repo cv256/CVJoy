@@ -14,7 +14,7 @@ Public Class frmCVJoy
     Private _lastLeftMotorSpeed As Single, _lastRightMotorSpeed As Single ' -100~100 negative=bolt going down
     Private _motorOverHeat As Single
     Private ArduinoLastRead As Date = Now.AddSeconds(-1) ' time of last good reading
-    Private WheelPosition As Integer, PreviousWheelPosition As Integer, PreviousArduinoLastRead As Date = Now.AddSeconds(-1), WheelPositionOffset As Integer
+    Private WheelPosition As Integer, PreviousWheelPosition As Integer, PreviousArduinoLastRead As Date = Now.AddSeconds(-1), WheelPositionOffset As Boolean
 
     Public Enum Motor
         None
@@ -31,11 +31,10 @@ Public Class frmCVJoy
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Text &= "  " & Application.ProductVersion
-        cbLog.Items.Add("Don't Log")
-        cbLog.Items.Add("Log")
-        cbLog.Items.Add("Log + FF")
-        cbLog.Items.Add("Log + FF Extra")
-        cbLog.SelectedIndex = 1
+        cbLogFF.Items.Add("Don't Log FF")
+        cbLogFF.Items.Add("FF")
+        cbLogFF.Items.Add("FF Extra")
+        cbLogFF.SelectedIndex = 0
 
         cbGames.Items.Add("Assetto Corsa")
 
@@ -101,11 +100,27 @@ Public Class frmCVJoy
 
         ' get realtime data from the Game :
         Dim GameOutputs As clGameOutputs
-        If Game IsNot Nothing Then GameOutputs = Game.Update()
 
         ' prepare data to send to the Arduino :
         Dim toArduino As New SerialSend
         With toArduino
+            If WheelPositionOffset Then
+                .WheelPositionOffset = True
+                WheelPositionOffset = False
+            End If
+            If Game IsNot Nothing AndAlso Game.Started Then
+                GameOutputs = Game.Update()
+                .LedTop = GameOutputs.LedTop
+                .LedBottom = GameOutputs.LedBottom
+                .LedLeft = GameOutputs.LedLeft
+                .LedRight = GameOutputs.LedRight
+            Else
+                .LedTop = True
+                .LedBottom = True
+                .LedLeft = True
+                .LedRight = True
+            End If
+
             If TestMode = Motor.Wheel Then
                 .wheelPower = TestValue
             Else
@@ -134,10 +149,6 @@ Public Class frmCVJoy
                 .shakePower = 0
             End If
 
-            .LedTop = GameOutputs.LedTop
-            .LedBottom = GameOutputs.LedBottom
-            .LedLeft = GameOutputs.LedLeft
-            .LedRight = GameOutputs.LedRight
 
 #Region "PowerFromAngle: calculates power to apply now, based on the previous position readings"
 
@@ -259,10 +270,9 @@ Public Class frmCVJoy
             SerialPort1.Write(toArduino.GetSerialData, 0, SerialSend.PacketLen)
 
             ' READ SERIAL DATA FROM ARDUINO:
-            Dim timeRead As Date = Now
             Do Until SerialPort1.BytesToRead >= SerialRead.PacketLen
                 Threading.Thread.Sleep(10)
-                If Now.Subtract(timeRead).TotalMilliseconds > 500 Then
+                If Now.Subtract(timeSent).TotalMilliseconds > 500 Then
                     ErrorAdd("NORESPONSE SerialPort1", ".BytesToRead=" & SerialPort1.BytesToRead)
                     GoTo goReturn
                 End If
@@ -307,7 +317,7 @@ Public Class frmCVJoy
             PreviousArduinoLastRead = ArduinoLastRead
             ArduinoLastRead = Now
             PreviousWheelPosition = WheelPosition
-            WheelPosition = fromArduino.WheelPosition - WheelPositionOffset
+            WheelPosition = fromArduino.WheelPosition
             _realLeft = fromArduino.RealLeft - SettingsMain.GLeftScrewCenter
             _realRight = fromArduino.RealRight - SettingsMain.GRightScrewCenter
         End If
@@ -451,7 +461,7 @@ goReturn:
 
 
     Private Sub btWheelCenter_Click(sender As Object, e As EventArgs) Handles btWheelCenter.Click
-        WheelPositionOffset = WheelPosition
+        WheelPositionOffset = True
     End Sub
 
 
@@ -469,12 +479,13 @@ goReturn:
         Public LedRight As Boolean
         Public LedTop As Boolean
         Public LedBottom As Boolean
+        Public WheelPositionOffset As Boolean
 
         Public Const PacketLen As Byte = 7
 
         Public Function GetSerialData() As Byte()
             Dim res(PacketLen - 1) As Byte
-            res(0) = If(wheelPower < 0, 254, 255) ' checkdigit + wheelPowerDir
+            res(0) = If(WheelPositionOffset, 253, If(wheelPower < 0, 254, 255)) ' checkdigit + wheelPowerDir
             res(1) = Math.Abs(wheelPower)
             res(2) = leftPower + 128
             res(3) = rightPower + 128
@@ -579,8 +590,8 @@ goReturn:
         End If
     End Sub
 
-    Public Sub ErrorAdd(pNewErrorDescr As String, pExtraInfo As String)
-        If cbLog.SelectedIndex < 1 Then
+    Public Sub ErrorAdd(pNewErrorDescr As String, pExtraInfo As String, Optional pFF As Boolean = False)
+        If pFF = False AndAlso chkLog.Checked = False Then
             If txtErrors.Text.Contains(pNewErrorDescr) Then Return
             txtErrors.Text = Strings.Left(pNewErrorDescr & "  " & pExtraInfo & vbCrLf & txtErrors.Text, 1000)
         Else
@@ -591,6 +602,10 @@ goReturn:
 
     Private Sub SerialPort1_ErrorReceived(sender As Object, e As SerialErrorReceivedEventArgs) Handles SerialPort1.ErrorReceived
         MsgBox(e.ToString)
+    End Sub
+
+    Private Sub btLogClear_Click(sender As Object, e As EventArgs) Handles btLogClear.Click
+        txtErrors.Text = ""
     End Sub
 
     Private Sub SerialPort1_PinChanged(sender As Object, e As SerialPinChangedEventArgs) Handles SerialPort1.PinChanged
@@ -650,36 +665,38 @@ goReturn:
         ' https://msdn.microsoft.com/en-us/library/windows/desktop/ee416335%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
         'https://www.kaskus.co.id/thread/54c59a266208812a798b456b
         If chkFFIgnore.Checked Then Return
+
         Dim devI As Integer
         Joy.Ffb_h_DeviceID(pData, devI)
         If devI <> SettingsMain.vJoyId Then Return
 
         Dim t As New FFBPType
         Joy.Ffb_h_Type(pData, t)
+
         Static FFCases As New List(Of String) ' TODO: DELETE THIS, it was just for debugging purposes
         Dim thisCase As String
 
         Select Case t
-            Case FFBPType.PT_CTRLREP
+            Case FFBPType.PT_CTRLREP ' RESET
                 Dim ct As New FFB_CTRL ' continue, pause, stopall
                 Joy.Ffb_h_DevCtrl(pData, ct)
                 thisCase = t.ToString & "  " & ct.ToString
                 FFWheel_Cond = New vJoyInterfaceWrap.vJoy.FFB_EFF_COND
                 FFWheel_Const = New vJoyInterfaceWrap.vJoy.FFB_EFF_CONSTANT
 
-            Case FFBPType.PT_GAINREP
+            Case FFBPType.PT_GAINREP ' SET GAIN
                 Dim tmpFFGain As Byte
                 Joy.Ffb_h_DevGain(pData, tmpFFGain) ' na documentação da MSDN dizem que é 0~10000 , mas este interface é byte só dá 0-255
                 thisCase = t.ToString & "  " & tmpFFGain
                 FFGain = tmpFFGain
 
-            Case FFBPType.PT_NEWEFREP
+            Case FFBPType.PT_NEWEFREP ' SET CURRENT EFFECT
                 Dim tmp As FFBEType
                 Joy.Ffb_h_EffNew(pData, tmp) ' Const, Damp, Inertia , Friction, Spring
                 thisCase = t.ToString & "  " & tmp.ToString
                 If tmp <> FFBEType.ET_CONST Then
                     FFWheel_Type = tmp
-                    chkFFCond.Text = FFWheel_Type.ToString
+                    'chkFFCond.Text = FFWheel_Type.ToString  ' this is heavy ?
                 End If
 
             'Case FFBPType.PT_EFFREP
@@ -700,7 +717,7 @@ goReturn:
                 'PosCoeff = NegCoeff = -10000~10000 (but they are never negative, both are positive)
                 'PosSatur = PosSatur = 10000 
                 'CenterPointOffset =0
-                If cbLog.SelectedIndex = 3 Then
+                If cbLogFF.SelectedIndex = 2 Then
                     thisCase = t.ToString & "  " & FFWheel_Cond.PosCoeff & "  " & FFWheel_Cond.PosSatur & "  " & FFWheel_Cond.CenterPointOffset & "  " & FFWheel_Cond.NegCoeff & "  " & FFWheel_Cond.NegSatur  ' 10000 , 10000 , 0, ?, ?
                 Else
                     thisCase = t.ToString
@@ -720,7 +737,7 @@ goReturn:
 
             Case FFBPType.PT_CONSTREP
                 Joy.Ffb_h_Eff_Constant(pData, FFWheel_Const)
-                If cbLog.SelectedIndex = 3 Then
+                If cbLogFF.SelectedIndex = 2 Then
                     thisCase = t.ToString & "  " & FFWheel_Const.Magnitude
                 Else
                     thisCase = t.ToString
@@ -731,7 +748,7 @@ goReturn:
         End Select
 
         ' log :
-        If cbLog.SelectedIndex >= 2 Then
+        If cbLogFF.SelectedIndex >= 1 Then
             If Not String.IsNullOrEmpty(thisCase) Then
                 If Not FFCases.Contains(thisCase) Then
                     FFCases.Add(thisCase)
