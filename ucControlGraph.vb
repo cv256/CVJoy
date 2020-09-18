@@ -84,7 +84,7 @@
     End Sub
 
 
-    Public Sub UpdatePedals(fromArduino As frmCVJoy.SerialRead)
+    Public Sub UpdatePedals(fromArduino As SerialRead)
         If ParentButton Is Nothing Then Return
         Dim x As Integer
         Select Case ParentButton.Name

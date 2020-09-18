@@ -25,7 +25,7 @@ Public Class frmSetupAC
         txtShakeMinJump.Text = pGame.ShakeMinJump.ToString("+0.0;-0.0")
         txtAccel.Text = (pGame.Accel * 57.3).ToString("00.0")
         txtTurn.Text = (pGame.Turn * 57.3).ToString("00.0")
-        UcButtons1.ShowSettings(pGame)
+        UcButtons1.ShowSettings()
     End Sub
 
     Private Function txt_Validate(pShowMsg As Boolean) As String
@@ -61,6 +61,7 @@ Public Class frmSetupAC
         Game.Accel = CDec(txtAccel.Text) / 10 / 57.3
         Game.Turn = CDec(txtTurn.Text) / 10 / 57.3
         UcButtons1.UseSettings()
+        _FrmCVJoy.UcButtons1.ShowSettings()
         Return True
     End Function
 

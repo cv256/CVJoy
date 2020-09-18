@@ -101,6 +101,7 @@ Public MustInherit Class clSettings
     Public Sub SaveSettingstoFile()
         Dim res As String = ""
         For Each p As Reflection.FieldInfo In Me.GetType.GetFields()
+            If p.FieldType.BaseType.Name = "Array" Then Continue For ' we dont serialize arrays, you have to create a property that returns the array joined into a string
             res &= p.Name & "=" & p.GetValue(Me) & vbCrLf
         Next
         For Each p As Reflection.PropertyInfo In Me.GetType.GetProperties()
@@ -117,6 +118,7 @@ Public MustInherit Class clSettings
             If Not IO.Directory.Exists(Path) Then IO.Directory.CreateDirectory(Path)
             Dim res As String() = IO.File.ReadAllLines(Path() & FileName())
             For Each p As Reflection.FieldInfo In Me.GetType.GetFields()
+                If p.FieldType.BaseType.Name = "Array" Then Continue For ' we dont serialize arrays, you have to create a property that returns the array joined into a string
                 Dim v As String = res.Where(Function(f) f.ToUpper.StartsWith(p.Name.ToUpper & "=")).FirstOrDefault
                 If v Is Nothing Then Continue For
                 v = v.Substring(Len(p.Name) + 1)
@@ -125,8 +127,8 @@ Public MustInherit Class clSettings
             For Each p As Reflection.PropertyInfo In Me.GetType.GetProperties()
                 If p.CanRead AndAlso p.CanWrite Then
                     Dim v As String = res.Where(Function(f) f.ToUpper.StartsWith(p.Name.ToUpper & "=")).FirstOrDefault
-                If v Is Nothing Then Continue For
-                v = v.Substring(Len(p.Name) + 1)
+                    If v Is Nothing Then Continue For
+                    v = v.Substring(Len(p.Name) + 1)
                     p.SetValue(Me, Convert.ChangeType(v, p.PropertyType))
                 End If
             Next
@@ -143,47 +145,3 @@ Public MustInherit Class clSettings
 End Class
 
 
-
-Public MustInherit Class clGame
-    Inherits clSettings
-    Friend Owner As frmCVJoy
-    Public MustOverride Function GameName() As String
-    Public bt2 As String = ""
-    Public bt3 As String = ""
-    Public bt4 As String = ""
-    Public bt5 As String = ""
-    Public bt6 As String = ""
-    Public bt7 As String = ""
-    Public bt8 As String = ""
-    Public bt9 As String = ""
-    Public Sub New(pOwner As frmCVJoy)
-        Owner = pOwner
-    End Sub
-    Public MustOverride Sub Start()
-    Public MustOverride Sub [Stop]()
-    Public MustOverride Function Started() As Boolean
-    Public MustOverride Function Update() As clGameOutputs
-    Private _State As String
-    Public Property State() As String
-        Get
-            Return _State
-        End Get
-        Friend Set(value As String)
-            _State = value
-            RaiseEvent StateChanged()
-        End Set
-    End Property
-    Public Event StateChanged()
-    Public MustOverride Sub ShowSetup()
-End Class
-
-Public Structure clGameOutputs
-    Public Wind As Integer  ' nominal is 0~255
-    Public Shake As Integer  ' nominal is 0~255
-    Public Pitch As Single ' radians
-    Public Roll As Single ' radians
-    Public LedTop As Boolean
-    Public LedBottom As Boolean
-    Public LedLeft As Boolean
-    Public LedRight As Boolean
-End Structure

@@ -74,8 +74,8 @@ Partial Class frmSetupAC
         Me.txtShakeMaxJump = New System.Windows.Forms.MaskedTextBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.txtShakeMinJump = New System.Windows.Forms.MaskedTextBox()
-        Me.UcButtons1 = New CVJoy.ucButtons()
         Me.UcACGraph1 = New CVJoy.ucACGraph()
+        Me.UcButtons1 = New CVJoy.ucButtons()
         Me.SuspendLayout()
         '
         'ckKeepVisible
@@ -83,7 +83,7 @@ Partial Class frmSetupAC
         Me.ckKeepVisible.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.ckKeepVisible.AutoSize = True
         Me.ckKeepVisible.BackColor = System.Drawing.Color.Transparent
-        Me.ckKeepVisible.Location = New System.Drawing.Point(3, 454)
+        Me.ckKeepVisible.Location = New System.Drawing.Point(4, 234)
         Me.ckKeepVisible.Name = "ckKeepVisible"
         Me.ckKeepVisible.Size = New System.Drawing.Size(84, 17)
         Me.ckKeepVisible.TabIndex = 105
@@ -583,7 +583,7 @@ Partial Class frmSetupAC
         '
         Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(149, 455)
+        Me.Label2.Location = New System.Drawing.Point(1, 447)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(171, 13)
         Me.Label2.TabIndex = 231
@@ -669,15 +669,6 @@ Partial Class frmSetupAC
         Me.txtShakeMinJump.TabIndex = 238
         Me.txtShakeMinJump.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
-        'UcButtons1
-        '
-        Me.UcButtons1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcButtons1.Location = New System.Drawing.Point(326, 452)
-        Me.UcButtons1.Name = "UcButtons1"
-        Me.UcButtons1.ReadOnly = False
-        Me.UcButtons1.Size = New System.Drawing.Size(282, 19)
-        Me.UcButtons1.TabIndex = 230
-        '
         'UcACGraph1
         '
         Me.UcACGraph1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -689,12 +680,22 @@ Partial Class frmSetupAC
         Me.UcACGraph1.Size = New System.Drawing.Size(610, 254)
         Me.UcACGraph1.TabIndex = 256
         '
+        'UcButtons1
+        '
+        Me.UcButtons1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.UcButtons1.Location = New System.Drawing.Point(173, 440)
+        Me.UcButtons1.Name = "UcButtons1"
+        Me.UcButtons1.ReadOnly = False
+        Me.UcButtons1.Size = New System.Drawing.Size(366, 37)
+        Me.UcButtons1.TabIndex = 230
+        '
         'frmSetupAC
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ClientSize = New System.Drawing.Size(610, 498)
+        Me.Controls.Add(Me.ckKeepVisible)
         Me.Controls.Add(Me.UcACGraph1)
         Me.Controls.Add(Me.txtShakeMinJump)
         Me.Controls.Add(Me.txtShakeMaxJump)
@@ -746,7 +747,6 @@ Partial Class frmSetupAC
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.lbACSpeed)
         Me.Controls.Add(Me.Label7)
-        Me.Controls.Add(Me.ckKeepVisible)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Label43)
         Me.Name = "frmSetupAC"

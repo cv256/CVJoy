@@ -52,7 +52,7 @@ Public Class frmCVJoy
         Game = New GameAC(Me) ' TODO: use cbGames.Selecteditem
         AddHandler Game.StateChanged, AddressOf GameStateChanged
         Game.LoadSettingsFromFile()
-        UcButtons1.ShowSettings(Game)
+        UcButtons1.ShowSettings()
         UcButtons1.ReadOnly = True
     End Sub
 
@@ -322,73 +322,65 @@ Public Class frmCVJoy
             _realRight = fromArduino.RealRight - SettingsMain.GRightScrewCenter
         End If
 
-        Static oldbutton1 As Boolean, oldbutton2 As TriState  ' button being pressed
+        Static button0WasPressedAlone As Boolean, sentButton(8) As Boolean  ' button being pressed
         With fromArduino
             Dim j As New vJoyInterfaceWrap.vJoy.JoystickState
 #Region "buttons:  emulate keystrokes  or  send as joystick buttons"
-            If .button1 Then ' if button1 is being pressed:      https://msdn.microsoft.com/en-us/library/system.windows.forms.sendkeys.send(v=vs.110).aspx
-                If oldbutton1 = False Then ' if we just started pressing button1:
-                    oldbutton1 = True
-                    oldbutton2 = TriState.UseDefault
-                End If
-                If .button2 Then
-                    If oldbutton2 <> TriState.True Then
-                        If Game.bt2 > "" Then SendKeys.Send(Game.bt2)
-                        oldbutton2 = TriState.True
+            ' https://msdn.microsoft.com/en-us/library/system.windows.forms.sendkeys.send(v=vs.110).aspx
+            Dim buttonBit As UInteger = 0
+
+            If .buttons(0) Then ' if button0 is being pressed:      
+
+                button0WasPressedAlone = True
+                For i As Integer = 1 To 8
+                    If Game.Bt(i + 9) > "" Then
+                        If Not .buttons(i) Then
+                            sentButton(i) = False
+                            Continue For
+                        Else
+                            If sentButton(i) Then Continue For
+                            SendKeys.Send(Game.Bt(i + 9))
+                            sentButton(i) = True
+                            button0WasPressedAlone = False
+                        End If
+                    Else
+                        buttonBit += 2 ^ (i + 16)
+                        button0WasPressedAlone = False
                     End If
-                ElseIf .button3 Then
-                    If oldbutton2 <> TriState.True Then
-                        If Game.bt3 > "" Then SendKeys.Send(Game.bt3)
-                        oldbutton2 = TriState.True
-                    End If
-                ElseIf .button4 Then
-                    If oldbutton2 <> TriState.True Then
-                        If Game.bt4 > "" Then SendKeys.Send(Game.bt4)
-                        oldbutton2 = TriState.True
-                    End If
-                ElseIf .button5 Then
-                    If oldbutton2 <> TriState.True Then
-                        If Game.bt5 > "" Then SendKeys.Send(Game.bt5)
-                        oldbutton2 = TriState.True
-                    End If
-                ElseIf .button6 Then
-                    If oldbutton2 <> TriState.True Then
-                        If Game.bt6 > "" Then SendKeys.Send(Game.bt6)
-                        oldbutton2 = TriState.True
-                    End If
-                ElseIf .button7 Then
-                    If oldbutton2 <> TriState.True Then
-                        If Game.bt7 > "" Then SendKeys.Send(Game.bt7)
-                        oldbutton2 = TriState.True
-                    End If
-                ElseIf .button8 Then
-                    If oldbutton2 <> TriState.True Then
-                        If Game.bt8 > "" Then SendKeys.Send(Game.bt8)
-                        oldbutton2 = TriState.True
-                    End If
-                ElseIf .button9 Then
-                    If oldbutton2 <> TriState.True Then
-                        If Game.bt9 > "" Then SendKeys.Send(Game.bt9)
-                        oldbutton2 = TriState.True
+                Next i
+
+            Else ' if button0 is not being pressed:
+
+                If button0WasPressedAlone Then ' if we just released it:
+                    button0WasPressedAlone = False
+                    If Game.Bt(0) > "" Then
+                        SendKeys.Send(Game.Bt(0))
+                    Else
+                        buttonBit = 1
                     End If
                 Else
-                    If oldbutton2 = TriState.True Then oldbutton2 = TriState.False
+                    For i As Integer = 1 To 8
+                        If Game.Bt(i) > "" Then
+                            If Not .buttons(i) Then
+                                sentButton(i) = False
+                                Continue For
+                            Else
+                                If sentButton(i) Then Continue For
+                                SendKeys.Send(Game.Bt(i))
+                                sentButton(i) = True
+                            End If
+                        Else
+                            buttonBit += 2 ^ i
+                        End If
+                    Next i
+
                 End If
-            Else ' if button1 is not being pressed now:
-                If oldbutton1 = True Then ' if we just released it:
-                    oldbutton1 = False
-                    If oldbutton2 = TriState.UseDefault Then SendKeys.Send("{ESC}") ' if we simply press and depress button1 (no other buttons) send ESC
-                Else ' normal, send buttons as joystick buttons:
-                    ' send to VJoy:
-                    j.Buttons = If(.button1, 1, 0) _
-                        + If(.button2, 2, 0) _
-                        + If(.button3, 4, 0) _
-                        + If(.button4, 8, 0) _
-                        + If(.button5, 16, 0) _
-                        + If(.button6, 32, 0) _
-                        + If(.button7, 64, 0) _
-                        + If(.button8, 128, 0) _
-                        + If(.button9, 256, 0) _
+            End If
+
+#End Region
+
+            If Joy IsNot Nothing Then
+                    j.Buttons = buttonBit _
                         + If(.gear1, 1024, 0) _
                         + If(.gear2, 2048, 0) _
                         + If(.gear3, 4096, 0) _
@@ -396,16 +388,12 @@ Public Class frmCVJoy
                         + If(.gear5, 16384, 0) _
                         + If(.gear6, 32768, 0) _
                         + If(.gearR, 65536, 0)
+                    j.AxisX = Math.Max(Math.Min(WheelPosition + 16384, 32767), 0)  ' 0-16384-32767
+                    j.AxisY = .AccelCorrected * 32 ' 0-32767
+                    j.AxisZ = .BrakeCorrected * 32 ' 0-32767
+                    j.AxisXRot = .ClutchCorrected * 32 ' 0-32767
+                    Joy.UpdateVJD(SettingsMain.vJoyId, j)
                 End If
-            End If
-#End Region
-            If Joy IsNot Nothing Then
-                j.AxisX = Math.Max(Math.Min(WheelPosition + 16384, 32767), 0)  ' 0-16384-32767
-                j.AxisY = .AccelCorrected * 32 ' 0-32767
-                j.AxisZ = .BrakeCorrected * 32 ' 0-32767
-                j.AxisXRot = .ClutchCorrected * 32 ' 0-32767
-                Joy.UpdateVJD(SettingsMain.vJoyId, j)
-            End If
         End With
 
         ' show lights on screen:
@@ -438,15 +426,23 @@ Public Class frmCVJoy
                 G6.BackColor = If(.gear6, Color.Green, Color.White)
                 GR.BackColor = If(.gearR, Color.Green, Color.White)
                 lbHandbrake.BackColor = If(.handbrake, Color.Green, Color.White)
-                UcButtons1.bt1.BackColor = If(.button1, Color.Green, Color.White)
-                UcButtons1.bt2.BackColor = If(.button2, Color.Green, Color.White)
-                UcButtons1.bt3.BackColor = If(.button3, Color.Green, Color.White)
-                UcButtons1.bt4.BackColor = If(.button4, Color.Green, Color.White)
-                UcButtons1.bt5.BackColor = If(.button5, Color.Green, Color.White)
-                UcButtons1.bt6.BackColor = If(.button6, Color.Green, Color.White)
-                UcButtons1.bt7.BackColor = If(.button7, Color.Green, Color.White)
-                UcButtons1.bt8.BackColor = If(.button8, Color.Green, Color.White)
-                UcButtons1.bt9.BackColor = If(.button9, Color.Green, Color.White)
+                UcButtons1.bt0.BackColor = If(.buttons(0), Color.DarkGreen, Color.LightGray)
+                UcButtons1.bt1.BackColor = If(.buttons(0) = False AndAlso .buttons(1), Color.Green, Color.White)
+                UcButtons1.bt2.BackColor = If(.buttons(0) = False AndAlso .buttons(2), Color.Green, Color.White)
+                UcButtons1.bt3.BackColor = If(.buttons(0) = False AndAlso .buttons(3), Color.Green, Color.White)
+                UcButtons1.bt4.BackColor = If(.buttons(0) = False AndAlso .buttons(4), Color.Green, Color.White)
+                UcButtons1.bt5.BackColor = If(.buttons(0) = False AndAlso .buttons(5), Color.Green, Color.White)
+                UcButtons1.bt6.BackColor = If(.buttons(0) = False AndAlso .buttons(6), Color.Green, Color.White)
+                UcButtons1.bt7.BackColor = If(.buttons(0) = False AndAlso .buttons(7), Color.Green, Color.White)
+                UcButtons1.bt8.BackColor = If(.buttons(0) = False AndAlso .buttons(8), Color.Green, Color.White)
+                UcButtons1.bt10.BackColor = If(.buttons(0) AndAlso .buttons(1), Color.Green, Color.White)
+                UcButtons1.bt11.BackColor = If(.buttons(0) AndAlso .buttons(2), Color.Green, Color.White)
+                UcButtons1.bt12.BackColor = If(.buttons(0) AndAlso .buttons(3), Color.Green, Color.White)
+                UcButtons1.bt13.BackColor = If(.buttons(0) AndAlso .buttons(4), Color.Green, Color.White)
+                UcButtons1.bt14.BackColor = If(.buttons(0) AndAlso .buttons(5), Color.Green, Color.White)
+                UcButtons1.bt15.BackColor = If(.buttons(0) AndAlso .buttons(6), Color.Green, Color.White)
+                UcButtons1.bt16.BackColor = If(.buttons(0) AndAlso .buttons(7), Color.Green, Color.White)
+                UcButtons1.bt17.BackColor = If(.buttons(0) AndAlso .buttons(8), Color.Green, Color.White)
             End With
         End If
 
@@ -466,118 +462,6 @@ goReturn:
 
 
 
-
-
-
-    Public Structure SerialSend
-        Public wheelPower As Integer ' -255~255  0=no force
-        Public leftPower As SByte  ' -127~127  0=no force
-        Public rightPower As SByte ' -127~127  0=no force
-        Public windPower As Byte
-        Public shakePower As Byte
-        Public LedLeft As Boolean
-        Public LedRight As Boolean
-        Public LedTop As Boolean
-        Public LedBottom As Boolean
-        Public WheelPositionOffset As Boolean
-
-        Public Const PacketLen As Byte = 7
-
-        Public Function GetSerialData() As Byte()
-            Dim res(PacketLen - 1) As Byte
-            res(0) = If(WheelPositionOffset, 253, If(wheelPower < 0, 254, 255)) ' checkdigit + wheelPowerDir
-            res(1) = Math.Abs(wheelPower)
-            res(2) = leftPower + 128
-            res(3) = rightPower + 128
-            res(4) = windPower
-            res(5) = shakePower
-            If LedLeft Then res(6) += 1
-            If LedRight Then res(6) += 2
-            If LedTop Then res(6) += 4
-            If LedBottom Then res(6) += 8
-            Return res
-        End Function
-
-        Public Overrides Function ToString() As String
-            Dim res As String = ""
-            For Each b As Byte In GetSerialData()
-                res &= b & "  "
-            Next
-            Return res
-        End Function
-
-    End Structure
-
-
-
-    Public Class SerialRead
-        Public pedalAccel As Integer
-        Public pedalBreak As Integer
-        Public pedalClutch As Integer
-        Public gear1 As Boolean
-        Public gear2 As Boolean
-        Public gear3 As Boolean
-        Public gear4 As Boolean
-        Public gear5 As Boolean
-        Public gear6 As Boolean
-        Public gearR As Boolean
-        Public handbrake As Boolean
-        Public button1 As Boolean
-        Public button2 As Boolean
-        Public button3 As Boolean
-        Public button4 As Boolean
-        Public button5 As Boolean
-        Public button6 As Boolean
-        Public button7 As Boolean
-        Public button8 As Boolean
-        Public button9 As Boolean
-
-        Public AccelCorrected As Integer
-        Public BrakeCorrected As Integer
-        Public ClutchCorrected As Integer
-        Public WheelPosition As Integer ' -16380 ~ 0 ~ 16380
-
-        Public RealLeft As Single
-        Public RealRight As Single
-
-
-        Public Const PacketLen As Byte = 15
-
-        Public Sub SetSerialData(pSerialData As Byte())
-            button9 = (pSerialData(0) And 32) <> 0
-            button1 = (pSerialData(1) And 1) <> 0
-            button2 = (pSerialData(1) And 2) <> 0
-            button3 = (pSerialData(1) And 4) <> 0
-            button4 = (pSerialData(1) And 8) <> 0
-            button5 = (pSerialData(1) And 16) <> 0
-            button6 = (pSerialData(1) And 32) <> 0
-            button7 = (pSerialData(1) And 64) <> 0
-            button8 = (pSerialData(1) And 128) <> 0
-            gear1 = (pSerialData(2) And 1) <> 0
-            gear2 = (pSerialData(2) And 2) <> 0
-            gear3 = (pSerialData(2) And 4) <> 0
-            gear4 = (pSerialData(2) And 8) <> 0
-            gear5 = (pSerialData(2) And 16) <> 0
-            gear6 = (pSerialData(2) And 32) <> 0
-            gearR = (pSerialData(2) And 64) <> 0
-            handbrake = (pSerialData(2) And 128) <> 0
-
-            pedalAccel = pSerialData(3) + pSerialData(4) * 256
-            pedalBreak = pSerialData(5) + pSerialData(6) * 256
-            pedalClutch = pSerialData(7) + pSerialData(8) * 256
-
-            WheelPosition = (pSerialData(9) + pSerialData(10) * 256 - 32768) * SettingsMain.WheelSensitivity
-
-            Const soundSpeed As Single = 0.172922 ' 331300 + 606 * tempAirCelsius / 1000000 / 2   =   mm per microsecond , go and return  <=>  34cm =  0,002 seconds
-            RealLeft = CSng(pSerialData(11) + pSerialData(12) * 256) * soundSpeed
-            RealRight = CSng(pSerialData(13) + pSerialData(14) * 256) * soundSpeed
-
-            ' corrected analogic values:
-            AccelCorrected = ScaleValue(pedalAccel, SettingsMain.AccelMin, SettingsMain.AccelMax, 0, 1023, SettingsMain.AccelGama)
-            BrakeCorrected = ScaleValue(pedalBreak, SettingsMain.BrakeMin, SettingsMain.BrakeMax, 0, 1023, SettingsMain.BrakeGama)
-            ClutchCorrected = ScaleValue(pedalClutch, SettingsMain.ClutchMin, SettingsMain.ClutchMax, 0, 1023, SettingsMain.ClutchGama)
-        End Sub
-    End Class
 
 
 

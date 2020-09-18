@@ -109,7 +109,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="clGame.vb" />
     <Compile Include="clSettings.vb" />
+    <Compile Include="clCommArduino.vb" />
     <Compile Include="frmSetupAC.Designer.vb">
       <DependentUpon>frmSetupAC.vb</DependentUpon>
     </Compile>

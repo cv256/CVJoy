@@ -30,15 +30,15 @@
 #define pinPedalBreak  2 // analog input
 #define pinPedalClutch  3 // analog input
 #define pinHandbrake 4 // analog input
-#define pinButton1 34 // esq
-#define pinButton2 35 // esq
-#define pinButton3 36 // esq
+#define pinButton1 41 // esq
+#define pinButton2 42 // esq
+#define pinButton3 34 // esq
 #define pinButton4 37 // pisca
-#define pinButton5 38 // pisca
-#define pinButton6 39 // pisca
-#define pinButton7 40 // direita
-#define pinButton8 41 // direita
-#define pinButton9 42 // direita
+#define pinButton5 40 // pisca
+#define pinButton6 38 // pisca
+#define pinButton7 39 // direita
+#define pinButton8 36 // direita
+#define pinButton9 35 // direita
 #define pinGear1 43
 #define pinGear2 48
 #define pinGear3 46
@@ -164,7 +164,7 @@ void loop()
     byte wheelMotorPowerDir = Serial.read(); // 0
     if (wheelMotorPowerDir >= 253) { // checkdigit + wheelMotorPowerDir
       lastSerialRecv = millis();
-      if (wheelMotorPowerDir = 253) { // reset whell position
+      if (wheelMotorPowerDir == 253) { // reset whell position
         wheelPosition = 32768;
       }
       byte wheelMotorPowerSpeed = Serial.read(); // 1
@@ -209,7 +209,7 @@ void loop()
       tmpByte = 192; // checkdigit (64+128)
       if (digitalRead(pinButton9) == LOW) tmpByte += 32;
       if (micros()-lastMainsZero > 11000) tmpByte += 1; // No Mains power / MainsPower freq lower than 50Hz+10%
-      if (wheelMotorPowerDir<254) tmpByte += 2; // Arduino got invalid data from computer
+      if (wheelMotorPowerDir<253) tmpByte += 2; // Arduino got invalid data from computer
       Serial.write(tmpByte); //0
       tmpByte = 0;
       if (digitalRead(pinButton1) == LOW) tmpByte += 1;
