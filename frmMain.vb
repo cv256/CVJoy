@@ -343,7 +343,7 @@ Public Class frmCVJoy
                             sentButton(i) = True
                             button0WasPressedAlone = False
                         End If
-                    Else
+                    ElseIf .buttons(i) Then
                         buttonBit += 2 ^ (i + 16)
                         button0WasPressedAlone = False
                     End If
@@ -369,7 +369,7 @@ Public Class frmCVJoy
                                 SendKeys.Send(Game.Bt(i))
                                 sentButton(i) = True
                             End If
-                        Else
+                        ElseIf .buttons(i) Then
                             buttonBit += 2 ^ i
                         End If
                     Next i
