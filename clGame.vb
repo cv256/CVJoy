@@ -71,7 +71,7 @@ Public Structure clGameOutputsExtra ' info that needs updating 1 time per second
     Public RpmMax As Integer
     Public MaxFuel As Byte
     Public Fuel As Byte
-    Public FuelKKm As Integer
+    Public FuelAvg As Integer
     Public TyreWearFL As Byte
     Public TyreWearFR As Byte
     Public TyreWearRL As Byte

@@ -392,58 +392,58 @@ Public Class frmCVJoy
 
         ' send UDP:
         If chkUDP.Checked AndAlso Game IsNot Nothing AndAlso Game.Started Then
-            Try
-                Dim udpBytes As Byte()
-                If TimerTickCounter Mod 2 = 0 Then
-                    If TimerTickCounter >= 20 Then
-                        TimerTickCounter = 0
-                        udpBytes = New Byte(33) {}
-                        With Game.UpdateExtra()
-                            udpBytes(18) = .TyreWearFL
-                            udpBytes(19) = .TyreWearFR
-                            udpBytes(20) = .TyreWearRL
-                            udpBytes(21) = .TyreWearRR
-                            udpBytes(22) = BitConverter.GetBytes(Math.Abs(.RpmMax))(0)
-                            udpBytes(23) = BitConverter.GetBytes(Math.Abs(.RpmMax))(1)
-                            udpBytes(24) = .MaxFuel
-                            udpBytes(25) = .Fuel
-                            udpBytes(26) = .NumCars
-                            udpBytes(27) = .Position
-                            udpBytes(28) = .NumberOfLaps
-                            udpBytes(29) = .CompletedLaps
-                            udpBytes(30) = BitConverter.GetBytes(Math.Abs(.DistanceTraveled))(0)
-                            udpBytes(31) = BitConverter.GetBytes(Math.Abs(.DistanceTraveled))(1)
-                            udpBytes(32) = BitConverter.GetBytes(.FuelKKm)(0)
-                            udpBytes(33) = BitConverter.GetBytes(.FuelKKm)(1)
-                            'ErrorAdd(String.Join(",", udpBytes), "")
-                        End With
-                    Else
-                        udpBytes = New Byte(17) {}
-                    End If
-                    udpBytes(0) = 255
-                    udpBytes(1) = BitConverter.GetBytes(Math.Abs(GameOutputs.Speed))(0)
-                    udpBytes(2) = BitConverter.GetBytes(Math.Abs(GameOutputs.Speed))(1)
-                    udpBytes(3) = BitConverter.GetBytes(Math.Abs(GameOutputs.RPM))(0)
-                    udpBytes(4) = BitConverter.GetBytes(Math.Abs(GameOutputs.RPM))(1)
-                    udpBytes(5) = BitConverter.GetBytes(Math.Abs(GameOutputs.Gear))(0)
-                    udpBytes(6) = GameOutputs.SlipFL
-                    udpBytes(7) = GameOutputs.SlipFR
-                    udpBytes(8) = GameOutputs.SlipRL
-                    udpBytes(9) = GameOutputs.SlipRR
-                    udpBytes(10) = If(GameOutputs.GearAuto, 1, 0)
-                    udpBytes(11) = GameOutputs.TyreDirtFL
-                    udpBytes(12) = GameOutputs.TyreDirtFR
-                    udpBytes(13) = GameOutputs.TyreDirtRL
-                    udpBytes(14) = GameOutputs.TyreDirtRR
-                    udpBytes(15) = CByte(Math.Min(fromArduino.AccelCorrected / 4, 255))
-                    udpBytes(16) = CByte(Math.Min(fromArduino.BrakeCorrected / 4, 255))
-                    udpBytes(17) = CByte(Math.Min(fromArduino.ClutchCorrected / 4, 255))
+            Dim udpBytes As Byte()
+            If TimerTickCounter Mod 2 = 0 Then
+                If TimerTickCounter >= 20 Then
+                    TimerTickCounter = 0
+                    udpBytes = New Byte(33) {}
+                    With Game.UpdateExtra()
+                        udpBytes(18) = .TyreWearFL
+                        udpBytes(19) = .TyreWearFR
+                        udpBytes(20) = .TyreWearRL
+                        udpBytes(21) = .TyreWearRR
+                        udpBytes(22) = BitConverter.GetBytes(Math.Abs(.RpmMax))(0)
+                        udpBytes(23) = BitConverter.GetBytes(Math.Abs(.RpmMax))(1)
+                        udpBytes(24) = .MaxFuel
+                        udpBytes(25) = .Fuel
+                        udpBytes(26) = .NumCars
+                        udpBytes(27) = .Position
+                        udpBytes(28) = .NumberOfLaps
+                        udpBytes(29) = .CompletedLaps
+                        udpBytes(30) = BitConverter.GetBytes(Math.Abs(.DistanceTraveled))(0)
+                        udpBytes(31) = BitConverter.GetBytes(Math.Abs(.DistanceTraveled))(1)
+                        udpBytes(32) = BitConverter.GetBytes(.FuelAvg)(0)
+                        udpBytes(33) = BitConverter.GetBytes(.FuelAvg)(1)
+                        'ErrorAdd(String.Join(",", udpBytes), "")
+                    End With
+                Else
+                    udpBytes = New Byte(17) {}
+                End If
+                udpBytes(0) = 255
+                udpBytes(1) = BitConverter.GetBytes(Math.Abs(GameOutputs.Speed))(0)
+                udpBytes(2) = BitConverter.GetBytes(Math.Abs(GameOutputs.Speed))(1)
+                udpBytes(3) = BitConverter.GetBytes(Math.Abs(GameOutputs.RPM))(0)
+                udpBytes(4) = BitConverter.GetBytes(Math.Abs(GameOutputs.RPM))(1)
+                udpBytes(5) = BitConverter.GetBytes(Math.Abs(GameOutputs.Gear))(0)
+                udpBytes(6) = GameOutputs.SlipFL
+                udpBytes(7) = GameOutputs.SlipFR
+                udpBytes(8) = GameOutputs.SlipRL
+                udpBytes(9) = GameOutputs.SlipRR
+                udpBytes(10) = If(GameOutputs.GearAuto, 1, 0)
+                udpBytes(11) = GameOutputs.TyreDirtFL
+                udpBytes(12) = GameOutputs.TyreDirtFR
+                udpBytes(13) = GameOutputs.TyreDirtRL
+                udpBytes(14) = GameOutputs.TyreDirtRR
+                udpBytes(15) = CByte(Math.Min(fromArduino.AccelCorrected / 4, 255))
+                udpBytes(16) = CByte(Math.Min(fromArduino.BrakeCorrected / 4, 255))
+                udpBytes(17) = CByte(Math.Min(fromArduino.ClutchCorrected / 4, 255))
+                Try
                     Dim udpClient As New Sockets.UdpClient
                     udpClient.SendAsync(udpBytes, udpBytes.Length, SettingsMain.UdpIp, 45000)
-                End If
-            Catch ex As Exception
-                ErrorAdd("UDP Send Error " & SettingsMain.UdpIp, ex.Message)
-            End Try
+                Catch ex As Exception
+                    ErrorAdd("UDP Send Error " & SettingsMain.UdpIp, ex.Message)
+                End Try
+            End If
 
         End If
 

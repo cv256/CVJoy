@@ -145,11 +145,12 @@ Public Class GameAC
         '  acP.PerformanceMeter
         '  acP.Abs
         '  acP.TC
+
         ACG = AC.ReadGraphics()
         res.DistanceTraveled = ACG.DistanceTraveled
         res.NumberOfLaps = ACG.NumberOfLaps
         res.CompletedLaps = ACG.CompletedLaps
-        res.Position = ACG.Position ' ACG.NormalizedCarPosition 
+        ' res.Position = ACG.Position ' ACG.NormalizedCarPosition 
         'ACP.PerformanceMeter
         ' res.CurrentTime = ACG.iCurrentTime
         ' res.LastTime = ACG.iLastTime
@@ -158,10 +159,11 @@ Public Class GameAC
         Static oldDistance As Single
         Static oldFuel As Single
         Dim deltaDistance As Single = (ACG.DistanceTraveled - oldDistance)
-        If deltaDistance = 0 Then
-            res.FuelKKm = 999
+        If deltaDistance < 1 Then
+            res.FuelAvg = 0
         Else
-            res.FuelKKm = (oldFuel - ACP.Fuel) / deltaDistance * 1000000
+            deltaDistance = (oldFuel - ACP.Fuel) * 10000000 / deltaDistance
+            res.FuelAvg = Math.Min(Math.Abs(deltaDistance), Integer.MaxValue)
         End If
         oldDistance = ACG.DistanceTraveled
         oldFuel = ACP.Fuel
