@@ -13,8 +13,7 @@ Public Class frmSetupAC
     End Sub
 
     Private Sub ShowSettings(pGame As GameAC)
-        txtRPM1.Text = pGame.Rpm1 * 100
-        txtRPM2.Text = pGame.Rpm2 * 100
+        txtWheelSensitivity.Text = (pGame.WheelSensitivity * 100).ToString("+0000;-0000")
         txtSpeedMinInput.Text = pGame.MinSpeed
         txtSpeedMaxSpeed.Text = pGame.MaxSpeed
         txtSlip.Text = pGame.Slip
@@ -30,8 +29,7 @@ Public Class frmSetupAC
 
     Private Function txt_Validate(pShowMsg As Boolean) As String
         Dim res As String = ""
-        res &= ValidateNumber(txtRPM1, 0, 100, "%maxRPM for turning led1 on")
-        res &= ValidateNumber(txtRPM2, 0, 100, "%maxRPM for turning led2 on")
+        res &= ValidateNumber(txtWheelSensitivity, -9999, 9999, "Wheel Sensitivity")
         res &= ValidateNumber(txtSpeedMaxSpeed, 0, 999, "Car Speed for max Simulator Wind")
         res &= ValidateNumber(txtSlip, 0, 200, "Slip for turning led on")
         res &= ValidateNumber(txtPitch, -300, 300, "Car Pitch effect on Simulator Pitch")
@@ -48,8 +46,7 @@ Public Class frmSetupAC
 
     Private Function UseSettings() As Boolean
         If txt_Validate(pShowMsg:=True) > "" Then Return False
-        Game.Rpm1 = txtRPM1.Text / 100
-        Game.Rpm2 = txtRPM2.Text / 100
+        Game.WheelSensitivity = CInt(txtWheelSensitivity.Text) / 100
         Game.MinSpeed = txtSpeedMinInput.Text
         Game.MaxSpeed = txtSpeedMaxSpeed.Text
         Game.Slip = txtSlip.Text
@@ -91,6 +88,8 @@ Public Class frmSetupAC
         lbACRPM.Text = acP.Rpms
         lbACSlipFront.Text = Math.Min(acP.WheelSlip(0), acP.WheelSlip(1))
         lbACSlipBack.Text = Math.Min(acP.WheelSlip(2), acP.WheelSlip(3))
+        lbACDirt.Text = If(acP.TyreDirtyLevel Is Nothing, "", acP.TyreDirtyLevel(3))
+        lbACWear.Text = If(acP.TyreWear Is Nothing, "", acP.TyreWear(3))
         lbACJump.Text = acP.AccG(1).ToString("0.0") & "G"
         lbACAccel.Text = acP.AccG(2).ToString("0.0") & "G"
         lbACTurn.Text = acP.AccG(0).ToString("0.0") & "G"

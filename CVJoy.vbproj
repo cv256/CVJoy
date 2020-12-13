@@ -112,12 +112,19 @@
     <Compile Include="clGame.vb" />
     <Compile Include="clSettings.vb" />
     <Compile Include="clCommArduino.vb" />
+    <Compile Include="frmSetupStd.Designer.vb">
+      <DependentUpon>frmSetupStd.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSetupStd.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmSetupAC.Designer.vb">
       <DependentUpon>frmSetupAC.vb</DependentUpon>
     </Compile>
     <Compile Include="frmSetupAC.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="GameStd.vb" />
     <Compile Include="GameAC.vb" />
     <Compile Include="ucACGraph.Designer.vb">
       <DependentUpon>ucACGraph.vb</DependentUpon>
@@ -174,6 +181,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmSetupStd.resx">
+      <DependentUpon>frmSetupStd.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmSetupAC.resx">
       <DependentUpon>frmSetupAC.vb</DependentUpon>
     </EmbeddedResource>

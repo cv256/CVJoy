@@ -60,7 +60,6 @@ Partial Class frmSetup
         Me.txtClutchMin = New System.Windows.Forms.MaskedTextBox()
         Me.txtWheelDampFactor = New System.Windows.Forms.MaskedTextBox()
         Me.Label28 = New System.Windows.Forms.Label()
-        Me.txtWheelSensitivity = New System.Windows.Forms.MaskedTextBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.btDefaults = New System.Windows.Forms.Button()
         Me.Label30 = New System.Windows.Forms.Label()
@@ -82,7 +81,6 @@ Partial Class frmSetup
         Me.btAccelGraph = New System.Windows.Forms.Button()
         Me.btBrakeGraph = New System.Windows.Forms.Button()
         Me.btClutchGraph = New System.Windows.Forms.Button()
-        Me.Label44 = New System.Windows.Forms.Label()
         Me.btWheelGraph = New System.Windows.Forms.Button()
         Me.Label45 = New System.Windows.Forms.Label()
         Me.Label46 = New System.Windows.Forms.Label()
@@ -156,6 +154,7 @@ Partial Class frmSetup
         Me.txtUltrasonicGama = New System.Windows.Forms.MaskedTextBox()
         Me.Label69 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
+        Me.txtUdpIp = New System.Windows.Forms.MaskedTextBox()
         Me.SuspendLayout()
         '
         'Label3
@@ -549,18 +548,6 @@ Partial Class frmSetup
         Me.Label28.TabIndex = 148
         Me.Label28.Text = "FFDamp Factor:"
         '
-        'txtWheelSensitivity
-        '
-        Me.txtWheelSensitivity.AllowPromptAsInput = False
-        Me.txtWheelSensitivity.BeepOnError = True
-        Me.txtWheelSensitivity.HidePromptOnLeave = True
-        Me.txtWheelSensitivity.Location = New System.Drawing.Point(514, 51)
-        Me.txtWheelSensitivity.Mask = "#0000"
-        Me.txtWheelSensitivity.Name = "txtWheelSensitivity"
-        Me.txtWheelSensitivity.Size = New System.Drawing.Size(46, 20)
-        Me.txtWheelSensitivity.TabIndex = 149
-        Me.txtWheelSensitivity.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
         'Label5
         '
         Me.Label5.AutoSize = True
@@ -790,18 +777,6 @@ Partial Class frmSetup
         Me.btClutchGraph.TabIndex = 183
         Me.btClutchGraph.Text = "Graph"
         Me.btClutchGraph.UseVisualStyleBackColor = False
-        '
-        'Label44
-        '
-        Me.Label44.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label44.BackColor = System.Drawing.SystemColors.Info
-        Me.Label44.ForeColor = System.Drawing.SystemColors.InfoText
-        Me.Label44.Location = New System.Drawing.Point(1, 34)
-        Me.Label44.Name = "Label44"
-        Me.Label44.Size = New System.Drawing.Size(767, 13)
-        Me.Label44.TabIndex = 188
-        Me.Label44.Text = "Steering Wheel Control:"
         '
         'btWheelGraph
         '
@@ -1560,17 +1535,31 @@ Partial Class frmSetup
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(451, 54)
+        Me.Label4.Location = New System.Drawing.Point(4, 32)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(57, 13)
-        Me.Label4.TabIndex = 131
-        Me.Label4.Text = "Sensitivity:"
+        Me.Label4.Size = New System.Drawing.Size(73, 13)
+        Me.Label4.TabIndex = 272
+        Me.Label4.Text = "Refresh Rate:"
+        '
+        'txtUdpIp
+        '
+        Me.txtUdpIp.AllowPromptAsInput = False
+        Me.txtUdpIp.AsciiOnly = True
+        Me.txtUdpIp.BeepOnError = True
+        Me.txtUdpIp.HidePromptOnLeave = True
+        Me.txtUdpIp.Location = New System.Drawing.Point(81, 29)
+        Me.txtUdpIp.Mask = "000.000.000.000"
+        Me.txtUdpIp.Name = "txtUdpIp"
+        Me.txtUdpIp.Size = New System.Drawing.Size(108, 20)
+        Me.txtUdpIp.TabIndex = 273
         '
         'frmSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(770, 466)
+        Me.Controls.Add(Me.txtUdpIp)
+        Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.UcControlGGraph1)
         Me.Controls.Add(Me.UcControlGraph1)
         Me.Controls.Add(Me.Label43)
@@ -1642,7 +1631,6 @@ Partial Class frmSetup
         Me.Controls.Add(Me.Label47)
         Me.Controls.Add(Me.Label45)
         Me.Controls.Add(Me.btWheelGraph)
-        Me.Controls.Add(Me.Label44)
         Me.Controls.Add(Me.btClutchGraph)
         Me.Controls.Add(Me.btBrakeGraph)
         Me.Controls.Add(Me.btAccelGraph)
@@ -1664,7 +1652,6 @@ Partial Class frmSetup
         Me.Controls.Add(Me.Label31)
         Me.Controls.Add(Me.btDefaults)
         Me.Controls.Add(Me.Label5)
-        Me.Controls.Add(Me.txtWheelSensitivity)
         Me.Controls.Add(Me.Label28)
         Me.Controls.Add(Me.txtWheelDampFactor)
         Me.Controls.Add(Me.txtClutchMax)
@@ -1678,7 +1665,6 @@ Partial Class frmSetup
         Me.Controls.Add(Me.Label24)
         Me.Controls.Add(Me.Label23)
         Me.Controls.Add(Me.Label15)
-        Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.txtGMinDiff)
         Me.Controls.Add(Me.btTestGLeft)
         Me.Controls.Add(Me.btTestGRight)
@@ -1745,7 +1731,6 @@ Partial Class frmSetup
     Friend WithEvents txtClutchMin As MaskedTextBox
     Friend WithEvents txtWheelDampFactor As MaskedTextBox
     Friend WithEvents Label28 As Label
-    Friend WithEvents txtWheelSensitivity As MaskedTextBox
     Friend WithEvents Label5 As Label
     Friend WithEvents btDefaults As Button
     Friend WithEvents Label30 As Label
@@ -1768,7 +1753,6 @@ Partial Class frmSetup
     Friend WithEvents btBrakeGraph As Button
     Friend WithEvents btClutchGraph As Button
     Friend WithEvents UcControlGraph1 As ucControlGraph
-    Friend WithEvents Label44 As Label
     Friend WithEvents btWheelGraph As Button
     Friend WithEvents Label45 As Label
     Friend WithEvents Label46 As Label
@@ -1841,4 +1825,5 @@ Partial Class frmSetup
     Friend WithEvents txtUltrasonicGama As MaskedTextBox
     Friend WithEvents Label69 As Label
     Friend WithEvents Label4 As Label
+    Friend WithEvents txtUdpIp As MaskedTextBox
 End Class

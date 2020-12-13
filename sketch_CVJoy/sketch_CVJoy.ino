@@ -27,18 +27,18 @@
 #define pinWheelEncA  2 //on Mega, Mega2560, MegaADK interrupt pins are 2, 3, 18, 19, 20, 21
 #define pinWheelEncB  3 //on Mega, Mega2560, MegaADK interrupt pins are 2, 3, 18, 19, 20, 21
 #define pinPedalAccel  1 // analog input
-#define pinPedalBreak  2 // analog input
+#define pinPedalBreak  5 // analog input// A2 is damaged?...
 #define pinPedalClutch  3 // analog input
 #define pinHandbrake 4 // analog input
-#define pinButton1 41 // esq
-#define pinButton2 42 // esq
-#define pinButton3 34 // esq
-#define pinButton4 37 // pisca
-#define pinButton5 40 // pisca
-#define pinButton6 38 // pisca
-#define pinButton7 39 // direita
-#define pinButton8 36 // direita
-#define pinButton9 35 // direita
+#define pinButton1 42 // ESC
+#define pinButton2 37 // esq
+#define pinButton3 39 // esq 
+#define pinButton4 41 // pisca 
+#define pinButton5 38 // pisca 
+#define pinButton6 40 // pisca 
+#define pinButton7 36 // direita 
+#define pinButton8 35 // direita 
+#define pinButton9 34 // direita 
 #define pinGear1 43
 #define pinGear2 48
 #define pinGear3 46
@@ -52,10 +52,10 @@
 #define pinRightUSRead 16
 
 // arduino -> external hardware:
-#define pinRpm1       29
-#define pinRpm2       30
-#define pinSlipFront  28
-#define pinSlipBack   31
+// #define pinRpm1       29
+// #define pinRpm2       30
+// #define pinSlipFront  28
+// #define pinSlipBack   31
 
 #define pinWheelMotorPower  6
 #define pinWheelMotorDir1  22
@@ -69,7 +69,7 @@
 #define pinRightMotorDir1  26
 #define pinRightMotorDir2  27
 
-#define pinWindMotorPower  10
+#define pinWindMotorPower  7
 #define pinShakeMotorPower  11
 
 
@@ -122,10 +122,6 @@ void setup()
   pinMode(pinRightUSRead,INPUT);
 
   // arduino -> external hardware
-  pinMode(pinRpm1, OUTPUT);
-  pinMode(pinRpm2, OUTPUT);
-  pinMode(pinSlipFront, OUTPUT);
-  pinMode(pinSlipBack, OUTPUT);
   // preparing the steeringwheel :
   pinMode(pinWheelMotorPower, OUTPUT);
   pinMode(pinWheelMotorDir1, OUTPUT);
@@ -141,7 +137,7 @@ void setup()
   pinMode(pinShakeMotorPower, OUTPUT);
   noInterrupts();           // disable all interrupts
   //TCCR4A = 0; // timer 4 controls pin 6, 7, 8
-  TCCR4B = (TCCR4B & 0b11111000) | 0x03; // 0x03 gives 980Hz I red that DC motors work better with >2KHz and there may be losses above 20KHz. But I made experiments with 2 different motors and both had much better effeciency with lower frequencies. Divisor 1 and 2 makes no noise but are not effecient. Divisors bigger than 3 make the steeringwheel shiver. Diviser 3 makes some whistle but it's my choice.
+  TCCR4B = (TCCR4B & 0b11111000) | 0x01; // 0x03 gives 980Hz I red that DC motors work better with >2KHz and there may be losses above 20KHz. But I made experiments with 2 different motors and both had much better effeciency with lower frequencies. Divisor 1 and 2 makes no noise but are not effecient. Divisors bigger than 3 make the steeringwheel shiver. Diviser 3 makes some whistle but it's my choice.
   // preparing the steering wheel encoder :
   attachInterrupt(digitalPinToInterrupt(pinWheelEncA), doEncoderA, CHANGE);
   attachInterrupt(digitalPinToInterrupt(pinWheelEncB), doEncoderB, CHANGE);
@@ -172,28 +168,6 @@ void loop()
       rightMotorPowerSpeed = Serial.read() - 128; // 3
       windMotorPowerSpeed = Serial.read(); // 4
       shakeMotorPowerSpeed = Serial.read(); // 5
-      //leds:
-      byte tmpByte = Serial.read(); // 6
-      if (tmpByte & 1) {
-        digitalWrite(pinRpm1, HIGH);
-      } else {
-        digitalWrite(pinRpm1, LOW);
-      }
-      if (tmpByte & 2) {
-        digitalWrite(pinRpm2, HIGH);
-      } else {
-        digitalWrite(pinRpm2, LOW);
-      }
-      if (tmpByte & 4) {
-        digitalWrite(pinSlipFront, HIGH);
-      } else {
-        digitalWrite(pinSlipFront, LOW);
-      }
-      if (tmpByte & 8) {
-        digitalWrite(pinSlipBack, HIGH);
-      } else {
-        digitalWrite(pinSlipBack, LOW);
-      }
       if (wheelMotorPowerSpeed > 0) {
         if (wheelMotorPowerDir == 254) {
           digitalWrite(pinWheelMotorDir1, HIGH);
@@ -204,9 +178,10 @@ void loop()
         }
       }
       analogWrite(pinWheelMotorPower, wheelMotorPowerSpeed);
-
+      analogWrite(pinWindMotorPower, windMotorPowerSpeed);
+      
       // read from hardware / SEND to computer : --------------------- must be equal to CVJoyAc.SerialRead
-      tmpByte = 192; // checkdigit (64+128)
+      byte tmpByte = 192; // checkdigit (64+128)
       if (digitalRead(pinButton9) == LOW) tmpByte += 32;
       if (micros()-lastMainsZero > 11000) tmpByte += 1; // No Mains power / MainsPower freq lower than 50Hz+10%
       if (wheelMotorPowerDir<253) tmpByte += 2; // Arduino got invalid data from computer
@@ -266,7 +241,7 @@ void loop()
   if (millis() - lastSerialRecv > 200) { // 200 = 5 fps , lower than that and it will start bumping
     digitalWrite(pinLeftMotorPower, LOW);
     digitalWrite(pinRightMotorPower, LOW);
-    digitalWrite(pinWindMotorPower, LOW);
+    digitalWrite(pinWindMotorPower, 0);
     digitalWrite(pinShakeMotorPower, LOW);
     analogWrite(pinWheelMotorPower, 0);
     leftMotorPowerSpeed = 0;
@@ -325,7 +300,7 @@ void zero_cross_ISR()
     }
   }
 
-  if (windMotorPowerSpeed == 0) { // zero:
+ /* if (windMotorPowerSpeed == 0) { // zero:
     dimmerWindDelay = 0;
     digitalWrite(pinWindMotorPower, LOW);
   } else {
@@ -336,7 +311,7 @@ void zero_cross_ISR()
       dimmerWindDelay = lastMainsZero + (255 - windMotorPowerSpeed) * 35;
       digitalWrite(pinWindMotorPower, LOW);
     }
-  }
+  } */
 
   if (shakeMotorPowerSpeed == 0) { // zero:
     dimmerShakeDelay = 0;
@@ -372,12 +347,12 @@ void timerIsr() {
     }
   }
 
-  if (dimmerWindDelay != 0) {
+/*  if (dimmerWindDelay != 0) {
     if (micros() >= dimmerWindDelay) {
       digitalWrite(pinWindMotorPower, HIGH);
       dimmerWindDelay = 0;
     }
-  }
+  } */
   
   if (dimmerShakeDelay != 0) {
     if (micros() >= dimmerShakeDelay) {

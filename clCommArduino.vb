@@ -1,15 +1,9 @@
-﻿
-
-Public Structure SerialSend
+﻿Public Structure SerialSend
     Public wheelPower As Integer ' -255~255  0=no force
     Public leftPower As SByte  ' -127~127  0=no force
     Public rightPower As SByte ' -127~127  0=no force
     Public windPower As Byte
     Public shakePower As Byte
-    Public LedLeft As Boolean
-    Public LedRight As Boolean
-    Public LedTop As Boolean
-    Public LedBottom As Boolean
     Public WheelPositionOffset As Boolean
 
     Public Const PacketLen As Byte = 7
@@ -22,10 +16,6 @@ Public Structure SerialSend
         res(3) = rightPower + 128
         res(4) = windPower
         res(5) = shakePower
-        If LedLeft Then res(6) += 1
-        If LedRight Then res(6) += 2
-        If LedTop Then res(6) += 4
-        If LedBottom Then res(6) += 8
         Return res
     End Function
 
@@ -76,6 +66,7 @@ Public Class SerialRead
         buttons(5) = (pSerialData(1) And 32) <> 0
         buttons(6) = (pSerialData(1) And 64) <> 0
         buttons(7) = (pSerialData(1) And 128) <> 0
+
         gear1 = (pSerialData(2) And 1) <> 0
         gear2 = (pSerialData(2) And 2) <> 0
         gear3 = (pSerialData(2) And 4) <> 0
@@ -89,7 +80,7 @@ Public Class SerialRead
         pedalBreak = pSerialData(5) + pSerialData(6) * 256
         pedalClutch = pSerialData(7) + pSerialData(8) * 256
 
-        WheelPosition = (pSerialData(9) + pSerialData(10) * 256 - 32768) * SettingsMain.WheelSensitivity
+        WheelPosition = (pSerialData(9) + pSerialData(10) * 256 - 32768) * Game.WheelSensitivity
 
         Const soundSpeed As Single = 0.172922 ' 331300 + 606 * tempAirCelsius / 1000000 / 2   =   mm per microsecond , go and return  <=>  34cm =  0,002 seconds
         RealLeft = CSng(pSerialData(11) + pSerialData(12) * 256) * soundSpeed

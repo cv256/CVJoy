@@ -25,10 +25,6 @@ Partial Class frmCVJoy
         Me.components = New System.ComponentModel.Container()
         Me.btArduinoStart = New System.Windows.Forms.Button()
         Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
-        Me.lbLedTop = New System.Windows.Forms.Label()
-        Me.lbLedBottom = New System.Windows.Forms.Label()
-        Me.lbLedRight = New System.Windows.Forms.Label()
-        Me.lbLedLeft = New System.Windows.Forms.Label()
         Me.G1 = New System.Windows.Forms.Label()
         Me.G2 = New System.Windows.Forms.Label()
         Me.G3 = New System.Windows.Forms.Label()
@@ -69,6 +65,7 @@ Partial Class frmCVJoy
         Me.lbArduinoTime = New System.Windows.Forms.Label()
         Me.chkLog = New System.Windows.Forms.CheckBox()
         Me.btLogClear = New System.Windows.Forms.Button()
+        Me.chkUDP = New System.Windows.Forms.CheckBox()
         Me.UcButtons1 = New CVJoy.ucButtons()
         Me.SuspendLayout()
         '
@@ -89,60 +86,12 @@ Partial Class frmCVJoy
         Me.SerialPort1.ReceivedBytesThreshold = 2
         Me.SerialPort1.WriteBufferSize = 128
         '
-        'lbLedTop
-        '
-        Me.lbLedTop.BackColor = System.Drawing.Color.Red
-        Me.lbLedTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lbLedTop.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbLedTop.Location = New System.Drawing.Point(126, 61)
-        Me.lbLedTop.Name = "lbLedTop"
-        Me.lbLedTop.Size = New System.Drawing.Size(27, 20)
-        Me.lbLedTop.TabIndex = 9
-        Me.lbLedTop.Text = "Slip Front"
-        Me.lbLedTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'lbLedBottom
-        '
-        Me.lbLedBottom.BackColor = System.Drawing.Color.DeepSkyBlue
-        Me.lbLedBottom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lbLedBottom.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbLedBottom.Location = New System.Drawing.Point(126, 103)
-        Me.lbLedBottom.Name = "lbLedBottom"
-        Me.lbLedBottom.Size = New System.Drawing.Size(27, 20)
-        Me.lbLedBottom.TabIndex = 12
-        Me.lbLedBottom.Text = "Slip Back"
-        Me.lbLedBottom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'lbLedRight
-        '
-        Me.lbLedRight.BackColor = System.Drawing.Color.Gold
-        Me.lbLedRight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lbLedRight.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbLedRight.Location = New System.Drawing.Point(140, 82)
-        Me.lbLedRight.Name = "lbLedRight"
-        Me.lbLedRight.Size = New System.Drawing.Size(27, 20)
-        Me.lbLedRight.TabIndex = 11
-        Me.lbLedRight.Text = "RPM >"
-        Me.lbLedRight.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'lbLedLeft
-        '
-        Me.lbLedLeft.BackColor = System.Drawing.Color.LimeGreen
-        Me.lbLedLeft.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lbLedLeft.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbLedLeft.Location = New System.Drawing.Point(112, 82)
-        Me.lbLedLeft.Name = "lbLedLeft"
-        Me.lbLedLeft.Size = New System.Drawing.Size(27, 20)
-        Me.lbLedLeft.TabIndex = 10
-        Me.lbLedLeft.Text = "RPM <"
-        Me.lbLedLeft.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
         'G1
         '
         Me.G1.BackColor = System.Drawing.Color.Gray
         Me.G1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G1.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.G1.Location = New System.Drawing.Point(95, 128)
+        Me.G1.Location = New System.Drawing.Point(94, 104)
         Me.G1.Name = "G1"
         Me.G1.Size = New System.Drawing.Size(11, 20)
         Me.G1.TabIndex = 13
@@ -154,7 +103,7 @@ Partial Class frmCVJoy
         Me.G2.BackColor = System.Drawing.Color.WhiteSmoke
         Me.G2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G2.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.G2.Location = New System.Drawing.Point(109, 128)
+        Me.G2.Location = New System.Drawing.Point(108, 104)
         Me.G2.Name = "G2"
         Me.G2.Size = New System.Drawing.Size(11, 20)
         Me.G2.TabIndex = 14
@@ -166,7 +115,7 @@ Partial Class frmCVJoy
         Me.G3.BackColor = System.Drawing.Color.WhiteSmoke
         Me.G3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G3.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.G3.Location = New System.Drawing.Point(123, 128)
+        Me.G3.Location = New System.Drawing.Point(122, 104)
         Me.G3.Name = "G3"
         Me.G3.Size = New System.Drawing.Size(11, 20)
         Me.G3.TabIndex = 15
@@ -178,7 +127,7 @@ Partial Class frmCVJoy
         Me.G4.BackColor = System.Drawing.Color.WhiteSmoke
         Me.G4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G4.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.G4.Location = New System.Drawing.Point(137, 128)
+        Me.G4.Location = New System.Drawing.Point(136, 104)
         Me.G4.Name = "G4"
         Me.G4.Size = New System.Drawing.Size(11, 20)
         Me.G4.TabIndex = 16
@@ -190,7 +139,7 @@ Partial Class frmCVJoy
         Me.G5.BackColor = System.Drawing.Color.WhiteSmoke
         Me.G5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G5.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.G5.Location = New System.Drawing.Point(151, 128)
+        Me.G5.Location = New System.Drawing.Point(150, 104)
         Me.G5.Name = "G5"
         Me.G5.Size = New System.Drawing.Size(11, 20)
         Me.G5.TabIndex = 17
@@ -202,7 +151,7 @@ Partial Class frmCVJoy
         Me.G6.BackColor = System.Drawing.Color.WhiteSmoke
         Me.G6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G6.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.G6.Location = New System.Drawing.Point(165, 128)
+        Me.G6.Location = New System.Drawing.Point(164, 104)
         Me.G6.Name = "G6"
         Me.G6.Size = New System.Drawing.Size(11, 20)
         Me.G6.TabIndex = 18
@@ -214,7 +163,7 @@ Partial Class frmCVJoy
         Me.GR.BackColor = System.Drawing.Color.WhiteSmoke
         Me.GR.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.GR.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GR.Location = New System.Drawing.Point(179, 128)
+        Me.GR.Location = New System.Drawing.Point(178, 104)
         Me.GR.Name = "GR"
         Me.GR.Size = New System.Drawing.Size(11, 20)
         Me.GR.TabIndex = 19
@@ -226,7 +175,7 @@ Partial Class frmCVJoy
         Me.lbHandbrake.BackColor = System.Drawing.Color.WhiteSmoke
         Me.lbHandbrake.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lbHandbrake.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbHandbrake.Location = New System.Drawing.Point(193, 128)
+        Me.lbHandbrake.Location = New System.Drawing.Point(192, 104)
         Me.lbHandbrake.Name = "lbHandbrake"
         Me.lbHandbrake.Size = New System.Drawing.Size(45, 20)
         Me.lbHandbrake.TabIndex = 20
@@ -300,7 +249,7 @@ Partial Class frmCVJoy
         '
         Me.ckDontShow.AutoSize = True
         Me.ckDontShow.BackColor = System.Drawing.Color.Transparent
-        Me.ckDontShow.Location = New System.Drawing.Point(21, 186)
+        Me.ckDontShow.Location = New System.Drawing.Point(4, 46)
         Me.ckDontShow.Name = "ckDontShow"
         Me.ckDontShow.Size = New System.Drawing.Size(79, 17)
         Me.ckDontShow.TabIndex = 93
@@ -362,7 +311,7 @@ Partial Class frmCVJoy
         '
         Me.ckKeepVisible.AutoSize = True
         Me.ckKeepVisible.BackColor = System.Drawing.Color.Transparent
-        Me.ckKeepVisible.Location = New System.Drawing.Point(21, 206)
+        Me.ckKeepVisible.Location = New System.Drawing.Point(116, 46)
         Me.ckKeepVisible.Name = "ckKeepVisible"
         Me.ckKeepVisible.Size = New System.Drawing.Size(84, 17)
         Me.ckKeepVisible.TabIndex = 105
@@ -373,7 +322,7 @@ Partial Class frmCVJoy
         '
         Me.chkNoWind.AutoSize = True
         Me.chkNoWind.BackColor = System.Drawing.Color.Transparent
-        Me.chkNoWind.Location = New System.Drawing.Point(257, 186)
+        Me.chkNoWind.Location = New System.Drawing.Point(275, 186)
         Me.chkNoWind.Name = "chkNoWind"
         Me.chkNoWind.Size = New System.Drawing.Size(89, 17)
         Me.chkNoWind.TabIndex = 114
@@ -454,15 +403,15 @@ Partial Class frmCVJoy
         '
         Me.cbGames.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbGames.FormattingEnabled = True
-        Me.cbGames.Location = New System.Drawing.Point(144, 208)
+        Me.cbGames.Location = New System.Drawing.Point(155, 208)
         Me.cbGames.Name = "cbGames"
-        Me.cbGames.Size = New System.Drawing.Size(199, 21)
+        Me.cbGames.Size = New System.Drawing.Size(203, 21)
         Me.cbGames.TabIndex = 133
         '
         'lbTemperature
         '
         Me.lbTemperature.BackColor = System.Drawing.Color.Transparent
-        Me.lbTemperature.Location = New System.Drawing.Point(279, 107)
+        Me.lbTemperature.Location = New System.Drawing.Point(300, 91)
         Me.lbTemperature.Name = "lbTemperature"
         Me.lbTemperature.Size = New System.Drawing.Size(23, 13)
         Me.lbTemperature.TabIndex = 135
@@ -472,7 +421,7 @@ Partial Class frmCVJoy
         '
         Me.Label2.AutoSize = True
         Me.Label2.BackColor = System.Drawing.Color.Transparent
-        Me.Label2.Location = New System.Drawing.Point(229, 107)
+        Me.Label2.Location = New System.Drawing.Point(250, 91)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(54, 13)
         Me.Label2.TabIndex = 134
@@ -482,7 +431,7 @@ Partial Class frmCVJoy
         '
         Me.Label3.AutoSize = True
         Me.Label3.BackColor = System.Drawing.Color.Transparent
-        Me.Label3.Location = New System.Drawing.Point(298, 107)
+        Me.Label3.Location = New System.Drawing.Point(319, 91)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(23, 13)
         Me.Label3.TabIndex = 136
@@ -492,7 +441,7 @@ Partial Class frmCVJoy
         '
         Me.chkNoMotors.AutoSize = True
         Me.chkNoMotors.BackColor = System.Drawing.Color.Transparent
-        Me.chkNoMotors.Location = New System.Drawing.Point(129, 186)
+        Me.chkNoMotors.Location = New System.Drawing.Point(155, 186)
         Me.chkNoMotors.Name = "chkNoMotors"
         Me.chkNoMotors.Size = New System.Drawing.Size(112, 17)
         Me.chkNoMotors.TabIndex = 137
@@ -503,7 +452,7 @@ Partial Class frmCVJoy
         'lbMainsPower
         '
         Me.lbMainsPower.BackColor = System.Drawing.Color.Transparent
-        Me.lbMainsPower.Location = New System.Drawing.Point(229, 89)
+        Me.lbMainsPower.Location = New System.Drawing.Point(250, 73)
         Me.lbMainsPower.Name = "lbMainsPower"
         Me.lbMainsPower.Size = New System.Drawing.Size(93, 13)
         Me.lbMainsPower.TabIndex = 138
@@ -525,7 +474,7 @@ Partial Class frmCVJoy
         '
         Me.chkArduinoTime.AutoSize = True
         Me.chkArduinoTime.BackColor = System.Drawing.Color.Transparent
-        Me.chkArduinoTime.Location = New System.Drawing.Point(175, 72)
+        Me.chkArduinoTime.Location = New System.Drawing.Point(234, 46)
         Me.chkArduinoTime.Name = "chkArduinoTime"
         Me.chkArduinoTime.Size = New System.Drawing.Size(108, 17)
         Me.chkArduinoTime.TabIndex = 140
@@ -535,7 +484,7 @@ Partial Class frmCVJoy
         'lbArduinoTime
         '
         Me.lbArduinoTime.BackColor = System.Drawing.Color.Transparent
-        Me.lbArduinoTime.Location = New System.Drawing.Point(279, 74)
+        Me.lbArduinoTime.Location = New System.Drawing.Point(338, 48)
         Me.lbArduinoTime.Name = "lbArduinoTime"
         Me.lbArduinoTime.Size = New System.Drawing.Size(37, 12)
         Me.lbArduinoTime.TabIndex = 141
@@ -567,6 +516,19 @@ Partial Class frmCVJoy
         Me.btLogClear.Text = "Clear"
         Me.btLogClear.UseVisualStyleBackColor = False
         '
+        'chkUDP
+        '
+        Me.chkUDP.AutoSize = True
+        Me.chkUDP.BackColor = System.Drawing.Color.Transparent
+        Me.chkUDP.Checked = True
+        Me.chkUDP.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkUDP.Location = New System.Drawing.Point(93, 186)
+        Me.chkUDP.Name = "chkUDP"
+        Me.chkUDP.Size = New System.Drawing.Size(49, 17)
+        Me.chkUDP.TabIndex = 145
+        Me.chkUDP.Text = "UDP"
+        Me.chkUDP.UseVisualStyleBackColor = False
+        '
         'UcButtons1
         '
         Me.UcButtons1.Location = New System.Drawing.Point(2, 0)
@@ -581,10 +543,10 @@ Partial Class frmCVJoy
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ClientSize = New System.Drawing.Size(540, 386)
+        Me.Controls.Add(Me.chkUDP)
         Me.Controls.Add(Me.UcButtons1)
         Me.Controls.Add(Me.btLogClear)
         Me.Controls.Add(Me.chkLog)
-        Me.Controls.Add(Me.lbArduinoTime)
         Me.Controls.Add(Me.chkArduinoTime)
         Me.Controls.Add(Me.chkFFIgnore)
         Me.Controls.Add(Me.chkNoMotors)
@@ -618,14 +580,11 @@ Partial Class frmCVJoy
         Me.Controls.Add(Me.G3)
         Me.Controls.Add(Me.G2)
         Me.Controls.Add(Me.G1)
-        Me.Controls.Add(Me.lbLedLeft)
-        Me.Controls.Add(Me.lbLedRight)
-        Me.Controls.Add(Me.lbLedBottom)
-        Me.Controls.Add(Me.lbLedTop)
         Me.Controls.Add(Me.btArduinoStart)
         Me.Controls.Add(Me.ckKeepVisible)
         Me.Controls.Add(Me.ckDontShow)
         Me.Controls.Add(Me.lbMainsPower)
+        Me.Controls.Add(Me.lbArduinoTime)
         Me.Name = "frmCVJoy"
         Me.Text = "CV Joy"
         Me.ResumeLayout(False)
@@ -634,10 +593,6 @@ Partial Class frmCVJoy
     End Sub
 
     Friend WithEvents btArduinoStart As Button
-    Friend WithEvents lbLedTop As Label
-    Friend WithEvents lbLedBottom As Label
-    Friend WithEvents lbLedRight As Label
-    Friend WithEvents lbLedLeft As Label
     Friend WithEvents G1 As Label
     Friend WithEvents G2 As Label
     Friend WithEvents G3 As Label
@@ -680,4 +635,5 @@ Partial Class frmCVJoy
     Friend WithEvents chkLog As CheckBox
     Friend WithEvents btLogClear As Button
     Friend WithEvents UcButtons1 As ucButtons
+    Friend WithEvents chkUDP As CheckBox
 End Class

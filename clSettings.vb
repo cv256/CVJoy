@@ -2,25 +2,25 @@
     Inherits clSettings
 
     Public ArduinoComPort As String = "COM3"
-    Public RefreshRate As Byte = 35
+    Public RefreshRate As Byte = 55
     Public vJoyId As Byte = 1
+    Public UdpIp As String = "255.255.255.255"
 
-    Public AccelMin As Integer = 290
-    Public AccelMax As Integer = 880
-    Public AccelGama As Single = 1.6
-    Public BrakeMin As Integer = 140
-    Public BrakeMax As Integer = 656
-    Public BrakeGama As Single = 1
-    Public ClutchMin As Integer = 150
-    Public ClutchMax As Integer = 810
-    Public ClutchGama As Single = 1
+    Public AccelMin As Integer = 0
+    Public AccelMax As Integer = 1020
+    Public AccelGama As Single = 0.7
+    Public BrakeMin As Integer = 0
+    Public BrakeMax As Integer = 1020
+    Public BrakeGama As Single = 0.7
+    Public ClutchMin As Integer = 0
+    Public ClutchMax As Integer = 1020
+    Public ClutchGama As Single = 0.7
 
-    Public WheelMinInput As Integer = 3
-    Public WheelSensitivity As Single = 8.5
+    Public WheelMinInput As Integer = 1
 
-    Public WheelPowerGama As Single = 40
-    Public WheelPowerForMin As Integer = 88
-    Public WheelPowerFactor As Single = 1.08
+    Public WheelPowerGama As Single = 100
+    Public WheelPowerForMin As Integer = 29
+    Public WheelPowerFactor As Single = 1.0
     Public WheelDampFactor As Integer = 500
 
     Public WindMinPower As Integer = 32

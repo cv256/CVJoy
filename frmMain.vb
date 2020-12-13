@@ -1,8 +1,9 @@
 ﻿Imports System.IO.Ports
+Imports System.Net
 
 
 Public Class frmCVJoy
-    Public TimerProcessing As Boolean = False
+    Public TimerProcessing As Boolean = False, TimerTickCounter As Integer = 0
     Public Joy As vJoyInterfaceWrap.vJoy ' http://vjoystick.sourceforge.net/site/includes/SDK_ReadMe.pdf
     Private FFGain As Single = 255
     Public FFWheel_Type As FFBEType
@@ -15,6 +16,7 @@ Public Class frmCVJoy
     Private _motorOverHeat As Single
     Private ArduinoLastRead As Date = Now.AddSeconds(-1) ' time of last good reading
     Private WheelPosition As Integer, PreviousWheelPosition As Integer, PreviousArduinoLastRead As Date = Now.AddSeconds(-1), WheelPositionOffset As Boolean
+    Private ButtonsLast(8) As Boolean, ButtonOther As Boolean
 
     Public Enum Motor
         None
@@ -37,6 +39,7 @@ Public Class frmCVJoy
         cbLogFF.SelectedIndex = 0
 
         cbGames.Items.Add("Assetto Corsa")
+        cbGames.Items.Add("Standard")
 
         SettingsMain.LoadSettingsFromFile()
         cbGames.SelectedIndex = 0 ' TODO: SettingsMain should keep that last cbGames.SelectedIndex used, and here we should use that
@@ -49,8 +52,15 @@ Public Class frmCVJoy
 
     Private Sub cbGames_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbGames.SelectedIndexChanged
         If Game IsNot Nothing Then Game.Stop()
-        Game = New GameAC(Me) ' TODO: use cbGames.Selecteditem
-        AddHandler Game.StateChanged, AddressOf GameStateChanged
+        If cbGames.SelectedIndex = 1 Then
+            Game = New GameStd(Me)
+            btGameStart.Visible = False
+            lbGameInfo.Text = ""
+        Else
+            Game = New GameAC(Me)
+            btGameStart.Visible = True
+            AddHandler Game.StateChanged, AddressOf GameStateChanged
+        End If
         Game.LoadSettingsFromFile()
         UcButtons1.ShowSettings()
         UcButtons1.ReadOnly = True
@@ -97,6 +107,7 @@ Public Class frmCVJoy
         End If
         TimerProcessing = True ' NEVER use RETURN   ,  use  GoTo goReturn  !!!!!
         'timeStart = Now
+        TimerTickCounter += 1
 
         ' get realtime data from the Game :
         Dim GameOutputs As clGameOutputs
@@ -110,15 +121,6 @@ Public Class frmCVJoy
             End If
             If Game IsNot Nothing AndAlso Game.Started Then
                 GameOutputs = Game.Update()
-                .LedTop = GameOutputs.LedTop
-                .LedBottom = GameOutputs.LedBottom
-                .LedLeft = GameOutputs.LedLeft
-                .LedRight = GameOutputs.LedRight
-            Else
-                .LedTop = True
-                .LedBottom = True
-                .LedLeft = True
-                .LedRight = True
             End If
 
             If TestMode = Motor.Wheel Then
@@ -322,7 +324,6 @@ Public Class frmCVJoy
             _realRight = fromArduino.RealRight - SettingsMain.GRightScrewCenter
         End If
 
-        Static button0WasPressedAlone As Boolean, sentButton(8) As Boolean  ' button being pressed
         With fromArduino
             Dim j As New vJoyInterfaceWrap.vJoy.JoystickState
 #Region "buttons:  emulate keystrokes  or  send as joystick buttons"
@@ -331,56 +332,48 @@ Public Class frmCVJoy
 
             If .buttons(0) Then ' if button0 is being pressed:      
 
-                button0WasPressedAlone = True
                 For i As Integer = 1 To 8
                     If Game.Bt(i + 9) > "" Then
-                        If Not .buttons(i) Then
-                            sentButton(i) = False
-                            Continue For
-                        Else
-                            If sentButton(i) Then Continue For
-                            SendKeys.Send(Game.Bt(i + 9))
-                            sentButton(i) = True
-                            button0WasPressedAlone = False
+                        If .buttons(i) Then
+                            If ButtonsLast(i) Then Continue For
+                            SendKeys.SendWait(Game.Bt(i + 9))
+                            ButtonOther = True
                         End If
                     ElseIf .buttons(i) Then
                         buttonBit += 2 ^ (i + 16)
-                        button0WasPressedAlone = False
+                        ButtonOther = True
                     End If
                 Next i
 
-            Else ' if button0 is not being pressed:
+            Else ' if button0 is not being pressed now :
 
-                If button0WasPressedAlone Then ' if we just released it:
-                    button0WasPressedAlone = False
-                    If Game.Bt(0) > "" Then
-                        SendKeys.Send(Game.Bt(0))
-                    Else
-                        buttonBit = 1
+                If ButtonsLast(0) Then ' if was pressed alone and we just released it:
+                    If Not ButtonOther Then ' and no other button had been pressed
+                        If Game.Bt(0) > "" Then
+                            SendKeys.SendWait(Game.Bt(0))
+                        Else
+                            buttonBit = 1
+                        End If
                     End If
+                    ButtonOther = False
                 Else
                     For i As Integer = 1 To 8
                         If Game.Bt(i) > "" Then
-                            If Not .buttons(i) Then
-                                sentButton(i) = False
-                                Continue For
-                            Else
-                                If sentButton(i) Then Continue For
-                                SendKeys.Send(Game.Bt(i))
-                                sentButton(i) = True
+                            If .buttons(i) Then
+                                If ButtonsLast(i) Then Continue For
+                                SendKeys.SendWait(Game.Bt(i))
                             End If
                         ElseIf .buttons(i) Then
                             buttonBit += 2 ^ i
                         End If
                     Next i
-
                 End If
             End If
-
+            fromArduino.buttons.CopyTo(ButtonsLast, 0)
 #End Region
 
             If Joy IsNot Nothing Then
-                    j.Buttons = buttonBit _
+                j.Buttons = buttonBit _
                         + If(.gear1, 1024, 0) _
                         + If(.gear2, 2048, 0) _
                         + If(.gear3, 4096, 0) _
@@ -388,21 +381,75 @@ Public Class frmCVJoy
                         + If(.gear5, 16384, 0) _
                         + If(.gear6, 32768, 0) _
                         + If(.gearR, 65536, 0)
-                    j.AxisX = Math.Max(Math.Min(WheelPosition + 16384, 32767), 0)  ' 0-16384-32767
-                    j.AxisY = .AccelCorrected * 32 ' 0-32767
-                    j.AxisZ = .BrakeCorrected * 32 ' 0-32767
-                    j.AxisXRot = .ClutchCorrected * 32 ' 0-32767
-                    Joy.UpdateVJD(SettingsMain.vJoyId, j)
-                End If
+                j.AxisX = Math.Max(Math.Min(WheelPosition + 16384, 32767), 0)  ' 0-16384-32767
+                j.AxisY = .AccelCorrected * 32 ' 0-32767
+                j.AxisZ = .BrakeCorrected * 32 ' 0-32767
+                j.AxisXRot = .ClutchCorrected * 32 ' 0-32767
+                Joy.UpdateVJD(SettingsMain.vJoyId, j)
+            End If
+
         End With
+
+        ' send UDP:
+        If chkUDP.Checked AndAlso Game IsNot Nothing AndAlso Game.Started Then
+            Try
+                Dim udpBytes As Byte()
+                If TimerTickCounter Mod 2 = 0 Then
+                    If TimerTickCounter >= 20 Then
+                        TimerTickCounter = 0
+                        udpBytes = New Byte(33) {}
+                        With Game.UpdateExtra()
+                            udpBytes(18) = .TyreWearFL
+                            udpBytes(19) = .TyreWearFR
+                            udpBytes(20) = .TyreWearRL
+                            udpBytes(21) = .TyreWearRR
+                            udpBytes(22) = BitConverter.GetBytes(Math.Abs(.RpmMax))(0)
+                            udpBytes(23) = BitConverter.GetBytes(Math.Abs(.RpmMax))(1)
+                            udpBytes(24) = .MaxFuel
+                            udpBytes(25) = .Fuel
+                            udpBytes(26) = .NumCars
+                            udpBytes(27) = .Position
+                            udpBytes(28) = .NumberOfLaps
+                            udpBytes(29) = .CompletedLaps
+                            udpBytes(30) = BitConverter.GetBytes(Math.Abs(.DistanceTraveled))(0)
+                            udpBytes(31) = BitConverter.GetBytes(Math.Abs(.DistanceTraveled))(1)
+                            udpBytes(32) = BitConverter.GetBytes(.FuelKKm)(0)
+                            udpBytes(33) = BitConverter.GetBytes(.FuelKKm)(1)
+                            'ErrorAdd(String.Join(",", udpBytes), "")
+                        End With
+                    Else
+                        udpBytes = New Byte(17) {}
+                    End If
+                    udpBytes(0) = 255
+                    udpBytes(1) = BitConverter.GetBytes(Math.Abs(GameOutputs.Speed))(0)
+                    udpBytes(2) = BitConverter.GetBytes(Math.Abs(GameOutputs.Speed))(1)
+                    udpBytes(3) = BitConverter.GetBytes(Math.Abs(GameOutputs.RPM))(0)
+                    udpBytes(4) = BitConverter.GetBytes(Math.Abs(GameOutputs.RPM))(1)
+                    udpBytes(5) = BitConverter.GetBytes(Math.Abs(GameOutputs.Gear))(0)
+                    udpBytes(6) = GameOutputs.SlipFL
+                    udpBytes(7) = GameOutputs.SlipFR
+                    udpBytes(8) = GameOutputs.SlipRL
+                    udpBytes(9) = GameOutputs.SlipRR
+                    udpBytes(10) = If(GameOutputs.GearAuto, 1, 0)
+                    udpBytes(11) = GameOutputs.TyreDirtFL
+                    udpBytes(12) = GameOutputs.TyreDirtFR
+                    udpBytes(13) = GameOutputs.TyreDirtRL
+                    udpBytes(14) = GameOutputs.TyreDirtRR
+                    udpBytes(15) = CByte(Math.Min(fromArduino.AccelCorrected / 4, 255))
+                    udpBytes(16) = CByte(Math.Min(fromArduino.BrakeCorrected / 4, 255))
+                    udpBytes(17) = CByte(Math.Min(fromArduino.ClutchCorrected / 4, 255))
+                    Dim udpClient As New Sockets.UdpClient
+                    udpClient.SendAsync(udpBytes, udpBytes.Length, SettingsMain.UdpIp, 45000)
+                End If
+            Catch ex As Exception
+                ErrorAdd("UDP Send Error " & SettingsMain.UdpIp, ex.Message)
+            End Try
+
+        End If
 
         ' show lights on screen:
         If Me.WindowState <> FormWindowState.Minimized AndAlso Not ckDontShow.Checked Then
             With toArduino
-                lbLedLeft.BackColor = If(.LedLeft, Color.Green, Color.White)
-                lbLedRight.BackColor = If(.LedRight, Color.Orange, Color.White)
-                lbLedTop.BackColor = If(.LedTop, Color.Red, Color.White)
-                lbLedBottom.BackColor = If(.LedBottom, Color.SkyBlue, Color.White)
                 Dim g As System.Drawing.Graphics = lbWheelPos.CreateGraphics()
                 g.Clear(Color.White)
                 Dim xHalf As Integer = CInt(lbWheelPos.Width / 2)

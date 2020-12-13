@@ -27,8 +27,7 @@ Public Class frmSetup
 
     Private Sub ShowSettings()
         txtFreq.Text = SettingsMain.RefreshRate
-
-        txtWheelSensitivity.Text = (SettingsMain.WheelSensitivity * 100).ToString("+0000;-0000")
+        txtUdpIp.Text = SettingsMain.UdpIp
 
         txtWheelMinInput.Text = SettingsMain.WheelMinInput
         txtWheelPowerForMin.Text = SettingsMain.WheelPowerForMin
@@ -72,8 +71,6 @@ Public Class frmSetup
     Public Function txt_Validate(pShowMsg As Boolean) As String
         Dim res As String = ""
         res &= ValidateNumber(txtFreq, 11, 80, "Refresh Rate")
-
-        res &= ValidateNumber(txtWheelSensitivity, -9999, 9999, "Wheel Sensitivity (when using mouse)")
 
         res &= ValidateNumber(txtWheelMinInput, 0, 1023, "Wheel FF Min Input")
         res &= ValidateNumber(txtWheelPowerForMin, 0, 255, "Wheel FF Power For Min")
@@ -126,8 +123,7 @@ Public Class frmSetup
         If cbComPort.SelectedIndex >= 0 Then SettingsMain.ArduinoComPort = cbComPort.SelectedItem
         If cbVjoy.SelectedIndex >= 0 Then SettingsMain.vJoyId = cbVjoy.SelectedItem
         SettingsMain.RefreshRate = txtFreq.Text
-
-        SettingsMain.WheelSensitivity = CInt(txtWheelSensitivity.Text) / 100
+        SettingsMain.UdpIp = txtUdpIp.Text.Replace(",", ".")
 
         SettingsMain.WheelMinInput = txtWheelMinInput.Text
         SettingsMain.WheelPowerForMin = txtWheelPowerForMin.Text

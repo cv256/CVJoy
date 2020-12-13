@@ -12,7 +12,9 @@
     Public MustOverride Sub [Stop]()
     Public MustOverride Function Started() As Boolean
     Public MustOverride Function Update() As clGameOutputs
+    Public MustOverride Function UpdateExtra() As clGameOutputsExtra
     Public MustOverride Sub ShowSetup()
+    Public WheelSensitivity As Single = 8.5
 
     Public Event StateChanged()
     Private _State As String
@@ -25,6 +27,7 @@
             RaiseEvent StateChanged()
         End Set
     End Property
+
 
     Public Bt(17) As String
     Public Property Bts() As String
@@ -42,13 +45,40 @@
 
 End Class
 
-Public Structure clGameOutputs
+
+Public Structure clGameOutputs ' info that needs updating very frequently
     Public Wind As Integer  ' nominal is 0~255
     Public Shake As Integer  ' nominal is 0~255
     Public Pitch As Single ' radians
     Public Roll As Single ' radians
-    Public LedTop As Boolean
-    Public LedBottom As Boolean
-    Public LedLeft As Boolean
-    Public LedRight As Boolean
+
+    Public SlipFL As Byte
+    Public SlipFR As Byte
+    Public SlipRL As Byte
+    Public SlipRR As Byte
+    Public Speed As Integer
+    Public RPM As Integer
+    Public Gear As Integer ' 0=" "  1="R"   2="N"  3="1"  4="2"...
+    Public GearAuto As Boolean
+    Public TyreDirtFL As Byte
+    Public TyreDirtFR As Byte
+    Public TyreDirtRL As Byte
+    Public TyreDirtRR As Byte
+End Structure
+
+
+Public Structure clGameOutputsExtra ' info that needs updating 1 time per second
+    Public RpmMax As Integer
+    Public MaxFuel As Byte
+    Public Fuel As Byte
+    Public FuelKKm As Integer
+    Public TyreWearFL As Byte
+    Public TyreWearFR As Byte
+    Public TyreWearRL As Byte
+    Public TyreWearRR As Byte
+    Public NumCars As Byte
+    Public Position As Byte
+    Public NumberOfLaps As Byte
+    Public CompletedLaps As Byte
+    Public DistanceTraveled As Integer
 End Structure
