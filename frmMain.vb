@@ -3,7 +3,9 @@ Imports System.Net
 
 
 Public Class frmCVJoy
-    Public TimerProcessing As Boolean = False, TimerTickCounter As Integer = 0
+    Private WithEvents SerialPort1 As New IO.Ports.SerialPort
+    Public WithEvents Timer1 As New Timer
+    Private GameOutputs As clGameOutputs
     Public Joy As vJoyInterfaceWrap.vJoy ' http://vjoystick.sourceforge.net/site/includes/SDK_ReadMe.pdf
     Private FFGain As Single = 255
     Public FFWheel_Type As FFBEType
@@ -17,6 +19,7 @@ Public Class frmCVJoy
     Private ArduinoLastRead As Date = Now.AddSeconds(-1) ' time of last good reading
     Private WheelPosition As Integer, PreviousWheelPosition As Integer, PreviousArduinoLastRead As Date = Now.AddSeconds(-1), WheelPositionOffset As Boolean
     Private ButtonsLast(8) As Boolean, ButtonOther As Boolean
+    Private TimerTickCounter As Integer = 0
 
     Public Enum Motor
         None
@@ -45,7 +48,6 @@ Public Class frmCVJoy
         cbGames.SelectedIndex = 0 ' TODO: SettingsMain should keep that last cbGames.SelectedIndex used, and here we should use that
 
         Timer1.Interval = 1000 / SettingsMain.RefreshRate
-        Timer1.Enabled = True
 
         btVJoy_Click()
     End Sub
@@ -83,17 +85,25 @@ Public Class frmCVJoy
 
     Public Sub ArduinoStart(sender As Object, e As EventArgs) Handles btArduinoStart.Click
         If SerialPort1.IsOpen Then
-            SerialPort1.DiscardInBuffer()
+            Timer1.Enabled = False ' stop sending more data to Arduino
+            System.Threading.Thread.Sleep(700) ' give time to finnish processing eventualy received data from arduino
             SerialPort1.Close()
             btArduinoStart.Text = "Start"
         Else
             Try
                 SerialPort1.PortName = SettingsMain.ArduinoComPort
+                SerialPort1.BaudRate = 115200
+                SerialPort1.DataBits = 8
+                SerialPort1.Parity = Parity.None
+                SerialPort1.StopBits = StopBits.One
+                SerialPort1.Handshake = Handshake.None
+                SerialPort1.RtsEnable = False
                 SerialPort1.ReceivedBytesThreshold = SerialRead.PacketLen
-                ' SerialPort1.WriteBufferSize = SerialSend.PacketLen
+                ' SerialPort1.WriteBufferSize = SerialSend.PacketLen ' The WriteBufferSize property ignores any value smaller than 2048.
+                SerialPort1.WriteTimeout = 1000
                 SerialPort1.Open()
-                SerialPort1.DiscardInBuffer()
                 btArduinoStart.Text = "Stop"
+                Timer1.Enabled = True
             Catch ex As Exception
                 MsgBox("btArduinoStart.Click " & ex.Message)
             End Try
@@ -101,26 +111,22 @@ Public Class frmCVJoy
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        If TimerProcessing Then
-            ErrorAdd("Cant stand such hight Refresh Rate", ", lower it.")
-            Return
-        End If
-        TimerProcessing = True ' NEVER use RETURN   ,  use  GoTo goReturn  !!!!!
-        'timeStart = Now
         TimerTickCounter += 1
+        SendToArduino()
+    End Sub
 
-        ' get realtime data from the Game :
-        Dim GameOutputs As clGameOutputs
-
+    Private Sub SendToArduino()
         ' prepare data to send to the Arduino :
         Dim toArduino As New SerialSend
         With toArduino
+
             If WheelPositionOffset Then
                 .WheelPositionOffset = True
                 WheelPositionOffset = False
             End If
+
             If Game IsNot Nothing AndAlso Game.Started Then
-                GameOutputs = Game.Update()
+                GameOutputs = Game.Update() ' get realtime data from the Game 
             End If
 
             If TestMode = Motor.Wheel Then
@@ -171,7 +177,7 @@ Public Class frmCVJoy
             .rightPower = 0
             Dim GMinDiffProtected As Integer = SettingsMain.GMinDiff
             If Now.Subtract(ArduinoLastRead).TotalMilliseconds > 200 _
-                AndAlso SerialPort1.IsOpen Then ' SHIIIT, stop everything ! dont even try to correct it, wires, relays or screws may be swaped or broken !
+                AndAlso SerialPort1.IsOpen Then ' SHIIIT,  STOP everything ! dont even try to correct it, wires, relays or screws may be swaped or broken !
                 ErrorAdd("NO POSITION DATA FROM ARDUINO !", $"   last read {(Now.Subtract(ArduinoLastRead).TotalMilliseconds / 1000).ToString("0.00")} seconds ago")
             ElseIf (_realOKLeft > (SettingsMain.GMaxScrewUp + SettingsMain.GMinDiff * 2) _
             OrElse _realOKLeft < -(SettingsMain.GMaxScrewDown + SettingsMain.GMinDiff * 2) _
@@ -264,65 +270,93 @@ Public Class frmCVJoy
 
         End With
 
-        Dim fromArduino As New SerialRead
-        If SerialPort1.IsOpen Then
-            ' SEND SERIAL DATA TO ARDUINO:
-            SerialPort1.DiscardOutBuffer()
-            Dim timeSent As Date = Now
-            SerialPort1.Write(toArduino.GetSerialData, 0, SerialSend.PacketLen)
-
-            ' READ SERIAL DATA FROM ARDUINO:
-            Do Until SerialPort1.BytesToRead >= SerialRead.PacketLen
-                Threading.Thread.Sleep(10)
-                If Now.Subtract(timeSent).TotalMilliseconds > 500 Then
-                    ErrorAdd("NORESPONSE SerialPort1", ".BytesToRead=" & SerialPort1.BytesToRead)
-                    GoTo goReturn
-                End If
-            Loop
-            If chkArduinoTime.Checked Then lbArduinoTime.Text = Now.Subtract(timeSent).TotalMilliseconds
-            Try
-                Dim BytesToRead As Integer = SerialPort1.BytesToRead
-                Dim buf(BytesToRead - 1) As Byte
-                SerialPort1.Read(buf, 0, buf.Length)
-                If BytesToRead <> SerialRead.PacketLen Then
-                    ErrorAdd("UNEXPECTED SerialPort1", ".BytesToRead=" & BytesToRead & " discarding them")
-                    GoTo goReturn ' discard this lost bytes
-                End If
-                If buf(0) < 192 Then
-                    ErrorAdd("UNEXPECTED SerialPort1", ".buf(0)=" & buf(0) & " discarding them")
-                    GoTo goReturn
-                End If
-                Static _MainsPowerOK As Boolean
-                If (buf(0) And 1) = 1 AndAlso _MainsPowerOK = True Then
-                    _MainsPowerOK = False
-                    lbMainsPower.Text = "Mains Power OFF"
-                    lbMainsPower.BackColor = Color.DeepSkyBlue
-                    ErrorAdd("No Mains power / MainsPower freq lower", "than 50Hz+5%")
-                ElseIf (buf(0) And 1) = 0 AndAlso _MainsPowerOK = False Then
-                    _MainsPowerOK = True
-                    lbMainsPower.Text = "Mains Power ON"
-                    lbMainsPower.BackColor = Color.HotPink
-                    ErrorAdd("Mains power OK", "")
-                End If
-                If (buf(0) And 2) <> 0 Then
-                    ErrorAdd(" ARDUINO GOT INVALID DATA FROM COMPUTER", "")
-                End If
-
-                ' this fills fromArduino with the data red from the Arduino !!
-                fromArduino.SetSerialData(buf)
-
-            Catch ex As Exception
-                ErrorAdd("EXCEPTION SerialPort1", ".DataReceived  " & ex.Message)
-                GoTo goReturn
-            End Try
-
-            PreviousArduinoLastRead = ArduinoLastRead
-            ArduinoLastRead = Now
-            PreviousWheelPosition = WheelPosition
-            WheelPosition = fromArduino.WheelPosition
-            _realLeft = fromArduino.RealLeft - SettingsMain.GLeftScrewCenter
-            _realRight = fromArduino.RealRight - SettingsMain.GRightScrewCenter
+        ' show stuff in screen :
+        If Not ckDontShow.Checked AndAlso Me.WindowState <> FormWindowState.Minimized Then
+            With toArduino
+                Dim g As System.Drawing.Graphics = lbWheelPos.CreateGraphics()
+                g.Clear(Color.White)
+                Dim xHalf As Integer = CInt(lbWheelPos.Width / 2)
+                g.DrawLine(If(Math.Abs(WheelPosition) >= 16380, Pens.Red, Pens.Blue), xHalf, 1, CInt(xHalf * (1 + WheelPosition / 16384)), 1)
+                g.DrawLine(If(Math.Abs(.wheelPower) >= 235, If(Math.Abs(.wheelPower) >= 235, Pens.Red, Pens.Orange), Pens.Blue), xHalf, 7, CInt(xHalf * (1 - .wheelPower / 255)), 7)
+                g.DrawLine(Pens.Green, xHalf, 3, CInt(xHalf * (1 - FFWheel_Const.Magnitude / 10000)), 3)
+                Dim xCP As Integer = CInt(xHalf * (1 - FFWheel_Cond.CenterPointOffset / 10000))
+                g.DrawLine(Pens.DarkOrchid, xCP - 1, 5, xCP - CInt(xHalf * FFWheel_Cond.NegCoeff / 10000), 5)
+                g.DrawLine(Pens.DarkOrchid, xCP + 1, 5, xCP + CInt(xHalf * FFWheel_Cond.PosCoeff / 10000), 5)
+                lbWheelPos.ResumeLayout()
+            End With
         End If
+
+        ' SEND SERIAL DATA TO ARDUINO:
+        SerialPort1.DiscardOutBuffer()
+        SerialPort1.DiscardInBuffer()
+        SerialPort1.Write(toArduino.GetSerialData, 0, SerialSend.PacketLen) ' example: 255 0 128 128 0 0 0
+
+        ' FOR DEBUGGING :
+        'ErrorAdd("Send " & String.Join(" ", toArduino.GetSerialData), "")
+
+        ' NOW WE WAIT FOR RESPONSE FROM SERIAL....
+    End Sub
+
+
+    Private Sub SerialPort1_DataReceived(sender As Object, e As SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
+        ' READ SERIAL DATA FROM ARDUINO:
+
+        Dim fromArduino As New SerialRead
+
+        ' FOR DEBUGGING :
+        'Dim buf(512) As Byte ' maximum number of bytes to read. Only the number of bytes in the input buffer will be assigned to this array.
+        'SerialPort1.Read(buf, 0, buf.Length)
+        'ErrorAdd("Rcvd " & String.Join(" ", buf), "")
+
+
+        Try
+            If SerialPort1.BytesToRead < SerialRead.PacketLen Then ' !!! the DataReceived event is also raised if an Eof character is received, regardless of the number of bytes in the internal input buffer and the value of the ReceivedBytesThreshold property
+                ErrorAdd("SerialPort1  BytesToRead=" & SerialPort1.BytesToRead, "    EventType=" & e.EventType)
+                Return ' will wait for more data
+            End If
+
+            Dim buf(120) As Byte ' maximum number of bytes to read. Only the number of bytes in the input buffer will be assigned to this array.
+            SerialPort1.Read(buf, 0, buf.Length)
+
+            If buf(0) < 192 Then
+                ErrorAdd("SerialPort1  received BAD checkdigit  =" & buf(0), "discarding them")
+                GoTo goReturn ' TODO: we should give some delay before we send data to arduino again...
+            End If
+            If (buf(0) And 2) <> 0 Then
+                ErrorAdd("ARDUINO says he GOT INVALID DATA", "")
+                GoTo goReturn ' TODO: we should give some delay before we send data to arduino again...
+            End If
+
+            Static _MainsPowerOK As Boolean
+            If (buf(0) And 1) = 1 AndAlso _MainsPowerOK = True Then
+                _MainsPowerOK = False
+                lbMainsPower.Text = "Mains Power OFF"
+                lbMainsPower.BackColor = Color.DeepSkyBlue
+                ErrorAdd("No Mains power / MainsPower freq lower", "than 50Hz+5%")
+            ElseIf (buf(0) And 1) = 0 AndAlso _MainsPowerOK = False Then
+                _MainsPowerOK = True
+                lbMainsPower.Text = "Mains Power ON"
+                lbMainsPower.BackColor = Color.HotPink
+                ErrorAdd("Mains power OK", "")
+            End If
+
+            ' this fills fromArduino with the data red from the Arduino !!
+            fromArduino.SetSerialData(buf)
+
+        Catch ex As Exception
+            ErrorAdd("EXCEPTION SerialPort1", ".DataReceived  " & ex.Message)
+            GoTo goReturn ' TODO: we should give some delay before we send data to arduino again...
+        End Try
+
+
+        If chkArduinoTime.Checked Then lbArduinoTime.Text = Now.Subtract(ArduinoLastRead).TotalMilliseconds ' computer precision is no better than 10 ms !
+        'txtErrors.Text = Now.Subtract(timeStart).Ticks.ToString("0000000") & "    " & timeRead.Subtract(timeSent).Ticks.ToString("0000000")
+        PreviousArduinoLastRead = ArduinoLastRead
+        ArduinoLastRead = Now
+        PreviousWheelPosition = WheelPosition
+        WheelPosition = fromArduino.WheelPosition
+        _realLeft = fromArduino.RealLeft - SettingsMain.GLeftScrewCenter
+        _realRight = fromArduino.RealRight - SettingsMain.GRightScrewCenter
 
         With fromArduino
             Dim j As New vJoyInterfaceWrap.vJoy.JoystickState
@@ -448,19 +482,7 @@ Public Class frmCVJoy
         End If
 
         ' show lights on screen:
-        If Me.WindowState <> FormWindowState.Minimized AndAlso Not ckDontShow.Checked Then
-            With toArduino
-                Dim g As System.Drawing.Graphics = lbWheelPos.CreateGraphics()
-                g.Clear(Color.White)
-                Dim xHalf As Integer = CInt(lbWheelPos.Width / 2)
-                g.DrawLine(If(Math.Abs(WheelPosition) >= 16380, Pens.Red, Pens.Blue), xHalf, 1, CInt(xHalf * (1 + WheelPosition / 16384)), 1)
-                g.DrawLine(If(Math.Abs(.wheelPower) >= 235, If(Math.Abs(.wheelPower) >= 235, Pens.Red, Pens.Orange), Pens.Blue), xHalf, 7, CInt(xHalf * (1 - .wheelPower / 255)), 7)
-                g.DrawLine(Pens.Green, xHalf, 3, CInt(xHalf * (1 - FFWheel_Const.Magnitude / 10000)), 3)
-                Dim xCP As Integer = CInt(xHalf * (1 - FFWheel_Cond.CenterPointOffset / 10000))
-                g.DrawLine(Pens.DarkOrchid, xCP - 1, 5, xCP - CInt(xHalf * FFWheel_Cond.NegCoeff / 10000), 5)
-                g.DrawLine(Pens.DarkOrchid, xCP + 1, 5, xCP + CInt(xHalf * FFWheel_Cond.PosCoeff / 10000), 5)
-                lbWheelPos.ResumeLayout()
-            End With
+        If Not ckDontShow.Checked AndAlso Me.WindowState <> FormWindowState.Minimized Then
             With fromArduino
                 lbAccel.Text = .pedalAccel
                 lbBrake.Text = .pedalBreak
@@ -496,21 +518,35 @@ Public Class frmCVJoy
         If graph IsNot Nothing Then graph.UpdatePedals(fromArduino)
 
 goReturn:
-        'txtErrors.Text = Now.Subtract(timeStart).Ticks.ToString("0000000") & "    " & timeRead.Subtract(timeSent).Ticks.ToString("0000000")
-        TimerProcessing = False
+        '  TODO: could have a counter of Sent/Received 
+    End Sub
+
+    Private Sub SerialPort1_ErrorReceived(sender As Object, e As SerialErrorReceivedEventArgs)
+        MsgBox(e.ToString)
+    End Sub
+
+    Private Sub SerialPort1_PinChanged(sender As Object, e As SerialPinChangedEventArgs)
+        MsgBox(e.ToString)
     End Sub
 
 
+    Public Sub ErrorAdd(pNewErrorDescr As String, pExtraInfo As String, Optional pFF As Boolean = False)
+        If pFF = False AndAlso chkLogHideDups.Checked Then
+            If txtErrors.Text.Contains(pNewErrorDescr) Then Return
+            txtErrors.Text = Strings.Left(pNewErrorDescr & "  " & pExtraInfo & vbCrLf & txtErrors.Text, 1000)
+        Else
+            txtErrors.Text = Strings.Left(Now.ToLongTimeString & "  " & pNewErrorDescr & "  " & pExtraInfo & vbCrLf & txtErrors.Text, 5000)
+        End If
+        'txtErrors.SelectionStart = 32767 : txtErrors.ScrollToCaret()
+    End Sub
 
+    Private Sub btLogClear_Click(sender As Object, e As EventArgs) Handles btLogClear.Click
+        txtErrors.Text = ""
+    End Sub
 
     Private Sub btWheelCenter_Click(sender As Object, e As EventArgs) Handles btWheelCenter.Click
         WheelPositionOffset = True
     End Sub
-
-
-
-
-
 
     Private Sub btSetup_Click(sender As Object, e As EventArgs) Handles btSetup.Click
         If Me.OwnedForms.Any(Function(f) TypeOf f Is frmSetup) Then
@@ -520,30 +556,6 @@ goReturn:
             tmpFrm.Init(Me)
         End If
     End Sub
-
-    Public Sub ErrorAdd(pNewErrorDescr As String, pExtraInfo As String, Optional pFF As Boolean = False)
-        If pFF = False AndAlso chkLog.Checked = False Then
-            If txtErrors.Text.Contains(pNewErrorDescr) Then Return
-            txtErrors.Text = Strings.Left(pNewErrorDescr & "  " & pExtraInfo & vbCrLf & txtErrors.Text, 1000)
-        Else
-            txtErrors.Text = Strings.Left(Now.ToLongTimeString & "  " & pNewErrorDescr & "  " & pExtraInfo & vbCrLf & txtErrors.Text, 1000)
-        End If
-        'txtErrors.SelectionStart = 32767 : txtErrors.ScrollToCaret()
-    End Sub
-
-    Private Sub SerialPort1_ErrorReceived(sender As Object, e As SerialErrorReceivedEventArgs) Handles SerialPort1.ErrorReceived
-        MsgBox(e.ToString)
-    End Sub
-
-    Private Sub btLogClear_Click(sender As Object, e As EventArgs) Handles btLogClear.Click
-        txtErrors.Text = ""
-    End Sub
-
-    Private Sub SerialPort1_PinChanged(sender As Object, e As SerialPinChangedEventArgs) Handles SerialPort1.PinChanged
-        MsgBox(e.ToString)
-    End Sub
-
-
 
     Private Sub ckKeepVisible_CheckedChanged(sender As Object, e As EventArgs) Handles ckKeepVisible.CheckedChanged
         Me.TopMost = ckKeepVisible.Checked
@@ -691,20 +703,18 @@ goReturn:
 
 
     Private Sub frmCVJoy_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
-        Timer1.Interval = 60000
-        Timer1.Enabled = False
-        System.Threading.Thread.Sleep(700) ' give time for sub Timer1_Tick to finnish
         If Game IsNot Nothing Then Game.Stop()
         Game = Nothing
-        If SerialPort1.IsOpen Then
-            SerialPort1.DiscardInBuffer()
-            SerialPort1.Close()
-        End If
+
+        If SerialPort1.IsOpen Then ArduinoStart(Nothing, Nothing) ' this stops arduino 
+        SerialPort1 = Nothing
+
         If Joy IsNot Nothing Then
             'Joy.FfbStop(SettingsMain.vJoyId)
             Joy.RelinquishVJD(SettingsMain.vJoyId)
             Joy = Nothing
         End If
+
         e.Cancel = False
     End Sub
 

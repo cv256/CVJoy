@@ -191,7 +191,7 @@ Public Class GameAC
     End Sub
 
     Private Function FFWind(SpeedKmh As Single, pAccG1 As Single) As Integer
-        Dim res As Integer = (If(SpeedKmh > Me.MinSpeed, SpeedKmh / Me.MaxSpeed, 0) + pAccG1 / Me.SpeedMaxJump) * 255 ' typical 0~255, but can get to something like -2000~2000
+        Dim res As Integer = (If(SpeedKmh > Me.MinSpeed, (SpeedKmh - Me.MinSpeed) / (Me.MaxSpeed - Me.MinSpeed), 0) + pAccG1 / Me.SpeedMaxJump) * 255 ' typical 0~255, but can get to something like -2000~2000
         If graph IsNot Nothing Then graph.UpdateWind(res)
         Return res
     End Function

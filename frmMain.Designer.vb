@@ -22,9 +22,7 @@ Partial Class frmCVJoy
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Me.btArduinoStart = New System.Windows.Forms.Button()
-        Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
         Me.G1 = New System.Windows.Forms.Label()
         Me.G2 = New System.Windows.Forms.Label()
         Me.G3 = New System.Windows.Forms.Label()
@@ -33,7 +31,6 @@ Partial Class frmCVJoy
         Me.G6 = New System.Windows.Forms.Label()
         Me.GR = New System.Windows.Forms.Label()
         Me.lbHandbrake = New System.Windows.Forms.Label()
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.lbAttitude = New System.Windows.Forms.Label()
         Me.btSetup = New System.Windows.Forms.Button()
         Me.txtErrors = New System.Windows.Forms.TextBox()
@@ -63,7 +60,7 @@ Partial Class frmCVJoy
         Me.chkFFIgnore = New System.Windows.Forms.CheckBox()
         Me.chkArduinoTime = New System.Windows.Forms.CheckBox()
         Me.lbArduinoTime = New System.Windows.Forms.Label()
-        Me.chkLog = New System.Windows.Forms.CheckBox()
+        Me.chkLogHideDups = New System.Windows.Forms.CheckBox()
         Me.btLogClear = New System.Windows.Forms.Button()
         Me.chkUDP = New System.Windows.Forms.CheckBox()
         Me.UcButtons1 = New CVJoy.ucButtons()
@@ -78,13 +75,6 @@ Partial Class frmCVJoy
         Me.btArduinoStart.TabIndex = 0
         Me.btArduinoStart.Text = "Connect to Arduino"
         Me.btArduinoStart.UseVisualStyleBackColor = False
-        '
-        'SerialPort1
-        '
-        Me.SerialPort1.BaudRate = 115200
-        Me.SerialPort1.ReadBufferSize = 128
-        Me.SerialPort1.ReceivedBytesThreshold = 2
-        Me.SerialPort1.WriteBufferSize = 128
         '
         'G1
         '
@@ -181,9 +171,6 @@ Partial Class frmCVJoy
         Me.lbHandbrake.TabIndex = 20
         Me.lbHandbrake.Text = "Brake"
         Me.lbHandbrake.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'Timer1
-        '
         '
         'lbAttitude
         '
@@ -331,11 +318,11 @@ Partial Class frmCVJoy
         '
         'cbLogFF
         '
-        Me.cbLogFF.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cbLogFF.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbLogFF.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbLogFF.Location = New System.Drawing.Point(448, 262)
+        Me.cbLogFF.Location = New System.Drawing.Point(431, 328)
         Me.cbLogFF.Name = "cbLogFF"
-        Me.cbLogFF.Size = New System.Drawing.Size(75, 21)
+        Me.cbLogFF.Size = New System.Drawing.Size(92, 21)
         Me.cbLogFF.TabIndex = 125
         '
         'chkFFConst
@@ -490,28 +477,30 @@ Partial Class frmCVJoy
         Me.lbArduinoTime.TabIndex = 141
         Me.lbArduinoTime.Text = "000"
         '
-        'chkLog
+        'chkLogHideDups
         '
-        Me.chkLog.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.chkLog.BackColor = System.Drawing.Color.Transparent
-        Me.chkLog.Checked = True
-        Me.chkLog.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkLog.Location = New System.Drawing.Point(448, 244)
-        Me.chkLog.Name = "chkLog"
-        Me.chkLog.Size = New System.Drawing.Size(75, 17)
-        Me.chkLog.TabIndex = 142
-        Me.chkLog.Text = "Log Errors"
-        Me.chkLog.UseMnemonic = False
-        Me.chkLog.UseVisualStyleBackColor = False
+        Me.chkLogHideDups.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.chkLogHideDups.BackColor = System.Drawing.Color.Transparent
+        Me.chkLogHideDups.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.chkLogHideDups.Checked = True
+        Me.chkLogHideDups.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkLogHideDups.Location = New System.Drawing.Point(431, 310)
+        Me.chkLogHideDups.Name = "chkLogHideDups"
+        Me.chkLogHideDups.Size = New System.Drawing.Size(92, 17)
+        Me.chkLogHideDups.TabIndex = 142
+        Me.chkLogHideDups.Text = "Hide dups"
+        Me.chkLogHideDups.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.chkLogHideDups.UseMnemonic = False
+        Me.chkLogHideDups.UseVisualStyleBackColor = False
         '
         'btLogClear
         '
-        Me.btLogClear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btLogClear.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btLogClear.BackColor = System.Drawing.Color.Gold
         Me.btLogClear.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btLogClear.Location = New System.Drawing.Point(448, 284)
+        Me.btLogClear.Location = New System.Drawing.Point(431, 350)
         Me.btLogClear.Name = "btLogClear"
-        Me.btLogClear.Size = New System.Drawing.Size(75, 20)
+        Me.btLogClear.Size = New System.Drawing.Size(92, 20)
         Me.btLogClear.TabIndex = 143
         Me.btLogClear.Text = "Clear"
         Me.btLogClear.UseVisualStyleBackColor = False
@@ -546,7 +535,7 @@ Partial Class frmCVJoy
         Me.Controls.Add(Me.chkUDP)
         Me.Controls.Add(Me.UcButtons1)
         Me.Controls.Add(Me.btLogClear)
-        Me.Controls.Add(Me.chkLog)
+        Me.Controls.Add(Me.chkLogHideDups)
         Me.Controls.Add(Me.chkArduinoTime)
         Me.Controls.Add(Me.chkFFIgnore)
         Me.Controls.Add(Me.chkNoMotors)
@@ -601,10 +590,8 @@ Partial Class frmCVJoy
     Friend WithEvents G6 As Label
     Friend WithEvents GR As Label
     Friend WithEvents lbHandbrake As Label
-    Friend WithEvents Timer1 As Timer
     Friend WithEvents lbAttitude As Label
     Friend WithEvents btSetup As Button
-    Public WithEvents SerialPort1 As IO.Ports.SerialPort
     Public WithEvents txtErrors As TextBox
     Friend WithEvents lbWheelPos As Label
     Friend WithEvents btWheelCenter As Button
@@ -632,7 +619,7 @@ Partial Class frmCVJoy
     Friend WithEvents chkFFIgnore As CheckBox
     Friend WithEvents chkArduinoTime As CheckBox
     Friend WithEvents lbArduinoTime As Label
-    Friend WithEvents chkLog As CheckBox
+    Friend WithEvents chkLogHideDups As CheckBox
     Friend WithEvents btLogClear As Button
     Friend WithEvents UcButtons1 As ucButtons
     Friend WithEvents chkUDP As CheckBox

@@ -6,7 +6,7 @@
     Public shakePower As Byte
     Public WheelPositionOffset As Boolean
 
-    Public Const PacketLen As Byte = 7
+    Public Const PacketLen As Byte = 6
 
     Public Function GetSerialData() As Byte()
         Dim res(PacketLen - 1) As Byte
@@ -16,14 +16,6 @@
         res(3) = rightPower + 128
         res(4) = windPower
         res(5) = shakePower
-        Return res
-    End Function
-
-    Public Overrides Function ToString() As String
-        Dim res As String = ""
-        For Each b As Byte In GetSerialData()
-            res &= b & "  "
-        Next
         Return res
     End Function
 
