@@ -298,7 +298,7 @@ Partial Class frmCVJoy
         '
         Me.ckKeepVisible.AutoSize = True
         Me.ckKeepVisible.BackColor = System.Drawing.Color.Transparent
-        Me.ckKeepVisible.Location = New System.Drawing.Point(116, 46)
+        Me.ckKeepVisible.Location = New System.Drawing.Point(136, 46)
         Me.ckKeepVisible.Name = "ckKeepVisible"
         Me.ckKeepVisible.Size = New System.Drawing.Size(84, 17)
         Me.ckKeepVisible.TabIndex = 105
@@ -461,11 +461,11 @@ Partial Class frmCVJoy
         '
         Me.chkArduinoTime.AutoSize = True
         Me.chkArduinoTime.BackColor = System.Drawing.Color.Transparent
-        Me.chkArduinoTime.Location = New System.Drawing.Point(234, 46)
+        Me.chkArduinoTime.Location = New System.Drawing.Point(271, 46)
         Me.chkArduinoTime.Name = "chkArduinoTime"
-        Me.chkArduinoTime.Size = New System.Drawing.Size(108, 17)
+        Me.chkArduinoTime.Size = New System.Drawing.Size(69, 17)
         Me.chkArduinoTime.TabIndex = 140
-        Me.chkArduinoTime.Text = "Show Arduino ms"
+        Me.chkArduinoTime.Text = "Show Hz"
         Me.chkArduinoTime.UseVisualStyleBackColor = False
         '
         'lbArduinoTime

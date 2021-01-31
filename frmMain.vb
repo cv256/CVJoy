@@ -4,7 +4,7 @@ Imports System.Net
 
 Public Class frmCVJoy
     Private WithEvents SerialPort1 As New IO.Ports.SerialPort
-    Public WithEvents Timer1 As New Timer
+    Public WithEvents Timer1 As New System.Timers.Timer
     Private GameOutputs As clGameOutputs
     Public Joy As vJoyInterfaceWrap.vJoy ' http://vjoystick.sourceforge.net/site/includes/SDK_ReadMe.pdf
     Private FFGain As Single = 255
@@ -48,6 +48,7 @@ Public Class frmCVJoy
         cbGames.SelectedIndex = 0 ' TODO: SettingsMain should keep that last cbGames.SelectedIndex used, and here we should use that
 
         Timer1.Interval = 1000 / SettingsMain.RefreshRate
+        Timer1.AutoReset = False
 
         btVJoy_Click()
     End Sub
@@ -110,12 +111,13 @@ Public Class frmCVJoy
         End If
     End Sub
 
-    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        TimerTickCounter += 1
+    Private Sub Timer1_Elapsed(sender As Object, e As EventArgs) Handles Timer1.Elapsed
         SendToArduino()
     End Sub
 
     Private Sub SendToArduino()
+        TimerTickCounter += 1
+
         ' prepare data to send to the Arduino :
         Dim toArduino As New SerialSend
         With toArduino
@@ -308,10 +310,9 @@ Public Class frmCVJoy
         'SerialPort1.Read(buf, 0, buf.Length)
         'ErrorAdd("Rcvd " & String.Join(" ", buf), "")
 
-
         Try
             If SerialPort1.BytesToRead < SerialRead.PacketLen Then ' !!! the DataReceived event is also raised if an Eof character is received, regardless of the number of bytes in the internal input buffer and the value of the ReceivedBytesThreshold property
-                ErrorAdd("SerialPort1  BytesToRead=" & SerialPort1.BytesToRead, "    EventType=" & e.EventType)
+                ErrorAdd("Only " & SerialPort1.BytesToRead, " bytes")
                 Return ' will wait for more data
             End If
 
@@ -349,7 +350,7 @@ Public Class frmCVJoy
         End Try
 
 
-        If chkArduinoTime.Checked Then lbArduinoTime.Text = Now.Subtract(ArduinoLastRead).TotalMilliseconds ' computer precision is no better than 10 ms !
+        If chkArduinoTime.Checked Then lbArduinoTime.Text = (1000 / Now.Subtract(ArduinoLastRead).TotalMilliseconds).ToString("0")
         'txtErrors.Text = Now.Subtract(timeStart).Ticks.ToString("0000000") & "    " & timeRead.Subtract(timeSent).Ticks.ToString("0000000")
         PreviousArduinoLastRead = ArduinoLastRead
         ArduinoLastRead = Now
@@ -427,8 +428,8 @@ Public Class frmCVJoy
         ' send UDP:
         If chkUDP.Checked AndAlso Game IsNot Nothing AndAlso Game.Started Then
             Dim udpBytes As Byte()
-            If TimerTickCounter Mod 2 = 0 Then
-                If TimerTickCounter >= 20 Then
+            If TimerTickCounter Mod 3 = 0 Then
+                If TimerTickCounter >= 30 Then
                     TimerTickCounter = 0
                     udpBytes = New Byte(33) {}
                     With Game.UpdateExtra()
@@ -519,6 +520,7 @@ Public Class frmCVJoy
 
 goReturn:
         '  TODO: could have a counter of Sent/Received 
+        Timer1.Enabled = True  ' SendToArduino()
     End Sub
 
     Private Sub SerialPort1_ErrorReceived(sender As Object, e As SerialErrorReceivedEventArgs)
