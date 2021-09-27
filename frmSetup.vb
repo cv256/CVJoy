@@ -34,6 +34,7 @@ Public Class frmSetup
         txtWheelPowerGama.Text = SettingsMain.WheelPowerGama
         txtWheelPowerFactor.Text = SettingsMain.WheelPowerFactor.ToString("0.00")
         txtWheelDampFactor.Text = SettingsMain.WheelDampFactor.ToString("+0000;-0000")
+        txtWheelInertia.Text = SettingsMain.WheelInertia * 100
 
         txtAccelMin.Text = SettingsMain.AccelMin
         txtAccelMax.Text = SettingsMain.AccelMax
@@ -77,6 +78,7 @@ Public Class frmSetup
         res &= ValidateNumber(txtWheelPowerGama, 0, 800, "Wheel FF Power Gama")
         res &= ValidateNumber(txtWheelPowerFactor, 0.5, 3, "Wheel FF Power Factor")
         res &= ValidateNumber(txtWheelDampFactor, -9999, 9999, "Wheel FF Damp Factor")
+        res &= ValidateNumber(txtWheelInertia, -100, 100, "Wheel Inertia Compensation")
 
         res &= ValidateNumber(txtAccelMin, 0, 1023, "Accelerator Min")
         res &= ValidateNumber(txtAccelMax, 0, 1023, "Accelerator Max")
@@ -130,6 +132,7 @@ Public Class frmSetup
         SettingsMain.WheelPowerGama = txtWheelPowerGama.Text
         SettingsMain.WheelPowerFactor = txtWheelPowerFactor.Text
         SettingsMain.WheelDampFactor = txtWheelDampFactor.Text
+        SettingsMain.WheelInertia = CInt(txtWheelInertia.Text) / 100
 
         SettingsMain.AccelMin = txtAccelMin.Text
         SettingsMain.AccelMax = txtAccelMax.Text
@@ -177,12 +180,12 @@ Public Class frmSetup
 
 
     Private Sub btTest_MouseDown(sender As Object, e As MouseEventArgs) Handles _
-            btTestWheelLeft.MouseDown, btTestWheelRight.MouseDown, btTestWind.MouseDown, btTestShake.MouseDown
+            btTestWheelLeft.MouseDown, btTestWheelRight.MouseDown, btTestWheelCenter.MouseDown, btTestWind.MouseDown, btTestShake.MouseDown
         If txt_Validate(pShowMsg:=True) > "" Then Return
         With CType(Me.Owner, frmCVJoy)
-            If sender.Equals(btTestWheelLeft) OrElse sender.Equals(btTestWheelRight) Then
-                .TestValue = CInt(txtWheelPowerForMin.Text) * If(sender.Equals(btTestWheelLeft), 1, -1)
-                .TestMode = frmCVJoy.Motor.Wheel
+            If sender.Equals(btTestWheelLeft) OrElse sender.Equals(btTestWheelRight) OrElse sender.Equals(btTestWheelCenter) Then
+                .TestValue = CInt(txtWheelPowerForMin.Text) * If(sender.Equals(btTestWheelRight), -1, 1)
+                .TestMode = If(sender.Equals(btTestWheelCenter), frmCVJoy.Motor.WheelCenter, frmCVJoy.Motor.Wheel)
             ElseIf sender.Equals(btTestWind) Then
                 .TestValue = CInt(txtWindMin.Text)
                 .TestMode = frmCVJoy.Motor.Wind
@@ -219,7 +222,7 @@ Public Class frmSetup
         End With
     End Sub
     Private Sub btTest_MouseUp(sender As Object, e As MouseEventArgs) Handles Me.MouseUp, Me.MouseMove, UcControlGGraph1.MouseMove, UcControlGraph1.MouseMove _
-        , btTestWheelLeft.MouseUp, btTestWheelRight.MouseUp _
+        , btTestWheelLeft.MouseUp, btTestWheelRight.MouseUp, btTestWheelCenter.MouseUp _
         , btTestGDown.MouseUp, btTestGUp.MouseUp, btTestGLeft.MouseUp, btTestGRight.MouseUp _
         , btTestGLeftDown.MouseUp, btTestGLeftUp.MouseUp, btTestGRightDown.MouseUp, btTestGRightUp.MouseUp _
         , btTestWind.MouseUp, btTestShake.MouseUp

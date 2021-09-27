@@ -47,7 +47,7 @@ Name=Battery
 Definition=Battery
 Shape=Battery
 Mask=7937
-Used=54
+Used=55
 memo=Battery
 Label Offset=19,7,10,13
 PinCnt=2
@@ -59,7 +59,7 @@ Name=Resistor
 Definition=Resistor
 Shape=Resistor
 Mask=6913
-Used=154
+Used=150
 memo=Resistor
 Label Offset=18,6,8,11
 PinCnt=2
@@ -78,7 +78,7 @@ PinCnt=1
 Pin="PinA",0,0,-3,-7
 
 [Circuit]
-Window Placement=2,3, -1,-1, -8,-31, 26,26,1191,423
+Window Placement=2,3, -1,-1, -8,-31, 78,78,1221,509
 Default Object=Color=#000080
 Default Object Font=Height=-15,FStyle=0,Color=#000080,Name=Arial
 Default Object Apply Border To Text=No
@@ -521,7 +521,7 @@ ALIGNBOTTOM=No
 
 [Section]
 Index=0
-Name="circuit1"
+Name="circuit2"
 Type=Main
 Enable=True
 CurrentPage 0=0

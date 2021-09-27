@@ -22,6 +22,7 @@
     Public WheelPowerForMin As Integer = 29
     Public WheelPowerFactor As Single = 1.0
     Public WheelDampFactor As Integer = 500
+    Public WheelInertia As Single = 0
 
     Public WindMinPower As Integer = 32
     Public WindGama As Single = 150

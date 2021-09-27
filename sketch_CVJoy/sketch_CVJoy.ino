@@ -173,6 +173,7 @@ void loop()
   }
 */
   if (Serial.available() >= packetLen) {  // data that’s already arrived and stored in the serial receive buffer (which holds 64 bytes)
+    byte serialWrite[15];
     // READ from computer / write to hardware: --------------------- must be equal to CVJoyAc.SerialSend
     byte wheelMotorPowerDir = Serial.read(); // 0  checkdigit + wheelMotorPowerDir
 	lastSerialRecv = millis();
@@ -201,7 +202,7 @@ void loop()
 	if (digitalRead(pinButton9) == LOW) tmpByte += 32;
 	if (micros()-lastMainsZero > 11000) tmpByte += 1; // No Mains power / MainsPower freq lower than 50Hz+10%
 	if (wheelMotorPowerDir<253) tmpByte += 2; // Arduino got invalid data from computer
-	Serial.write(tmpByte); //0
+	serialWrite[0]=tmpByte;
 	tmpByte = 0;
 	if (digitalRead(pinButton1) == LOW) tmpByte += 1;
 	if (digitalRead(pinButton2) == LOW) tmpByte += 2;
@@ -211,7 +212,7 @@ void loop()
 	if (digitalRead(pinButton6) == LOW) tmpByte += 32;
 	if (digitalRead(pinButton7) == LOW) tmpByte += 64;
 	if (digitalRead(pinButton8) == LOW) tmpByte += 128;
-	Serial.write(tmpByte);//1
+	serialWrite[1]=tmpByte;
 	tmpByte = 0;
 	if (digitalRead(pinGear1) == LOW) tmpByte += 1;
 	if (digitalRead(pinGear2) == LOW) tmpByte += 2;
@@ -221,35 +222,36 @@ void loop()
 	if (digitalRead(pinGear6) == LOW) tmpByte += 32;
 	if (digitalRead(pinGearR) == LOW) tmpByte += 64;
 	if (digitalRead(pinHandbrake) == LOW) tmpByte += 128;
-	Serial.write(tmpByte);//2
+  serialWrite[2]=tmpByte;
 	unsigned int tmpUInt;
 	tmpUInt = analogRead(pinPedalAccel);
-	Serial.write(tmpUInt & 255);//3
-	Serial.write(tmpUInt / 256);//4
+  serialWrite[3]=tmpUInt & 255;
+  serialWrite[4]=tmpUInt / 256;
 	tmpUInt = analogRead(pinPedalBreak);
-	Serial.write(tmpUInt & 255);//5
-	Serial.write(tmpUInt / 256);//6
+  serialWrite[5]=tmpUInt & 255;
+  serialWrite[6]=tmpUInt / 256;
 	tmpUInt = analogRead(pinPedalClutch);
-	Serial.write(tmpUInt & 255);//7
-	Serial.write(tmpUInt / 256);//8
-	Serial.write(wheelPosition & 255);//9
-	Serial.write(wheelPosition / 256);//10
+  serialWrite[7]=tmpUInt & 255;
+  serialWrite[8]=tmpUInt / 256;
+  serialWrite[9]=wheelPosition & 255;
+  serialWrite[10]=wheelPosition / 256;
 
 	// Read Left Distance :
 	digitalWrite(pinLeftUSSend, HIGH);// The PING is triggered by a HIGH pulse of 10 or more microseconds
 	delayMicroseconds(12);
 	digitalWrite(pinLeftUSSend, LOW);
 	tmpUInt=pulseIn(pinLeftUSRead, HIGH, 2100); // microseconds of (total) sound travel, timeout at 70cm;
-	Serial.write(tmpUInt & 255);//11
-	Serial.write(tmpUInt / 256);//12
+  serialWrite[11]=tmpUInt & 255;
+  serialWrite[12]=tmpUInt / 256;
 	// Read Right Distance :
 	digitalWrite(pinRightUSSend, HIGH);// The PING is triggered by a HIGH pulse of 10 or more microseconds
 	delayMicroseconds(12);
 	digitalWrite(pinRightUSSend, LOW);
 	tmpUInt=pulseIn(pinRightUSRead, HIGH, 2100); // microseconds of (total) sound travel, timeout at 70cm;
-	Serial.write(tmpUInt & 255);//13
-	Serial.write(tmpUInt / 256);//14
+  serialWrite[13]=tmpUInt & 255;
+  serialWrite[14]=tmpUInt / 256;
 
+  Serial.write(serialWrite, 15);
 
     // waste eventual excessive data :   (communication error)
     while ( Serial.available() ) { 

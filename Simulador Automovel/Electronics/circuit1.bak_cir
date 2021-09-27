@@ -7,7 +7,7 @@ Shape Version=11.00
 Screen=1360,768
 MCAPVersion=12.0.2.0
 Key ID=Demo
-NLCnt=47
+NLCnt=45
 TXCnt=0
 
 [shapedef]
@@ -56,11 +56,6 @@ Line=18,-4,18,4
 Line=24,0,24,0
 
 [shapedef]
-Name=Plus.root
-Line=-2,0,2,0
-Line=0,-2,0,2
-
-[shapedef]
 Name=Resistor
 PolyOpen=12
 PolyLine=0,0
@@ -76,25 +71,6 @@ PolyLine=36,0
 PolyLine=48,0
 PolyLine=48,0
 Current=32,8,16,8
-
-[shapedef]
-Name=Sine_Source
-Root="Vsource.root",0,0,0
-Line=24,-6,26,-4
-Line=26,-4,26,-2
-Line=26,-2,22,2
-Line=22,2,22,4
-Line=22,4,24,6
-
-[shapedef]
-Name=Vsource.root
-Line=0,0,12,0
-Line=36,0,48,0
-Ellipse=12,-12,36,12
-FColor=None
-Line=7,5,7,9
-Root="Plus.root",41,7,0
-Current=32,16,16,16
 
 [shapedef]
 Name=Zener
@@ -118,7 +94,7 @@ Name=Resistor
 Definition=Resistor
 Shape=Resistor
 Mask=6913
-Used=149
+Used=148
 memo=Resistor
 Label Offset=18,6,8,11
 PinCnt=2
@@ -130,7 +106,7 @@ Name=Animated Meter
 Definition=ANIMATED METER
 Shape=Animated Meter
 Mask=4096
-Used=2
+Used=1
 memo=Animated Digital/Analog Volt/Amp Meter
 Label Offset=68,98,19,51
 PinCnt=2
@@ -142,7 +118,7 @@ Name=Battery
 Definition=Battery
 Shape=Battery
 Mask=7937
-Used=51
+Used=52
 memo=Battery
 Label Offset=19,7,10,13
 PinCnt=2
@@ -150,23 +126,11 @@ Pin="Plus",6,0,-4,-5
 Pin="Minus",0,0,-10,-5
 
 [compdef]
-Name=Diode
-Definition=Diode
-Shape=Diode
-Mask=5377
-Used=10
-memo=Diode
-Label Offset=17,10,12,12
-PinCnt=2
-Pin="Anode",6,0,-9,-8
-Pin="Cathode",0,0,-20,-8
-
-[compdef]
 Name=Zener
 Definition=Diode
 Shape=Zener
 Mask=4096
-Used=5
+Used=3
 memo=Zener diode
 Label Offset=16,11,16,11
 PinCnt=2
@@ -174,28 +138,28 @@ Pin="Anode",6,0,-14,-2
 Pin="Cathode",0,0,-26,-2
 
 [compdef]
-Name=Sine Source
-Definition=Sine source
-Shape=Sine_Source
-Mask=4864
-Used=1
-memo=Sine Source
-Label Offset=18,12,15,12
-PinCnt=2
-Pin="Plus",6,0,-6,-6
-Pin="Minus",0,0,-19,-6
-
-[compdef]
 Name=Capacitor
 Definition=Capacitor
 Shape=Capacitor
 Mask=7425
-Used=23
+Used=22
 memo=Capacitor
 Label Offset=16,12,12,12
 PinCnt=2
 Pin="Plus",6,0,-3,-5
 Pin="Minus",0,0,-14,-5
+
+[compdef]
+Name=Diode
+Definition=Diode
+Shape=Diode
+Mask=5377
+Used=11
+memo=Diode
+Label Offset=17,10,12,12
+PinCnt=2
+Pin="Anode",6,0,-9,-8
+Pin="Cathode",0,0,-20,-8
 
 [TitleBlockDef]
 Name=DefaultOld
@@ -222,22 +186,22 @@ Default Object Font=Height=-15,FStyle=0,Color=#000080,Name=Arial
 Default Object Apply Border To Text=No
 Default Object Apply Fill To Text=No
 Default Object GridSnap=No
-NodeVoltageFormat=3
-CurrentFormat=3
-PowerFormat=3
+NodeVoltageFormat=0F
+CurrentFormat=0F
+PowerFormat=0F
 PathDelayFormat=3
 WarningFormat=3
 GridTextFormulaFormat=3
-Window Placement in Transient Analysis=2,3, -1,-1, -8,-31, 26,26,1195,454
+Window Placement in Transient Analysis=0,1, -1,-1, -8,-31, 0,0,1347,530
 Window Placement in AC Analysis=2,3, -1,-1, -8,-31, 52,52,1221,480
 Window Placement in DC Analysis=2,3, -1,-1, -8,-31, 104,104,1273,532
-Window Placement in DC Probe=0,1, -1,-1, -8,-31, 673,0,1346,606
+Window Placement in DC Probe=0,1, -1,-1, -8,-31, 673,0,1346,534
 SpiceType=AMBIGUOUS
 Title_Block_Border=None
 Title_Block=False
 Show Nodes=False
-Show Voltages=False
-Show Current=False
+Show Voltages=True
+Show Current=True
 Show Power=True
 Show Condition=False
 Show Pin Connections=False
@@ -380,7 +344,7 @@ Style=8192
 Pxs=136,64,232,64
 
 [Wire]
-Pxs=136,64,136,80
+Pxs=136,64,136,96
 
 [Wire]
 Pxs=136,288,136,472
@@ -397,14 +361,14 @@ Style=8192
 
 [Attr]
 ON=8,-39,RESISTANCE
-V=16
+V=19
 Style=8192
 
 [Wire]
 Pxs=40,184,40,240
 
 [Wire]
-Pxs=40,64,40,80
+Pxs=40,64,40,136
 
 [Wire]
 Pxs=40,288,40,472
@@ -421,46 +385,12 @@ Style=8192
 
 [Attr]
 ON=-38,-41,VALUE
-V=28.8
+V=29
 Style=8192
 
 [Attr]
 ON=0,44,POWER
 V=50
-
-[Comp]
-Name=Diode
-Px=40,80
-Rot=7
-
-[Attr]
-ON=-29,12,PART
-V=D1
-Style=8192
-
-[Attr]
-ON=-28,26,MODEL
-V=$GENERIC
-
-[Wire]
-Pxs=40,128,40,136
-
-[Comp]
-Name=Diode
-Px=136,80
-Rot=7
-
-[Attr]
-ON=-29,12,PART
-V=D2
-Style=8192
-
-[Attr]
-ON=-28,26,MODEL
-V=$GENERIC
-
-[Wire]
-Pxs=136,128,136,240
 
 [Wire]
 Pxs=88,472,136,472
@@ -555,24 +485,6 @@ ON=16,53,PACKAGE
 V=DO-41
 
 [Comp]
-Name=Sine Source
-Px=40,288
-Rot=3
-
-[Attr]
-ON=-31,-26,PART
-V=V1
-Style=8192
-
-[Attr]
-ON=-40,-40,MODEL
-V=1MHZ
-
-[Attr]
-ON=0,0,PACKAGE
-V
-
-[Comp]
 Name=Capacitor
 Px=408,280
 Rot=5
@@ -584,18 +496,12 @@ Style=8192
 
 [Attr]
 ON=-39,-43,CAPACITANCE
-V=4700
+V=1
 Style=8192
 
 [Attr]
 ON=0,0,PACKAGE
 V
-
-[Wire]
-Pxs=408,64,408,232
-
-[Wire]
-Pxs=408,64,464,64
 
 [Wire]
 Pxs=408,280,408,472
@@ -647,6 +553,52 @@ V=DO-41
 
 [Wire]
 Pxs=184,472,232,472
+
+[Wire]
+Pxs=408,64,408,232
+
+[Wire]
+Pxs=408,64,464,64
+
+[Comp]
+Name=Battery
+Px=40,288
+Rot=3
+
+[Attr]
+ON=-26,-27,PART
+V=V1
+Style=8192
+
+[Attr]
+ON=-38,-41,VALUE
+V=80
+Style=8192
+
+[Attr]
+ON=0,44,POWER
+V=50
+
+[Comp]
+Name=Diode
+Px=136,96
+Rot=7
+
+[Attr]
+ON=-29,12,PART
+V=D9
+Style=8192
+
+[Attr]
+ON=-12,40,MODEL
+V=$GENERIC
+
+[Attr]
+ON=-12,68,PACKAGE
+V=DO-41
+
+[Wire]
+Pxs=136,144,136,240
 
 [Schematic]
 CurrentSection 0=0
@@ -843,7 +795,7 @@ Scale 0=1
 Scale 1=1
 Scale 2=1
 Scale 3=1
-Px=140,106
+Px=183,209
 WinBackGround Color=#FFFFFF
 Select Color=#FF0000
 Anchor Color=#000000
@@ -907,7 +859,7 @@ Type=Text
 Print=False
 Enable=True
 Name=Models
-SB 0=0,2
+SB 0=68,16
 Font=Height=-15,FStyle=0,Color=#000000,Name=Courier New
 Comment Color=#008000
 WinBackGround Color=#FFFFFF
@@ -963,7 +915,7 @@ Text=*** 10MHz Sinusoidal Source
 Text=.MODEL GENERAL SIN (F=10MEG)
 Text=*** From file C:\Program Files (x86)\MicroCap12Demo\library\UTILITY.LBR
 Text=*** 1MHz Sinusoidal Source
-Text=.MODEL 1MHZ SIN (A=80 F=150)
+Text=.MODEL 1MHZ SIN (A=78 F=150)
 Text=*** From file C:\Program Files (x86)\MicroCap12Demo\library\UTILITY.LBR
 Text=*** 0 Phase Leg
 Text=.MODEL 3PHASEA SIN (A=169.7 F=60)
@@ -1000,7 +952,7 @@ SimulationLog=True
 
 [Transient]
 WinID=1
-Window Placement=2,3, -1,-1, -8,-31, 26,26,1195,454
+Window Placement=0,1, -1,-1, -8,-31, 673,8,1346,516
 Font=Height=-15,FStyle=0,Color=#0000FF,Name=Arial
 WinBackGround Color=#FFFFFF
 Select Color=#FF0000
@@ -1065,11 +1017,11 @@ FFT_IncludeDCHarmonic=False
 FFT_AutoScale_Harmonics="10"
 PrinterAutoTile=No
 PrinterBlackBorder=No
-MonMaxShow=3
+MonMaxShow=4
 MonPageWidth=66
 MonPlotWidth=21
 MonExprXWidth=142
-MonExprYWidth=260
+MonExprYWidth=195
 MonRangeXWidth=90
 MonRangeYWidth=90
 AnimateWait=None
@@ -1217,6 +1169,10 @@ ALIGNRIGHT=No
 ALIGNTOP=No
 ALIGNMIDDLES=No
 ALIGNBOTTOM=No
+
+[APage]
+Analysis=Transient
+Name="MAIN"
 
 [AC]
 WinID=2
@@ -1432,6 +1388,10 @@ ALIGNTOP=No
 ALIGNMIDDLES=No
 ALIGNBOTTOM=No
 
+[APage]
+Analysis=AC
+Name="MAIN"
+
 [DC]
 WinID=3
 Window Placement=2,3, -1,-1, -8,-31, 104,104,1273,532
@@ -1440,7 +1400,7 @@ WinBackGround Color=#FFFFFF
 Select Color=#FF0000
 Anchor Color=#000000
 Select Box Color=#000080
-Window Placement in Probe=0,1, -1,-1, 0,0, 0,0,673,606
+Window Placement in Probe=0,1, -1,-1, 0,0, 0,0,673,534
 Title
 AutoTitle=Yes
 Grid Color=#808080
@@ -1674,7 +1634,8 @@ Seed=0
 
 [Limits]
 Analysis=Transient
-TMax=1u
+TMax=2
+TStart=0
 TStep=0
 NPts=51
 Temp=27
@@ -1689,11 +1650,13 @@ IgnoreExprErrors=False
 Analysis=Transient
 Plt=1
 AliasID=1
-XExp=T
-YExp=v(1)
-XRng=Auto
-YRng=Auto
+XExp=v(v1)
+YExp=v(v1)
+XRng=80,0
+YRng=80,0
 Options=LINEARX,LINEARY
+Range Grid X=16
+Range Grid Y=30
 Enable=Enable
 Line Color=#0000FF
 Text Color=#0000FF
@@ -1711,8 +1674,15 @@ NOFmtY=3
 
 [WaveForm]
 Analysis=Transient
-AliasID=-1
+Plt=1
+AliasID=2
+XExp=v(v1)
+YExp=v(meter1)
+XRng=80,0
+YRng=80,0
 Options=LINEARX,LINEARY
+Range Grid X=16
+Range Grid Y=30
 Enable=Enable
 Line Color=#FF0000
 Text Color=#FF0000
@@ -1731,7 +1701,38 @@ NOFmtY=3
 [WaveForm]
 Analysis=Transient
 AliasID=-1
+XExp=v(v1)
+YExp=-v(d5)
+XRng=80,0
+YRng=80,0
 Options=LINEARX,LINEARY
+Range Grid X=16
+Range Grid Y=30
+Enable=Enable
+Line Color=#FF0000
+Text Color=#FF0000
+Rainbow=False
+VFmtX=3
+VFmtY=3
+ScaleFactorX="None"
+ScaleFactorY="None"
+ScaleUnitsX="Auto"
+ScaleUnitsY="Auto"
+SFmtX=3
+SFmtY=3
+NOFmtX=3
+NOFmtY=3
+
+[WaveForm]
+Analysis=Transient
+AliasID=-1
+XExp=v(v1)
+YExp=-i(d5)
+XRng=80,0
+YRng=2,0
+Options=LINEARX,LINEARY
+Range Grid X=16
+Range Grid Y=0.4
 Enable=Enable
 Line Color=#008000
 Text Color=#008000
@@ -1771,9 +1772,11 @@ Plt=1
 AliasID=1
 XExp=F
 YExp=db(v(1))
-XRng=Auto
-YRng=Auto
+XRng=1e+8,1e+6
+YRng=-308.712,-308.714
 Options=LINEARY
+Range Grid X=1.98e+7
+Range Grid Y=0.0004
 Enable=Enable
 Line Color=#0000FF
 Text Color=#0000FF
@@ -1795,9 +1798,11 @@ Plt=2
 AliasID=2
 XExp=F
 YExp=ph(v(1))
-XRng=Auto
-YRng=Auto
+XRng=1e+8,1e+6
+YRng=0.3,-1.2
 Options=LINEARY
+Range Grid X=1.98e+7
+Range Grid Y=0.3
 Enable=Enable
 Line Color=#FF0000
 Text Color=#FF0000
@@ -1969,9 +1974,11 @@ TextPx=256,264
 
 [Pane]
 Analysis=Transient
+CurrentPage 0="MAIN"
 
 [Pane]
 Analysis=AC
+CurrentPage 0="MAIN"
 
 [Pane]
 Analysis=DC
@@ -2015,6 +2022,38 @@ UseFile=<Library>Standard.tlib
 AVAILABLE_FILE=<Library>Standard.tlib
 
 [Slider]
+Analysis=DC
+Link="V1(DC)"
+Min="0"
+Max="80"
+Default="0"
+Format=3
+Method=Linear
+Show=False
+Font=Height=-15,FStyle=0,Color=#000000,Name=Arial
+StepSize="10%"
+MRUDockID=59421
+Floating=False
+LocalOffset=True
+Rect=-2,-2,57,158
+
+[Slider]
+Analysis=DC
+Link="V1(A)"
+Min="20"
+Max="80"
+Default="0"
+Format=3
+Method=Linear
+Show=True
+Font=Height=-15,FStyle=0,Color=#000000,Name=Arial
+StepSize="10%"
+MRUDockID=59421
+Floating=False
+LocalOffset=True
+Rect=-2,-2,45,158
+
+[Slider]
 Analysis=DynamicDC
 Link="V1"
 Min="0"
@@ -2034,13 +2073,13 @@ Rect=-2,-2,44,158
 Analysis=DynamicDC
 Link="V1"
 Min="0"
-Max="78"
+Max="80"
 Default
 Format=3
 Method=Linear
 Show=True
 Font=Height=-15,FStyle=0,Color=#000000,Name=Arial
-StepSize="10%"
+StepSize="10"
 MRUDockID=59421
 Floating=False
 LocalOffset=True

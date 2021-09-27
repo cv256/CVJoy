@@ -155,6 +155,10 @@ Partial Class frmSetup
         Me.Label69 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.txtUdpIp = New System.Windows.Forms.MaskedTextBox()
+        Me.btTestWheelCenter = New System.Windows.Forms.Button()
+        Me.Label16 = New System.Windows.Forms.Label()
+        Me.txtWheelInertia = New System.Windows.Forms.MaskedTextBox()
+        Me.Label27 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'Label3
@@ -1553,11 +1557,57 @@ Partial Class frmSetup
         Me.txtUdpIp.Size = New System.Drawing.Size(108, 20)
         Me.txtUdpIp.TabIndex = 273
         '
+        'btTestWheelCenter
+        '
+        Me.btTestWheelCenter.BackColor = System.Drawing.Color.Gold
+        Me.btTestWheelCenter.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btTestWheelCenter.Location = New System.Drawing.Point(376, 113)
+        Me.btTestWheelCenter.Name = "btTestWheelCenter"
+        Me.btTestWheelCenter.Size = New System.Drawing.Size(71, 20)
+        Me.btTestWheelCenter.TabIndex = 274
+        Me.btTestWheelCenter.Text = "Test Center"
+        Me.btTestWheelCenter.UseVisualStyleBackColor = False
+        '
+        'Label16
+        '
+        Me.Label16.AutoSize = True
+        Me.Label16.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label16.Location = New System.Drawing.Point(323, 124)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(13, 12)
+        Me.Label16.TabIndex = 277
+        Me.Label16.Text = "%"
+        '
+        'txtWheelInertia
+        '
+        Me.txtWheelInertia.AllowPromptAsInput = False
+        Me.txtWheelInertia.BeepOnError = True
+        Me.txtWheelInertia.HidePromptOnLeave = True
+        Me.txtWheelInertia.Location = New System.Drawing.Point(295, 119)
+        Me.txtWheelInertia.Mask = "#990"
+        Me.txtWheelInertia.Name = "txtWheelInertia"
+        Me.txtWheelInertia.Size = New System.Drawing.Size(25, 20)
+        Me.txtWheelInertia.TabIndex = 276
+        Me.txtWheelInertia.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label27
+        '
+        Me.Label27.AutoSize = True
+        Me.Label27.Location = New System.Drawing.Point(183, 123)
+        Me.Label27.Name = "Label27"
+        Me.Label27.Size = New System.Drawing.Size(108, 13)
+        Me.Label27.TabIndex = 275
+        Me.Label27.Text = "Inertia compensation:"
+        '
         'frmSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(770, 466)
+        Me.Controls.Add(Me.Label16)
+        Me.Controls.Add(Me.txtWheelInertia)
+        Me.Controls.Add(Me.Label27)
+        Me.Controls.Add(Me.btTestWheelCenter)
         Me.Controls.Add(Me.txtUdpIp)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.UcControlGGraph1)
@@ -1826,4 +1876,8 @@ Partial Class frmSetup
     Friend WithEvents Label69 As Label
     Friend WithEvents Label4 As Label
     Friend WithEvents txtUdpIp As MaskedTextBox
+    Friend WithEvents btTestWheelCenter As Button
+    Friend WithEvents Label16 As Label
+    Friend WithEvents txtWheelInertia As MaskedTextBox
+    Friend WithEvents Label27 As Label
 End Class

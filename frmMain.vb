@@ -24,6 +24,7 @@ Public Class frmCVJoy
     Public Enum Motor
         None
         Wheel
+        WheelCenter
         Pitch
         Roll
         Left
@@ -133,6 +134,8 @@ Public Class frmCVJoy
 
             If TestMode = Motor.Wheel Then
                 .wheelPower = TestValue
+            ElseIf TestMode = Motor.WheelCenter Then
+                .wheelPower = If(WheelPosition < 0, -TestValue, If(WheelPosition > 0, TestValue, 0))
             Else
                 If WheelPosition <= -16380 Then
                     .wheelPower = -255
@@ -142,6 +145,10 @@ Public Class frmCVJoy
                     .wheelPower = FFSteer(WheelPosition)
                 End If
             End If
+            Dim tmpInt As Integer = .wheelPower ' just to swap
+            Static lastwheelPower As Integer
+            .wheelPower = Math.Min(Math.Max(.wheelPower + CInt((.wheelPower - lastwheelPower) * SettingsMain.WheelInertia), -255), 255)
+            lastwheelPower = tmpInt
 
             If TestMode = Motor.Wind Then
                 .windPower = TestValue
@@ -279,7 +286,7 @@ Public Class frmCVJoy
                 g.Clear(Color.White)
                 Dim xHalf As Integer = CInt(lbWheelPos.Width / 2)
                 g.DrawLine(If(Math.Abs(WheelPosition) >= 16380, Pens.Red, Pens.Blue), xHalf, 1, CInt(xHalf * (1 + WheelPosition / 16384)), 1)
-                g.DrawLine(If(Math.Abs(.wheelPower) >= 235, If(Math.Abs(.wheelPower) >= 235, Pens.Red, Pens.Orange), Pens.Blue), xHalf, 7, CInt(xHalf * (1 - .wheelPower / 255)), 7)
+                g.DrawLine(If(Math.Abs(.wheelPower) >= 235, If(Math.Abs(.wheelPower) >= 255, Pens.Red, Pens.Orange), Pens.Blue), xHalf, 7, CInt(xHalf * (1 - .wheelPower / 255)), 7)
                 g.DrawLine(Pens.Green, xHalf, 3, CInt(xHalf * (1 - FFWheel_Const.Magnitude / 10000)), 3)
                 Dim xCP As Integer = CInt(xHalf * (1 - FFWheel_Cond.CenterPointOffset / 10000))
                 g.DrawLine(Pens.DarkOrchid, xCP - 1, 5, xCP - CInt(xHalf * FFWheel_Cond.NegCoeff / 10000), 5)

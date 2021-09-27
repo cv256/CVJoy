@@ -156,17 +156,13 @@ Public Class GameAC
         ' res.LastTime = ACG.iLastTime
         ' res.BestTime = ACG.iBestTime
 
-        Static oldDistance As Single
         Static oldFuel As Single
-        Dim deltaDistance As Single = (ACG.DistanceTraveled - oldDistance)
-        If deltaDistance < 1 Then
+        If ACG.DistanceTraveled < 1 Then
             res.FuelAvg = 0
+            oldFuel = ACP.Fuel
         Else
-            deltaDistance = (oldFuel - ACP.Fuel) * 10000000 / deltaDistance
-            res.FuelAvg = Math.Min(Math.Abs(deltaDistance), Integer.MaxValue)
+            res.FuelAvg = Math.Min(Math.Abs((oldFuel - ACP.Fuel) * 10000000 / ACG.DistanceTraveled), Integer.MaxValue)
         End If
-        oldDistance = ACG.DistanceTraveled
-        oldFuel = ACP.Fuel
 
         Return res
     End Function
