@@ -67,6 +67,7 @@ Public Class frmCVJoy
         End If
         Game.LoadSettingsFromFile()
         UcButtons1.ShowSettings()
+        UcButtons1.Descriptions = True
         UcButtons1.ReadOnly = True
     End Sub
 

@@ -30,6 +30,9 @@
 
 
     Public Bt(17) As String
+    Public BtDescr(17) As String
+
+    ' these PP are used by Reflection in clSettings.SaveSettingstoFile() and LoadSettingsFromFile() !!!!
     Public Property Bts() As String
         Get
             Return String.Join("£", Bt)
@@ -39,6 +42,19 @@
             For i As Integer = 0 To Bt.Length - 1
                 If i >= tmp.Length Then Exit For
                 Bt(i) = tmp(i)
+            Next
+        End Set
+    End Property
+
+    Public Property BtDescrs() As String
+        Get
+            Return String.Join("£", BtDescr)
+        End Get
+        Friend Set(value As String)
+            Dim tmp() As String = value.Split("£"c)
+            For i As Integer = 0 To BtDescr.Length - 1
+                If i >= tmp.Length Then Exit For
+                BtDescr(i) = tmp(i)
             Next
         End Set
     End Property
