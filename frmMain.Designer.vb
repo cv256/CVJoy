@@ -69,7 +69,7 @@ Partial Class frmCVJoy
         'btArduinoStart
         '
         Me.btArduinoStart.BackColor = System.Drawing.Color.Gold
-        Me.btArduinoStart.Location = New System.Drawing.Point(431, 184)
+        Me.btArduinoStart.Location = New System.Drawing.Point(459, 184)
         Me.btArduinoStart.Name = "btArduinoStart"
         Me.btArduinoStart.Size = New System.Drawing.Size(108, 22)
         Me.btArduinoStart.TabIndex = 0
@@ -177,7 +177,7 @@ Partial Class frmCVJoy
         Me.lbAttitude.BackColor = System.Drawing.Color.White
         Me.lbAttitude.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.lbAttitude.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbAttitude.Location = New System.Drawing.Point(368, 0)
+        Me.lbAttitude.Location = New System.Drawing.Point(397, 0)
         Me.lbAttitude.Name = "lbAttitude"
         Me.lbAttitude.Size = New System.Drawing.Size(170, 170)
         Me.lbAttitude.TabIndex = 81
@@ -186,7 +186,7 @@ Partial Class frmCVJoy
         'btSetup
         '
         Me.btSetup.BackColor = System.Drawing.Color.Gold
-        Me.btSetup.Location = New System.Drawing.Point(366, 184)
+        Me.btSetup.Location = New System.Drawing.Point(396, 184)
         Me.btSetup.Name = "btSetup"
         Me.btSetup.Size = New System.Drawing.Size(59, 22)
         Me.btSetup.TabIndex = 82
@@ -206,7 +206,7 @@ Partial Class frmCVJoy
         Me.txtErrors.Multiline = True
         Me.txtErrors.Name = "txtErrors"
         Me.txtErrors.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.txtErrors.Size = New System.Drawing.Size(540, 142)
+        Me.txtErrors.Size = New System.Drawing.Size(567, 142)
         Me.txtErrors.TabIndex = 83
         Me.txtErrors.WordWrap = False
         '
@@ -217,7 +217,7 @@ Partial Class frmCVJoy
         Me.lbWheelPos.ImageAlign = System.Drawing.ContentAlignment.TopLeft
         Me.lbWheelPos.Location = New System.Drawing.Point(0, 172)
         Me.lbWheelPos.Name = "lbWheelPos"
-        Me.lbWheelPos.Size = New System.Drawing.Size(538, 9)
+        Me.lbWheelPos.Size = New System.Drawing.Size(567, 9)
         Me.lbWheelPos.TabIndex = 86
         Me.lbWheelPos.UseMnemonic = False
         '
@@ -225,7 +225,7 @@ Partial Class frmCVJoy
         '
         Me.btWheelCenter.BackColor = System.Drawing.Color.Gold
         Me.btWheelCenter.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btWheelCenter.Location = New System.Drawing.Point(250, 152)
+        Me.btWheelCenter.Location = New System.Drawing.Point(254, 152)
         Me.btWheelCenter.Name = "btWheelCenter"
         Me.btWheelCenter.Size = New System.Drawing.Size(59, 20)
         Me.btWheelCenter.TabIndex = 88
@@ -309,7 +309,7 @@ Partial Class frmCVJoy
         '
         Me.chkNoWind.AutoSize = True
         Me.chkNoWind.BackColor = System.Drawing.Color.Transparent
-        Me.chkNoWind.Location = New System.Drawing.Point(275, 186)
+        Me.chkNoWind.Location = New System.Drawing.Point(87, 187)
         Me.chkNoWind.Name = "chkNoWind"
         Me.chkNoWind.Size = New System.Drawing.Size(89, 17)
         Me.chkNoWind.TabIndex = 114
@@ -320,7 +320,7 @@ Partial Class frmCVJoy
         '
         Me.cbLogFF.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbLogFF.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbLogFF.Location = New System.Drawing.Point(431, 328)
+        Me.cbLogFF.Location = New System.Drawing.Point(458, 328)
         Me.cbLogFF.Name = "cbLogFF"
         Me.cbLogFF.Size = New System.Drawing.Size(92, 21)
         Me.cbLogFF.TabIndex = 125
@@ -356,7 +356,7 @@ Partial Class frmCVJoy
         'btGameStart
         '
         Me.btGameStart.BackColor = System.Drawing.Color.Gold
-        Me.btGameStart.Location = New System.Drawing.Point(431, 207)
+        Me.btGameStart.Location = New System.Drawing.Point(459, 207)
         Me.btGameStart.Name = "btGameStart"
         Me.btGameStart.Size = New System.Drawing.Size(108, 22)
         Me.btGameStart.TabIndex = 129
@@ -372,14 +372,14 @@ Partial Class frmCVJoy
         Me.lbGameInfo.ForeColor = System.Drawing.SystemColors.InfoText
         Me.lbGameInfo.Location = New System.Drawing.Point(1, 228)
         Me.lbGameInfo.Name = "lbGameInfo"
-        Me.lbGameInfo.Size = New System.Drawing.Size(539, 13)
+        Me.lbGameInfo.Size = New System.Drawing.Size(566, 13)
         Me.lbGameInfo.TabIndex = 128
         Me.lbGameInfo.Text = "   connection to selected game..."
         '
         'btGameSetup
         '
         Me.btGameSetup.BackColor = System.Drawing.Color.Gold
-        Me.btGameSetup.Location = New System.Drawing.Point(366, 207)
+        Me.btGameSetup.Location = New System.Drawing.Point(396, 207)
         Me.btGameSetup.Name = "btGameSetup"
         Me.btGameSetup.Size = New System.Drawing.Size(59, 22)
         Me.btGameSetup.TabIndex = 130
@@ -390,7 +390,7 @@ Partial Class frmCVJoy
         '
         Me.cbGames.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbGames.FormattingEnabled = True
-        Me.cbGames.Location = New System.Drawing.Point(155, 208)
+        Me.cbGames.Location = New System.Drawing.Point(188, 208)
         Me.cbGames.Name = "cbGames"
         Me.cbGames.Size = New System.Drawing.Size(203, 21)
         Me.cbGames.TabIndex = 133
@@ -428,7 +428,7 @@ Partial Class frmCVJoy
         '
         Me.chkNoMotors.AutoSize = True
         Me.chkNoMotors.BackColor = System.Drawing.Color.Transparent
-        Me.chkNoMotors.Location = New System.Drawing.Point(155, 186)
+        Me.chkNoMotors.Location = New System.Drawing.Point(211, 187)
         Me.chkNoMotors.Name = "chkNoMotors"
         Me.chkNoMotors.Size = New System.Drawing.Size(112, 17)
         Me.chkNoMotors.TabIndex = 137
@@ -484,7 +484,7 @@ Partial Class frmCVJoy
         Me.chkLogHideDups.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.chkLogHideDups.Checked = True
         Me.chkLogHideDups.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkLogHideDups.Location = New System.Drawing.Point(431, 310)
+        Me.chkLogHideDups.Location = New System.Drawing.Point(458, 310)
         Me.chkLogHideDups.Name = "chkLogHideDups"
         Me.chkLogHideDups.Size = New System.Drawing.Size(92, 17)
         Me.chkLogHideDups.TabIndex = 142
@@ -498,7 +498,7 @@ Partial Class frmCVJoy
         Me.btLogClear.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btLogClear.BackColor = System.Drawing.Color.Gold
         Me.btLogClear.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btLogClear.Location = New System.Drawing.Point(431, 350)
+        Me.btLogClear.Location = New System.Drawing.Point(458, 350)
         Me.btLogClear.Name = "btLogClear"
         Me.btLogClear.Size = New System.Drawing.Size(92, 20)
         Me.btLogClear.TabIndex = 143
@@ -511,7 +511,7 @@ Partial Class frmCVJoy
         Me.chkUDP.BackColor = System.Drawing.Color.Transparent
         Me.chkUDP.Checked = True
         Me.chkUDP.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkUDP.Location = New System.Drawing.Point(93, 186)
+        Me.chkUDP.Location = New System.Drawing.Point(2, 187)
         Me.chkUDP.Name = "chkUDP"
         Me.chkUDP.Size = New System.Drawing.Size(49, 17)
         Me.chkUDP.TabIndex = 145
@@ -523,7 +523,8 @@ Partial Class frmCVJoy
         Me.UcButtons1.Location = New System.Drawing.Point(2, 0)
         Me.UcButtons1.Name = "UcButtons1"
         Me.UcButtons1.ReadOnly = False
-        Me.UcButtons1.Size = New System.Drawing.Size(360, 36)
+        Me.UcButtons1.ShowDescriptions = False
+        Me.UcButtons1.Size = New System.Drawing.Size(391, 37)
         Me.UcButtons1.TabIndex = 144
         '
         'frmCVJoy
@@ -531,7 +532,7 @@ Partial Class frmCVJoy
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
-        Me.ClientSize = New System.Drawing.Size(540, 386)
+        Me.ClientSize = New System.Drawing.Size(567, 386)
         Me.Controls.Add(Me.chkUDP)
         Me.Controls.Add(Me.UcButtons1)
         Me.Controls.Add(Me.btLogClear)

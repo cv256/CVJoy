@@ -6,18 +6,18 @@
         _FrmCVJoy = pOwner
         Game = pGame
 
-        ShowSettings(Game)
+        ShowFromGameSettings()
         Me.Show(pOwner)
     End Sub
 
-    Private Sub ShowSettings(pGame As GameStd)
-        txtWheelSensitivity.Text = (pGame.WheelSensitivity * 100).ToString("+0000;-0000")
+    Private Sub ShowFromGameSettings()
+        txtWheelSensitivity.Text = (Game.WheelSensitivity * 100).ToString("+0000;-0000")
         'txtRPM1.Text = pGame.Rpm1 * 100
         'txtSpeedMinInput.Text = pGame.MinSpeed
         'txtSpeedMaxJump.Text = pGame.SpeedMaxJump.ToString("+0.0;-0.0")
         'txtTurn.Text = (pGame.Turn * 57.3).ToString("00.0")
 
-        UcButtons1.ShowSettings()
+        UcButtons1.ShowFromGameSettings()
     End Sub
 
     Private Function txt_Validate(pShowMsg As Boolean) As String
@@ -32,28 +32,29 @@
         Return res
     End Function
 
-    Private Function UseSettings() As Boolean
+    Private Function StoreToGameSettings() As Boolean
         If txt_Validate(pShowMsg:=True) > "" Then Return False
         'Game.Rpm1 = txtRPM1.Text / 100
         'Game.MinSpeed = txtSpeedMinInput.Text
         'Game.SpeedMaxJump = txtSpeedMaxJump.Text.Replace("G", "")
         'Game.Turn = CDec(txtTurn.Text) / 10 / 57.3
         Game.WheelSensitivity = CInt(txtWheelSensitivity.Text) / 100
-        UcButtons1.UseSettings()
-        _FrmCVJoy.UcButtons1.ShowSettings()
+        UcButtons1.StoreToGameSettings()
+        _FrmCVJoy.UcButtons1.ShowFromGameSettings()
         Return True
     End Function
 
     Private Sub btDefaults_Click(sender As Object, e As EventArgs) Handles btDefaults.Click
-        ShowSettings(New GameStd(_FrmCVJoy))
+        Game = New GameStd(_FrmCVJoy)
+        ShowFromGameSettings()
     End Sub
 
     Private Sub btApply_Click(sender As Object, e As EventArgs) Handles btApply.Click
-        UseSettings()
+        StoreToGameSettings()
     End Sub
 
     Private Sub btSave_Click(sender As Object, e As EventArgs) Handles btSave.Click
-        If Not UseSettings() Then Return
+        If Not StoreToGameSettings() Then Return
         Game.SaveSettingstoFile()
     End Sub
 

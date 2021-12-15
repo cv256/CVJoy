@@ -123,8 +123,6 @@ Partial Class frmSetup
         Me.txtLeftScrewCenter = New System.Windows.Forms.MaskedTextBox()
         Me.Label12 = New System.Windows.Forms.Label()
         Me.txtRightScrewCenter = New System.Windows.Forms.MaskedTextBox()
-        Me.UcControlGGraph1 = New CVJoy.ucControlGGraph()
-        Me.UcControlGraph1 = New CVJoy.ucControlGraph()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.txtUltrasonicDamper = New System.Windows.Forms.MaskedTextBox()
@@ -159,6 +157,8 @@ Partial Class frmSetup
         Me.Label16 = New System.Windows.Forms.Label()
         Me.txtWheelInertia = New System.Windows.Forms.MaskedTextBox()
         Me.Label27 = New System.Windows.Forms.Label()
+        Me.UcControlGGraph1 = New CVJoy.ucControlGGraph()
+        Me.UcControlGraph1 = New CVJoy.ucControlGraph()
         Me.SuspendLayout()
         '
         'Label3
@@ -858,7 +858,7 @@ Partial Class frmSetup
         Me.Label49.Name = "Label49"
         Me.Label49.Size = New System.Drawing.Size(767, 13)
         Me.Label49.TabIndex = 195
-        Me.Label49.Text = "Speed/Wind :"
+        Me.Label49.Text = "Wind :"
         Me.Label49.UseMnemonic = False
         '
         'Label50
@@ -1221,28 +1221,6 @@ Partial Class frmSetup
         Me.txtRightScrewCenter.TabIndex = 236
         Me.txtRightScrewCenter.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
-        'UcControlGGraph1
-        '
-        Me.UcControlGGraph1.BackColor = System.Drawing.Color.FromArgb(CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer))
-        Me.UcControlGGraph1.Dock = System.Windows.Forms.DockStyle.Top
-        Me.UcControlGGraph1.Location = New System.Drawing.Point(0, 0)
-        Me.UcControlGGraph1.Name = "UcControlGGraph1"
-        Me.UcControlGGraph1.Size = New System.Drawing.Size(770, 10)
-        Me.UcControlGGraph1.TabIndex = 225
-        Me.UcControlGGraph1.Visible = False
-        '
-        'UcControlGraph1
-        '
-        Me.UcControlGraph1.BackColor = System.Drawing.Color.FromArgb(CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer))
-        Me.UcControlGraph1.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.UcControlGraph1.Location = New System.Drawing.Point(0, 455)
-        Me.UcControlGraph1.Margin = New System.Windows.Forms.Padding(0)
-        Me.UcControlGraph1.Name = "UcControlGraph1"
-        Me.UcControlGraph1.Size = New System.Drawing.Size(770, 11)
-        Me.UcControlGraph1.TabIndex = 184
-        Me.UcControlGraph1.TabStop = False
-        Me.UcControlGraph1.Visible = False
-        '
         'Label8
         '
         Me.Label8.AutoSize = True
@@ -1316,7 +1294,7 @@ Partial Class frmSetup
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(767, 13)
         Me.Label19.TabIndex = 253
-        Me.Label19.Text = "Suspension/Shake :"
+        Me.Label19.Text = "Shake :"
         Me.Label19.UseMnemonic = False
         '
         'btTestShake
@@ -1388,11 +1366,11 @@ Partial Class frmSetup
         'Label34
         '
         Me.Label34.AutoSize = True
-        Me.Label34.Location = New System.Drawing.Point(484, 299)
+        Me.Label34.Location = New System.Drawing.Point(450, 299)
         Me.Label34.Name = "Label34"
-        Me.Label34.Size = New System.Drawing.Size(38, 13)
+        Me.Label34.Size = New System.Drawing.Size(71, 13)
         Me.Label34.TabIndex = 246
-        Me.Label34.Text = "Gama:"
+        Me.Label34.Text = "Power Gama:"
         '
         'txtGMinMotorEfficiency
         '
@@ -1598,6 +1576,28 @@ Partial Class frmSetup
         Me.Label27.Size = New System.Drawing.Size(108, 13)
         Me.Label27.TabIndex = 275
         Me.Label27.Text = "Inertia compensation:"
+        '
+        'UcControlGGraph1
+        '
+        Me.UcControlGGraph1.BackColor = System.Drawing.Color.FromArgb(CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer))
+        Me.UcControlGGraph1.Dock = System.Windows.Forms.DockStyle.Top
+        Me.UcControlGGraph1.Location = New System.Drawing.Point(0, 0)
+        Me.UcControlGGraph1.Name = "UcControlGGraph1"
+        Me.UcControlGGraph1.Size = New System.Drawing.Size(770, 10)
+        Me.UcControlGGraph1.TabIndex = 225
+        Me.UcControlGGraph1.Visible = False
+        '
+        'UcControlGraph1
+        '
+        Me.UcControlGraph1.BackColor = System.Drawing.Color.FromArgb(CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer))
+        Me.UcControlGraph1.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.UcControlGraph1.Location = New System.Drawing.Point(0, 455)
+        Me.UcControlGraph1.Margin = New System.Windows.Forms.Padding(0)
+        Me.UcControlGraph1.Name = "UcControlGraph1"
+        Me.UcControlGraph1.Size = New System.Drawing.Size(770, 11)
+        Me.UcControlGraph1.TabIndex = 184
+        Me.UcControlGraph1.TabStop = False
+        Me.UcControlGraph1.Visible = False
         '
         'frmSetup
         '

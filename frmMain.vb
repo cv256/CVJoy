@@ -66,8 +66,8 @@ Public Class frmCVJoy
             AddHandler Game.StateChanged, AddressOf GameStateChanged
         End If
         Game.LoadSettingsFromFile()
-        UcButtons1.ShowSettings()
-        UcButtons1.Descriptions = True
+        UcButtons1.ShowFromGameSettings()
+        UcButtons1.ShowDescriptions = True
         UcButtons1.ReadOnly = True
     End Sub
 
@@ -160,10 +160,13 @@ Public Class frmCVJoy
             End If
 
             If TestMode = Motor.Shake Then
+                .shakePower = 127
                 .shakePower = TestValue
             ElseIf Not chkNoWind.Checked Then
-                .shakePower = CalculateOutput(GameOutputs.Shake, 255, 1, SettingsMain.ShakeMinPower, SettingsMain.ShakeGama, 1)
+                .shakeSpeed = Math.Max(Math.Min(GameOutputs.ShakeSpeed, 255), 0)
+                .shakePower = CalculateOutput(GameOutputs.ShakePower + SettingsMain.ShakeMinPower, 255, 1, 0, SettingsMain.ShakeGama, 1)
             Else
+                .shakeSpeed = 0
                 .shakePower = 0
             End If
 
@@ -370,7 +373,6 @@ Public Class frmCVJoy
         With fromArduino
             Dim j As New vJoyInterfaceWrap.vJoy.JoystickState
 #Region "buttons:  emulate keystrokes  or  send as joystick buttons"
-            ' https://msdn.microsoft.com/en-us/library/system.windows.forms.sendkeys.send(v=vs.110).aspx
             Dim buttonBit As UInteger = 0
 
             If .buttons(0) Then ' if button0 is being pressed:      
@@ -379,7 +381,7 @@ Public Class frmCVJoy
                     If Game.Bt(i + 9) > "" Then
                         If .buttons(i) Then
                             If ButtonsLast(i) Then Continue For
-                            SendKeys.SendWait(Game.Bt(i + 9))
+                            MySendKeys(Game.Bt(i + 9))
                             ButtonOther = True
                         End If
                     ElseIf .buttons(i) Then
@@ -393,7 +395,7 @@ Public Class frmCVJoy
                 If ButtonsLast(0) Then ' if was pressed alone and we just released it:
                     If Not ButtonOther Then ' and no other button had been pressed
                         If Game.Bt(0) > "" Then
-                            SendKeys.SendWait(Game.Bt(0))
+                            MySendKeys(Game.Bt(0))
                         Else
                             buttonBit = 1
                         End If
@@ -404,7 +406,7 @@ Public Class frmCVJoy
                         If Game.Bt(i) > "" Then
                             If .buttons(i) Then
                                 If ButtonsLast(i) Then Continue For
-                                SendKeys.SendWait(Game.Bt(i))
+                                MySendKeys(Game.Bt(i))
                             End If
                         ElseIf .buttons(i) Then
                             buttonBit += 2 ^ i
@@ -529,6 +531,19 @@ Public Class frmCVJoy
 goReturn:
         '  TODO: could have a counter of Sent/Received 
         Timer1.Enabled = True  ' SendToArduino()
+    End Sub
+
+    Public Sub MySendKeys(keysToSend As String)
+        If keysToSend = "reset" Then
+            WheelPositionOffset = True
+            FFGain = 255
+            FFWheel_Type = FFBEType.ET_NONE
+            FFWheel_Cond = New vJoyInterfaceWrap.vJoy.FFB_EFF_COND
+            FFWheel_Const = New vJoyInterfaceWrap.vJoy.FFB_EFF_CONSTANT
+        Else
+            '' https://msdn.microsoft.com/en-us/library/system.windows.forms.sendkeys.send(v=vs.110).aspx
+            SendKeys.SendWait(keysToSend)
+        End If
     End Sub
 
     Private Sub SerialPort1_ErrorReceived(sender As Object, e As SerialErrorReceivedEventArgs)

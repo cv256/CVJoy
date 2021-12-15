@@ -63,7 +63,7 @@ Partial Class ucButtons
         Me.bt2.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt2.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt2.Location = New System.Drawing.Point(117, 1)
+        Me.bt2.Location = New System.Drawing.Point(120, 1)
         Me.bt2.MaxLength = 32000
         Me.bt2.Name = "bt2"
         Me.bt2.ShortcutsEnabled = False
@@ -77,7 +77,7 @@ Partial Class ucButtons
         Me.bt3.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt3.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt3.Location = New System.Drawing.Point(152, 1)
+        Me.bt3.Location = New System.Drawing.Point(155, 1)
         Me.bt3.MaxLength = 32000
         Me.bt3.Name = "bt3"
         Me.bt3.ShortcutsEnabled = False
@@ -91,7 +91,7 @@ Partial Class ucButtons
         Me.bt4.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt4.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt4.Location = New System.Drawing.Point(187, 1)
+        Me.bt4.Location = New System.Drawing.Point(190, 1)
         Me.bt4.MaxLength = 32000
         Me.bt4.Name = "bt4"
         Me.bt4.ShortcutsEnabled = False
@@ -105,7 +105,7 @@ Partial Class ucButtons
         Me.bt5.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt5.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt5.Location = New System.Drawing.Point(222, 1)
+        Me.bt5.Location = New System.Drawing.Point(225, 1)
         Me.bt5.MaxLength = 32000
         Me.bt5.Name = "bt5"
         Me.bt5.ShortcutsEnabled = False
@@ -119,7 +119,7 @@ Partial Class ucButtons
         Me.bt6.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt6.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt6.Location = New System.Drawing.Point(257, 1)
+        Me.bt6.Location = New System.Drawing.Point(260, 1)
         Me.bt6.MaxLength = 32000
         Me.bt6.Name = "bt6"
         Me.bt6.ShortcutsEnabled = False
@@ -133,7 +133,7 @@ Partial Class ucButtons
         Me.bt7.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt7.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt7.Location = New System.Drawing.Point(292, 1)
+        Me.bt7.Location = New System.Drawing.Point(298, 1)
         Me.bt7.MaxLength = 32000
         Me.bt7.Name = "bt7"
         Me.bt7.ShortcutsEnabled = False
@@ -147,7 +147,7 @@ Partial Class ucButtons
         Me.bt8.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt8.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt8.Location = New System.Drawing.Point(327, 1)
+        Me.bt8.Location = New System.Drawing.Point(333, 1)
         Me.bt8.MaxLength = 32000
         Me.bt8.Name = "bt8"
         Me.bt8.ShortcutsEnabled = False
@@ -222,7 +222,7 @@ Partial Class ucButtons
         Me.bt11.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt11.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt11.Location = New System.Drawing.Point(117, 19)
+        Me.bt11.Location = New System.Drawing.Point(120, 19)
         Me.bt11.MaxLength = 32000
         Me.bt11.Name = "bt11"
         Me.bt11.ShortcutsEnabled = False
@@ -236,7 +236,7 @@ Partial Class ucButtons
         Me.bt12.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt12.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt12.Location = New System.Drawing.Point(152, 19)
+        Me.bt12.Location = New System.Drawing.Point(155, 19)
         Me.bt12.MaxLength = 32000
         Me.bt12.Name = "bt12"
         Me.bt12.ShortcutsEnabled = False
@@ -250,7 +250,7 @@ Partial Class ucButtons
         Me.bt13.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt13.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt13.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt13.Location = New System.Drawing.Point(187, 19)
+        Me.bt13.Location = New System.Drawing.Point(190, 19)
         Me.bt13.MaxLength = 32000
         Me.bt13.Name = "bt13"
         Me.bt13.ShortcutsEnabled = False
@@ -264,7 +264,7 @@ Partial Class ucButtons
         Me.bt14.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt14.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt14.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt14.Location = New System.Drawing.Point(222, 19)
+        Me.bt14.Location = New System.Drawing.Point(225, 19)
         Me.bt14.MaxLength = 32000
         Me.bt14.Name = "bt14"
         Me.bt14.ShortcutsEnabled = False
@@ -278,7 +278,7 @@ Partial Class ucButtons
         Me.bt15.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt15.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt15.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt15.Location = New System.Drawing.Point(257, 19)
+        Me.bt15.Location = New System.Drawing.Point(260, 19)
         Me.bt15.MaxLength = 32000
         Me.bt15.Name = "bt15"
         Me.bt15.ShortcutsEnabled = False
@@ -292,7 +292,7 @@ Partial Class ucButtons
         Me.bt16.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt16.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt16.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt16.Location = New System.Drawing.Point(292, 19)
+        Me.bt16.Location = New System.Drawing.Point(298, 19)
         Me.bt16.MaxLength = 32000
         Me.bt16.Name = "bt16"
         Me.bt16.ShortcutsEnabled = False
@@ -306,7 +306,7 @@ Partial Class ucButtons
         Me.bt17.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt17.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt17.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt17.Location = New System.Drawing.Point(327, 19)
+        Me.bt17.Location = New System.Drawing.Point(333, 19)
         Me.bt17.MaxLength = 32000
         Me.bt17.Name = "bt17"
         Me.bt17.ShortcutsEnabled = False
@@ -340,7 +340,7 @@ Partial Class ucButtons
         Me.Controls.Add(Me.bt7)
         Me.Controls.Add(Me.bt8)
         Me.Name = "ucButtons"
-        Me.Size = New System.Drawing.Size(361, 37)
+        Me.Size = New System.Drawing.Size(367, 37)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

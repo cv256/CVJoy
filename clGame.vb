@@ -64,7 +64,8 @@ End Class
 
 Public Structure clGameOutputs ' info that needs updating very frequently
     Public Wind As Integer  ' nominal is 0~255
-    Public Shake As Integer  ' nominal is 0~255
+    Public ShakeSpeed As Integer  ' nominal is 0~255
+    Public ShakePower As Integer  ' nominal is 0~255
     Public Pitch As Single ' radians
     Public Roll As Single ' radians
 

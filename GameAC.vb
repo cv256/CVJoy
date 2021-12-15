@@ -13,11 +13,18 @@ Public Class GameAC
     ' Public Rpm2 As Single = 0.93
     Public Slip As Short = 1
 
-    Public MinSpeed As Integer = 60
-    Public MaxSpeed As Integer = 230
-    Public SpeedMaxJump As Single = 0.7
-    Public ShakeMaxJump As Single = 3.5
-    Public ShakeMinJump As Single = 0.5
+    Public WindMinSpeed As Integer = 50
+    Public WindMaxSpeed As Integer = 290
+    Public WindMaxJump As Single = 1.1
+    Public WindMaxAccel As Single = 1.1
+
+    Public ShakeSpeedMinSpeed As Integer = 6
+    Public ShakeSpeedMaxSpeed As Integer = 320
+    Public ShakeSpeedMaxJump As Single = 1.1
+    Public ShakeSpeedMaxAccel As Single = 1.1
+
+    Public ShakePowerMaxJump As Single = 1.1
+    Public ShakePowerMaxAccel As Single = 1.1
 
     Public Pitch As Single = 0.26
     Public Roll As Single = 0.65
@@ -115,8 +122,9 @@ Public Class GameAC
         ' Set Output :
         res.Pitch = ACP.Pitch * Me.Pitch + Acceleration * Me.Accel ' everything in Radians (me.accel has allready been converted) ' acP.AccG(2) has lots of noise, unusable!
         res.Roll = -ACP.Roll * Me.Roll + Rotation * Me.Turn '' everything in Radians (me.turn has allready been converted)
-        res.Wind = FFWind(SpeedKmh:=ACP.SpeedKmh, pAccG1:=ACP.AccG(1))
-        res.Shake = FFShake(pAccG1:=ACP.AccG(1))
+        res.Wind = FFWind(SpeedKmh:=ACP.SpeedKmh, pAccGY:=ACP.AccG(1), pAccGZ:=ACP.AccG(2))
+        res.ShakeSpeed = FFShakeSpeed(SpeedKmh:=ACP.SpeedKmh, pAccGY:=ACP.AccG(1), pAccGZ:=ACP.AccG(2))
+        res.ShakePower = FFShakePower(pAccGY:=ACP.AccG(1), pAccGZ:=ACP.AccG(2))
 
         '' show raw AC data on screen:
         If tmpFrm IsNot Nothing AndAlso tmpFrm.WindowState <> FormWindowState.Minimized Then
@@ -186,19 +194,55 @@ Public Class GameAC
         End If
     End Sub
 
-    Private Function FFWind(SpeedKmh As Single, pAccG1 As Single) As Integer
-        Dim res As Integer = (If(SpeedKmh > Me.MinSpeed, (SpeedKmh - Me.MinSpeed) / (Me.MaxSpeed - Me.MinSpeed), 0) + pAccG1 / Me.SpeedMaxJump) * 255 ' typical 0~255, but can get to something like -2000~2000
+    Private Function FFWind(SpeedKmh As Single, pAccGY As Single, pAccGZ As Single) As Integer
+        Dim res As Integer = 0  ' typical 0~255, but can get to something like -2000~2000
+
+        If Me.WindMaxSpeed > Me.WindMinSpeed AndAlso SpeedKmh > Me.WindMinSpeed Then
+            res += (SpeedKmh - Me.WindMinSpeed) / (Me.WindMaxSpeed - Me.WindMinSpeed) * 255
+        End If
+
+        If Me.WindMaxJump > 0 AndAlso Math.Abs(pAccGY) > 0.05 Then
+            res += pAccGY / Me.WindMaxJump * 255
+        End If
+
+        If Me.WindMaxAccel > 0 AndAlso Math.Abs(pAccGZ) > 0.05 Then
+            res += pAccGZ / Me.WindMaxAccel * 255
+        End If
+
         If graph IsNot Nothing Then graph.UpdateWind(res)
         Return res
     End Function
 
-    Private Function FFShake(pAccG1 As Single) As Integer
-        Dim res As Single = pAccG1 ^ 2 * 20 ' percentage of ShakeMaxJump
-        If res < ShakeMinJump Then
-            res = 0
-        Else
-            res = ScaleValue(res, ShakeMinJump, ShakeMaxJump, 0, 255)
+    Private Function FFShakeSpeed(SpeedKmh As Single, pAccGY As Single, pAccGZ As Single) As Integer
+        Dim res As Integer = 0  ' typical 0~255, but can get to something like -2000~2000
+
+        If Me.ShakeSpeedMaxSpeed > Me.ShakeSpeedMinSpeed AndAlso SpeedKmh > Me.ShakeSpeedMinSpeed Then
+            res += (SpeedKmh - Me.ShakeSpeedMinSpeed) / (Me.ShakeSpeedMaxSpeed - Me.ShakeSpeedMinSpeed) * 255
         End If
+
+        If Me.ShakeSpeedMaxJump > 0 AndAlso Math.Abs(pAccGY) > 0.05 Then
+            res += pAccGY / Me.ShakeSpeedMaxJump * 255
+        End If
+
+        If Me.ShakeSpeedMaxAccel > 0 AndAlso Math.Abs(pAccGZ) > 0.05 Then
+            res += pAccGZ / Me.ShakeSpeedMaxAccel * 255
+        End If
+
+        ' If graph IsNot Nothing Then graph.UpdateShake(res)
+        Return res
+    End Function
+
+    Private Function FFShakePower(pAccGY As Single, pAccGZ As Single) As Integer
+        Dim res As Integer = 127  ' typical 0~255, but can get to something like -2000~2000
+
+        If Me.ShakePowerMaxJump > 0 AndAlso Math.Abs(pAccGY) > 0.05 Then
+            res += Math.Abs(pAccGY) / Me.ShakePowerMaxJump * 255
+        End If
+
+        If Me.ShakePowerMaxAccel > 0 AndAlso Math.Abs(pAccGZ) > 0.05 Then
+            res += Math.Abs(pAccGZ) / Me.ShakePowerMaxAccel * 255
+        End If
+
         If graph IsNot Nothing Then graph.UpdateShake(res)
         Return res
     End Function
