@@ -160,11 +160,11 @@ Public Class frmCVJoy
             End If
 
             If TestMode = Motor.Shake Then
-                .shakePower = 127
+                .shakeSpeed = 127
                 .shakePower = TestValue
             ElseIf Not chkNoWind.Checked Then
-                .shakeSpeed = Math.Max(Math.Min(GameOutputs.ShakeSpeed, 255), 0)
-                .shakePower = CalculateOutput(GameOutputs.ShakePower + SettingsMain.ShakeMinPower, 255, 1, 0, SettingsMain.ShakeGama, 1)
+                .shakeSpeed = CalculateOutput(GameOutputs.ShakeSpeed, 255, 1, 0, SettingsMain.ShakeGama, 1)
+                .shakePower = Math.Max(Math.Min(GameOutputs.ShakePower, 255), 0)
             Else
                 .shakeSpeed = 0
                 .shakePower = 0

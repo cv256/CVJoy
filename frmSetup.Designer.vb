@@ -1368,9 +1368,9 @@ Partial Class frmSetup
         Me.Label34.AutoSize = True
         Me.Label34.Location = New System.Drawing.Point(450, 299)
         Me.Label34.Name = "Label34"
-        Me.Label34.Size = New System.Drawing.Size(71, 13)
+        Me.Label34.Size = New System.Drawing.Size(72, 13)
         Me.Label34.TabIndex = 246
-        Me.Label34.Text = "Power Gama:"
+        Me.Label34.Text = "Speed Gama:"
         '
         'txtGMinMotorEfficiency
         '
