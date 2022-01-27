@@ -19,20 +19,19 @@
     End Function
 
 
-
     Public Function CalculateOutput(pInput As Integer, Range As Integer, MinInput As Integer, MinOuput As Integer, Gama As Integer, Factor As Single) As Integer
-        Dim output As Integer = 0
-        If pInput > MinInput Then
-            If MinInput > 0 Then pInput = (pInput - MinInput) / (Range - MinInput) * Range
-            Dim tmpFactor As Single = Factor
-            If MinOuput > 1 Then tmpFactor = Factor / Range * (Range - MinOuput)
-            If Gama <> 100 Then
-                output = MinOuput + (pInput / Range) ^ (Gama / 100) * Range * tmpFactor
-            Else
-                output = MinOuput + pInput * tmpFactor
-            End If
-            If output > Range Then output = Range
+        If pInput <= MinInput Then Return 0
+
+        Dim output As Integer
+        If MinInput > 0 Then pInput = (pInput - MinInput) / (Range - MinInput) * Range
+        Dim tmpFactor As Single = Factor
+        If MinOuput > 1 Then tmpFactor = Factor / Range * (Range - MinOuput)
+        If Gama <> 100 Then
+            output = MinOuput + (pInput / Range) ^ (Gama / 100) * Range * tmpFactor
+        Else
+            output = MinOuput + pInput * tmpFactor
         End If
+        If output > Range Then output = Range
         Return output
     End Function
 

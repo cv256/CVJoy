@@ -1,0 +1,28 @@
+Wheel -> ARDUINO -> pc -> joy:
+	intr Encoder() acumulates to wheelPosition
+	100Hz if wheelPosition changed Serial.Write() (header + 2 bytes)
+  
+  
+Pedals+Gears+Buttons(+RealBolts) -> ARDUINO -> pc -> joy:
+	30Hz DigitalRead()  ;  Serial.Write() (header + 11 bytes)
+	
+
+
+	
+arduino	-> PC -> JOY:
+	Serial_DataReceived()  ;  JOY.Update()
+	
+	
+JoyFF -> PC -> arduino:
+	JoyFFCallback() sends wheelPower+Dir to Arduino (header + 3 bytes)  (disable FFCond for now?) 
+
+		
+Game -> PC -> arduino:
+	30Hz readGame(), sends wind+shakePower+shakeSpeed(+boltsPower) to Arduino (header + 3 bytes)
+	updateScreen()
+
+	
+	
+joyff + game -> pc -> ARDUINO:
+	serialEvent() read() acumulates to variable
+	DigitalWrite()

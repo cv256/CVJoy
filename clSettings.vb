@@ -5,6 +5,7 @@
     Public RefreshRate As Byte = 55
     Public vJoyId As Byte = 1
     Public UdpIp As String = "255.255.255.255"
+    Public ComBaud As Integer = 115200
 
     Public AccelMin As Integer = 0
     Public AccelMax As Integer = 1020

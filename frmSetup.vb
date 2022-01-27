@@ -29,6 +29,8 @@ Public Class frmSetup
         txtFreq.Text = SettingsMain.RefreshRate
         txtUdpIp.Text = SettingsMain.UdpIp
 
+        txtComBaud.Text = SettingsMain.ComBaud
+
         txtWheelMinInput.Text = SettingsMain.WheelMinInput
         txtWheelPowerForMin.Text = SettingsMain.WheelPowerForMin
         txtWheelPowerGama.Text = SettingsMain.WheelPowerGama
@@ -126,6 +128,7 @@ Public Class frmSetup
         If cbVjoy.SelectedIndex >= 0 Then SettingsMain.vJoyId = cbVjoy.SelectedItem
         SettingsMain.RefreshRate = txtFreq.Text
         SettingsMain.UdpIp = txtUdpIp.Text.Replace(",", ".")
+        SettingsMain.ComBaud = txtComBaud.Text
 
         SettingsMain.WheelMinInput = txtWheelMinInput.Text
         SettingsMain.WheelPowerForMin = txtWheelPowerForMin.Text

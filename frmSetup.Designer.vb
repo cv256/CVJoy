@@ -159,6 +159,8 @@ Partial Class frmSetup
         Me.Label27 = New System.Windows.Forms.Label()
         Me.UcControlGGraph1 = New CVJoy.ucControlGGraph()
         Me.UcControlGraph1 = New CVJoy.ucControlGraph()
+        Me.Label44 = New System.Windows.Forms.Label()
+        Me.txtComBaud = New System.Windows.Forms.MaskedTextBox()
         Me.SuspendLayout()
         '
         'Label3
@@ -289,7 +291,7 @@ Partial Class frmSetup
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(428, 6)
+        Me.Label13.Location = New System.Drawing.Point(428, 7)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(92, 13)
         Me.Label13.TabIndex = 105
@@ -307,7 +309,7 @@ Partial Class frmSetup
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(645, 7)
+        Me.Label14.Location = New System.Drawing.Point(451, 32)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(69, 13)
         Me.Label14.TabIndex = 107
@@ -317,7 +319,7 @@ Partial Class frmSetup
         '
         Me.cbVjoy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbVjoy.FormattingEnabled = True
-        Me.cbVjoy.Location = New System.Drawing.Point(717, 3)
+        Me.cbVjoy.Location = New System.Drawing.Point(523, 28)
         Me.cbVjoy.Name = "cbVjoy"
         Me.cbVjoy.Size = New System.Drawing.Size(47, 21)
         Me.cbVjoy.TabIndex = 106
@@ -1519,9 +1521,9 @@ Partial Class frmSetup
         Me.Label4.AutoSize = True
         Me.Label4.Location = New System.Drawing.Point(4, 32)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(73, 13)
+        Me.Label4.Size = New System.Drawing.Size(46, 13)
         Me.Label4.TabIndex = 272
-        Me.Label4.Text = "Refresh Rate:"
+        Me.Label4.Text = "UDP IP:"
         '
         'txtUdpIp
         '
@@ -1599,11 +1601,34 @@ Partial Class frmSetup
         Me.UcControlGraph1.TabStop = False
         Me.UcControlGraph1.Visible = False
         '
+        'Label44
+        '
+        Me.Label44.AutoSize = True
+        Me.Label44.Location = New System.Drawing.Point(602, 7)
+        Me.Label44.Name = "Label44"
+        Me.Label44.Size = New System.Drawing.Size(35, 13)
+        Me.Label44.TabIndex = 278
+        Me.Label44.Text = "Baud:"
+        '
+        'txtComBaud
+        '
+        Me.txtComBaud.AllowPromptAsInput = False
+        Me.txtComBaud.BeepOnError = True
+        Me.txtComBaud.HidePromptOnLeave = True
+        Me.txtComBaud.Location = New System.Drawing.Point(640, 3)
+        Me.txtComBaud.Mask = "#999990"
+        Me.txtComBaud.Name = "txtComBaud"
+        Me.txtComBaud.Size = New System.Drawing.Size(48, 20)
+        Me.txtComBaud.TabIndex = 279
+        Me.txtComBaud.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
         'frmSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(770, 466)
+        Me.Controls.Add(Me.txtComBaud)
+        Me.Controls.Add(Me.Label44)
         Me.Controls.Add(Me.Label16)
         Me.Controls.Add(Me.txtWheelInertia)
         Me.Controls.Add(Me.Label27)
@@ -1880,4 +1905,6 @@ Partial Class frmSetup
     Friend WithEvents Label16 As Label
     Friend WithEvents txtWheelInertia As MaskedTextBox
     Friend WithEvents Label27 As Label
+    Friend WithEvents Label44 As Label
+    Friend WithEvents txtComBaud As MaskedTextBox
 End Class

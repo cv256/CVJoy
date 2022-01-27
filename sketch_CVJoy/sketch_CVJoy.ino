@@ -148,14 +148,14 @@ void setup()
   // steeringwheel position reading :
   noInterrupts();           // disable all interrupts
   //TCCR4A = 0; // timer 4 controls pin 6, 7, 8
-  TCCR4B = (TCCR4B & 0b11111000) | 0x01; // 0x03 gives 980Hz I red that DC motors work better with >2KHz and there may be losses above 20KHz. But I made experiments with 2 different motors and both had much better effeciency with lower frequencies. Divisor 1 and 2 makes no noise but are not effecient. Divisors bigger than 3 make the steeringwheel shiver. Diviser 3 makes some whistle but it's my choice.
+  TCCR4B = (TCCR4B & 0b11111000) | 0x01; // 0x03 gives 980Hz I red that DC motors work better with >2KHz and there may be losses above 20KHz. But I made experiments with 2 different motors and both had much better effeciency with lower frequencies. Divisor 1 and 2 makes no noise but are not effecient. Divisors bigger than 3 make the steeringwheel shiver. Diviser 3 makes some whistle but it's my choice using a 0.33uF capacitor paralel with motor.
   // preparing the steering wheel encoder :
   attachInterrupt(digitalPinToInterrupt(pinWheelEncA), doEncoderA, CHANGE);
   attachInterrupt(digitalPinToInterrupt(pinWheelEncB), doEncoderB, CHANGE);
   // all AC Dimmers :
-  attachInterrupt(digitalPinToInterrupt(pinZeroCrossDetector), zero_cross_ISR, RISING);// this happens 100 times per second
+  attachInterrupt(digitalPinToInterrupt(pinZeroCrossDetector), zero_cross_ISR, RISING);// this happens 100 times per second, 100Hz
   // Zero cross (half sinewave) happens every 10ms (1000ms/50Hz/2), so there is a 10ms period that we can use to regulate power using PWM (Pulse Width Modulation - leading edge cut)
-  Timer1.initialize(39); // 10ms/255 =~ 0,039ms = 39 microseconds, 25641 times per second!   If we are not usign PWM.  If using PSM (Pulse Skip Modulation) Timer1.initialize(100) is more than enough
+  Timer1.initialize(39*4); // 10ms/255 =~ 0,039ms = 39 microseconds, 25641 times per second, 26KHz!   If we are not usign PWM.  If using PSM (Pulse Skip Modulation) Timer1.initialize(100) is more than enough
   Timer1.attachInterrupt( timerIsr );
   interrupts();           // enable all interrupts
 
@@ -181,7 +181,7 @@ void loop()
    
     // READ from computer / write to hardware: --------------------- must be equal to CVJoyAc.SerialSend
     byte wheelMotorDir = Serial.read(); // 0  checkdigit + wheelMotorDir
-  	if (wheelMotorDir == 253) { // reset whell position
+  	if (wheelMotorDir == 253) { // reset wheel position
   	  wheelPosition = 32768;
   	}
    
@@ -207,6 +207,10 @@ void loop()
   	}
 	  analogWrite(pinWheelMotorPower, wheelMotorPower);
 
+    if (shakeMotorSpeed==0) {
+      analogWrite(pinShakeMotor, 0);
+    }
+    
   	// read from hardware / SEND to computer : --------------------- must be equal to CVJoyAc.SerialRead
   	byte tmpByte = 192; // checkdigit (64+128)
   	if (digitalRead(pinButton9) == LOW) tmpByte += 32;
@@ -265,7 +269,8 @@ void loop()
     */
     
     Serial.write(serialWrite, 15);
-
+    // Serial.flush(); dont use flush(), it just stops until the serial output buffer gets emptied
+    
     // waste eventual excessive data :   (communication error)
     while ( Serial.available() ) { 
       byte x = Serial.read(); 
@@ -365,7 +370,7 @@ void zero_cross_ISR()
     dimmerShakeDelay = dimmerShakeDelay % 255;
   }
   else {
-    if (dimmerShakeDelay>80) {
+    if (dimmerShakeDelay > 10-shakeMotorSpeed/13) {
       analogWrite(pinShakeMotor, 0);
     }
   }

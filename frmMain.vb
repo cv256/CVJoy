@@ -51,7 +51,7 @@ Public Class frmCVJoy
         Timer1.Interval = 1000 / SettingsMain.RefreshRate
         Timer1.AutoReset = False
 
-        btVJoy_Click()
+        VJoy_Start()
     End Sub
 
     Private Sub cbGames_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbGames.SelectedIndexChanged
@@ -95,7 +95,7 @@ Public Class frmCVJoy
         Else
             Try
                 SerialPort1.PortName = SettingsMain.ArduinoComPort
-                SerialPort1.BaudRate = 115200
+                SerialPort1.BaudRate = SettingsMain.ComBaud
                 SerialPort1.DataBits = 8
                 SerialPort1.Parity = Parity.None
                 SerialPort1.StopBits = StopBits.One
@@ -173,112 +173,112 @@ Public Class frmCVJoy
 
 #Region "PowerFromAngle: calculates power to apply now, based on the previous position readings"
 
-            ' convert Desired Angles into Desired Screw Positions:
-            If GameOutputs.Pitch > 0 Then GameOutputs.Pitch = (GameOutputs.Pitch * 20) ^ SettingsMain.UltrasonicGama / 12
-            Dim DesiredLeftScrew As Integer = -SettingsMain.GZDistance * Math.Sin(GameOutputs.Pitch) + SettingsMain.GXDistance * Math.Sin(GameOutputs.Roll) ' in mm
-            Dim DesiredRightScrew As Integer = -SettingsMain.GZDistance * Math.Sin(GameOutputs.Pitch) - SettingsMain.GXDistance * Math.Sin(GameOutputs.Roll) ' in mm
-            If DesiredLeftScrew > SettingsMain.GMaxScrewUp Then DesiredLeftScrew = SettingsMain.GMaxScrewUp
-            If DesiredLeftScrew < -SettingsMain.GMaxScrewDown Then DesiredLeftScrew = -SettingsMain.GMaxScrewDown
-            If DesiredRightScrew > SettingsMain.GMaxScrewUp Then DesiredRightScrew = SettingsMain.GMaxScrewUp
-            If DesiredRightScrew < -SettingsMain.GMaxScrewDown Then DesiredRightScrew = -SettingsMain.GMaxScrewDown
+            '' convert Desired Angles into Desired Screw Positions:
+            'If GameOutputs.Pitch > 0 Then GameOutputs.Pitch = (GameOutputs.Pitch * 20) ^ SettingsMain.UltrasonicGama / 12
+            'Dim DesiredLeftScrew As Integer = -SettingsMain.GZDistance * Math.Sin(GameOutputs.Pitch) + SettingsMain.GXDistance * Math.Sin(GameOutputs.Roll) ' in mm
+            'Dim DesiredRightScrew As Integer = -SettingsMain.GZDistance * Math.Sin(GameOutputs.Pitch) - SettingsMain.GXDistance * Math.Sin(GameOutputs.Roll) ' in mm
+            'If DesiredLeftScrew > SettingsMain.GMaxScrewUp Then DesiredLeftScrew = SettingsMain.GMaxScrewUp
+            'If DesiredLeftScrew < -SettingsMain.GMaxScrewDown Then DesiredLeftScrew = -SettingsMain.GMaxScrewDown
+            'If DesiredRightScrew > SettingsMain.GMaxScrewUp Then DesiredRightScrew = SettingsMain.GMaxScrewUp
+            'If DesiredRightScrew < -SettingsMain.GMaxScrewDown Then DesiredRightScrew = -SettingsMain.GMaxScrewDown
 
-            Const PowerInertia As Single = 0.86
-            Dim leftMotorSpeed As Single = _lastLeftMotorSpeed * PowerInertia
-            Dim rightMotorSpeed As Single = _lastRightMotorSpeed * PowerInertia
-            ' calculate power to apply on Left and Right Motors:
-            .leftPower = 0
-            .rightPower = 0
-            Dim GMinDiffProtected As Integer = SettingsMain.GMinDiff
-            If Now.Subtract(ArduinoLastRead).TotalMilliseconds > 200 _
-                AndAlso SerialPort1.IsOpen Then ' SHIIIT,  STOP everything ! dont even try to correct it, wires, relays or screws may be swaped or broken !
-                ErrorAdd("NO POSITION DATA FROM ARDUINO !", $"   last read {(Now.Subtract(ArduinoLastRead).TotalMilliseconds / 1000).ToString("0.00")} seconds ago")
-            ElseIf (_realOKLeft > (SettingsMain.GMaxScrewUp + SettingsMain.GMinDiff * 2) _
-            OrElse _realOKLeft < -(SettingsMain.GMaxScrewDown + SettingsMain.GMinDiff * 2) _
-            OrElse _realOKRight > (SettingsMain.GMaxScrewUp + SettingsMain.GMinDiff * 2) _
-            OrElse _realOKRight < -(SettingsMain.GMaxScrewDown + SettingsMain.GMinDiff * 2)) _
-            AndAlso SerialPort1.IsOpen Then ' SHIIIT, stop everything ! dont even try to correct it, wires, relays or screws may be swaped or broken !
-                If Not chkNoMotors.Checked Then ErrorAdd("OUT OF BOUNDS !", $"   LeftPosition={CInt(_realOKLeft)}mm     RightPosition={CInt(_realOKRight)}mm")
-            Else ' No shit, normal :
-                Dim leftDiff As Integer = 0 ' positive = bolt is downer than what we want (car attitude is too up)
-                Dim rightDiff As Integer = 0
-                If TestMode = Motor.Pitch Then
-                    leftDiff = TestValue
-                    rightDiff = TestValue
-                ElseIf TestMode = Motor.Roll Then
-                    leftDiff = TestValue
-                    rightDiff = -TestValue
-                ElseIf TestMode = Motor.Left Then
-                    leftDiff = TestValue
-                ElseIf TestMode = Motor.Right Then
-                    rightDiff = TestValue
-                ElseIf Not chkNoMotors.Checked Then
-                    leftDiff = DesiredLeftScrew - _realOKLeft
-                    rightDiff = DesiredRightScrew - _realOKRight
-                    GMinDiffProtected = SettingsMain.GMinDiff + _motorOverHeat  '  if motors's temperature is getting to hight, widen deadzone, avoid details, do just the most important moves
-                End If
-                If leftDiff >= If(_lastLeftMotorSpeed >= SettingsMain.GMinMotorEfficiency, 1, GMinDiffProtected) Then
-                    If _realOKLeft >= SettingsMain.GMaxScrewUp Then ' no more power up here, we are at the upper limit
-                    Else ' push the bolt up:
-                        .leftPower = Math.Min(127, ScaleValue(leftDiff, 0, SettingsMain.GMaxDiff, SettingsMain.GPowerForMin, 127))
-                        leftMotorSpeed += ScaleValue(.leftPower, SettingsMain.GPowerForMin, 127, SettingsMain.GMinMotorEfficiency, SettingsMain.GMaxMotorEfficiency) * (1 - PowerInertia)
-                    End If
-                ElseIf leftDiff <= -If(_lastLeftMotorSpeed <= -SettingsMain.GMinMotorEfficiency, 1, GMinDiffProtected) Then
-                    If _realOKLeft <= -SettingsMain.GMaxScrewDown Then ' no more power down here, we are at the lower limit
-                    Else ' push the bolt down:
-                        .leftPower = -Math.Min(127, ScaleValue(-leftDiff, 0, SettingsMain.GMaxDiff, SettingsMain.GPowerForMin, 127))
-                        leftMotorSpeed += -ScaleValue(- .leftPower, SettingsMain.GPowerForMin, 127, SettingsMain.GMinMotorEfficiency, SettingsMain.GMaxMotorEfficiency) * (1 - PowerInertia)
-                    End If
-                End If
-                If rightDiff >= If(_lastRightMotorSpeed >= SettingsMain.GMinMotorEfficiency, 1, GMinDiffProtected) Then
-                    If _realOKRight >= SettingsMain.GMaxScrewUp Then ' no more power up here, we are at the upper limit
-                    Else ' push the bolt up:
-                        .rightPower = Math.Min(127, ScaleValue(rightDiff, 0, SettingsMain.GMaxDiff, SettingsMain.GPowerForMin, 127))
-                        rightMotorSpeed += ScaleValue(.rightPower, SettingsMain.GPowerForMin, 127, SettingsMain.GMinMotorEfficiency, SettingsMain.GMaxMotorEfficiency) * (1 - PowerInertia)
-                    End If
-                ElseIf rightDiff <= -If(_lastRightMotorSpeed <= -SettingsMain.GMinMotorEfficiency, 1, GMinDiffProtected) Then
-                    If _realOKRight <= -SettingsMain.GMaxScrewDown Then ' no more power down here, we are at the lower limit
-                    Else ' push the bolt down:
-                        .rightPower = -Math.Min(127, ScaleValue(-rightDiff, 0, SettingsMain.GMaxDiff, SettingsMain.GPowerForMin, 127))
-                        rightMotorSpeed += -ScaleValue(- .rightPower, SettingsMain.GPowerForMin, 127, SettingsMain.GMinMotorEfficiency, SettingsMain.GMaxMotorEfficiency) * (1 - PowerInertia)
-                    End If
-                End If
-            End If
+            'Const PowerInertia As Single = 0.86
+            'Dim leftMotorSpeed As Single = _lastLeftMotorSpeed * PowerInertia
+            'Dim rightMotorSpeed As Single = _lastRightMotorSpeed * PowerInertia
+            '' calculate power to apply on Left and Right Motors:
+            '.leftPower = 0
+            '.rightPower = 0
+            'Dim GMinDiffProtected As Integer = SettingsMain.GMinDiff
+            'If Now.Subtract(ArduinoLastRead).TotalMilliseconds > 200 _
+            '    AndAlso SerialPort1.IsOpen Then ' SHIIIT,  STOP everything ! dont even try to correct it, wires, relays or screws may be swaped or broken !
+            '    ErrorAdd("NO POSITION DATA FROM ARDUINO !", $"   last read {(Now.Subtract(ArduinoLastRead).TotalMilliseconds / 1000).ToString("0.00")} seconds ago")
+            'ElseIf (_realOKLeft > (SettingsMain.GMaxScrewUp + SettingsMain.GMinDiff * 2) _
+            'OrElse _realOKLeft < -(SettingsMain.GMaxScrewDown + SettingsMain.GMinDiff * 2) _
+            'OrElse _realOKRight > (SettingsMain.GMaxScrewUp + SettingsMain.GMinDiff * 2) _
+            'OrElse _realOKRight < -(SettingsMain.GMaxScrewDown + SettingsMain.GMinDiff * 2)) _
+            'AndAlso SerialPort1.IsOpen Then ' SHIIIT, stop everything ! dont even try to correct it, wires, relays or screws may be swaped or broken !
+            '    If Not chkNoMotors.Checked Then ErrorAdd("OUT OF BOUNDS !", $"   LeftPosition={CInt(_realOKLeft)}mm     RightPosition={CInt(_realOKRight)}mm")
+            'Else ' No shit, normal :
+            '    Dim leftDiff As Integer = 0 ' positive = bolt is downer than what we want (car attitude is too up)
+            '    Dim rightDiff As Integer = 0
+            '    If TestMode = Motor.Pitch Then
+            '        leftDiff = TestValue
+            '        rightDiff = TestValue
+            '    ElseIf TestMode = Motor.Roll Then
+            '        leftDiff = TestValue
+            '        rightDiff = -TestValue
+            '    ElseIf TestMode = Motor.Left Then
+            '        leftDiff = TestValue
+            '    ElseIf TestMode = Motor.Right Then
+            '        rightDiff = TestValue
+            '    ElseIf Not chkNoMotors.Checked Then
+            '        leftDiff = DesiredLeftScrew - _realOKLeft
+            '        rightDiff = DesiredRightScrew - _realOKRight
+            '        GMinDiffProtected = SettingsMain.GMinDiff + _motorOverHeat  '  if motors's temperature is getting to hight, widen deadzone, avoid details, do just the most important moves
+            '    End If
+            '    If leftDiff >= If(_lastLeftMotorSpeed >= SettingsMain.GMinMotorEfficiency, 1, GMinDiffProtected) Then
+            '        If _realOKLeft >= SettingsMain.GMaxScrewUp Then ' no more power up here, we are at the upper limit
+            '        Else ' push the bolt up:
+            '            .leftPower = Math.Min(127, ScaleValue(leftDiff, 0, SettingsMain.GMaxDiff, SettingsMain.GPowerForMin, 127))
+            '            leftMotorSpeed += ScaleValue(.leftPower, SettingsMain.GPowerForMin, 127, SettingsMain.GMinMotorEfficiency, SettingsMain.GMaxMotorEfficiency) * (1 - PowerInertia)
+            '        End If
+            '    ElseIf leftDiff <= -If(_lastLeftMotorSpeed <= -SettingsMain.GMinMotorEfficiency, 1, GMinDiffProtected) Then
+            '        If _realOKLeft <= -SettingsMain.GMaxScrewDown Then ' no more power down here, we are at the lower limit
+            '        Else ' push the bolt down:
+            '            .leftPower = -Math.Min(127, ScaleValue(-leftDiff, 0, SettingsMain.GMaxDiff, SettingsMain.GPowerForMin, 127))
+            '            leftMotorSpeed += -ScaleValue(- .leftPower, SettingsMain.GPowerForMin, 127, SettingsMain.GMinMotorEfficiency, SettingsMain.GMaxMotorEfficiency) * (1 - PowerInertia)
+            '        End If
+            '    End If
+            '    If rightDiff >= If(_lastRightMotorSpeed >= SettingsMain.GMinMotorEfficiency, 1, GMinDiffProtected) Then
+            '        If _realOKRight >= SettingsMain.GMaxScrewUp Then ' no more power up here, we are at the upper limit
+            '        Else ' push the bolt up:
+            '            .rightPower = Math.Min(127, ScaleValue(rightDiff, 0, SettingsMain.GMaxDiff, SettingsMain.GPowerForMin, 127))
+            '            rightMotorSpeed += ScaleValue(.rightPower, SettingsMain.GPowerForMin, 127, SettingsMain.GMinMotorEfficiency, SettingsMain.GMaxMotorEfficiency) * (1 - PowerInertia)
+            '        End If
+            '    ElseIf rightDiff <= -If(_lastRightMotorSpeed <= -SettingsMain.GMinMotorEfficiency, 1, GMinDiffProtected) Then
+            '        If _realOKRight <= -SettingsMain.GMaxScrewDown Then ' no more power down here, we are at the lower limit
+            '        Else ' push the bolt down:
+            '            .rightPower = -Math.Min(127, ScaleValue(-rightDiff, 0, SettingsMain.GMaxDiff, SettingsMain.GPowerForMin, 127))
+            '            rightMotorSpeed += -ScaleValue(- .rightPower, SettingsMain.GPowerForMin, 127, SettingsMain.GMinMotorEfficiency, SettingsMain.GMaxMotorEfficiency) * (1 - PowerInertia)
+            '        End If
+            '    End If
+            'End If
 
-            ' guess motors's temperature: TODO: we should compare LastPower versus Power, not LastSpeed against Power ?
-            If Math.Sign(_lastLeftMotorSpeed) <> Math.Sign(.leftPower) AndAlso _lastLeftMotorSpeed <> 0 AndAlso .leftPower <> 0 Then _motorOverHeat += Math.Abs(_lastLeftMotorSpeed - .leftPower) / 8000
-            If Math.Sign(_lastRightMotorSpeed) <> Math.Sign(.rightPower) AndAlso _lastRightMotorSpeed <> 0 AndAlso .rightPower <> 0 Then _motorOverHeat += Math.Abs(_lastRightMotorSpeed - .rightPower) / 8000
-            _motorOverHeat *= 0.9975
-            _lastLeftMotorSpeed = leftMotorSpeed
-            _lastRightMotorSpeed = rightMotorSpeed
+            '' guess motors's temperature: TODO: we should compare LastPower versus Power, not LastSpeed against Power ?
+            'If Math.Sign(_lastLeftMotorSpeed) <> Math.Sign(.leftPower) AndAlso _lastLeftMotorSpeed <> 0 AndAlso .leftPower <> 0 Then _motorOverHeat += Math.Abs(_lastLeftMotorSpeed - .leftPower) / 8000
+            'If Math.Sign(_lastRightMotorSpeed) <> Math.Sign(.rightPower) AndAlso _lastRightMotorSpeed <> 0 AndAlso .rightPower <> 0 Then _motorOverHeat += Math.Abs(_lastRightMotorSpeed - .rightPower) / 8000
+            '_motorOverHeat *= 0.9975
+            '_lastLeftMotorSpeed = leftMotorSpeed
+            '_lastRightMotorSpeed = rightMotorSpeed
 
-            ' this is the real reading, damped, plus the compensation for the lag introduced by the damping of the real data... (we have to guess the actual position)
-            _realOKLeft = _realOKLeft * SettingsMain.UltrasonicDamper + _realLeft * (1 - SettingsMain.UltrasonicDamper) + leftMotorSpeed / 40 * SettingsMain.UltrasonicDamper
-            _realOKRight = _realOKRight * SettingsMain.UltrasonicDamper + _realRight * (1 - SettingsMain.UltrasonicDamper) + rightMotorSpeed / 40 * SettingsMain.UltrasonicDamper
+            '' this is the real reading, damped, plus the compensation for the lag introduced by the damping of the real data... (we have to guess the actual position)
+            '_realOKLeft = _realOKLeft * SettingsMain.UltrasonicDamper + _realLeft * (1 - SettingsMain.UltrasonicDamper) + leftMotorSpeed / 40 * SettingsMain.UltrasonicDamper
+            '_realOKRight = _realOKRight * SettingsMain.UltrasonicDamper + _realRight * (1 - SettingsMain.UltrasonicDamper) + rightMotorSpeed / 40 * SettingsMain.UltrasonicDamper
 
-            ' graph:
-            If Ggraph IsNot Nothing Then Ggraph.UpdateValue(GMinDiffProtected, _realLeft, _realRight, _realOKLeft, _realOKRight, DesiredLeftScrew, DesiredRightScrew, .leftPower, .rightPower, leftMotorSpeed, rightMotorSpeed)
+            '' graph:
+            'If Ggraph IsNot Nothing Then Ggraph.UpdateValue(GMinDiffProtected, _realLeft, _realRight, _realOKLeft, _realOKRight, DesiredLeftScrew, DesiredRightScrew, .leftPower, .rightPower, leftMotorSpeed, rightMotorSpeed)
 
-            ' draw Attitude:
-            If Me.WindowState <> FormWindowState.Minimized AndAlso ckDontShow.Checked = False Then
-                lbTemperature.Text = _motorOverHeat.ToString("0.0")
-                With lbAttitude.CreateGraphics()
-                    Dim centerX As Integer = lbAttitude.Width / 2, centerY As Integer = lbAttitude.Height / 2
-                    Dim backcolor As Color = Color.White ' If(_realPitch > SettingsMain.MaxPitch OrElse _realPitch < -SettingsMain.MinPitch, Color.Red, Color.White)
-                    .Clear(backcolor)
-                    ' paint red squares if overflowing:
-                    If DesiredLeftScrew >= SettingsMain.GMaxScrewUp Then .FillRectangle(New SolidBrush(Color.Red), 0, 0, centerX, centerY)
-                    If DesiredLeftScrew <= -SettingsMain.GMaxScrewDown Then .FillRectangle(New SolidBrush(Color.Red), 0, centerY, centerX, centerY)
-                    If DesiredRightScrew >= SettingsMain.GMaxScrewUp Then .FillRectangle(New SolidBrush(Color.Red), centerX, 0, centerX, centerY)
-                    If DesiredRightScrew <= -SettingsMain.GMaxScrewDown Then .FillRectangle(New SolidBrush(Color.Red), centerX, centerY, centerX, centerY)
-                    ' draw center cross:
-                    .DrawLine(Pens.Green, centerX - 8, centerY, centerX + 8, centerY) : .DrawLine(Pens.Green, centerX, centerY - 8, centerX, centerY + 8)
-                    Dim racioY As Single = centerY / Math.Max(SettingsMain.GMaxScrewUp, SettingsMain.GMaxScrewDown)
-                    ' draw desired position line:
-                    .DrawLine(Pens.Green, 0, centerY - CInt(DesiredLeftScrew * racioY), lbAttitude.Width, centerY - CInt(DesiredRightScrew * racioY))
-                    ' draw real position line:
-                    .DrawLine(Pens.Black, 0, centerY - CInt(_realOKLeft * racioY), lbAttitude.Width, centerY - CInt(_realOKRight * racioY))
-                End With
-            End If
+            '' draw Attitude:
+            'If Me.WindowState <> FormWindowState.Minimized AndAlso ckDontShow.Checked = False Then
+            '    lbTemperature.Text = _motorOverHeat.ToString("0.0")
+            '    With lbAttitude.CreateGraphics()
+            '        Dim centerX As Integer = lbAttitude.Width / 2, centerY As Integer = lbAttitude.Height / 2
+            '        Dim backcolor As Color = Color.White ' If(_realPitch > SettingsMain.MaxPitch OrElse _realPitch < -SettingsMain.MinPitch, Color.Red, Color.White)
+            '        .Clear(backcolor)
+            '        ' paint red squares if overflowing:
+            '        If DesiredLeftScrew >= SettingsMain.GMaxScrewUp Then .FillRectangle(New SolidBrush(Color.Red), 0, 0, centerX, centerY)
+            '        If DesiredLeftScrew <= -SettingsMain.GMaxScrewDown Then .FillRectangle(New SolidBrush(Color.Red), 0, centerY, centerX, centerY)
+            '        If DesiredRightScrew >= SettingsMain.GMaxScrewUp Then .FillRectangle(New SolidBrush(Color.Red), centerX, 0, centerX, centerY)
+            '        If DesiredRightScrew <= -SettingsMain.GMaxScrewDown Then .FillRectangle(New SolidBrush(Color.Red), centerX, centerY, centerX, centerY)
+            '        ' draw center cross:
+            '        .DrawLine(Pens.Green, centerX - 8, centerY, centerX + 8, centerY) : .DrawLine(Pens.Green, centerX, centerY - 8, centerX, centerY + 8)
+            '        Dim racioY As Single = centerY / Math.Max(SettingsMain.GMaxScrewUp, SettingsMain.GMaxScrewDown)
+            '        ' draw desired position line:
+            '        .DrawLine(Pens.Green, 0, centerY - CInt(DesiredLeftScrew * racioY), lbAttitude.Width, centerY - CInt(DesiredRightScrew * racioY))
+            '        ' draw real position line:
+            '        .DrawLine(Pens.Black, 0, centerY - CInt(_realOKLeft * racioY), lbAttitude.Width, centerY - CInt(_realOKRight * racioY))
+            '    End With
+            'End If
 #End Region
 
         End With
@@ -417,6 +417,11 @@ Public Class frmCVJoy
             fromArduino.buttons.CopyTo(ButtonsLast, 0)
 #End Region
 
+            If Not Joy.vJoyEnabled() Then
+                ErrorAdd("VJOY is disabled !  Trying to restart it...", "")
+                VJoy_Start()
+            End If
+
             If Joy IsNot Nothing Then
                 j.Buttons = buttonBit _
                         + If(.gear1, 1024, 0) _
@@ -430,7 +435,10 @@ Public Class frmCVJoy
                 j.AxisY = .AccelCorrected * 32 ' 0-32767
                 j.AxisZ = .BrakeCorrected * 32 ' 0-32767
                 j.AxisXRot = .ClutchCorrected * 32 ' 0-32767
-                Joy.UpdateVJD(SettingsMain.vJoyId, j)
+                If Not Joy.UpdateVJD(SettingsMain.vJoyId, j) Then
+                    ErrorAdd("VJOY UpdateVJD returned False! Retrying to AcquireVJD " + SettingsMain.vJoyId.ToString() + "...", j.Buttons.ToString() + " " + j.AxisX.ToString() + " " + j.AxisY.ToString() + " " + j.AxisZ.ToString() + " " + j.AxisXRot.ToString())
+                    VJoy_Start() 'Joy.AcquireVJD(SettingsMain.vJoyId)
+                End If
             End If
 
         End With
@@ -586,43 +594,52 @@ goReturn:
         Me.TopMost = ckKeepVisible.Checked
     End Sub
 
-    Private Sub btVJoy_Click()
-        If Joy Is Nothing Then
-            Try
-                Joy = New vJoyInterfaceWrap.vJoy
-                If Not Joy.vJoyEnabled Then
-                    MsgBox("vJoy not enabled")
-                    Joy = Nothing : Return
-                Else
-                    Dim verReference As UInteger, verDriver As UInteger
-                    If Not Joy.DriverMatch(verReference, verDriver) Then
-                        MsgBox("CV Joy expects vJoy version " & verReference & vbCrLf & "Installed vJoy version on this computer is " & verDriver)
-                    End If
-                End If
-                Dim tmp As VjdStat = Joy.GetVJDStatus(SettingsMain.vJoyId)
-                If tmp <> VjdStat.VJD_STAT_FREE Then
-                    MsgBox("vJoy device  " & SettingsMain.vJoyId & "  status is  " & tmp.ToString)
-                    Joy = Nothing : Return
-                End If
-                Joy.AcquireVJD(SettingsMain.vJoyId)
-                'Joy.FfbStart(SettingsMain.vJoyId)
-                Joy.FfbRegisterGenCB(AddressOf FFBcallback, SettingsMain.vJoyId)
-            Catch ex As Exception
-                MsgBox("btVJoy.Click " & ex.Message)
-                Joy = Nothing
-                Return
-            End Try
-            'btVJoy.Text = "Stop"
-        Else
-            Try
-                'Joy.FfbStop(SettingsMain.vJoyId)
-                Joy.RelinquishVJD(SettingsMain.vJoyId)
-            Catch ex As Exception
-            End Try
-            Joy = Nothing
-            'btVJoy.Text = "Start"
+    Private Sub VJoy_Start()
+        If Joy IsNot Nothing Then
+            VJoy_Stop()
         End If
+
+        Try
+            Joy = New vJoyInterfaceWrap.vJoy
+            If Not Joy.vJoyEnabled Then
+                MsgBox("vJoy not enabled")
+                Joy = Nothing : Return
+            Else
+                Dim verReference As UInteger, verDriver As UInteger
+                If Not Joy.DriverMatch(verReference, verDriver) Then
+                    ErrorAdd("CV Joy expects vJoy version " & verReference & vbCrLf & "Installed vJoy version on this computer is " & verDriver, "")
+                End If
+            End If
+            Dim tmp As VjdStat = Joy.GetVJDStatus(SettingsMain.vJoyId)
+            If tmp <> VjdStat.VJD_STAT_FREE Then
+                MsgBox("vJoy device  " & SettingsMain.vJoyId & "  status is  " & tmp.ToString)
+                Joy = Nothing : Return
+            End If
+            Joy.AcquireVJD(SettingsMain.vJoyId)
+            'Joy.FfbStart(SettingsMain.vJoyId)
+            Joy.FfbRegisterGenCB(AddressOf FFBcallback, SettingsMain.vJoyId)
+        Catch ex As Exception
+            MsgBox("btVJoy.Click " & ex.Message)
+            Joy = Nothing
+            Return
+        End Try
+        'btVJoy.Text = "Stop"
     End Sub
+
+    Private Sub VJoy_Stop()
+        If Joy Is Nothing Then
+            Return
+        End If
+
+        Try
+            'Joy.FfbStop(SettingsMain.vJoyId)
+            Joy.RelinquishVJD(SettingsMain.vJoyId)
+        Catch ex As Exception
+        End Try
+        Joy = Nothing
+        'btVJoy.Text = "Start"
+    End Sub
+
 
     Private Sub btSetupGame_Click(sender As Object, e As EventArgs) Handles btGameSetup.Click
         If Game IsNot Nothing Then Game.ShowSetup()
@@ -634,38 +651,40 @@ goReturn:
         'https://www.kaskus.co.id/thread/54c59a266208812a798b456b
         If chkFFIgnore.Checked Then Return
 
-        Dim devI As Integer
-        Joy.Ffb_h_DeviceID(pData, devI)
-        If devI <> SettingsMain.vJoyId Then Return
+        Try
 
-        Dim t As New FFBPType
-        Joy.Ffb_h_Type(pData, t)
+            Dim devI As Integer
+            Joy.Ffb_h_DeviceID(pData, devI)
+            If devI <> SettingsMain.vJoyId Then Return
 
-        Static FFCases As New List(Of String) ' TODO: DELETE THIS, it was just for debugging purposes
-        Dim thisCase As String
+            Dim t As New FFBPType
+            Joy.Ffb_h_Type(pData, t)
 
-        Select Case t
-            Case FFBPType.PT_CTRLREP ' RESET
-                Dim ct As New FFB_CTRL ' continue, pause, stopall
-                Joy.Ffb_h_DevCtrl(pData, ct)
-                thisCase = t.ToString & "  " & ct.ToString
-                FFWheel_Cond = New vJoyInterfaceWrap.vJoy.FFB_EFF_COND
-                FFWheel_Const = New vJoyInterfaceWrap.vJoy.FFB_EFF_CONSTANT
+            Static FFCases As New List(Of String) ' TODO: DELETE THIS, it was just for debugging purposes
+            Dim thisCase As String
 
-            Case FFBPType.PT_GAINREP ' SET GAIN
-                Dim tmpFFGain As Byte
-                Joy.Ffb_h_DevGain(pData, tmpFFGain) ' na documentação da MSDN dizem que é 0~10000 , mas este interface é byte só dá 0-255
-                thisCase = t.ToString & "  " & tmpFFGain
-                FFGain = tmpFFGain
+            Select Case t
+                Case FFBPType.PT_CTRLREP ' RESET
+                    Dim ct As New FFB_CTRL ' continue, pause, stopall
+                    Joy.Ffb_h_DevCtrl(pData, ct)
+                    thisCase = t.ToString & "  " & ct.ToString
+                    FFWheel_Cond = New vJoyInterfaceWrap.vJoy.FFB_EFF_COND
+                    FFWheel_Const = New vJoyInterfaceWrap.vJoy.FFB_EFF_CONSTANT
 
-            Case FFBPType.PT_NEWEFREP ' SET CURRENT EFFECT
-                Dim tmp As FFBEType
-                Joy.Ffb_h_EffNew(pData, tmp) ' Const, Damp, Inertia , Friction, Spring
-                thisCase = t.ToString & "  " & tmp.ToString
-                If tmp <> FFBEType.ET_CONST Then
-                    FFWheel_Type = tmp
-                    'chkFFCond.Text = FFWheel_Type.ToString  ' this is heavy ?
-                End If
+                Case FFBPType.PT_GAINREP ' SET GAIN
+                    Dim tmpFFGain As Byte
+                    Joy.Ffb_h_DevGain(pData, tmpFFGain) ' na documentação da MSDN dizem que é 0~10000 , mas este interface é byte só dá 0-255
+                    thisCase = t.ToString & "  " & tmpFFGain
+                    FFGain = tmpFFGain
+
+                Case FFBPType.PT_NEWEFREP ' SET CURRENT EFFECT
+                    Dim tmp As FFBEType
+                    Joy.Ffb_h_EffNew(pData, tmp) ' Const, Damp, Inertia , Friction, Spring
+                    thisCase = t.ToString & "  " & tmp.ToString
+                    If tmp <> FFBEType.ET_CONST Then
+                        FFWheel_Type = tmp
+                        'chkFFCond.Text = FFWheel_Type.ToString  ' this is heavy ?
+                    End If
 
             'Case FFBPType.PT_EFFREP
             '    Dim et As New FFBEType
@@ -674,56 +693,61 @@ goReturn:
             '    '    TODO
             '    handled = True
 
-            Case FFBPType.PT_EFOPREP ' start / stop
-                Dim op As New vJoyInterfaceWrap.vJoy.FFB_EFF_OP
-                Joy.Ffb_h_EffOp(pData, op)
-                thisCase = t.ToString & "  " & op.LoopCount & "x " & op.EffectOp.ToString
+                Case FFBPType.PT_EFOPREP ' start / stop
+                    Dim op As New vJoyInterfaceWrap.vJoy.FFB_EFF_OP
+                    Joy.Ffb_h_EffOp(pData, op)
+                    thisCase = t.ToString & "  " & op.LoopCount & "x " & op.EffectOp.ToString
                 'TODO
 
-            Case FFBPType.PT_CONDREP
-                Joy.Ffb_h_Eff_Cond(pData, FFWheel_Cond)
-                'PosCoeff = NegCoeff = -10000~10000 (but they are never negative, both are positive)
-                'PosSatur = PosSatur = 10000 
-                'CenterPointOffset =0
-                If cbLogFF.SelectedIndex = 2 Then
-                    thisCase = t.ToString & "  " & FFWheel_Cond.PosCoeff & "  " & FFWheel_Cond.PosSatur & "  " & FFWheel_Cond.CenterPointOffset & "  " & FFWheel_Cond.NegCoeff & "  " & FFWheel_Cond.NegSatur  ' 10000 , 10000 , 0, ?, ?
-                Else
-                    thisCase = t.ToString
-                End If
-                If Not FFWheel_Cond.isY Then
-                    'If the metric Is less than CP Offset - Dead Band, Then the resulting force Is given by the following formula:
-                    '   force = Negative Coefficient * (q - (CP Offset – Dead Band))
-                    'If the metric Is greater than CP Offset + Dead Band, then the resulting force Is given by the following formula:
-                    '  force = Positive Coefficient * (q - (CP Offset + Dead Band))
-                    'where q Is a type-dependent metric: 
-                    '  - spring = axis position as the metric
-                    '  - damper = axis velocity as the metric
-                    '  - inertia = axis acceleration as the metric
-                    '  - friction = when the axis is moved and depends on the defined friction coefficient
-                    'TODO
-                End If
+                Case FFBPType.PT_CONDREP
+                    Joy.Ffb_h_Eff_Cond(pData, FFWheel_Cond)
+                    'PosCoeff = NegCoeff = -10000~10000 (but they are never negative, both are positive)
+                    'PosSatur = PosSatur = 10000 
+                    'CenterPointOffset =0
+                    If cbLogFF.SelectedIndex = 2 Then
+                        thisCase = t.ToString & "  " & FFWheel_Cond.PosCoeff & "  " & FFWheel_Cond.PosSatur & "  " & FFWheel_Cond.CenterPointOffset & "  " & FFWheel_Cond.NegCoeff & "  " & FFWheel_Cond.NegSatur  ' 10000 , 10000 , 0, ?, ?
+                    Else
+                        thisCase = t.ToString
+                    End If
+                    If Not FFWheel_Cond.isY Then
+                        'If the metric Is less than CP Offset - Dead Band, Then the resulting force Is given by the following formula:
+                        '   force = Negative Coefficient * (q - (CP Offset – Dead Band))
+                        'If the metric Is greater than CP Offset + Dead Band, then the resulting force Is given by the following formula:
+                        '  force = Positive Coefficient * (q - (CP Offset + Dead Band))
+                        'where q Is a type-dependent metric: 
+                        '  - spring = axis position as the metric
+                        '  - damper = axis velocity as the metric
+                        '  - inertia = axis acceleration as the metric
+                        '  - friction = when the axis is moved and depends on the defined friction coefficient
+                        'TODO
+                    End If
 
-            Case FFBPType.PT_CONSTREP
-                Joy.Ffb_h_Eff_Constant(pData, FFWheel_Const)
-                If cbLogFF.SelectedIndex = 2 Then
-                    thisCase = t.ToString & "  " & FFWheel_Const.Magnitude
-                Else
-                    thisCase = t.ToString
-                End If
+                Case FFBPType.PT_CONSTREP
+                    Joy.Ffb_h_Eff_Constant(pData, FFWheel_Const)
+                    If cbLogFF.SelectedIndex = 2 Then
+                        thisCase = t.ToString & "  " & FFWheel_Const.Magnitude
+                    Else
+                        thisCase = t.ToString
+                    End If
 
-            Case Else
-                thisCase = "???  " & t.ToString
-        End Select
+                Case Else
+                    thisCase = "???  " & t.ToString
+            End Select
 
-        ' log :
-        If cbLogFF.SelectedIndex >= 1 Then
-            If Not String.IsNullOrEmpty(thisCase) Then
-                If Not FFCases.Contains(thisCase) Then
-                    FFCases.Add(thisCase)
-                    ErrorAdd(thisCase, "")
+            ' log :
+            If cbLogFF.SelectedIndex >= 1 Then
+                If Not String.IsNullOrEmpty(thisCase) Then
+                    If Not FFCases.Contains(thisCase) Then
+                        FFCases.Add(thisCase)
+                        ErrorAdd(thisCase, "")
+                    End If
                 End If
             End If
-        End If
+
+        Catch ex As Exception
+            ErrorAdd("ERROR in FFBcallback ", ex.Message)
+        End Try
+
     End Sub
 
 
