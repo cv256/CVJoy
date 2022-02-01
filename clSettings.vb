@@ -2,7 +2,7 @@
     Inherits clSettings
 
     Public ArduinoComPort As String = "COM3"
-    Public RefreshRate As Byte = 55
+    Public RefreshRate As Integer = 85
     Public vJoyId As Byte = 1
     Public UdpIp As String = "255.255.255.255"
     Public ComBaud As Integer = 115200

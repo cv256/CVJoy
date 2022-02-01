@@ -167,7 +167,7 @@ Partial Class frmSetup
         '
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(105, 7)
+        Me.Label3.Location = New System.Drawing.Point(112, 7)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(263, 12)
         Me.Label3.TabIndex = 10
@@ -176,12 +176,13 @@ Partial Class frmSetup
         'txtFreq
         '
         Me.txtFreq.AllowPromptAsInput = False
+        Me.txtFreq.AsciiOnly = True
         Me.txtFreq.BeepOnError = True
         Me.txtFreq.HidePromptOnLeave = True
         Me.txtFreq.Location = New System.Drawing.Point(81, 3)
-        Me.txtFreq.Mask = "00"
+        Me.txtFreq.Mask = "000"
         Me.txtFreq.Name = "txtFreq"
-        Me.txtFreq.Size = New System.Drawing.Size(20, 20)
+        Me.txtFreq.Size = New System.Drawing.Size(28, 20)
         Me.txtFreq.TabIndex = 9
         Me.txtFreq.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.txtFreq.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals

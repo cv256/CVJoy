@@ -4,25 +4,32 @@ Imports System.Net
 
 Public Class frmCVJoy
     Private WithEvents SerialPort1 As New IO.Ports.SerialPort
-    Public WithEvents Timer1 As New System.Timers.Timer
+    ' System.Timers.Timer != System.Threading.Timer != System.Windows.Forms.Timer (55ms accuracy is not enough)
+    'Public WithEvents TimerSendToArduino As New System.Timers.Timer
+    Public WithEvents TimerScreenAndUDP As New Windows.Forms.Timer
     Private GameOutputs As clGameOutputs
     Public Joy As vJoyInterfaceWrap.vJoy ' http://vjoystick.sourceforge.net/site/includes/SDK_ReadMe.pdf
+    Private toArduino As New SerialSend, fromArduino As New SerialRead
+
     Private FFGain As Single = 255
     Public FFWheel_Type As FFBEType
     Public FFWheel_Cond As New vJoyInterfaceWrap.vJoy.FFB_EFF_COND
     Public FFWheel_Const As New vJoyInterfaceWrap.vJoy.FFB_EFF_CONSTANT
 
-    Private _realLeft As Single, _realRight As Single ' position now (from sensor) in milimeters, tipically from   minus GMaxScrewDown    to    Zero (center)    to    GMaxScrewUp
-    Private _realOKLeft As Single, _realOKRight As Single ' position now (from sensor plus corrections) in milimeters, tipically from   minus GMaxScrewDown    to    Zero (center)    to    GMaxScrewUp
-    Private _lastLeftMotorSpeed As Single, _lastRightMotorSpeed As Single ' -100~100 negative=bolt going down
-    Private _motorOverHeat As Single
-    Private ArduinoLastRead As Date = Now.AddSeconds(-1) ' time of last good reading
-    Private WheelPosition As Integer, PreviousWheelPosition As Integer, PreviousArduinoLastRead As Date = Now.AddSeconds(-1), WheelPositionOffset As Boolean
+    'Private _realLeft As Single, _realRight As Single ' position now (from sensor) in milimeters, tipically from   minus GMaxScrewDown    to    Zero (center)    to    GMaxScrewUp
+    'Private _realOKLeft As Single, _realOKRight As Single ' position now (from sensor plus corrections) in milimeters, tipically from   minus GMaxScrewDown    to    Zero (center)    to    GMaxScrewUp
+    'Private _lastLeftMotorSpeed As Single, _lastRightMotorSpeed As Single ' -100~100 negative=bolt going down
+    'Private _motorOverHeat As Single
+    Private WheelPosition As Integer
+    Private WheelReadTime As Date = Now.AddSeconds(-1), WheelPositionPrevious As Integer, WheelReadPreviousTime As Date = Now.AddSeconds(-1) ' these are only for the Conditional FFB calulations
     Private ButtonsLast(8) As Boolean, ButtonOther As Boolean
-    Private TimerTickCounter As Integer = 0
+    Private SendToArduinoCount As UInteger, PedalsReadCount As UInteger, FFBReadCount As UInteger, ScreenUpdateLastTime As Date = Now
+
 
     Public Enum Motor
         None
+        StopProcesss
+        Reset
         Wheel
         WheelCenter
         Pitch
@@ -33,7 +40,6 @@ Public Class frmCVJoy
         Shake
     End Enum
     Public TestMode As Motor, TestValue As Integer = 0
-
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Text &= "  " & Application.ProductVersion
@@ -47,9 +53,6 @@ Public Class frmCVJoy
 
         SettingsMain.LoadSettingsFromFile()
         cbGames.SelectedIndex = 0 ' TODO: SettingsMain should keep that last cbGames.SelectedIndex used, and here we should use that
-
-        Timer1.Interval = 1000 / SettingsMain.RefreshRate
-        Timer1.AutoReset = False
 
         VJoy_Start()
     End Sub
@@ -88,8 +91,7 @@ Public Class frmCVJoy
 
     Public Sub ArduinoStart(sender As Object, e As EventArgs) Handles btArduinoStart.Click
         If SerialPort1.IsOpen Then
-            Timer1.Enabled = False ' stop sending more data to Arduino
-            System.Threading.Thread.Sleep(700) ' give time to finnish processing eventualy received data from arduino
+            System.Threading.Thread.Sleep(200) ' give time to finnish processing eventualy received data from arduino
             SerialPort1.Close()
             btArduinoStart.Text = "Start"
         Else
@@ -101,32 +103,40 @@ Public Class frmCVJoy
                 SerialPort1.StopBits = StopBits.One
                 SerialPort1.Handshake = Handshake.None
                 SerialPort1.RtsEnable = False
-                SerialPort1.ReceivedBytesThreshold = SerialRead.PacketLen
+                SerialPort1.ReceivedBytesThreshold = 1
                 ' SerialPort1.WriteBufferSize = SerialSend.PacketLen ' The WriteBufferSize property ignores any value smaller than 2048.
-                SerialPort1.WriteTimeout = 1000
                 SerialPort1.Open()
                 btArduinoStart.Text = "Stop"
-                Timer1.Enabled = True
             Catch ex As Exception
                 MsgBox("btArduinoStart.Click " & ex.Message)
             End Try
         End If
     End Sub
 
-    Private Sub Timer1_Elapsed(sender As Object, e As EventArgs) Handles Timer1.Elapsed
+    Private Sub frmCVJoy_Shown(sender As Object, e As EventArgs) Handles Me.Shown
+        TimerScreenAndUDP.Interval = 1000 / 10
+        TimerScreenAndUDP.Start()
+
+        'TimerSendToArduino.Interval = 1000 / SettingsMain.RefreshRate '  the accuracy of the System.Timers.Timer is only 30Hz
+        'TimerSendToArduino.AutoReset = False
+        'TimerSendToArduino.Start()
         SendToArduino()
     End Sub
 
-    Private Sub SendToArduino()
-        TimerTickCounter += 1
+    Public Sub SendToArduino() 'Handles TimerSendToArduino.Elapsed
+        'TimerSendToArduino.Stop()
+start:
+        If SendToArduinoCount >= UInteger.MaxValue Then btCountersReset_Click()
+        SendToArduinoCount += 1
 
         ' prepare data to send to the Arduino :
-        Dim toArduino As New SerialSend
         With toArduino
 
-            If WheelPositionOffset Then
-                .WheelPositionOffset = True
-                WheelPositionOffset = False
+            If TestMode = Motor.Reset Then
+                .Reset = True
+                TestMode = Motor.None
+            Else
+                .Reset = False
             End If
 
             If Game IsNot Nothing AndAlso Game.Started Then
@@ -146,6 +156,11 @@ Public Class frmCVJoy
                     .wheelPower = FFSteer(WheelPosition)
                 End If
             End If
+
+            WheelPositionPrevious = WheelPosition
+            WheelReadPreviousTime = WheelReadTime
+            WheelReadTime = Now
+
             Dim tmpInt As Integer = .wheelPower ' just to swap
             Static lastwheelPower As Integer
             .wheelPower = Math.Min(Math.Max(.wheelPower + CInt((.wheelPower - lastwheelPower) * SettingsMain.WheelInertia), -255), 255)
@@ -280,11 +295,88 @@ Public Class frmCVJoy
             '    End With
             'End If
 #End Region
-
         End With
 
-        ' show stuff in screen :
+        If SerialPort1.IsOpen Then
+            ' SEND SERIAL DATA TO ARDUINO:
+            If SerialPort1.BytesToWrite <> 0 Then
+                ErrorAdd("Write buffer still busy", SerialPort1.BytesToWrite.ToString)
+                SerialPort1.DiscardOutBuffer()
+            End If
+            SerialPort1.Write(toArduino.GetSerialData, 0, SerialSend.PacketLen)
+
+            ' FOR DEBUGGING :
+            'ErrorAdd("Send " & String.Join(" ", toArduino.GetSerialData), "")
+        End If
+
+        If TestMode = Motor.StopProcesss Then Exit Sub
+        'TimerSendToArduino.Start()
+        System.Threading.Thread.Sleep(900 / SettingsMain.RefreshRate) ' give time to finnish processing eventualy received data from arduino
+        Application.DoEvents()
+        GoTo start
+    End Sub
+
+    Public Sub ScreenAndUDP() Handles TimerScreenAndUDP.Tick
+        TimerScreenAndUDP.Stop()
+        Dim ScreenUpdateTimeElapsed As Single = Now.Subtract(ScreenUpdateLastTime).Ticks / 10000000 ' seconds
+
+        'If ScreenUpdateTimeElapsed > 666666 Then ' 666666=15Hz
+        ' send UDP:
+        If chkUDP.Checked AndAlso Game IsNot Nothing AndAlso Game.Started Then
+            Dim udpBytes As Byte()
+            If ScreenUpdateTimeElapsed > 5000000 Then ' 2Hz ' TODO 
+                udpBytes = New Byte(33) {}
+                With Game.UpdateExtra()
+                    udpBytes(18) = .TyreWearFL
+                    udpBytes(19) = .TyreWearFR
+                    udpBytes(20) = .TyreWearRL
+                    udpBytes(21) = .TyreWearRR
+                    udpBytes(22) = BitConverter.GetBytes(Math.Abs(.RpmMax))(0)
+                    udpBytes(23) = BitConverter.GetBytes(Math.Abs(.RpmMax))(1)
+                    udpBytes(24) = .MaxFuel
+                    udpBytes(25) = .Fuel
+                    udpBytes(26) = .NumCars
+                    udpBytes(27) = .Position
+                    udpBytes(28) = .NumberOfLaps
+                    udpBytes(29) = .CompletedLaps
+                    udpBytes(30) = BitConverter.GetBytes(Math.Abs(.DistanceTraveled))(0)
+                    udpBytes(31) = BitConverter.GetBytes(Math.Abs(.DistanceTraveled))(1)
+                    udpBytes(32) = BitConverter.GetBytes(.FuelAvg)(0)
+                    udpBytes(33) = BitConverter.GetBytes(.FuelAvg)(1)
+                    'ErrorAdd(String.Join(",", udpBytes), "")
+                End With
+            Else
+                udpBytes = New Byte(17) {}
+            End If
+            udpBytes(0) = 255
+            udpBytes(1) = BitConverter.GetBytes(Math.Abs(GameOutputs.Speed))(0)
+            udpBytes(2) = BitConverter.GetBytes(Math.Abs(GameOutputs.Speed))(1)
+            udpBytes(3) = BitConverter.GetBytes(Math.Abs(GameOutputs.RPM))(0)
+            udpBytes(4) = BitConverter.GetBytes(Math.Abs(GameOutputs.RPM))(1)
+            udpBytes(5) = BitConverter.GetBytes(Math.Abs(GameOutputs.Gear))(0)
+            udpBytes(6) = GameOutputs.SlipFL
+            udpBytes(7) = GameOutputs.SlipFR
+            udpBytes(8) = GameOutputs.SlipRL
+            udpBytes(9) = GameOutputs.SlipRR
+            udpBytes(10) = If(GameOutputs.GearAuto, 1, 0)
+            udpBytes(11) = GameOutputs.TyreDirtFL
+            udpBytes(12) = GameOutputs.TyreDirtFR
+            udpBytes(13) = GameOutputs.TyreDirtRL
+            udpBytes(14) = GameOutputs.TyreDirtRR
+            udpBytes(15) = CByte(Math.Min(fromArduino.AccelCorrected / 4, 255))
+            udpBytes(16) = CByte(Math.Min(fromArduino.BrakeCorrected / 4, 255))
+            udpBytes(17) = CByte(Math.Min(fromArduino.ClutchCorrected / 4, 255))
+            Try
+                Dim udpClient As New Sockets.UdpClient
+                udpClient.SendAsync(udpBytes, udpBytes.Length, SettingsMain.UdpIp, 45000)
+            Catch ex As Exception
+                ErrorAdd("UDP Send Error " & SettingsMain.UdpIp, ex.Message)
+            End Try
+        End If
+
         If Not ckDontShow.Checked AndAlso Me.WindowState <> FormWindowState.Minimized Then
+
+            '  show wheel + FFB:
             With toArduino
                 Dim g As System.Drawing.Graphics = lbWheelPos.CreateGraphics()
                 g.Clear(Color.White)
@@ -297,211 +389,8 @@ Public Class frmCVJoy
                 g.DrawLine(Pens.DarkOrchid, xCP + 1, 5, xCP + CInt(xHalf * FFWheel_Cond.PosCoeff / 10000), 5)
                 lbWheelPos.ResumeLayout()
             End With
-        End If
 
-        ' SEND SERIAL DATA TO ARDUINO:
-        SerialPort1.DiscardOutBuffer()
-        SerialPort1.DiscardInBuffer()
-        SerialPort1.Write(toArduino.GetSerialData, 0, SerialSend.PacketLen) ' example: 255 0 128 128 0 0 0
-
-        ' FOR DEBUGGING :
-        'ErrorAdd("Send " & String.Join(" ", toArduino.GetSerialData), "")
-
-        ' NOW WE WAIT FOR RESPONSE FROM SERIAL....
-    End Sub
-
-
-    Private Sub SerialPort1_DataReceived(sender As Object, e As SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
-        ' READ SERIAL DATA FROM ARDUINO:
-
-        Dim fromArduino As New SerialRead
-
-        ' FOR DEBUGGING :
-        'Dim buf(512) As Byte ' maximum number of bytes to read. Only the number of bytes in the input buffer will be assigned to this array.
-        'SerialPort1.Read(buf, 0, buf.Length)
-        'ErrorAdd("Rcvd " & String.Join(" ", buf), "")
-
-        Try
-            If SerialPort1.BytesToRead < SerialRead.PacketLen Then ' !!! the DataReceived event is also raised if an Eof character is received, regardless of the number of bytes in the internal input buffer and the value of the ReceivedBytesThreshold property
-                ErrorAdd("Only " & SerialPort1.BytesToRead, " bytes")
-                Return ' will wait for more data
-            End If
-
-            Dim buf(120) As Byte ' maximum number of bytes to read. Only the number of bytes in the input buffer will be assigned to this array.
-            SerialPort1.Read(buf, 0, buf.Length)
-
-            If buf(0) < 192 Then
-                ErrorAdd("SerialPort1  received BAD checkdigit  =" & buf(0), "discarding them")
-                GoTo goReturn ' TODO: we should give some delay before we send data to arduino again...
-            End If
-            If (buf(0) And 2) <> 0 Then
-                ErrorAdd("ARDUINO says he GOT INVALID DATA", "")
-                GoTo goReturn ' TODO: we should give some delay before we send data to arduino again...
-            End If
-
-            Static _MainsPowerOK As Boolean
-            If (buf(0) And 1) = 1 AndAlso _MainsPowerOK = True Then
-                _MainsPowerOK = False
-                lbMainsPower.Text = "Mains Power OFF"
-                lbMainsPower.BackColor = Color.DeepSkyBlue
-                ErrorAdd("No Mains power / MainsPower freq lower", "than 50Hz+5%")
-            ElseIf (buf(0) And 1) = 0 AndAlso _MainsPowerOK = False Then
-                _MainsPowerOK = True
-                lbMainsPower.Text = "Mains Power ON"
-                lbMainsPower.BackColor = Color.HotPink
-                ErrorAdd("Mains power OK", "")
-            End If
-
-            ' this fills fromArduino with the data red from the Arduino !!
-            fromArduino.SetSerialData(buf)
-
-        Catch ex As Exception
-            ErrorAdd("EXCEPTION SerialPort1", ".DataReceived  " & ex.Message)
-            GoTo goReturn ' TODO: we should give some delay before we send data to arduino again...
-        End Try
-
-
-        If chkArduinoTime.Checked Then lbArduinoTime.Text = (1000 / Now.Subtract(ArduinoLastRead).TotalMilliseconds).ToString("0")
-        'txtErrors.Text = Now.Subtract(timeStart).Ticks.ToString("0000000") & "    " & timeRead.Subtract(timeSent).Ticks.ToString("0000000")
-        PreviousArduinoLastRead = ArduinoLastRead
-        ArduinoLastRead = Now
-        PreviousWheelPosition = WheelPosition
-        WheelPosition = fromArduino.WheelPosition
-        _realLeft = fromArduino.RealLeft - SettingsMain.GLeftScrewCenter
-        _realRight = fromArduino.RealRight - SettingsMain.GRightScrewCenter
-
-        With fromArduino
-            Dim j As New vJoyInterfaceWrap.vJoy.JoystickState
-#Region "buttons:  emulate keystrokes  or  send as joystick buttons"
-            Dim buttonBit As UInteger = 0
-
-            If .buttons(0) Then ' if button0 is being pressed:      
-
-                For i As Integer = 1 To 8
-                    If Game.Bt(i + 9) > "" Then
-                        If .buttons(i) Then
-                            If ButtonsLast(i) Then Continue For
-                            MySendKeys(Game.Bt(i + 9))
-                            ButtonOther = True
-                        End If
-                    ElseIf .buttons(i) Then
-                        buttonBit += 2 ^ (i + 16)
-                        ButtonOther = True
-                    End If
-                Next i
-
-            Else ' if button0 is not being pressed now :
-
-                If ButtonsLast(0) Then ' if was pressed alone and we just released it:
-                    If Not ButtonOther Then ' and no other button had been pressed
-                        If Game.Bt(0) > "" Then
-                            MySendKeys(Game.Bt(0))
-                        Else
-                            buttonBit = 1
-                        End If
-                    End If
-                    ButtonOther = False
-                Else
-                    For i As Integer = 1 To 8
-                        If Game.Bt(i) > "" Then
-                            If .buttons(i) Then
-                                If ButtonsLast(i) Then Continue For
-                                MySendKeys(Game.Bt(i))
-                            End If
-                        ElseIf .buttons(i) Then
-                            buttonBit += 2 ^ i
-                        End If
-                    Next i
-                End If
-            End If
-            fromArduino.buttons.CopyTo(ButtonsLast, 0)
-#End Region
-
-            If Not Joy.vJoyEnabled() Then
-                ErrorAdd("VJOY is disabled !  Trying to restart it...", "")
-                VJoy_Start()
-            End If
-
-            If Joy IsNot Nothing Then
-                j.Buttons = buttonBit _
-                        + If(.gear1, 1024, 0) _
-                        + If(.gear2, 2048, 0) _
-                        + If(.gear3, 4096, 0) _
-                        + If(.gear4, 8192, 0) _
-                        + If(.gear5, 16384, 0) _
-                        + If(.gear6, 32768, 0) _
-                        + If(.gearR, 65536, 0)
-                j.AxisX = Math.Max(Math.Min(WheelPosition + 16384, 32767), 0)  ' 0-16384-32767
-                j.AxisY = .AccelCorrected * 32 ' 0-32767
-                j.AxisZ = .BrakeCorrected * 32 ' 0-32767
-                j.AxisXRot = .ClutchCorrected * 32 ' 0-32767
-                If Not Joy.UpdateVJD(SettingsMain.vJoyId, j) Then
-                    ErrorAdd("VJOY UpdateVJD returned False! Retrying to AcquireVJD " + SettingsMain.vJoyId.ToString() + "...", j.Buttons.ToString() + " " + j.AxisX.ToString() + " " + j.AxisY.ToString() + " " + j.AxisZ.ToString() + " " + j.AxisXRot.ToString())
-                    VJoy_Start() 'Joy.AcquireVJD(SettingsMain.vJoyId)
-                End If
-            End If
-
-        End With
-
-        ' send UDP:
-        If chkUDP.Checked AndAlso Game IsNot Nothing AndAlso Game.Started Then
-            Dim udpBytes As Byte()
-            If TimerTickCounter Mod 3 = 0 Then
-                If TimerTickCounter >= 30 Then
-                    TimerTickCounter = 0
-                    udpBytes = New Byte(33) {}
-                    With Game.UpdateExtra()
-                        udpBytes(18) = .TyreWearFL
-                        udpBytes(19) = .TyreWearFR
-                        udpBytes(20) = .TyreWearRL
-                        udpBytes(21) = .TyreWearRR
-                        udpBytes(22) = BitConverter.GetBytes(Math.Abs(.RpmMax))(0)
-                        udpBytes(23) = BitConverter.GetBytes(Math.Abs(.RpmMax))(1)
-                        udpBytes(24) = .MaxFuel
-                        udpBytes(25) = .Fuel
-                        udpBytes(26) = .NumCars
-                        udpBytes(27) = .Position
-                        udpBytes(28) = .NumberOfLaps
-                        udpBytes(29) = .CompletedLaps
-                        udpBytes(30) = BitConverter.GetBytes(Math.Abs(.DistanceTraveled))(0)
-                        udpBytes(31) = BitConverter.GetBytes(Math.Abs(.DistanceTraveled))(1)
-                        udpBytes(32) = BitConverter.GetBytes(.FuelAvg)(0)
-                        udpBytes(33) = BitConverter.GetBytes(.FuelAvg)(1)
-                        'ErrorAdd(String.Join(",", udpBytes), "")
-                    End With
-                Else
-                    udpBytes = New Byte(17) {}
-                End If
-                udpBytes(0) = 255
-                udpBytes(1) = BitConverter.GetBytes(Math.Abs(GameOutputs.Speed))(0)
-                udpBytes(2) = BitConverter.GetBytes(Math.Abs(GameOutputs.Speed))(1)
-                udpBytes(3) = BitConverter.GetBytes(Math.Abs(GameOutputs.RPM))(0)
-                udpBytes(4) = BitConverter.GetBytes(Math.Abs(GameOutputs.RPM))(1)
-                udpBytes(5) = BitConverter.GetBytes(Math.Abs(GameOutputs.Gear))(0)
-                udpBytes(6) = GameOutputs.SlipFL
-                udpBytes(7) = GameOutputs.SlipFR
-                udpBytes(8) = GameOutputs.SlipRL
-                udpBytes(9) = GameOutputs.SlipRR
-                udpBytes(10) = If(GameOutputs.GearAuto, 1, 0)
-                udpBytes(11) = GameOutputs.TyreDirtFL
-                udpBytes(12) = GameOutputs.TyreDirtFR
-                udpBytes(13) = GameOutputs.TyreDirtRL
-                udpBytes(14) = GameOutputs.TyreDirtRR
-                udpBytes(15) = CByte(Math.Min(fromArduino.AccelCorrected / 4, 255))
-                udpBytes(16) = CByte(Math.Min(fromArduino.BrakeCorrected / 4, 255))
-                udpBytes(17) = CByte(Math.Min(fromArduino.ClutchCorrected / 4, 255))
-                Try
-                    Dim udpClient As New Sockets.UdpClient
-                    udpClient.SendAsync(udpBytes, udpBytes.Length, SettingsMain.UdpIp, 45000)
-                Catch ex As Exception
-                    ErrorAdd("UDP Send Error " & SettingsMain.UdpIp, ex.Message)
-                End Try
-            End If
-
-        End If
-
-        ' show lights on screen:
-        If Not ckDontShow.Checked AndAlso Me.WindowState <> FormWindowState.Minimized Then
+            ' show buttons and gears:
             With fromArduino
                 lbAccel.Text = .pedalAccel
                 lbBrake.Text = .pedalBreak
@@ -532,18 +421,188 @@ Public Class frmCVJoy
                 UcButtons1.bt16.BackColor = If(.buttons(0) AndAlso .buttons(7), Color.Green, Color.White)
                 UcButtons1.bt17.BackColor = If(.buttons(0) AndAlso .buttons(8), Color.Green, Color.White)
             End With
+
+            If ScreenUpdateTimeElapsed <> 0 Then
+                lbReadPedalsHz.Text = CInt(PedalsReadCount / ScreenUpdateTimeElapsed)
+                lbReadFFBHz.Text = CInt(FFBReadCount / ScreenUpdateTimeElapsed)
+                lbToArduinoHz.Text = CInt(SendToArduinoCount / ScreenUpdateTimeElapsed)
+            End If
+
         End If
 
         If graph IsNot Nothing Then graph.UpdatePedals(fromArduino)
 
-goReturn:
-        '  TODO: could have a counter of Sent/Received 
-        Timer1.Enabled = True  ' SendToArduino()
+        'Me.Update() ' we dont need this if we already call DoEvents()
+        'End If
+
+        TimerScreenAndUDP.Start()
+    End Sub
+
+
+    Private Sub SerialPort1_DataReceived(sender As Object, e As SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
+        Try
+            If SerialPort1.BytesToRead < 4 Then Return ' !!! the DataReceived event is also raised if an Eof character is received, regardless of the number of bytes in the internal input buffer and the value of the ReceivedBytesThreshold property
+
+            Dim buf(SerialPort1.BytesToRead - 1) As Byte ' maximum number of bytes to read. Only the number of bytes in the input buffer will be assigned to this array.
+            SerialPort1.Read(buf, 0, buf.Length)
+            'Dim buf(4) As Byte
+            'buf(0) = 123
+            'buf(1) = 254
+            'buf(2) = 192
+            'buf(3) = 1
+            'buf(4) = 2
+
+            Static SerialReceiveBuffer As New List(Of Byte)
+            SerialReceiveBuffer.AddRange(buf)
+            'ErrorAdd("    SerialReceiveBuffer " & String.Join(",", SerialReceiveBuffer.ToArray), "")
+
+start:
+            ' remove garbage at the begining:
+            Do
+                If SerialReceiveBuffer.Count < 4 Then Exit Sub
+                If SerialReceiveBuffer(0) >= 254 Then Exit Do
+                SerialReceiveBuffer.RemoveAt(0)
+            Loop
+
+            Select Case SerialReceiveBuffer(0)
+                Case 255 ' Wheel 100Hz :
+                    If SerialReceiveBuffer.Count < 4 Then
+                        Exit Sub ' will wait for more data
+                    End If
+                    If (SerialReceiveBuffer(1) Xor SerialReceiveBuffer(2)) <> SerialReceiveBuffer(3) Then
+                        ErrorAdd("got wheel bad checksum", String.Join(",", SerialReceiveBuffer.ToArray))
+                        SerialReceiveBuffer.RemoveRange(0, 1)
+                        GoTo start
+                    End If
+                    WheelPosition = (SerialReceiveBuffer(1) + SerialReceiveBuffer(2) * 256 - 32768) * Game.WheelSensitivity  ' -16380 ~ 0 ~ 16380
+                    SerialReceiveBuffer.RemoveRange(0, 4)
+                    Joy.SetAxis(Math.Max(Math.Min(WheelPosition + 16384, 32767), 0), SettingsMain.vJoyId, HID_USAGES.HID_USAGE_X) ' 0-16384-32767
+
+                Case 254 ' Pedals 33Hz :
+                    If SerialReceiveBuffer.Count < 11 Then
+                        Exit Sub ' will wait for more data
+                    End If
+                    If (SerialReceiveBuffer(1) Xor SerialReceiveBuffer(2) Xor SerialReceiveBuffer(3) Xor SerialReceiveBuffer(4) Xor SerialReceiveBuffer(5) Xor SerialReceiveBuffer(6) Xor SerialReceiveBuffer(7) Xor SerialReceiveBuffer(8) Xor SerialReceiveBuffer(9)) <> SerialReceiveBuffer(10) Then
+                        ErrorAdd("got pedals bad checksum", String.Join(",", SerialReceiveBuffer.ToArray) & " <>  " & (SerialReceiveBuffer(1) Xor SerialReceiveBuffer(2) Xor SerialReceiveBuffer(3) Xor SerialReceiveBuffer(4) Xor SerialReceiveBuffer(5) Xor SerialReceiveBuffer(6) Xor SerialReceiveBuffer(7) Xor SerialReceiveBuffer(8) Xor SerialReceiveBuffer(9)))
+                        SerialReceiveBuffer.RemoveRange(0, 1)
+                        GoTo start
+                    End If
+                    If SerialReceiveBuffer(1) < 192 Then
+                        ErrorAdd("got pedals bad checkdigit", String.Join(",", SerialReceiveBuffer.ToArray))
+                        SerialReceiveBuffer.RemoveRange(0, 1)
+                        GoTo start
+                    End If
+                    If (SerialReceiveBuffer(1) And 1) <> 0 Then
+                        ErrorAdd("ARDUINO says NO DATA, STOP ALL", "")
+                    End If
+                    If (SerialReceiveBuffer(1) And 2) <> 0 Then
+                        ErrorAdd("ARDUINO says INVALID DATA", "")
+                    End If
+
+                    Static _MainsPowerOK As Boolean
+                    If (SerialReceiveBuffer(1) And 16) = 16 AndAlso _MainsPowerOK = True Then
+                        _MainsPowerOK = False
+                        lbMainsPower.Text = "Mains Power OFF"
+                        lbMainsPower.BackColor = Color.DeepSkyBlue
+                        ErrorAdd("No Mains power / MainsPower freq lower", "than 50Hz+5%")
+                    ElseIf (SerialReceiveBuffer(1) And 16) = 0 AndAlso _MainsPowerOK = False Then
+                        _MainsPowerOK = True
+                        lbMainsPower.Text = "Mains Power ON"
+                        lbMainsPower.BackColor = Color.HotPink
+                        ErrorAdd("Mains power OK", "")
+                    End If
+
+                    fromArduino.SetSerialData(SerialReceiveBuffer)
+                    SerialReceiveBuffer.RemoveRange(0, 11)
+                    PedalsReadCount += 1
+
+                    With fromArduino
+#Region "buttons:  emulate keystrokes  or  send as joystick buttons"
+                        Dim buttonBit As UInteger = 0
+
+                        If .buttons(0) Then ' if button0 is being pressed:      
+
+                            For i As Integer = 1 To 8
+                                If Game.Bt(i + 9) > "" Then
+                                    If .buttons(i) Then
+                                        If ButtonsLast(i) Then Continue For
+                                        MySendKeys(Game.Bt(i + 9))
+                                        ButtonOther = True
+                                    End If
+                                ElseIf .buttons(i) Then
+                                    buttonBit += 2 ^ (i + 16)
+                                    ButtonOther = True
+                                End If
+                            Next i
+
+                        Else ' if button0 is not being pressed now :
+
+                            If ButtonsLast(0) Then ' if was pressed alone and we just released it:
+                                If Not ButtonOther Then ' and no other button had been pressed
+                                    If Game.Bt(0) > "" Then
+                                        MySendKeys(Game.Bt(0))
+                                    Else
+                                        buttonBit = 1
+                                    End If
+                                End If
+                                ButtonOther = False
+                            Else
+                                For i As Integer = 1 To 8
+                                    If Game.Bt(i) > "" Then
+                                        If .buttons(i) Then
+                                            If ButtonsLast(i) Then Continue For
+                                            MySendKeys(Game.Bt(i))
+                                        End If
+                                    ElseIf .buttons(i) Then
+                                        buttonBit += 2 ^ i
+                                    End If
+                                Next i
+                            End If
+                        End If
+                        fromArduino.buttons.CopyTo(ButtonsLast, 0)
+#End Region
+
+                        If Joy IsNot Nothing Then
+
+                            If Not Joy.vJoyEnabled() Then
+                                ErrorAdd("VJOY is disabled !  Trying to restart it...", "")
+                                VJoy_Start()
+                            End If
+
+                            Dim j As New vJoyInterfaceWrap.vJoy.JoystickState
+
+                            j.Buttons = buttonBit _
+                    + If(.gear1, 1024, 0) _
+                    + If(.gear2, 2048, 0) _
+                    + If(.gear3, 4096, 0) _
+                    + If(.gear4, 8192, 0) _
+                    + If(.gear5, 16384, 0) _
+                    + If(.gear6, 32768, 0) _
+                    + If(.gearR, 65536, 0)
+
+                            j.AxisX = Math.Max(Math.Min(WheelPosition + 16384, 32767), 0)  ' 0-16384-32767
+                            j.AxisY = .AccelCorrected * 32 ' 0-32767
+                            j.AxisZ = .BrakeCorrected * 32 ' 0-32767
+                            j.AxisXRot = .ClutchCorrected * 32 ' 0-32767
+
+                            If Not Joy.UpdateVJD(SettingsMain.vJoyId, j) Then
+                                ErrorAdd("VJOY UpdateVJD returned False! Retrying to AcquireVJD " + SettingsMain.vJoyId.ToString() + "...", j.Buttons.ToString() + " " + j.AxisX.ToString() + " " + j.AxisY.ToString() + " " + j.AxisZ.ToString() + " " + j.AxisXRot.ToString())
+                                VJoy_Start() 'Joy.AcquireVJD(SettingsMain.vJoyId)
+                            End If
+                        End If
+                    End With
+            End Select
+
+            GoTo start
+
+        Catch ex As Exception
+            ErrorAdd("EXCEPTION SerialPort1", ".DataReceived  " & ex.Message)
+        End Try
     End Sub
 
     Public Sub MySendKeys(keysToSend As String)
         If keysToSend = "reset" Then
-            WheelPositionOffset = True
+            TestMode = Motor.Reset
             FFGain = 255
             FFWheel_Type = FFBEType.ET_NONE
             FFWheel_Cond = New vJoyInterfaceWrap.vJoy.FFB_EFF_COND
@@ -578,7 +637,14 @@ goReturn:
     End Sub
 
     Private Sub btWheelCenter_Click(sender As Object, e As EventArgs) Handles btWheelCenter.Click
-        WheelPositionOffset = True
+        TestMode = Motor.Reset
+    End Sub
+
+    Private Sub btCountersReset_Click() Handles btCountersReset.Click
+        PedalsReadCount = 0
+        FFBReadCount = 0
+        SendToArduinoCount = 0
+        ScreenUpdateLastTime = Now
     End Sub
 
     Private Sub btSetup_Click(sender As Object, e As EventArgs) Handles btSetup.Click
@@ -656,6 +722,9 @@ goReturn:
             Dim devI As Integer
             Joy.Ffb_h_DeviceID(pData, devI)
             If devI <> SettingsMain.vJoyId Then Return
+
+            If FFBReadCount >= UInteger.MaxValue Then btCountersReset_Click()
+            FFBReadCount += 1
 
             Dim t As New FFBPType
             Joy.Ffb_h_Type(pData, t)
@@ -752,6 +821,9 @@ goReturn:
 
 
     Private Sub frmCVJoy_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+        TestMode = Motor.StopProcesss
+        System.Threading.Thread.Sleep(300)
+
         If Game IsNot Nothing Then Game.Stop()
         Game = Nothing
 
@@ -759,7 +831,7 @@ goReturn:
         SerialPort1 = Nothing
 
         If Joy IsNot Nothing Then
-            'Joy.FfbStop(SettingsMain.vJoyId)
+            'Joy.FfbStop(SettingsMain.vJoyId)  deprecated, does  nothing
             Joy.RelinquishVJD(SettingsMain.vJoyId)
             Joy = Nothing
         End If
@@ -778,7 +850,7 @@ goReturn:
         'txtErrors.Text = FFWheel_Const.Magnitude.ToString("00000") & "       " & FFWheel_Cond.PosCoeff.ToString("00000") & "       " & FFWheel_Cond.CenterPointOffset.ToString("00000")
 
         Dim q As Single = 0 ' aprox. -1~1
-        Dim timeElapsed As Single = ArduinoLastRead.Subtract(PreviousArduinoLastRead).Ticks
+        Dim timeElapsed As Single = WheelReadTime.Subtract(WheelReadPreviousTime).Ticks
         If chkFFCond.Checked Then
             'If the metric Is less than CP Offset - Dead Band, Then the resulting force Is given by the following formula:
             '   FFWheel += Negative Coefficient * (q - (CP Offset – Dead Band))
@@ -796,7 +868,7 @@ goReturn:
                 'ElseIf pWheelPosition < -SettingsMain.WheelDead Then
                 '    newPosition = pWheelPosition + SettingsMain.WheelDead
                 'End If
-                q = (pWheelPosition - PreviousWheelPosition) / timeElapsed * SettingsMain.WheelDampFactor 'q = (Math.Abs(pWheelPosition - LastWheelPosition) * SettingsMain.WheelDampFactor / timeElapsed) ^ (SettingsMain.WheelInertia / 100.0F) * Math.Sign(pWheelPosition - LastWheelPosition)
+                q = (pWheelPosition - WheelPositionPrevious) / timeElapsed * SettingsMain.WheelDampFactor 'q = (Math.Abs(pWheelPosition - LastWheelPosition) * SettingsMain.WheelDampFactor / timeElapsed) ^ (SettingsMain.WheelInertia / 100.0F) * Math.Sign(pWheelPosition - LastWheelPosition)
                 'If pWheelPosition <> PreviousWheelPosition Then txtErrors.Text &= (pWheelPosition - PreviousWheelPosition) & "       " & timeElapsed & vbCrLf
             ElseIf FFWheel_Type = FFBEType.ET_SPRNG Then
                 q = pWheelPosition / 1.637

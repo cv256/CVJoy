@@ -26,8 +26,6 @@
 // Serial communication on pins TX/RX uses TTL logic levels (5V or 3.3V depending on the board). Don’t connect these pins directly to an RS232 serial port; they operate at +/- 12V and can damage your Arduino board.   
 #define serialSpeed 115200 // data rate in bits per second (baud) for serial data transmission. For communicating with the computer, use one of these rates: 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, or 115200. The highest without error seems to be actually 115200 - which is the standard
 
-#define packetLen 7 // must be equal to CVJoyAc.SerialSend.PacketLen
-
 // external hardware -> arduino :
 #define pinZeroCrossDetector  19 //on Mega, Mega2560, MegaADK interrupt pins are 2, 3, 18, 19, 20, 21
 #define pinWheelEncA  2 //on Mega, Mega2560, MegaADK interrupt pins are 2, 3, 18, 19, 20, 21
@@ -79,16 +77,16 @@
 #define pinShakeMotor 7
 
 
-//unsigned long lastLoop;
+byte errors; // 1=not receiving data / 2=got invalid data from computer
 unsigned long lastSerialRecv;
 unsigned long lastMainsZero;
-unsigned long dimmerLeftDelay;
-unsigned long dimmerRightDelay;
+//unsigned long dimmerLeftDelay;
+//unsigned long dimmerRightDelay;
 unsigned long dimmerWindDelay; bool windOn;
 word dimmerShakeDelay;
 
-char leftMotorPower;// -127 to 127
-char rightMotorPower;// -127 to 127
+//char leftMotorPower;// -127 to 127
+//char rightMotorPower;// -127 to 127
 byte windMotorPower;// 0-255
 byte shakeMotorSpeed;// 0-255
 byte shakeMotorPower;// 0-255
@@ -96,7 +94,9 @@ byte shakeMotorPower;// 0-255
 // volatile byte WheelEncAFlag = 0; // let's us know when we're expecting a rising edge on pinA to signal that the encoder has arrived at a detent
 // volatile byte WheelEncBFlag = 0; // let's us know when we're expecting a rising edge on pinB to signal that the encoder has arrived at a detent (opposite direction to when aFlag is set)
 volatile unsigned int wheelPosition = 32768; //this variable stores our current value of encoder position
+unsigned int wheelPositionLast;
 bool wheelMotorDir254;
+unsigned int timer3333Count;
 
 void setup()
 {
@@ -155,8 +155,9 @@ void setup()
   // all AC Dimmers :
   attachInterrupt(digitalPinToInterrupt(pinZeroCrossDetector), zero_cross_ISR, RISING);// this happens 100 times per second, 100Hz
   // Zero cross (half sinewave) happens every 10ms (1000ms/50Hz/2), so there is a 10ms period that we can use to regulate power using PWM (Pulse Width Modulation - leading edge cut)
-  Timer1.initialize(39*4); // 10ms/255 =~ 0,039ms = 39 microseconds, 25641 times per second, 26KHz!   If we are not usign PWM.  If using PSM (Pulse Skip Modulation) Timer1.initialize(100) is more than enough
-  Timer1.attachInterrupt( timerIsr );
+  // 10ms/255 =~ 0,039ms = 39 microseconds, 25641 times per second, 26KHz!   If we are not usign PWM.  If using PSM (Pulse Skip Modulation)
+  Timer1.initialize(300); // 300 microseconds = 3333 times per second, over 100Hz means 33 steps
+  Timer1.attachInterrupt( timer3333 );
   interrupts();           // enable all interrupts
 
   // start communication from/to the computer via USB:
@@ -167,139 +168,83 @@ void setup()
 
 void loop()
 {
-/*  // FOR DEBUGGING :
-  while ( Serial.available() ) { 
-    byte x = Serial.read(); 
-    Serial.write(x);
-        Serial.write(x);
-            Serial.write(x);
-  }
-*/
-  if (Serial.available() >= packetLen) {  // data that’s already arrived and stored in the serial receive buffer (which holds 64 bytes)
-    byte serialWrite[15];
-    lastSerialRecv = millis();
-   
-    // READ from computer / write to hardware: --------------------- must be equal to CVJoyAc.SerialSend
-    byte wheelMotorDir = Serial.read(); // 0  checkdigit + wheelMotorDir
-  	if (wheelMotorDir == 253) { // reset wheel position
-  	  wheelPosition = 32768;
-  	}
-   
-  	byte wheelMotorPower = Serial.read(); // 1
-  	leftMotorPower = Serial.read() - 128; // 2 
-  	rightMotorPower = Serial.read() - 128; // 3
-  	windMotorPower = Serial.read(); // 4
-  	shakeMotorSpeed = Serial.read(); // 5
-    shakeMotorPower = Serial.read(); // 6
-
-  	if (wheelMotorPower > 0) {
-    	if (wheelMotorDir == 254 && !wheelMotorDir254) {
-        analogWrite(pinWheelMotorPower, 0);
-        wheelMotorDir254= true;
-    	  digitalWrite(pinWheelMotorDir1, HIGH);
-    	  digitalWrite(pinWheelMotorDir2, LOW);
-    	} else if (wheelMotorDir != 254 && wheelMotorDir254) {
-        analogWrite(pinWheelMotorPower, 0);
-        wheelMotorDir254= false;
-    	  digitalWrite(pinWheelMotorDir1, LOW);
-    	  digitalWrite(pinWheelMotorDir2, HIGH);
-    	}
-  	}
-	  analogWrite(pinWheelMotorPower, wheelMotorPower);
-
-    if (shakeMotorSpeed==0) {
-      analogWrite(pinShakeMotor, 0);
-    }
-    
-  	// read from hardware / SEND to computer : --------------------- must be equal to CVJoyAc.SerialRead
-  	byte tmpByte = 192; // checkdigit (64+128)
-  	if (digitalRead(pinButton9) == LOW) tmpByte += 32;
-  	if (micros()-lastMainsZero > 11000) tmpByte += 1; // No Mains power / MainsPower freq lower than 50Hz+10%
-  	if (wheelMotorDir<253) tmpByte += 2; // Arduino got invalid data from computer
-  	serialWrite[0]=tmpByte;
-  	tmpByte = 0;
-  	if (digitalRead(pinButton1) == LOW) tmpByte += 1;
-  	if (digitalRead(pinButton2) == LOW) tmpByte += 2;
-  	if (digitalRead(pinButton3) == LOW) tmpByte += 4;
-  	if (digitalRead(pinButton4) == LOW) tmpByte += 8;
-  	if (digitalRead(pinButton5) == LOW) tmpByte += 16;
-  	if (digitalRead(pinButton6) == LOW) tmpByte += 32;
-  	if (digitalRead(pinButton7) == LOW) tmpByte += 64;
-  	if (digitalRead(pinButton8) == LOW) tmpByte += 128;
-  	serialWrite[1]=tmpByte;
-  	tmpByte = 0;
-  	if (digitalRead(pinGear1) == LOW) tmpByte += 1;
-  	if (digitalRead(pinGear2) == LOW) tmpByte += 2;
-  	if (digitalRead(pinGear3) == LOW) tmpByte += 4;
-  	if (digitalRead(pinGear4) == LOW) tmpByte += 8;
-  	if (digitalRead(pinGear5) == LOW) tmpByte += 16;
-  	if (digitalRead(pinGear6) == LOW) tmpByte += 32;
-  	if (digitalRead(pinGearR) == LOW) tmpByte += 64;
-  	if (digitalRead(pinHandbrake) == LOW) tmpByte += 128;
-    serialWrite[2]=tmpByte;
-
-  	unsigned int tmpUInt;
-  	tmpUInt = analogRead(pinPedalAccel);
-    serialWrite[3]=tmpUInt & 255;
-    serialWrite[4]=tmpUInt / 256;
-  	tmpUInt = analogRead(pinPedalBreak);
-    serialWrite[5]=tmpUInt & 255;
-    serialWrite[6]=tmpUInt / 256;
-  	tmpUInt = analogRead(pinPedalClutch);
-    serialWrite[7]=tmpUInt & 255;
-    serialWrite[8]=tmpUInt / 256;
-    serialWrite[9]=wheelPosition & 255;
-    serialWrite[10]=wheelPosition / 256;
-
-    /*
-  	// Read Left Distance :
-  	digitalWrite(pinLeftUSSend, HIGH);// The PING is triggered by a HIGH pulse of 10 or more microseconds
-  	delayMicroseconds(12);
-  	digitalWrite(pinLeftUSSend, LOW);
-  	tmpUInt=pulseIn(pinLeftUSRead, HIGH, 2100); // microseconds of (total) sound travel, timeout at 70cm;
-    serialWrite[11]=tmpUInt & 255;
-    serialWrite[12]=tmpUInt / 256;
-  	// Read Right Distance :
-  	digitalWrite(pinRightUSSend, HIGH);// The PING is triggered by a HIGH pulse of 10 or more microseconds
-  	delayMicroseconds(12);
-  	digitalWrite(pinRightUSSend, LOW);
-  	tmpUInt=pulseIn(pinRightUSRead, HIGH, 2100); // microseconds of (total) sound travel, timeout at 70cm;
-    serialWrite[13]=tmpUInt & 255;
-    serialWrite[14]=tmpUInt / 256;
-    */
-    
-    Serial.write(serialWrite, 15);
-    // Serial.flush(); dont use flush(), it just stops until the serial output buffer gets emptied
-    
-    // waste eventual excessive data :   (communication error)
-    while ( Serial.available() ) { 
-      byte x = Serial.read(); 
-    }
-
-  } //..if Serial.available()==packetLen
-
   // if we lost communication with the computer stop the motors, dont let them in the last state or they will make ugly damage !
   if (millis() - lastSerialRecv > 200) { // 200 = 5 fps , lower than that and it will start bumping
-    digitalWrite(pinLeftMotorPower, LOW);
-    digitalWrite(pinRightMotorPower, LOW);
+    //digitalWrite(pinLeftMotorPower, LOW);
+    //digitalWrite(pinRightMotorPower, LOW);
     digitalWrite(pinWindMotor, LOW);
-    digitalWrite(pinShakeMotor, 0);
+    analogWrite(pinShakeMotor, 0);
     analogWrite(pinWheelMotorPower, 0);
-    leftMotorPower = 0;
-    rightMotorPower = 0;
+    //leftMotorPower = 0;
+    //rightMotorPower = 0;
     windMotorPower = 0;
     shakeMotorSpeed = 0;
 	  // SerialReset();
+    errors = errors | 1;
   }
-
 } //...loop
 
 
 
+void serialEvent() { // joyff + game -> pc -> ARDUINO:
+  start:
+  if (Serial.available() < 6) {  // data that’s already arrived and stored in the serial receive buffer (which holds 64 bytes)
+    return;
+  }
+   
+  // READ from computer / write to hardware: --------------------- must be equal to CVJoyAc.SerialSend
+  byte wheelMotorDir = Serial.read(); // 0  checkdigit + wheelMotorDir
+  if ( wheelMotorDir < 253 ) {
+    goto start;
+  }
 
-void zero_cross_ISR()
-{
-// frequency of AC signal is 50 Hz so the time period will be 1/f, which will be 20ms, half cycle is 10ms or 10000 microseconds. Hence the range of “Delay” can be varied from 0-10000 microseconds
+  byte data[4];
+  if (Serial.readBytes(data,5)!=5) {
+    goto start;
+  }
+
+  if (data[0] != (data[1] ^ data[2] ^ data[3] ^ data[4])) {
+    errors = errors | 2;
+    goto start;
+  }
+
+  if ( wheelMotorDir == 253 ) { // reset wheel position
+    wheelPosition = 32768;
+  }
+  windMotorPower = data[2]; // 3
+  shakeMotorSpeed = data[3]; // 4
+  shakeMotorPower = data[4]; // 5
+  //leftMotorPower = Serial.read() - 128; // 6
+  //rightMotorPower = Serial.read() - 128; // 7
+  
+  lastSerialRecv = millis();
+
+  if (data[1] > 0) { // wheelMotorPower
+    if (wheelMotorDir == 254 && !wheelMotorDir254) {
+      analogWrite(pinWheelMotorPower, 0);
+      wheelMotorDir254= true;
+      digitalWrite(pinWheelMotorDir1, HIGH);
+      digitalWrite(pinWheelMotorDir2, LOW);
+    } else if (wheelMotorDir == 255 && wheelMotorDir254) {
+      analogWrite(pinWheelMotorPower, 0);
+      wheelMotorDir254= false;
+      digitalWrite(pinWheelMotorDir1, LOW);
+      digitalWrite(pinWheelMotorDir2, HIGH);
+    }
+  }
+  analogWrite(pinWheelMotorPower, data[1]);
+  
+  if (shakeMotorSpeed==0) {
+    analogWrite(pinShakeMotor, 0);
+  }
+
+  goto start;
+}
+
+
+
+void zero_cross_ISR(){
+  // frequency of AC signal is 50 Hz so the time period will be 1/f, which will be 20ms, half cycle is 10ms or 10000 microseconds. Hence the range of “Delay” can be varied from 0-10000 microseconds
   
   //Serial.println( (int)( (float)(micros()-zero_cross) / (float)10 ) );
   
@@ -378,7 +323,9 @@ void zero_cross_ISR()
 
 
 
-void timerIsr() {
+void timer3333() {
+  timer3333Count++;
+  
   // manage TRIAC DIMMING:   learn on http://www.alfadex.com/2014/02/dimming-230v-ac-with-arduino-2/
 
   /*
@@ -426,6 +373,86 @@ void timerIsr() {
     }
   }
   */
+
+
+  if ( timer3333Count >=132 ) { // 132=25Hz   Pedals+Gears+Buttons(+RealBolts) -> ARDUINO -> pc -> joy:
+    timer3333Count = 0;
+    
+    // read from hardware / SEND to computer : --------------------- must be equal to CVJoyAc.SerialRead
+    byte serialWrite[10];    
+    serialWrite[0] = 254;
+    
+    byte tmpByte = 192; // checkdigit (64+128)
+    if (digitalRead(pinButton9) == LOW) tmpByte += 32;
+    if (micros()-lastMainsZero > 11000) tmpByte += 16; // No Mains power / MainsPower freq lower than 50Hz+10%
+    tmpByte = tmpByte | errors;
+    errors = 0;    
+    serialWrite[1]=tmpByte;
+    
+    tmpByte = 0;
+    if (digitalRead(pinButton1) == LOW) tmpByte += 1;
+    if (digitalRead(pinButton2) == LOW) tmpByte += 2;
+    if (digitalRead(pinButton3) == LOW) tmpByte += 4;
+    if (digitalRead(pinButton4) == LOW) tmpByte += 8;
+    if (digitalRead(pinButton5) == LOW) tmpByte += 16;
+    if (digitalRead(pinButton6) == LOW) tmpByte += 32;
+    if (digitalRead(pinButton7) == LOW) tmpByte += 64;
+    if (digitalRead(pinButton8) == LOW) tmpByte += 128;
+    serialWrite[2]=tmpByte;
+    tmpByte = 0;
+    if (digitalRead(pinGear1) == LOW) tmpByte += 1;
+    if (digitalRead(pinGear2) == LOW) tmpByte += 2;
+    if (digitalRead(pinGear3) == LOW) tmpByte += 4;
+    if (digitalRead(pinGear4) == LOW) tmpByte += 8;
+    if (digitalRead(pinGear5) == LOW) tmpByte += 16;
+    if (digitalRead(pinGear6) == LOW) tmpByte += 32;
+    if (digitalRead(pinGearR) == LOW) tmpByte += 64;
+    // if (digitalRead(pinHandbrake) == LOW) tmpByte += 128;
+    serialWrite[3]=tmpByte;
+
+    unsigned int tmpUInt;
+    tmpUInt = analogRead(pinPedalAccel);
+    serialWrite[4]=tmpUInt & 255;
+    serialWrite[5]=tmpUInt / 256;
+    tmpUInt = analogRead(pinPedalBreak);
+    serialWrite[6]=tmpUInt & 255;
+    serialWrite[7]=tmpUInt / 256;
+    tmpUInt = analogRead(pinPedalClutch);
+    serialWrite[8]=tmpUInt & 255;
+    serialWrite[9]=tmpUInt / 256;
+
+    /*
+    // Read Left Distance :
+    digitalWrite(pinLeftUSSend, HIGH);// The PING is triggered by a HIGH pulse of 10 or more microseconds
+    delayMicroseconds(12);
+    digitalWrite(pinLeftUSSend, LOW);
+    tmpUInt=pulseIn(pinLeftUSRead, HIGH, 2100); // microseconds of (total) sound travel, timeout at 70cm;
+    serialWrite[11]=tmpUInt & 255;
+    serialWrite[12]=tmpUInt / 256;
+    // Read Right Distance :
+    digitalWrite(pinRightUSSend, HIGH);// The PING is triggered by a HIGH pulse of 10 or more microseconds
+    delayMicroseconds(12);
+    digitalWrite(pinRightUSSend, LOW);
+    tmpUInt=pulseIn(pinRightUSRead, HIGH, 2100); // microseconds of (total) sound travel, timeout at 70cm;
+    serialWrite[13]=tmpUInt & 255;
+    serialWrite[14]=tmpUInt / 256;
+    */
+
+    serialWrite[10]= serialWrite[1] ^ serialWrite[2] ^ serialWrite[3] ^ serialWrite[4] ^ serialWrite[5] ^ serialWrite[6] ^ serialWrite[7] ^ serialWrite[8] ^ serialWrite[9];
+    Serial.write(serialWrite, 11);
+  }  
+  else if ( timer3333Count % 44 == 1 ) { // 44=75Hz (1, 45, 89)   Wheel -> ARDUINO -> pc -> joy:
+    if (wheelPosition != wheelPositionLast ) {
+      wheelPositionLast = wheelPosition;
+      byte serialWrite[3];
+      serialWrite[0] = 255;
+      serialWrite[1] = wheelPosition & 255;
+      serialWrite[2] = wheelPosition / 256;
+      serialWrite[3]= serialWrite[1] ^ serialWrite[2];
+
+      Serial.write(serialWrite, 4);
+    }
+  }
 }
 
 

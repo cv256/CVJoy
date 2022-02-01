@@ -73,7 +73,7 @@ Public Class frmSetup
 
     Public Function txt_Validate(pShowMsg As Boolean) As String
         Dim res As String = ""
-        res &= ValidateNumber(txtFreq, 11, 99, "Refresh Rate")
+        res &= ValidateNumber(txtFreq, 11, 999, "Refresh Rate")
 
         res &= ValidateNumber(txtWheelMinInput, 0, 1023, "Wheel FF Min Input")
         res &= ValidateNumber(txtWheelPowerForMin, 0, 255, "Wheel FF Power For Min")
@@ -168,7 +168,7 @@ Public Class frmSetup
 
         SettingsMain.SaveSettingstoFile()
 
-        _FrmCVJoy.Timer1.Interval = 1000 / SettingsMain.RefreshRate
+        '_FrmCVJoy.TimerSendToArduino.Interval = 1000 / SettingsMain.RefreshRate '  the accuracy of the System.Timers.Timer is only 30Hz
         Return True
     End Function
 

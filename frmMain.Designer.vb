@@ -58,12 +58,20 @@ Partial Class frmCVJoy
         Me.chkNoMotors = New System.Windows.Forms.CheckBox()
         Me.lbMainsPower = New System.Windows.Forms.Label()
         Me.chkFFIgnore = New System.Windows.Forms.CheckBox()
-        Me.chkArduinoTime = New System.Windows.Forms.CheckBox()
-        Me.lbArduinoTime = New System.Windows.Forms.Label()
         Me.chkLogHideDups = New System.Windows.Forms.CheckBox()
         Me.btLogClear = New System.Windows.Forms.Button()
         Me.chkUDP = New System.Windows.Forms.CheckBox()
         Me.UcButtons1 = New CVJoy.ucButtons()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.lbReadPedalsHz = New System.Windows.Forms.Label()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.lbReadFFBHz = New System.Windows.Forms.Label()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.lbToArduinoHz = New System.Windows.Forms.Label()
+        Me.btCountersReset = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'btArduinoStart
@@ -81,7 +89,7 @@ Partial Class frmCVJoy
         Me.G1.BackColor = System.Drawing.Color.Gray
         Me.G1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G1.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.G1.Location = New System.Drawing.Point(94, 104)
+        Me.G1.Location = New System.Drawing.Point(100, 122)
         Me.G1.Name = "G1"
         Me.G1.Size = New System.Drawing.Size(11, 20)
         Me.G1.TabIndex = 13
@@ -93,7 +101,7 @@ Partial Class frmCVJoy
         Me.G2.BackColor = System.Drawing.Color.WhiteSmoke
         Me.G2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G2.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.G2.Location = New System.Drawing.Point(108, 104)
+        Me.G2.Location = New System.Drawing.Point(114, 122)
         Me.G2.Name = "G2"
         Me.G2.Size = New System.Drawing.Size(11, 20)
         Me.G2.TabIndex = 14
@@ -105,7 +113,7 @@ Partial Class frmCVJoy
         Me.G3.BackColor = System.Drawing.Color.WhiteSmoke
         Me.G3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G3.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.G3.Location = New System.Drawing.Point(122, 104)
+        Me.G3.Location = New System.Drawing.Point(128, 122)
         Me.G3.Name = "G3"
         Me.G3.Size = New System.Drawing.Size(11, 20)
         Me.G3.TabIndex = 15
@@ -117,7 +125,7 @@ Partial Class frmCVJoy
         Me.G4.BackColor = System.Drawing.Color.WhiteSmoke
         Me.G4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G4.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.G4.Location = New System.Drawing.Point(136, 104)
+        Me.G4.Location = New System.Drawing.Point(142, 122)
         Me.G4.Name = "G4"
         Me.G4.Size = New System.Drawing.Size(11, 20)
         Me.G4.TabIndex = 16
@@ -129,7 +137,7 @@ Partial Class frmCVJoy
         Me.G5.BackColor = System.Drawing.Color.WhiteSmoke
         Me.G5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G5.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.G5.Location = New System.Drawing.Point(150, 104)
+        Me.G5.Location = New System.Drawing.Point(156, 122)
         Me.G5.Name = "G5"
         Me.G5.Size = New System.Drawing.Size(11, 20)
         Me.G5.TabIndex = 17
@@ -141,7 +149,7 @@ Partial Class frmCVJoy
         Me.G6.BackColor = System.Drawing.Color.WhiteSmoke
         Me.G6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.G6.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.G6.Location = New System.Drawing.Point(164, 104)
+        Me.G6.Location = New System.Drawing.Point(170, 122)
         Me.G6.Name = "G6"
         Me.G6.Size = New System.Drawing.Size(11, 20)
         Me.G6.TabIndex = 18
@@ -153,7 +161,7 @@ Partial Class frmCVJoy
         Me.GR.BackColor = System.Drawing.Color.WhiteSmoke
         Me.GR.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.GR.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GR.Location = New System.Drawing.Point(178, 104)
+        Me.GR.Location = New System.Drawing.Point(184, 122)
         Me.GR.Name = "GR"
         Me.GR.Size = New System.Drawing.Size(11, 20)
         Me.GR.TabIndex = 19
@@ -165,7 +173,7 @@ Partial Class frmCVJoy
         Me.lbHandbrake.BackColor = System.Drawing.Color.WhiteSmoke
         Me.lbHandbrake.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lbHandbrake.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbHandbrake.Location = New System.Drawing.Point(192, 104)
+        Me.lbHandbrake.Location = New System.Drawing.Point(198, 122)
         Me.lbHandbrake.Name = "lbHandbrake"
         Me.lbHandbrake.Size = New System.Drawing.Size(45, 20)
         Me.lbHandbrake.TabIndex = 20
@@ -398,7 +406,7 @@ Partial Class frmCVJoy
         'lbTemperature
         '
         Me.lbTemperature.BackColor = System.Drawing.Color.Transparent
-        Me.lbTemperature.Location = New System.Drawing.Point(300, 91)
+        Me.lbTemperature.Location = New System.Drawing.Point(338, 129)
         Me.lbTemperature.Name = "lbTemperature"
         Me.lbTemperature.Size = New System.Drawing.Size(23, 13)
         Me.lbTemperature.TabIndex = 135
@@ -408,7 +416,7 @@ Partial Class frmCVJoy
         '
         Me.Label2.AutoSize = True
         Me.Label2.BackColor = System.Drawing.Color.Transparent
-        Me.Label2.Location = New System.Drawing.Point(250, 91)
+        Me.Label2.Location = New System.Drawing.Point(274, 129)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(54, 13)
         Me.Label2.TabIndex = 134
@@ -418,7 +426,7 @@ Partial Class frmCVJoy
         '
         Me.Label3.AutoSize = True
         Me.Label3.BackColor = System.Drawing.Color.Transparent
-        Me.Label3.Location = New System.Drawing.Point(319, 91)
+        Me.Label3.Location = New System.Drawing.Point(365, 129)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(23, 13)
         Me.Label3.TabIndex = 136
@@ -439,7 +447,7 @@ Partial Class frmCVJoy
         'lbMainsPower
         '
         Me.lbMainsPower.BackColor = System.Drawing.Color.Transparent
-        Me.lbMainsPower.Location = New System.Drawing.Point(250, 73)
+        Me.lbMainsPower.Location = New System.Drawing.Point(274, 111)
         Me.lbMainsPower.Name = "lbMainsPower"
         Me.lbMainsPower.Size = New System.Drawing.Size(93, 13)
         Me.lbMainsPower.TabIndex = 138
@@ -456,26 +464,6 @@ Partial Class frmCVJoy
         Me.chkFFIgnore.Text = "Ignore FF"
         Me.chkFFIgnore.UseMnemonic = False
         Me.chkFFIgnore.UseVisualStyleBackColor = False
-        '
-        'chkArduinoTime
-        '
-        Me.chkArduinoTime.AutoSize = True
-        Me.chkArduinoTime.BackColor = System.Drawing.Color.Transparent
-        Me.chkArduinoTime.Location = New System.Drawing.Point(271, 46)
-        Me.chkArduinoTime.Name = "chkArduinoTime"
-        Me.chkArduinoTime.Size = New System.Drawing.Size(69, 17)
-        Me.chkArduinoTime.TabIndex = 140
-        Me.chkArduinoTime.Text = "Show Hz"
-        Me.chkArduinoTime.UseVisualStyleBackColor = False
-        '
-        'lbArduinoTime
-        '
-        Me.lbArduinoTime.BackColor = System.Drawing.Color.Transparent
-        Me.lbArduinoTime.Location = New System.Drawing.Point(338, 48)
-        Me.lbArduinoTime.Name = "lbArduinoTime"
-        Me.lbArduinoTime.Size = New System.Drawing.Size(37, 12)
-        Me.lbArduinoTime.TabIndex = 141
-        Me.lbArduinoTime.Text = "000"
         '
         'chkLogHideDups
         '
@@ -527,17 +515,118 @@ Partial Class frmCVJoy
         Me.UcButtons1.Size = New System.Drawing.Size(391, 37)
         Me.UcButtons1.TabIndex = 144
         '
+        'Label6
+        '
+        Me.Label6.BackColor = System.Drawing.Color.Transparent
+        Me.Label6.Location = New System.Drawing.Point(286, 66)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(51, 12)
+        Me.Label6.TabIndex = 150
+        Me.Label6.Text = "read FFB"
+        '
+        'Label7
+        '
+        Me.Label7.BackColor = System.Drawing.Color.Transparent
+        Me.Label7.Location = New System.Drawing.Point(365, 48)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(26, 12)
+        Me.Label7.TabIndex = 149
+        Me.Label7.Text = "Hz"
+        '
+        'lbReadPedalsHz
+        '
+        Me.lbReadPedalsHz.BackColor = System.Drawing.Color.Transparent
+        Me.lbReadPedalsHz.Location = New System.Drawing.Point(336, 48)
+        Me.lbReadPedalsHz.Name = "lbReadPedalsHz"
+        Me.lbReadPedalsHz.Size = New System.Drawing.Size(33, 12)
+        Me.lbReadPedalsHz.TabIndex = 148
+        Me.lbReadPedalsHz.Text = "0000"
+        '
+        'Label9
+        '
+        Me.Label9.BackColor = System.Drawing.Color.Transparent
+        Me.Label9.Location = New System.Drawing.Point(286, 48)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(51, 12)
+        Me.Label9.TabIndex = 153
+        Me.Label9.Text = "Pedals -> Joy"
+        '
+        'Label10
+        '
+        Me.Label10.BackColor = System.Drawing.Color.Transparent
+        Me.Label10.Location = New System.Drawing.Point(365, 66)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(26, 12)
+        Me.Label10.TabIndex = 152
+        Me.Label10.Text = "Hz"
+        '
+        'lbReadFFBHz
+        '
+        Me.lbReadFFBHz.BackColor = System.Drawing.Color.Transparent
+        Me.lbReadFFBHz.Location = New System.Drawing.Point(336, 66)
+        Me.lbReadFFBHz.Name = "lbReadFFBHz"
+        Me.lbReadFFBHz.Size = New System.Drawing.Size(33, 12)
+        Me.lbReadFFBHz.TabIndex = 151
+        Me.lbReadFFBHz.Text = "0000"
+        '
+        'Label12
+        '
+        Me.Label12.BackColor = System.Drawing.Color.Transparent
+        Me.Label12.Location = New System.Drawing.Point(229, 83)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(108, 12)
+        Me.Label12.TabIndex = 156
+        Me.Label12.Text = "FFB+Game -> Motors"
+        '
+        'Label13
+        '
+        Me.Label13.BackColor = System.Drawing.Color.Transparent
+        Me.Label13.Location = New System.Drawing.Point(365, 83)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(26, 12)
+        Me.Label13.TabIndex = 155
+        Me.Label13.Text = "Hz"
+        '
+        'lbToArduinoHz
+        '
+        Me.lbToArduinoHz.BackColor = System.Drawing.Color.Transparent
+        Me.lbToArduinoHz.Location = New System.Drawing.Point(336, 84)
+        Me.lbToArduinoHz.Name = "lbToArduinoHz"
+        Me.lbToArduinoHz.Size = New System.Drawing.Size(33, 12)
+        Me.lbToArduinoHz.TabIndex = 154
+        Me.lbToArduinoHz.Text = "0000"
+        '
+        'btCountersReset
+        '
+        Me.btCountersReset.BackColor = System.Drawing.Color.Gold
+        Me.btCountersReset.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btCountersReset.Location = New System.Drawing.Point(241, 62)
+        Me.btCountersReset.Name = "btCountersReset"
+        Me.btCountersReset.Size = New System.Drawing.Size(37, 20)
+        Me.btCountersReset.TabIndex = 157
+        Me.btCountersReset.Text = "reset"
+        Me.btCountersReset.UseVisualStyleBackColor = False
+        '
         'frmCVJoy
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ClientSize = New System.Drawing.Size(567, 386)
+        Me.Controls.Add(Me.btCountersReset)
+        Me.Controls.Add(Me.Label12)
+        Me.Controls.Add(Me.Label13)
+        Me.Controls.Add(Me.lbToArduinoHz)
+        Me.Controls.Add(Me.Label9)
+        Me.Controls.Add(Me.Label10)
+        Me.Controls.Add(Me.lbReadFFBHz)
+        Me.Controls.Add(Me.Label6)
+        Me.Controls.Add(Me.Label7)
+        Me.Controls.Add(Me.lbReadPedalsHz)
         Me.Controls.Add(Me.chkUDP)
         Me.Controls.Add(Me.UcButtons1)
         Me.Controls.Add(Me.btLogClear)
         Me.Controls.Add(Me.chkLogHideDups)
-        Me.Controls.Add(Me.chkArduinoTime)
         Me.Controls.Add(Me.chkFFIgnore)
         Me.Controls.Add(Me.chkNoMotors)
         Me.Controls.Add(Me.lbAttitude)
@@ -574,7 +663,6 @@ Partial Class frmCVJoy
         Me.Controls.Add(Me.ckKeepVisible)
         Me.Controls.Add(Me.ckDontShow)
         Me.Controls.Add(Me.lbMainsPower)
-        Me.Controls.Add(Me.lbArduinoTime)
         Me.Name = "frmCVJoy"
         Me.Text = "CV Joy"
         Me.ResumeLayout(False)
@@ -597,7 +685,6 @@ Partial Class frmCVJoy
     Friend WithEvents lbWheelPos As Label
     Friend WithEvents btWheelCenter As Button
     Friend WithEvents ckDontShow As CheckBox
-    Friend WithEvents lbAccel As Label
     Friend WithEvents Label5 As Label
     Friend WithEvents lbBrake As Label
     Friend WithEvents Label18 As Label
@@ -618,10 +705,19 @@ Partial Class frmCVJoy
     Friend WithEvents chkNoMotors As CheckBox
     Friend WithEvents lbMainsPower As Label
     Friend WithEvents chkFFIgnore As CheckBox
-    Friend WithEvents chkArduinoTime As CheckBox
-    Friend WithEvents lbArduinoTime As Label
     Friend WithEvents chkLogHideDups As CheckBox
     Friend WithEvents btLogClear As Button
     Friend WithEvents UcButtons1 As ucButtons
     Friend WithEvents chkUDP As CheckBox
+    Friend WithEvents Label6 As Label
+    Friend WithEvents Label7 As Label
+    Friend WithEvents lbReadPedalsHz As Label
+    Friend WithEvents Label9 As Label
+    Friend WithEvents Label10 As Label
+    Friend WithEvents lbReadFFBHz As Label
+    Friend WithEvents Label12 As Label
+    Friend WithEvents Label13 As Label
+    Friend WithEvents lbToArduinoHz As Label
+    Friend WithEvents lbAccel As Label
+    Friend WithEvents btCountersReset As Button
 End Class
