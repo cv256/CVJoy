@@ -22,12 +22,13 @@
     Public WheelPowerGama As Single = 100
     Public WheelPowerForMin As Integer = 29
     Public WheelPowerFactor As Single = 1.0
-    Public WheelDampFactor As Integer = 500
     Public WheelInertia As Single = 0
+    Public WheelDampFactor As Integer = 500
 
     Public WindMinPower As Integer = 32
     Public WindGama As Single = 150
-    Public ShakeMinPower As Integer = 70
+
+    Public ShakePowerNominal As Integer = 70
     Public ShakeGama As Single = 150
 
     Public UltrasonicGama As Single = 1

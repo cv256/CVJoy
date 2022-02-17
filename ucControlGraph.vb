@@ -14,34 +14,33 @@
             .MinPower = 0
             .Gama = 100
             .Factor = 1
+            .Range = 255
             If ParentButton Is Nothing Then Return res
             Dim frmSetup As frmSetup = ParentButton.FindForm
             If frmSetup.txt_Validate(pShowMsg:=False) > "" Then Return res
             If ParentButton Is frmSetup.btAccelGraph Then
-                .Range = 1023
+                Integer.TryParse(frmSetup.txtAccelMin.Text, .MinInput)
+                Integer.TryParse(frmSetup.txtAccelMax.Text, .Range)
                 Integer.TryParse(frmSetup.txtAccelGama.Text, .Gama)
             ElseIf ParentButton Is frmSetup.btBrakeGraph Then
-                .Range = 1023
+                Integer.TryParse(frmSetup.txtBrakeMin.Text, .MinInput)
+                Integer.TryParse(frmSetup.txtBrakeMax.Text, .Range)
                 Integer.TryParse(frmSetup.txtBrakeGama.Text, .Gama)
             ElseIf ParentButton Is frmSetup.btClutchGraph Then
-                .Range = 1023
+                Integer.TryParse(frmSetup.txtClutchMin.Text, .MinInput)
+                Integer.TryParse(frmSetup.txtClutchMax.Text, .Range)
                 Integer.TryParse(frmSetup.txtClutchGama.Text, .Gama)
             ElseIf ParentButton Is frmSetup.btWheelGraph Then
-                .Range = 255
                 Integer.TryParse(frmSetup.txtWheelMinInput.Text, .MinInput)
                 Integer.TryParse(frmSetup.txtWheelPowerForMin.Text, .MinPower)
                 Integer.TryParse(frmSetup.txtWheelPowerGama.Text, .Gama)
                 Single.TryParse(frmSetup.txtWheelPowerFactor.Text, .Factor)
             ElseIf ParentButton Is frmSetup.btWindGraph Then
-                .Range = 255
-                Integer.TryParse(1, .MinInput) ' Game.txtSpeedMinInput.Text
+                'Integer.TryParse(Game.txtSpeedMinInput.Text, .MinInput)
                 Integer.TryParse(frmSetup.txtWindMin.Text, .MinPower)
                 Integer.TryParse(frmSetup.txtWindGama.Text, .Gama)
-            ElseIf ParentButton Is frmSetup.btShakeGraph Then
-                .Range = 255
-                Integer.TryParse(1, .MinInput) ' Game.txtSpeedMinInput.Text
-                Integer.TryParse(frmSetup.txtShakeMin.Text, .MinPower)
-                Integer.TryParse(frmSetup.txtShakeGama.Text, .Gama)
+            ElseIf ParentButton Is frmSetup.btShakeSpeedGraph Then
+            ElseIf ParentButton Is frmSetup.btShakePowerGraph Then
             End If
         End With
         Return res
@@ -78,13 +77,13 @@
             x = x / .Range * Me.Width
             Using g As Graphics = Me.CreateGraphics
                 g.FillRectangle(Drawing.Brushes.Black, 0, 12, Me.Width, 28 - 12) ' clear
-                g.DrawLine(Drawing.Pens.White, x, 12, x + 1, 28) ' draw current position
+                g.DrawLine(Drawing.Pens.White, x, 12, x, 28) ' draw current position
             End Using
         End With
     End Sub
 
 
-    Public Sub UpdatePedals(fromArduino As SerialRead)
+    Public Sub UpdatePedals()
         If ParentButton Is Nothing Then Return
         Dim x As Integer
         Select Case ParentButton.Name
@@ -101,21 +100,23 @@
     End Sub
 
     Public Sub UpdateFFWheel(FFWheel As Integer)
-        If ParentButton Is Nothing Then Return
-        If ParentButton.Name <> frmSetup.btWheelGraph.Name Then Return
+        If ParentButton Is Nothing OrElse ParentButton.Name <> frmSetup.btWheelGraph.Name Then Return
         UpdateValue(FFWheel)
     End Sub
 
     Public Sub UpdateWind(FFWind As Integer)
-        If ParentButton Is Nothing Then Return
-        If ParentButton.Name <> frmSetup.btWindGraph.Name Then Return
+        If ParentButton Is Nothing OrElse ParentButton.Name <> frmSetup.btWindGraph.Name Then Return
         UpdateValue(FFWind)
     End Sub
 
-    Public Sub UpdateShake(FFShake As Integer)
-        If ParentButton Is Nothing Then Return
-        If ParentButton.Name <> frmSetup.btShakeGraph.Name Then Return
-        UpdateValue(FFShake)
+    Public Sub UpdateShakeSpeed(FFShakeSpeed As Integer)
+        If ParentButton Is Nothing OrElse ParentButton.Name <> frmSetup.btShakeSpeedGraph.Name Then Return
+        UpdateValue(FFShakeSpeed)
+    End Sub
+
+    Public Sub UpdateShakePower(FFShakePower As Integer)
+        If ParentButton Is Nothing OrElse ParentButton.Name <> frmSetup.btShakePowerGraph.Name Then Return
+        UpdateValue(FFShakePower)
     End Sub
 
 

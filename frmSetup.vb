@@ -50,7 +50,7 @@ Public Class frmSetup
 
         txtWindMin.Text = SettingsMain.WindMinPower
         txtWindGama.Text = SettingsMain.WindGama
-        txtShakeMin.Text = SettingsMain.ShakeMinPower
+        txtShakeMin.Text = SettingsMain.ShakePowerNominal
         txtShakeGama.Text = SettingsMain.ShakeGama
 
         txtUltrasonicGama.Text = SettingsMain.UltrasonicGama * 100
@@ -150,7 +150,7 @@ Public Class frmSetup
         SettingsMain.WindGama = txtWindGama.Text
         SettingsMain.WindMinPower = txtWindMin.Text
         SettingsMain.ShakeGama = txtShakeGama.Text
-        SettingsMain.ShakeMinPower = txtShakeMin.Text
+        SettingsMain.ShakePowerNominal = txtShakeMin.Text
 
         SettingsMain.UltrasonicGama = CInt(txtUltrasonicGama.Text) / 100
         SettingsMain.GLeftScrewCenter = txtLeftScrewCenter.Text
@@ -237,7 +237,7 @@ Public Class frmSetup
         ShowSettings()
     End Sub
 
-    Private Sub btGraph_Click(sender As Object, e As EventArgs) Handles btAccelGraph.Click, btBrakeGraph.Click, btClutchGraph.Click, btWheelGraph.Click, btWindGraph.Click, btShakeGraph.Click, btGGraph.Click
+    Private Sub btGraph_Click(sender As Object, e As EventArgs) Handles btAccelGraph.Click, btBrakeGraph.Click, btClutchGraph.Click, btWheelGraph.Click, btWindGraph.Click, btShakeSpeedGraph.Click, btShakePowerGraph.Click, btGGraph.Click
         If graph IsNot Nothing OrElse Ggraph IsNot Nothing Then
             graph = Nothing ' stop updating graph data from frmMain
             Ggraph = Nothing ' stop updating graph data from frmMain

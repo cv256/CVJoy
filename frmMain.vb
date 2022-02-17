@@ -3,13 +3,13 @@ Imports System.Net
 
 
 Public Class frmCVJoy
+    Private tmpErrors As String = ""
     Private WithEvents SerialPort1 As New IO.Ports.SerialPort
     ' System.Timers.Timer != System.Threading.Timer != System.Windows.Forms.Timer (55ms accuracy is not enough)
     'Public WithEvents TimerSendToArduino As New System.Timers.Timer
     Public WithEvents TimerScreenAndUDP As New Windows.Forms.Timer
     Private GameOutputs As clGameOutputs
     Public Joy As vJoyInterfaceWrap.vJoy ' http://vjoystick.sourceforge.net/site/includes/SDK_ReadMe.pdf
-    Private toArduino As New SerialSend, fromArduino As New SerialRead
 
     Private FFGain As Single = 255
     Public FFWheel_Type As FFBEType
@@ -21,6 +21,7 @@ Public Class frmCVJoy
     'Private _lastLeftMotorSpeed As Single, _lastRightMotorSpeed As Single ' -100~100 negative=bolt going down
     'Private _motorOverHeat As Single
     Private WheelPosition As Integer
+    ' Date datatype accuracy is 0,1ms = 10kHz
     Private WheelReadTime As Date = Now.AddSeconds(-1), WheelPositionPrevious As Integer, WheelReadPreviousTime As Date = Now.AddSeconds(-1) ' these are only for the Conditional FFB calulations
     Private ButtonsLast(8) As Boolean, ButtonOther As Boolean
     Private SendToArduinoCount As UInteger, PedalsReadCount As UInteger, FFBReadCount As UInteger, ScreenUpdateLastTime As Date = Now
@@ -169,19 +170,16 @@ start:
             If TestMode = Motor.Wind Then
                 .windPower = TestValue
             ElseIf Not chkNoWind.Checked Then
-                .windPower = CalculateOutput(GameOutputs.Wind, 255, 1, SettingsMain.WindMinPower, SettingsMain.WindGama, 1)
+                .windPower = GameOutputs.Wind
             Else
                 .windPower = 0
             End If
 
             If TestMode = Motor.Shake Then
-                .shakeSpeed = 127
                 .shakePower = TestValue
             ElseIf Not chkNoWind.Checked Then
-                .shakeSpeed = CalculateOutput(GameOutputs.ShakeSpeed, 255, 1, 0, SettingsMain.ShakeGama, 1)
-                .shakePower = Math.Max(Math.Min(GameOutputs.ShakePower, 255), 0)
+                .shakePower = GameOutputs.ShakePower
             Else
-                .shakeSpeed = 0
                 .shakePower = 0
             End If
 
@@ -363,9 +361,9 @@ start:
             udpBytes(12) = GameOutputs.TyreDirtFR
             udpBytes(13) = GameOutputs.TyreDirtRL
             udpBytes(14) = GameOutputs.TyreDirtRR
-            udpBytes(15) = CByte(Math.Min(fromArduino.AccelCorrected / 4, 255))
-            udpBytes(16) = CByte(Math.Min(fromArduino.BrakeCorrected / 4, 255))
-            udpBytes(17) = CByte(Math.Min(fromArduino.ClutchCorrected / 4, 255))
+            udpBytes(15) = fromArduino.AccelCorrected
+            udpBytes(16) = fromArduino.BrakeCorrected
+            udpBytes(17) = fromArduino.ClutchCorrected
             Try
                 Dim udpClient As New Sockets.UdpClient
                 udpClient.SendAsync(udpBytes, udpBytes.Length, SettingsMain.UdpIp, 45000)
@@ -430,7 +428,7 @@ start:
 
         End If
 
-        If graph IsNot Nothing Then graph.UpdatePedals(fromArduino)
+        If graph IsNot Nothing Then graph.UpdatePedals()
 
         'Me.Update() ' we dont need this if we already call DoEvents()
         'End If
@@ -441,6 +439,13 @@ start:
 
     Private Sub SerialPort1_DataReceived(sender As Object, e As SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
         Try
+            '' DEBUG :
+            'If SerialPort1.BytesToRead < 2 Then Return ' !!! the DataReceived event is also raised if an Eof character is received, regardless of the number of bytes in the internal input buffer and the value of the ReceivedBytesThreshold property
+            'Dim buf2(SerialPort1.BytesToRead - 1) As Byte ' maximum number of bytes to read. Only the number of bytes in the input buffer will be assigned to this array.
+            'SerialPort1.Read(buf2, 0, buf2.Length)
+            'ErrorAdd("Read " & String.Join(" ", buf2), "")
+            'Exit Sub
+
             If SerialPort1.BytesToRead < 4 Then Return ' !!! the DataReceived event is also raised if an Eof character is received, regardless of the number of bytes in the internal input buffer and the value of the ReceivedBytesThreshold property
 
             Dim buf(SerialPort1.BytesToRead - 1) As Byte ' maximum number of bytes to read. Only the number of bytes in the input buffer will be assigned to this array.
@@ -479,11 +484,11 @@ start:
                     Joy.SetAxis(Math.Max(Math.Min(WheelPosition + 16384, 32767), 0), SettingsMain.vJoyId, HID_USAGES.HID_USAGE_X) ' 0-16384-32767
 
                 Case 254 ' Pedals 33Hz :
-                    If SerialReceiveBuffer.Count < 11 Then
+                    If SerialReceiveBuffer.Count < 8 Then
                         Exit Sub ' will wait for more data
                     End If
-                    If (SerialReceiveBuffer(1) Xor SerialReceiveBuffer(2) Xor SerialReceiveBuffer(3) Xor SerialReceiveBuffer(4) Xor SerialReceiveBuffer(5) Xor SerialReceiveBuffer(6) Xor SerialReceiveBuffer(7) Xor SerialReceiveBuffer(8) Xor SerialReceiveBuffer(9)) <> SerialReceiveBuffer(10) Then
-                        ErrorAdd("got pedals bad checksum", String.Join(",", SerialReceiveBuffer.ToArray) & " <>  " & (SerialReceiveBuffer(1) Xor SerialReceiveBuffer(2) Xor SerialReceiveBuffer(3) Xor SerialReceiveBuffer(4) Xor SerialReceiveBuffer(5) Xor SerialReceiveBuffer(6) Xor SerialReceiveBuffer(7) Xor SerialReceiveBuffer(8) Xor SerialReceiveBuffer(9)))
+                    If (SerialReceiveBuffer(1) Xor SerialReceiveBuffer(2) Xor SerialReceiveBuffer(3) Xor SerialReceiveBuffer(4) Xor SerialReceiveBuffer(5) Xor SerialReceiveBuffer(6)) <> SerialReceiveBuffer(7) Then
+                        ErrorAdd("got pedals bad checksum", String.Join(",", SerialReceiveBuffer.ToArray) & " <>  " & (SerialReceiveBuffer(1) Xor SerialReceiveBuffer(2) Xor SerialReceiveBuffer(3) Xor SerialReceiveBuffer(4) Xor SerialReceiveBuffer(5) Xor SerialReceiveBuffer(6)))
                         SerialReceiveBuffer.RemoveRange(0, 1)
                         GoTo start
                     End If
@@ -513,7 +518,7 @@ start:
                     End If
 
                     fromArduino.SetSerialData(SerialReceiveBuffer)
-                    SerialReceiveBuffer.RemoveRange(0, 11)
+                    SerialReceiveBuffer.RemoveRange(0, 8)
                     PedalsReadCount += 1
 
                     With fromArduino
@@ -581,9 +586,9 @@ start:
                     + If(.gearR, 65536, 0)
 
                             j.AxisX = Math.Max(Math.Min(WheelPosition + 16384, 32767), 0)  ' 0-16384-32767
-                            j.AxisY = .AccelCorrected * 32 ' 0-32767
-                            j.AxisZ = .BrakeCorrected * 32 ' 0-32767
-                            j.AxisXRot = .ClutchCorrected * 32 ' 0-32767
+                            j.AxisY = .AccelCorrected * 128 ' 0-32767
+                            j.AxisZ = .BrakeCorrected * 128 ' 0-32767
+                            j.AxisXRot = .ClutchCorrected * 128 ' 0-32767
 
                             If Not Joy.UpdateVJD(SettingsMain.vJoyId, j) Then
                                 ErrorAdd("VJOY UpdateVJD returned False! Retrying to AcquireVJD " + SettingsMain.vJoyId.ToString() + "...", j.Buttons.ToString() + " " + j.AxisX.ToString() + " " + j.AxisY.ToString() + " " + j.AxisZ.ToString() + " " + j.AxisXRot.ToString())
@@ -624,16 +629,19 @@ start:
 
     Public Sub ErrorAdd(pNewErrorDescr As String, pExtraInfo As String, Optional pFF As Boolean = False)
         If pFF = False AndAlso chkLogHideDups.Checked Then
-            If txtErrors.Text.Contains(pNewErrorDescr) Then Return
-            txtErrors.Text = Strings.Left(pNewErrorDescr & "  " & pExtraInfo & vbCrLf & txtErrors.Text, 1000)
+            If tmpErrors.StartsWith(pNewErrorDescr) Then Return
+            tmpErrors = Strings.Left(pNewErrorDescr & "  " & pExtraInfo & vbCrLf & tmpErrors, 6000)
         Else
-            txtErrors.Text = Strings.Left(Now.ToLongTimeString & "  " & pNewErrorDescr & "  " & pExtraInfo & vbCrLf & txtErrors.Text, 5000)
+            tmpErrors = Strings.Left(Now.ToLongTimeString & "  " & pNewErrorDescr & "  " & pExtraInfo & vbCrLf & tmpErrors, 6000)
         End If
+
+        txtErrors.Text = tmpErrors
         'txtErrors.SelectionStart = 32767 : txtErrors.ScrollToCaret()
     End Sub
 
     Private Sub btLogClear_Click(sender As Object, e As EventArgs) Handles btLogClear.Click
-        txtErrors.Text = ""
+        tmpErrors = ""
+        txtErrors.Text = tmpErrors
     End Sub
 
     Private Sub btWheelCenter_Click(sender As Object, e As EventArgs) Handles btWheelCenter.Click
@@ -893,7 +901,7 @@ start:
         Try
             powerToApply = CalculateOutput(Math.Min(Math.Abs(desiredTotalStrength), 255), 255, SettingsMain.WheelMinInput, SettingsMain.WheelPowerForMin, SettingsMain.WheelPowerGama, SettingsMain.WheelPowerFactor) * Math.Sign(desiredTotalStrength)
         Catch ex As Exception
-            txtErrors.Text = $"808 : desiredTotalStrength={desiredTotalStrength}   pWheelPosition={pWheelPosition}  timeElapsed={timeElapsed}  q={Math.Abs(q).ToString("00000")}  {ex.Message}" & vbCrLf & txtErrors.Text
+            'ErrorAdd($"808 : desiredTotalStrength={desiredTotalStrength}   pWheelPosition={pWheelPosition}  timeElapsed={timeElapsed}  q={Math.Abs(q).ToString("00000")}  {ex.Message}", "")
         End Try
         Return powerToApply
     End Function

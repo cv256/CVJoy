@@ -1,6 +1,7 @@
 ﻿Module Module1
 
     Public SettingsMain As New clSettingsMain
+    Public toArduino As New SerialSend, fromArduino As New SerialRead
     Public Game As clGame
 
     Public graph As ucControlGraph, Ggraph As ucControlGGraph

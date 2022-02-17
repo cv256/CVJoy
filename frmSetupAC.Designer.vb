@@ -844,9 +844,9 @@ Partial Class frmSetupAC
         Me.Label34.AutoSize = True
         Me.Label34.Location = New System.Drawing.Point(0, 343)
         Me.Label34.Name = "Label34"
-        Me.Label34.Size = New System.Drawing.Size(114, 13)
+        Me.Label34.Size = New System.Drawing.Size(109, 13)
         Me.Label34.TabIndex = 280
-        Me.Label34.Text = "Shake Power starts at:"
+        Me.Label34.Text = "Shake Power effects:"
         '
         'txtShakePowerMaxJump
         '

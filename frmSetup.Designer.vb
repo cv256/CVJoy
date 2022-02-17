@@ -128,7 +128,7 @@ Partial Class frmSetup
         Me.txtUltrasonicDamper = New System.Windows.Forms.MaskedTextBox()
         Me.lbGLeftMotorEfficiency = New System.Windows.Forms.Label()
         Me.txtGMaxMotorEfficiency = New System.Windows.Forms.MaskedTextBox()
-        Me.btShakeGraph = New System.Windows.Forms.Button()
+        Me.btShakeSpeedGraph = New System.Windows.Forms.Button()
         Me.Label19 = New System.Windows.Forms.Label()
         Me.btTestShake = New System.Windows.Forms.Button()
         Me.Label20 = New System.Windows.Forms.Label()
@@ -161,6 +161,7 @@ Partial Class frmSetup
         Me.UcControlGraph1 = New CVJoy.ucControlGraph()
         Me.Label44 = New System.Windows.Forms.Label()
         Me.txtComBaud = New System.Windows.Forms.MaskedTextBox()
+        Me.btShakePowerGraph = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Label3
@@ -1276,16 +1277,16 @@ Partial Class frmSetup
         Me.txtGMaxMotorEfficiency.TabIndex = 244
         Me.txtGMaxMotorEfficiency.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
-        'btShakeGraph
+        'btShakeSpeedGraph
         '
-        Me.btShakeGraph.BackColor = System.Drawing.Color.Gold
-        Me.btShakeGraph.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btShakeGraph.Location = New System.Drawing.Point(723, 296)
-        Me.btShakeGraph.Name = "btShakeGraph"
-        Me.btShakeGraph.Size = New System.Drawing.Size(44, 20)
-        Me.btShakeGraph.TabIndex = 254
-        Me.btShakeGraph.Text = "Graph"
-        Me.btShakeGraph.UseVisualStyleBackColor = False
+        Me.btShakeSpeedGraph.BackColor = System.Drawing.Color.Gold
+        Me.btShakeSpeedGraph.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btShakeSpeedGraph.Location = New System.Drawing.Point(629, 296)
+        Me.btShakeSpeedGraph.Name = "btShakeSpeedGraph"
+        Me.btShakeSpeedGraph.Size = New System.Drawing.Size(69, 20)
+        Me.btShakeSpeedGraph.TabIndex = 254
+        Me.btShakeSpeedGraph.Text = "Graph Speed"
+        Me.btShakeSpeedGraph.UseVisualStyleBackColor = False
         '
         'Label19
         '
@@ -1338,11 +1339,11 @@ Partial Class frmSetup
         'Label22
         '
         Me.Label22.AutoSize = True
-        Me.Label22.Location = New System.Drawing.Point(231, 299)
+        Me.Label22.Location = New System.Drawing.Point(211, 299)
         Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(60, 13)
+        Me.Label22.Size = New System.Drawing.Size(81, 13)
         Me.Label22.TabIndex = 249
-        Me.Label22.Text = "Min.Power:"
+        Me.Label22.Text = "Nominal Power:"
         '
         'Label33
         '
@@ -1623,11 +1624,23 @@ Partial Class frmSetup
         Me.txtComBaud.TabIndex = 279
         Me.txtComBaud.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
+        'btShakePowerGraph
+        '
+        Me.btShakePowerGraph.BackColor = System.Drawing.Color.Gold
+        Me.btShakePowerGraph.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btShakePowerGraph.Location = New System.Drawing.Point(698, 296)
+        Me.btShakePowerGraph.Name = "btShakePowerGraph"
+        Me.btShakePowerGraph.Size = New System.Drawing.Size(69, 20)
+        Me.btShakePowerGraph.TabIndex = 280
+        Me.btShakePowerGraph.Text = "Graph Power"
+        Me.btShakePowerGraph.UseVisualStyleBackColor = False
+        '
         'frmSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(770, 466)
+        Me.Controls.Add(Me.btShakePowerGraph)
         Me.Controls.Add(Me.txtComBaud)
         Me.Controls.Add(Me.Label44)
         Me.Controls.Add(Me.Label16)
@@ -1651,7 +1664,7 @@ Partial Class frmSetup
         Me.Controls.Add(Me.btTestGLeftUp)
         Me.Controls.Add(Me.btTestGLeftDown)
         Me.Controls.Add(Me.txtGMinMotorEfficiency)
-        Me.Controls.Add(Me.btShakeGraph)
+        Me.Controls.Add(Me.btShakeSpeedGraph)
         Me.Controls.Add(Me.Label19)
         Me.Controls.Add(Me.btTestShake)
         Me.Controls.Add(Me.Label20)
@@ -1877,7 +1890,7 @@ Partial Class frmSetup
     Friend WithEvents txtUltrasonicDamper As MaskedTextBox
     Friend WithEvents lbGLeftMotorEfficiency As Label
     Friend WithEvents txtGMaxMotorEfficiency As MaskedTextBox
-    Friend WithEvents btShakeGraph As Button
+    Friend WithEvents btShakeSpeedGraph As Button
     Friend WithEvents Label19 As Label
     Friend WithEvents btTestShake As Button
     Friend WithEvents Label20 As Label
@@ -1908,4 +1921,5 @@ Partial Class frmSetup
     Friend WithEvents Label27 As Label
     Friend WithEvents Label44 As Label
     Friend WithEvents txtComBaud As MaskedTextBox
+    Friend WithEvents btShakePowerGraph As Button
 End Class
