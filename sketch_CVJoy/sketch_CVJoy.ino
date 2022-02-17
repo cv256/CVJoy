@@ -93,7 +93,7 @@ byte windMotorPower;// 0-255
 // volatile byte WheelEncBFlag = 0; // let's us know when we're expecting a rising edge on pinB to signal that the encoder has arrived at a detent (opposite direction to when aFlag is set)
 volatile unsigned int wheelPosition = 32768; //this variable stores our current value of encoder position
 unsigned int wheelPositionLast;
-bool wheelMotorDir254;
+bool wheelMotorDir253;
 unsigned int timer3333Count;
 
 void setup()
@@ -202,15 +202,15 @@ void loop()
     }
 
     if (serialReceived[2] > 0) { // wheelMotorPower
-      if (serialReceived[0] == 253 && !wheelMotorDir254) {
+      if (serialReceived[0] == 253 && !wheelMotorDir253) {
         analogWrite(pinWheelMotorPower, 0);
-        wheelMotorDir254 = true;
+        wheelMotorDir253 = true;
         digitalWrite(pinWheelMotorDir1, HIGH);
         digitalWrite(pinWheelMotorDir2, LOW);
       }
-      else if (serialReceived[0] == 254 && wheelMotorDir254) {
+      else if (serialReceived[0] == 254 && wheelMotorDir253) {
         analogWrite(pinWheelMotorPower, 0);
-        wheelMotorDir254 = false;
+        wheelMotorDir253 = false;
         digitalWrite(pinWheelMotorDir1, LOW);
         digitalWrite(pinWheelMotorDir2, HIGH);
       }
@@ -225,7 +225,7 @@ void loop()
 
 noData:
 
-  /*
+
     // if we lost communication with the computer stop the motors, dont let them in the last state or they will make ugly damage !
     if (millis() - lastSerialRecv > 200) { // 200 = 5 fps , lower than that and it will start bumping
       //digitalWrite(pinLeftMotorPower, LOW);
@@ -239,9 +239,84 @@ noData:
       // SerialReset();
       errors = errors | 1;
     }
-  */
 
-  windMotorPower = 0;
+    
+    if (wheelPosition != wheelPositionLast ) {
+      wheelPositionLast = wheelPosition;
+      byte serialWrite[3];
+      serialWrite[0] = 255;
+      serialWrite[1] = wheelPosition & 255;
+      serialWrite[2] = ((wheelPosition & 0xFF00) >>8);
+      serialWrite[3] = serialWrite[1] ^ serialWrite[2];
+
+      Serial.write(serialWrite, 4);
+    }
+
+    timer3333Count++;
+    if ( timer3333Count >= 5000 ) { // 132=25Hz   Pedals+Gears+Buttons(+RealBolts) -> ARDUINO -> pc -> joy:
+    timer3333Count = 0;
+
+    // read from hardware / SEND to computer : --------------------- must be equal to CVJoyAc.SerialRead
+    byte serialWrite[7];
+    serialWrite[0] = 254;
+
+    byte tmpByte = 192; // checkdigit (64+128)
+    if (digitalRead(pinButton9) == LOW) tmpByte += 32;
+    if (micros() - lastMainsZero > 11000) tmpByte += 16; // No Mains power / MainsPower freq lower than 50Hz+10%
+    tmpByte = tmpByte | errors;
+    errors = 0;
+    serialWrite[1] = tmpByte;
+
+    tmpByte = 0;
+    if (digitalRead(pinButton1) == LOW) tmpByte += 1;
+    if (digitalRead(pinButton2) == LOW) tmpByte += 2;
+    if (digitalRead(pinButton3) == LOW) tmpByte += 4;
+    if (digitalRead(pinButton4) == LOW) tmpByte += 8;
+    if (digitalRead(pinButton5) == LOW) tmpByte += 16;
+    if (digitalRead(pinButton6) == LOW) tmpByte += 32;
+    if (digitalRead(pinButton7) == LOW) tmpByte += 64;
+    if (digitalRead(pinButton8) == LOW) tmpByte += 128;
+    serialWrite[2] = tmpByte;
+    tmpByte = 0;
+    if (digitalRead(pinGear1) == LOW) tmpByte += 1;
+    if (digitalRead(pinGear2) == LOW) tmpByte += 2;
+    if (digitalRead(pinGear3) == LOW) tmpByte += 4;
+    if (digitalRead(pinGear4) == LOW) tmpByte += 8;
+    if (digitalRead(pinGear5) == LOW) tmpByte += 16;
+    if (digitalRead(pinGear6) == LOW) tmpByte += 32;
+    if (digitalRead(pinGearR) == LOW) tmpByte += 64;
+    // if (digitalRead(pinHandbrake) == LOW) tmpByte += 128;
+    serialWrite[3] = tmpByte;
+
+    unsigned int tmpUInt;
+    tmpUInt = analogRead(pinPedalAccel);
+    serialWrite[4] = tmpUInt / 4;
+    tmpUInt = analogRead(pinPedalBreak);
+    serialWrite[5] = tmpUInt / 4;
+    tmpUInt = analogRead(pinPedalClutch);
+    serialWrite[6] = tmpUInt / 4;
+
+    /*
+      // Read Left Distance :
+      digitalWrite(pinLeftUSSend, HIGH);// The PING is triggered by a HIGH pulse of 10 or more microseconds
+      delayMicroseconds(12);
+      digitalWrite(pinLeftUSSend, LOW);
+      tmpUInt=pulseIn(pinLeftUSRead, HIGH, 2100); // microseconds of (total) sound travel, timeout at 70cm;
+      serialWrite[11]=tmpUInt & 255;
+      serialWrite[12]=tmpUInt / 256;
+      // Read Right Distance :
+      digitalWrite(pinRightUSSend, HIGH);// The PING is triggered by a HIGH pulse of 10 or more microseconds
+      delayMicroseconds(12);
+      digitalWrite(pinRightUSSend, LOW);
+      tmpUInt=pulseIn(pinRightUSRead, HIGH, 2100); // microseconds of (total) sound travel, timeout at 70cm;
+      serialWrite[13]=tmpUInt & 255;
+      serialWrite[14]=tmpUInt / 256;
+    */
+
+    serialWrite[7] = serialWrite[1] ^ serialWrite[2] ^ serialWrite[3] ^ serialWrite[4] ^ serialWrite[5] ^ serialWrite[6] ;
+    Serial.write(serialWrite, 8);
+  }
+
 
 } //...loop
 
@@ -336,8 +411,6 @@ void zero_cross_ISR() {
 
 
 void timer3333() {
-  timer3333Count++;
-
   // manage TRIAC DIMMING:   learn on http://www.alfadex.com/2014/02/dimming-230v-ac-with-arduino-2/
 
   /*
@@ -385,83 +458,6 @@ void timer3333() {
     }
     }
   */
-
-
-  if ( timer3333Count >= 132 ) { // 132=25Hz   Pedals+Gears+Buttons(+RealBolts) -> ARDUINO -> pc -> joy:
-    timer3333Count = 0;
-
-    // read from hardware / SEND to computer : --------------------- must be equal to CVJoyAc.SerialRead
-    byte serialWrite[7];
-    serialWrite[0] = 254;
-
-    byte tmpByte = 192; // checkdigit (64+128)
-    if (digitalRead(pinButton9) == LOW) tmpByte += 32;
-    if (micros() - lastMainsZero > 11000) tmpByte += 16; // No Mains power / MainsPower freq lower than 50Hz+10%
-    tmpByte = tmpByte | errors;
-    errors = 0;
-    serialWrite[1] = tmpByte;
-
-    tmpByte = 0;
-    if (digitalRead(pinButton1) == LOW) tmpByte += 1;
-    if (digitalRead(pinButton2) == LOW) tmpByte += 2;
-    if (digitalRead(pinButton3) == LOW) tmpByte += 4;
-    if (digitalRead(pinButton4) == LOW) tmpByte += 8;
-    if (digitalRead(pinButton5) == LOW) tmpByte += 16;
-    if (digitalRead(pinButton6) == LOW) tmpByte += 32;
-    if (digitalRead(pinButton7) == LOW) tmpByte += 64;
-    if (digitalRead(pinButton8) == LOW) tmpByte += 128;
-    serialWrite[2] = tmpByte;
-    tmpByte = 0;
-    if (digitalRead(pinGear1) == LOW) tmpByte += 1;
-    if (digitalRead(pinGear2) == LOW) tmpByte += 2;
-    if (digitalRead(pinGear3) == LOW) tmpByte += 4;
-    if (digitalRead(pinGear4) == LOW) tmpByte += 8;
-    if (digitalRead(pinGear5) == LOW) tmpByte += 16;
-    if (digitalRead(pinGear6) == LOW) tmpByte += 32;
-    if (digitalRead(pinGearR) == LOW) tmpByte += 64;
-    // if (digitalRead(pinHandbrake) == LOW) tmpByte += 128;
-    serialWrite[3] = tmpByte;
-
-    unsigned int tmpUInt;
-    tmpUInt = analogRead(pinPedalAccel);
-    serialWrite[4] = tmpUInt / 4;
-    tmpUInt = analogRead(pinPedalBreak);
-    serialWrite[5] = tmpUInt / 4;
-    tmpUInt = analogRead(pinPedalClutch);
-    serialWrite[6] = tmpUInt / 4;
-
-    /*
-      // Read Left Distance :
-      digitalWrite(pinLeftUSSend, HIGH);// The PING is triggered by a HIGH pulse of 10 or more microseconds
-      delayMicroseconds(12);
-      digitalWrite(pinLeftUSSend, LOW);
-      tmpUInt=pulseIn(pinLeftUSRead, HIGH, 2100); // microseconds of (total) sound travel, timeout at 70cm;
-      serialWrite[11]=tmpUInt & 255;
-      serialWrite[12]=tmpUInt / 256;
-      // Read Right Distance :
-      digitalWrite(pinRightUSSend, HIGH);// The PING is triggered by a HIGH pulse of 10 or more microseconds
-      delayMicroseconds(12);
-      digitalWrite(pinRightUSSend, LOW);
-      tmpUInt=pulseIn(pinRightUSRead, HIGH, 2100); // microseconds of (total) sound travel, timeout at 70cm;
-      serialWrite[13]=tmpUInt & 255;
-      serialWrite[14]=tmpUInt / 256;
-    */
-
-    serialWrite[7] = serialWrite[1] ^ serialWrite[2] ^ serialWrite[3] ^ serialWrite[4] ^ serialWrite[5] ^ serialWrite[6] ;
-    Serial.write(serialWrite, 8);
-  }
-  else if ( timer3333Count % 44 == 1 ) { // 44=75Hz (1, 45, 89)   Wheel -> ARDUINO -> pc -> joy:
-    if (wheelPosition != wheelPositionLast ) {
-      wheelPositionLast = wheelPosition;
-      byte serialWrite[3];
-      serialWrite[0] = 255;
-      serialWrite[1] = wheelPosition & 255;
-      serialWrite[2] = wheelPosition / 256;
-      serialWrite[3] = serialWrite[1] ^ serialWrite[2];
-
-      Serial.write(serialWrite, 4);
-    }
-  }
 }
 
 

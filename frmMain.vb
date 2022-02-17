@@ -305,6 +305,9 @@ start:
 
             ' FOR DEBUGGING :
             'ErrorAdd("Send " & String.Join(" ", toArduino.GetSerialData), "")
+
+            SerialPort1_DataReceived(Nothing, Nothing)
+
         End If
 
         If TestMode = Motor.StopProcesss Then Exit Sub
@@ -437,19 +440,13 @@ start:
     End Sub
 
 
-    Private Sub SerialPort1_DataReceived(sender As Object, e As SerialDataReceivedEventArgs) Handles SerialPort1.DataReceived
+    Private Sub SerialPort1_DataReceived(sender As Object, e As SerialDataReceivedEventArgs) 'Handles SerialPort1.DataReceived
         Try
-            '' DEBUG :
-            'If SerialPort1.BytesToRead < 2 Then Return ' !!! the DataReceived event is also raised if an Eof character is received, regardless of the number of bytes in the internal input buffer and the value of the ReceivedBytesThreshold property
-            'Dim buf2(SerialPort1.BytesToRead - 1) As Byte ' maximum number of bytes to read. Only the number of bytes in the input buffer will be assigned to this array.
-            'SerialPort1.Read(buf2, 0, buf2.Length)
-            'ErrorAdd("Read " & String.Join(" ", buf2), "")
-            'Exit Sub
-
-            If SerialPort1.BytesToRead < 4 Then Return ' !!! the DataReceived event is also raised if an Eof character is received, regardless of the number of bytes in the internal input buffer and the value of the ReceivedBytesThreshold property
+            If SerialPort1.BytesToRead < 1 Then Return ' !!! the DataReceived event is also raised if an Eof character is received, regardless of the number of bytes in the internal input buffer and the value of the ReceivedBytesThreshold property
 
             Dim buf(SerialPort1.BytesToRead - 1) As Byte ' maximum number of bytes to read. Only the number of bytes in the input buffer will be assigned to this array.
             SerialPort1.Read(buf, 0, buf.Length)
+            'ErrorAdd("Read " & String.Join(" ", buf), "")
             'Dim buf(4) As Byte
             'buf(0) = 123
             'buf(1) = 254
@@ -479,7 +476,7 @@ start:
                         SerialReceiveBuffer.RemoveRange(0, 1)
                         GoTo start
                     End If
-                    WheelPosition = (SerialReceiveBuffer(1) + SerialReceiveBuffer(2) * 256 - 32768) * Game.WheelSensitivity  ' -16380 ~ 0 ~ 16380
+                    WheelPosition = (SerialReceiveBuffer(1) + SerialReceiveBuffer(2) * 256 - 32768) * Game.WheelSensitivity  ' -32768 ~ 0 ~ 32768 * 3 
                     SerialReceiveBuffer.RemoveRange(0, 4)
                     Joy.SetAxis(Math.Max(Math.Min(WheelPosition + 16384, 32767), 0), SettingsMain.vJoyId, HID_USAGES.HID_USAGE_X) ' 0-16384-32767
 
@@ -732,7 +729,7 @@ start:
             If devI <> SettingsMain.vJoyId Then Return
 
             If FFBReadCount >= UInteger.MaxValue Then btCountersReset_Click()
-            FFBReadCount += 1
+            FFBReadCount += 1UI
 
             Dim t As New FFBPType
             Joy.Ffb_h_Type(pData, t)
@@ -781,11 +778,11 @@ start:
                     'PosCoeff = NegCoeff = -10000~10000 (but they are never negative, both are positive)
                     'PosSatur = PosSatur = 10000 
                     'CenterPointOffset =0
-                    If cbLogFF.SelectedIndex = 2 Then
-                        thisCase = t.ToString & "  " & FFWheel_Cond.PosCoeff & "  " & FFWheel_Cond.PosSatur & "  " & FFWheel_Cond.CenterPointOffset & "  " & FFWheel_Cond.NegCoeff & "  " & FFWheel_Cond.NegSatur  ' 10000 , 10000 , 0, ?, ?
-                    Else
-                        thisCase = t.ToString
-                    End If
+                    'If cbLogFF.SelectedIndex = 2 Then
+                    '    thisCase = t.ToString & "  " & FFWheel_Cond.PosCoeff & "  " & FFWheel_Cond.PosSatur & "  " & FFWheel_Cond.CenterPointOffset & "  " & FFWheel_Cond.NegCoeff & "  " & FFWheel_Cond.NegSatur  ' 10000 , 10000 , 0, ?, ?
+                    'Else
+                    '    thisCase = t.ToString
+                    'End If
                     If Not FFWheel_Cond.isY Then
                         'If the metric Is less than CP Offset - Dead Band, Then the resulting force Is given by the following formula:
                         '   force = Negative Coefficient * (q - (CP Offset – Dead Band))
@@ -801,25 +798,25 @@ start:
 
                 Case FFBPType.PT_CONSTREP
                     Joy.Ffb_h_Eff_Constant(pData, FFWheel_Const)
-                    If cbLogFF.SelectedIndex = 2 Then
-                        thisCase = t.ToString & "  " & FFWheel_Const.Magnitude
-                    Else
-                        thisCase = t.ToString
-                    End If
+                    'If cbLogFF.SelectedIndex = 2 Then
+                    '    thisCase = t.ToString & "  " & FFWheel_Const.Magnitude
+                    'Else
+                    '    thisCase = t.ToString
+                    'End If
 
                 Case Else
                     thisCase = "???  " & t.ToString
             End Select
 
-            ' log :
-            If cbLogFF.SelectedIndex >= 1 Then
-                If Not String.IsNullOrEmpty(thisCase) Then
-                    If Not FFCases.Contains(thisCase) Then
-                        FFCases.Add(thisCase)
-                        ErrorAdd(thisCase, "")
-                    End If
-                End If
-            End If
+            ' log :   CANT ACESS CONTORL OF ANOTHER THEAD !!!!!!!!!
+            'If cbLogFF.SelectedIndex >= 1 Then
+            '    If Not String.IsNullOrEmpty(thisCase) Then
+            '        If Not FFCases.Contains(thisCase) Then
+            '            FFCases.Add(thisCase)
+            '            ErrorAdd(thisCase, "")
+            '        End If
+            '    End If
+            'End If
 
         Catch ex As Exception
             ErrorAdd("ERROR in FFBcallback ", ex.Message)

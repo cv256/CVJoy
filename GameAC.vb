@@ -232,7 +232,7 @@ Public Class GameAC
         If Now < TimeNextOn OrElse Now > TimeNextOff Then ' OFF cycle:
 
             Dim Hz As Single = 0  ' typical 0 ~ HzMax , but can get to much more
-            If Me.ShakeSpeedMaxSpeed > Me.ShakeSpeedMinSpeed AndAlso SpeedKmh > 3 Then
+            If Me.ShakeSpeedMaxSpeed > Me.ShakeSpeedMinSpeed AndAlso SpeedKmh > Me.ShakeSpeedMinSpeed Then
                 Hz = (CSng(SpeedKmh - Me.ShakeSpeedMinSpeed) / CSng(Me.ShakeSpeedMaxSpeed - Me.ShakeSpeedMinSpeed)) ^ (SettingsMain.ShakeGama / 100) * CSng(HzMax - HzMin) + HzMin
             End If
 
@@ -260,7 +260,7 @@ Public Class GameAC
 
             If MilisOn > 0 Then ' became ON now:
                 TimeLastOn = Now
-                TimeNextOff = TimeLastOn.AddMilliseconds(Math.Min(MilisOn, 100))
+                TimeNextOff = TimeLastOn.AddMilliseconds(Math.Min(MilisOn, 30))
                 MilisOn = 0
             End If
 
