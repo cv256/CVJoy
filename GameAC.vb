@@ -128,6 +128,7 @@ Public Class GameAC
         Dim Jump As Single = Math.Abs(ACP.AccG(1)) ^ 2 * Math.Sign(ACP.AccG(1)) * 10
         res.Wind = FFWind(SpeedKmh:=ACP.SpeedKmh, pJump:=Jump, pAcceleration:=Acceleration)
         res.ShakePower = FFShakePower(pJump:=Jump, pAcceleration:=Acceleration, SpeedKmh:=ACP.SpeedKmh)
+        res.ShakeSpeed = FFShakeSpeed(pJump:=Jump, pAcceleration:=Acceleration, SpeedKmh:=ACP.SpeedKmh)
 
         '' show raw AC data on screen:
         If tmpFrm IsNot Nothing AndAlso tmpFrm.WindowState <> FormWindowState.Minimized Then
@@ -219,63 +220,39 @@ Public Class GameAC
     End Function
 
 
-    Private Function FFShakePower(pJump As Single, pAcceleration As Single, SpeedKmh As Single) As Byte
-        Const HzMin As Integer = 1 ' shake frequency at ShakeSpeedMinSpeed
-        Const HzMax As Integer = 25 ' shake frequency at ShakeSpeedMaxSpeed
-
-        Static MilisOn As Integer
-        Static TimeNextOn As Date
-        Static TimeLastOn As Date
-        Static TimeNextOff As Date
-
+    Private Function FFShakeSpeed(pJump As Single, pAcceleration As Single, SpeedKmh As Single) As Byte
         Dim res As Integer = 0
-        If Now < TimeNextOn OrElse Now > TimeNextOff Then ' OFF cycle:
 
-            Dim Hz As Single = 0  ' typical 0 ~ HzMax , but can get to much more
-            If Me.ShakeSpeedMaxSpeed > Me.ShakeSpeedMinSpeed AndAlso SpeedKmh > Me.ShakeSpeedMinSpeed Then
-                Hz = (CSng(SpeedKmh - Me.ShakeSpeedMinSpeed) / CSng(Me.ShakeSpeedMaxSpeed - Me.ShakeSpeedMinSpeed)) ^ (SettingsMain.ShakeGama / 100) * CSng(HzMax - HzMin) + HzMin
-            End If
-
-            If Me.ShakeSpeedMaxJump <> 0 AndAlso Math.Abs(pJump) > 0.03 Then
-                Hz += pJump * HzMax / Me.ShakeSpeedMaxJump / 2
-            End If
-
-            If Me.ShakeSpeedMaxAccel <> 0 Then
-                Hz += pAcceleration * HzMax / Me.ShakeSpeedMaxAccel / 2
-            End If
-
-            If Hz < 0.3 Then
-                TimeNextOn = Date.MaxValue
-                MilisOn = 0
-                TimeNextOff = Date.MinValue
-            Else
-                TimeNextOn = TimeLastOn.AddMilliseconds(1000 / Hz)
-                MilisOn = 1000 / Hz / 2
-                TimeNextOff = Date.MaxValue
-            End If
-
-            If graph IsNot Nothing Then graph.UpdateShakeSpeed(Hz * 255 / HzMax)
-
-        Else ' ON cycle:
-
-            If MilisOn > 0 Then ' became ON now:
-                TimeLastOn = Now
-                TimeNextOff = TimeLastOn.AddMilliseconds(Math.Min(MilisOn, 30))
-                MilisOn = 0
-            End If
-
-            res = SettingsMain.ShakePowerNominal '+ SpeedKmh / 4     ' typical 0~255, but can get to something like -2000~2000
-
-            If Me.ShakePowerMaxJump <> 0 Then
-                res += pJump * 255 / Me.ShakePowerMaxJump
-            End If
-
-            If Me.ShakePowerMaxAccel <> 0 Then
-                res += Math.Abs(pAcceleration) * 255 / Me.ShakePowerMaxAccel
-            End If
-
-            res = Math.Max(Math.Min(res, 255), 0)
+        If Me.ShakeSpeedMaxSpeed > Me.ShakeSpeedMinSpeed AndAlso SpeedKmh > Me.ShakeSpeedMinSpeed Then
+            res = (CSng(SpeedKmh - Me.ShakeSpeedMinSpeed) / CSng(Me.ShakeSpeedMaxSpeed - Me.ShakeSpeedMinSpeed)) ^ (SettingsMain.ShakeGama / 100) * 255
         End If
+
+        If Me.ShakeSpeedMaxJump <> 0 AndAlso Math.Abs(pJump) > 0.01 Then
+            res += pJump * 255 / Me.ShakeSpeedMaxJump
+        End If
+
+        If Me.ShakeSpeedMaxAccel <> 0 Then
+            res += pAcceleration * 255 / Me.ShakeSpeedMaxAccel
+        End If
+
+
+        If graph IsNot Nothing Then graph.UpdateShakeSpeed(res)
+
+        Return res
+    End Function
+
+    Private Function FFShakePower(pJump As Single, pAcceleration As Single, SpeedKmh As Single) As Byte
+        Dim res As Integer = SettingsMain.ShakePowerNominal - SpeedKmh / CSng(6)     ' typical 0~255, but can get to something like -2000~2000
+
+        If Me.ShakePowerMaxJump <> 0 Then
+            res += pJump * 255 / Me.ShakePowerMaxJump
+        End If
+
+        If Me.ShakePowerMaxAccel <> 0 Then
+            res += Math.Abs(pAcceleration) * 255 / Me.ShakePowerMaxAccel
+        End If
+
+        res = Math.Max(Math.Min(res, 255), 0)
 
         If graph IsNot Nothing Then graph.UpdateShakePower(res)
 

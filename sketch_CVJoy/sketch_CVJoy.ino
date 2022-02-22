@@ -76,25 +76,26 @@
 #define pinWindMotor  10 // LED_BUILTIN=13
 #define pinShakeMotor 7
 
-byte serialReceived[5];
+byte serialReceived[6];
 byte serialReceivedIdx;
 byte errors; // 1=not receiving data / 2=got invalid data from computer
 unsigned long lastSerialRecv;
 unsigned long lastMainsZero;
 //unsigned long dimmerLeftDelay;
 //unsigned long dimmerRightDelay;
-unsigned long dimmerWindDelay; bool windOn;
+unsigned long dimmerWindDelay; bool windOn; byte windMotorPower;
+unsigned long shakeOnTime; unsigned long shakeDuty; bool shakeOn; byte shakeMotorPower; long shakeDelay;
 
 //char leftMotorPower;// -127 to 127
 //char rightMotorPower;// -127 to 127
-byte windMotorPower;// 0-255
+
 
 // volatile byte WheelEncAFlag = 0; // let's us know when we're expecting a rising edge on pinA to signal that the encoder has arrived at a detent
 // volatile byte WheelEncBFlag = 0; // let's us know when we're expecting a rising edge on pinB to signal that the encoder has arrived at a detent (opposite direction to when aFlag is set)
 volatile unsigned int wheelPosition = 32768; //this variable stores our current value of encoder position
 unsigned int wheelPositionLast;
 bool wheelMotorDir253;
-unsigned int timer3333Count;
+unsigned int every30Hz;
 
 void setup()
 {
@@ -152,12 +153,15 @@ void setup()
   // preparing the steering wheel encoder :
   attachInterrupt(digitalPinToInterrupt(pinWheelEncA), doEncoderA, CHANGE);
   attachInterrupt(digitalPinToInterrupt(pinWheelEncB), doEncoderB, CHANGE);
+
   // all AC Dimmers :
   attachInterrupt(digitalPinToInterrupt(pinZeroCrossDetector), zero_cross_ISR, RISING);// this happens 100 times per second, 100Hz
   // Zero cross (half sinewave) happens every 10ms (1000ms/50Hz/2), so there is a 10ms period that we can use to regulate power using PWM (Pulse Width Modulation - leading edge cut)
   // 10ms/255 =~ 0,039ms = 39 microseconds, 25641 times per second, 26KHz!   If we are not usign PWM.  If using PSM (Pulse Skip Modulation)
-  Timer1.initialize(300); // 300 microseconds = 3333 times per second, over 100Hz means 33 steps
-  Timer1.attachInterrupt( timer3333 );
+
+  //Timer1.initialize(300); // 300 microseconds = 3333 times per second, over 100Hz means 33 steps
+  //Timer1.attachInterrupt( timer3333 );
+
   interrupts();           // enable all interrupts
 
   // start communication from/to the computer via USB:
@@ -173,7 +177,7 @@ void loop()
     serialReceived[serialReceivedIdx] = Serial.read();
     serialReceivedIdx++;
 
-    if (serialReceivedIdx < 5) {
+    if (serialReceivedIdx < 6) {
       goto noData;
     }
 
@@ -185,7 +189,7 @@ void loop()
 
 
     byte chk1 = serialReceived[1];
-    byte chk2 = (byte)255 - (serialReceived[2] ^ serialReceived[3] ^ serialReceived[4]);
+    byte chk2 = (byte)255 - (serialReceived[2] ^ serialReceived[3] ^ serialReceived[4] ^ serialReceived[5]);
     if (chk1 != chk2) {
       shift1();
       errors = errors | 2;
@@ -201,7 +205,7 @@ void loop()
       wheelPosition = 32768;
     }
 
-    if (serialReceived[2] > 0) { // wheelMotorPower
+    if (serialReceived[2] > 0) { // wheelMotorPower  Invert Wheel FF direction:
       if (serialReceived[0] == 253 && !wheelMotorDir253) {
         analogWrite(pinWheelMotorPower, 0);
         wheelMotorDir253 = true;
@@ -219,42 +223,61 @@ void loop()
 
     windMotorPower = serialReceived[3];
 
-    analogWrite(pinShakeMotor, serialReceived[4]);
-
+    if (serialReceived[5] == 0 || serialReceived[5] == 0) {
+      shakeMotorPower = 0;
+      shakeOnTime = 0;
+      shakeDuty = 0;
+      shakeOn = false;
+      analogWrite(pinShakeMotor, 0);
+    } else {
+      shakeMotorPower = serialReceived[4];
+      shakeDelay = (unsigned long)256 - (unsigned long)serialReceived[5]; // 255~1
+      shakeDuty = shakeDelay * 256  ; 
+      shakeDelay = ( shakeDelay * shakeDelay ); // 65025~1
+      //shakeDuty = shakeDelay + 6500 ; // 71525~6500
+      shakeDelay = (unsigned long)4 * shakeDelay;
+    }
   }
 
 noData:
 
 
-    // if we lost communication with the computer stop the motors, dont let them in the last state or they will make ugly damage !
-    if (millis() - lastSerialRecv > 200) { // 200 = 5 fps , lower than that and it will start bumping
-      //digitalWrite(pinLeftMotorPower, LOW);
-      //digitalWrite(pinRightMotorPower, LOW);
-      digitalWrite(pinWindMotor, LOW);
-      analogWrite(pinShakeMotor, 0);
-      analogWrite(pinWheelMotorPower, 0);
-      //leftMotorPower = 0;
-      //rightMotorPower = 0;
-      windMotorPower = 0;
-      // SerialReset();
-      errors = errors | 1;
-    }
+  // if we lost communication with the computer stop the motors, dont let them in the last state or they will make ugly damage !
+  if (millis() - lastSerialRecv > 200) { // 200 = 5 fps , lower than that and it will start bumping
+    analogWrite(pinWheelMotorPower, 0);
 
-    
-    if (wheelPosition != wheelPositionLast ) {
-      wheelPositionLast = wheelPosition;
-      byte serialWrite[3];
-      serialWrite[0] = 255;
-      serialWrite[1] = wheelPosition & 255;
-      serialWrite[2] = ((wheelPosition & 0xFF00) >>8);
-      serialWrite[3] = serialWrite[1] ^ serialWrite[2];
+    //digitalWrite(pinLeftMotorPower, LOW);
+    //digitalWrite(pinRightMotorPower, LOW);
+    //leftMotorPower = 0;
+    //rightMotorPower = 0;
 
-      Serial.write(serialWrite, 4);
-    }
+    digitalWrite(pinWindMotor, LOW);
+    windMotorPower = 0;
 
-    timer3333Count++;
-    if ( timer3333Count >= 5000 ) { // 132=25Hz   Pedals+Gears+Buttons(+RealBolts) -> ARDUINO -> pc -> joy:
-    timer3333Count = 0;
+    analogWrite(pinShakeMotor, 0);
+    shakeMotorPower = 0;
+
+    // SerialReset();
+    errors = errors | 1;
+  }
+
+  // send Wheel Position -> PC -> joy:
+  if (wheelPosition != wheelPositionLast ) {
+    wheelPositionLast = wheelPosition;
+    byte serialWrite[3];
+    serialWrite[0] = 255;
+    serialWrite[1] = wheelPosition & 255;
+    serialWrite[2] = ((wheelPosition & 0xFF00) >> 8);
+    serialWrite[3] = serialWrite[1] ^ serialWrite[2];
+
+    Serial.write(serialWrite, 4);
+  }
+
+
+  // send Pedals+Gears+Buttons(+RealBolts) -> ARDUINO -> PC -> joy:
+  every30Hz++;
+  if ( every30Hz >= 4000 ) {
+    every30Hz = 0;
 
     // read from hardware / SEND to computer : --------------------- must be equal to CVJoyAc.SerialRead
     byte serialWrite[7];
@@ -318,6 +341,25 @@ noData:
   }
 
 
+  // control 24v DC motors
+  if (shakeMotorPower != 0) {
+    if (!shakeOn) {
+      if (micros() >= shakeOnTime + shakeDelay) {
+        shakeOn = true;
+        analogWrite(pinShakeMotor, shakeMotorPower);
+        shakeOnTime = micros();
+      }
+    } else {
+      if (micros() >= shakeOnTime + shakeDuty) {
+        shakeOn = false;
+        analogWrite(pinShakeMotor, 0);
+      }
+    }
+  }
+
+  // control 220v AC motors:
+  triacs();
+
 } //...loop
 
 
@@ -326,7 +368,8 @@ void shift1() {
   serialReceived[1] = serialReceived[2];
   serialReceived[2] = serialReceived[3];
   serialReceived[3] = serialReceived[4];
-  serialReceivedIdx = 4;
+  serialReceived[4] = serialReceived[5];
+  serialReceivedIdx = 5;
 }
 
 
@@ -396,13 +439,13 @@ void zero_cross_ISR() {
   }
 
   /* 12v PSM+PWM:
-    dimmerShakeDelay += shakeMotorSpeed;
-    if (dimmerShakeDelay >= 255) {
+    dimmershakeOnTime += shakeMotorSpeed;
+    if (dimmershakeOnTime >= 255) {
     analogWrite(pinShakeMotor, shakeMotorPower);
-    dimmerShakeDelay = dimmerShakeDelay % 255;
+    dimmershakeOnTime = dimmershakeOnTime % 255;
     }
     else {
-    if (dimmerShakeDelay > 10 - shakeMotorSpeed / 13) {
+    if (dimmershakeOnTime > 10 - shakeMotorSpeed / 13) {
       analogWrite(pinShakeMotor, 0);
     }
     }*/
@@ -410,7 +453,7 @@ void zero_cross_ISR() {
 
 
 
-void timer3333() {
+void triacs() {
   // manage TRIAC DIMMING:   learn on http://www.alfadex.com/2014/02/dimming-230v-ac-with-arduino-2/
 
   /*
@@ -451,10 +494,10 @@ void timer3333() {
   */
 
   /*
-    if (dimmerShakeDelay != 0) {
-    if (micros() >= dimmerShakeDelay) {
+    if (dimmershakeOnTime != 0) {
+    if (micros() >= dimmershakeOnTime) {
       digitalWrite(pinShakeMotor, HIGH);
-      dimmerShakeDelay = 0;
+      dimmershakeOnTime = 0;
     }
     }
   */

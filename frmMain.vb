@@ -177,10 +177,13 @@ start:
 
             If TestMode = Motor.Shake Then
                 .shakePower = TestValue
+                .shakeSpeed = GameOutputs.ShakeSpeed
             ElseIf Not chkNoWind.Checked Then
                 .shakePower = GameOutputs.ShakePower
+                .shakeSpeed = GameOutputs.ShakeSpeed
             Else
                 .shakePower = 0
+                .shakeSpeed = 0
             End If
 
 

@@ -2,11 +2,12 @@
     Public wheelPower As Integer ' -255~255  0=no force
     Public windPower As Byte
     Public shakePower As Byte
+    Public shakeSpeed As Byte
     Public Reset As Boolean
     'Public leftPower As SByte  ' -127~127  0=no force
     'Public rightPower As SByte ' -127~127  0=no force
 
-    Public Const PacketLen As Byte = 5
+    Public Const PacketLen As Byte = 6
 
     Public Function GetSerialData() As Byte()
         Dim res(PacketLen - 1) As Byte
@@ -14,7 +15,8 @@
         res(2) = Math.Abs(wheelPower)
         res(3) = windPower
         res(4) = shakePower
-        res(1) = CByte(255) - (res(2) Xor res(3) Xor res(4))
+        res(5) = shakeSpeed
+        res(1) = CByte(255) - (res(2) Xor res(3) Xor res(4) Xor res(5))
         'res(2) = leftPower + 128
         'res(3) = rightPower + 128
         Return res
