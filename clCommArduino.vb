@@ -65,7 +65,7 @@ Public Class SerialRead
         gear5 = (pSerialData(3) And 16) <> 0
         gear6 = (pSerialData(3) And 32) <> 0
         gearR = (pSerialData(3) And 64) <> 0
-        handbrake = (pSerialData(3) And 128) <> 0
+        'handbrake = (pSerialData(3) And 128) <> 0
 
         pedalAccel = pSerialData(4)
         pedalBreak = pSerialData(5)

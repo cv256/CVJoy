@@ -324,11 +324,10 @@ start:
         TimerScreenAndUDP.Stop()
         Dim ScreenUpdateTimeElapsed As Single = Now.Subtract(ScreenUpdateLastTime).Ticks / 10000000 ' seconds
 
-        'If ScreenUpdateTimeElapsed > 666666 Then ' 666666=15Hz
         ' send UDP:
         If chkUDP.Checked AndAlso Game IsNot Nothing AndAlso Game.Started Then
             Dim udpBytes As Byte()
-            If ScreenUpdateTimeElapsed > 5000000 Then ' 2Hz ' TODO 
+            If ScreenUpdateTimeElapsed > 0.5 Then ' 2Hz 
                 udpBytes = New Byte(33) {}
                 With Game.UpdateExtra()
                     udpBytes(18) = .TyreWearFL
@@ -437,7 +436,6 @@ start:
         If graph IsNot Nothing Then graph.UpdatePedals()
 
         'Me.Update() ' we dont need this if we already call DoEvents()
-        'End If
 
         TimerScreenAndUDP.Start()
     End Sub
