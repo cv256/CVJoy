@@ -20,7 +20,7 @@
     End Function
 
 
-    Public Function CalculateOutput(pInput As Integer, Range As Integer, MinInput As Integer, MinOuput As Integer, Gama As Integer, Factor As Single) As Integer
+    Public Function CalculateOutput(pInput As Single, Range As Integer, MinInput As Integer, MinOuput As Integer, Gama As Integer, Factor As Single) As Integer
         If pInput <= MinInput Then Return 0
 
         Dim output As Integer

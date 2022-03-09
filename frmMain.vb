@@ -761,12 +761,12 @@ start:
                         'chkFFCond.Text = FFWheel_Type.ToString  ' this is heavy ?
                     End If
 
-            'Case FFBPType.PT_EFFREP
-            '    Dim et As New FFBEType
-            '    Joy.Ffb_h_Eff(pData, et)
-            '    thisCase = t.ToString & "  " & et.ToString
-            '    '    TODO
-            '    handled = True
+                'Case FFBPType.PT_EFFREP
+                '    Dim et As New FFBEType
+                '    Joy.Ffb_h_Eff(pData, et)
+                '    thisCase = t.ToString & "  " & et.ToString
+                '    '    TODO
+                '    handled = True
 
                 Case FFBPType.PT_EFOPREP ' start / stop
                     Dim op As New vJoyInterfaceWrap.vJoy.FFB_EFF_OP
@@ -867,23 +867,23 @@ start:
             '  - damper = axis velocity as the metric
             '  - inertia = axis acceleration as the metric
             '  - friction = when the axis is moved and depends on the defined friction coefficient
-            If FFWheel_Type = FFBEType.ET_DMPR OrElse FFWheel_Type = FFBEType.ET_FRCTN Then ' I have not underestand yet the difference between Damper and Friction
-                'Dim newPosition As Integer = 0
-                'If pWheelPosition > SettingsMain.WheelDead Then
-                '    newPosition = pWheelPosition - SettingsMain.WheelDead
-                'ElseIf pWheelPosition < -SettingsMain.WheelDead Then
-                '    newPosition = pWheelPosition + SettingsMain.WheelDead
-                'End If
-                q = (pWheelPosition - WheelPositionPrevious) / timeElapsed * SettingsMain.WheelDampFactor 'q = (Math.Abs(pWheelPosition - LastWheelPosition) * SettingsMain.WheelDampFactor / timeElapsed) ^ (SettingsMain.WheelInertia / 100.0F) * Math.Sign(pWheelPosition - LastWheelPosition)
-                'If pWheelPosition <> PreviousWheelPosition Then txtErrors.Text &= (pWheelPosition - PreviousWheelPosition) & "       " & timeElapsed & vbCrLf
-            ElseIf FFWheel_Type = FFBEType.ET_SPRNG Then
-                q = pWheelPosition / 1.637
-                'If pWheelPosition > SettingsMain.WheelDead Then
-                '    q = (pWheelPosition - SettingsMain.WheelDead) / 1.637
-                'ElseIf pWheelPosition < -SettingsMain.WheelDead Then
-                '    q = (pWheelPosition + SettingsMain.WheelDead) / 1.637
-                'End If
-            End If
+            'If FFWheel_Type = FFBEType.ET_DMPR OrElse FFWheel_Type = FFBEType.ET_FRCTN Then ' I have not underestand yet the difference between Damper and Friction
+            'Dim newPosition As Integer = 0
+            'If pWheelPosition > SettingsMain.WheelDead Then
+            '    newPosition = pWheelPosition - SettingsMain.WheelDead
+            'ElseIf pWheelPosition < -SettingsMain.WheelDead Then
+            '    newPosition = pWheelPosition + SettingsMain.WheelDead
+            'End If
+            q = (pWheelPosition - WheelPositionPrevious) / timeElapsed * SettingsMain.WheelDampFactor 'q = (Math.Abs(pWheelPosition - LastWheelPosition) * SettingsMain.WheelDampFactor / timeElapsed) ^ (SettingsMain.WheelInertia / 100.0F) * Math.Sign(pWheelPosition - LastWheelPosition)
+            'If pWheelPosition <> PreviousWheelPosition Then txtErrors.Text &= (pWheelPosition - PreviousWheelPosition) & "       " & timeElapsed & vbCrLf
+            'ElseIf FFWheel_Type = FFBEType.ET_SPRNG Then
+            'q = pWheelPosition / 1.637
+            'If pWheelPosition > SettingsMain.WheelDead Then
+            '    q = (pWheelPosition - SettingsMain.WheelDead) / 1.637
+            'ElseIf pWheelPosition < -SettingsMain.WheelDead Then
+            '    q = (pWheelPosition + SettingsMain.WheelDead) / 1.637
+            'End If
+            '   End If
             If q < 0 Then ' if Q is negative: I am not using FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand  because they are allways zero, and their range would be -10000~10000 while Q range is -1~1 , and CVJoy has its own DeadZone
                 desiredTotalStrength += FFWheel_Cond.NegCoeff * q '(q - (FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand))
             ElseIf q > 0 Then ' if Q is positive:
