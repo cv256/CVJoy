@@ -567,10 +567,10 @@ start:
 
                         If Joy IsNot Nothing Then
 
-                            If Not Joy.vJoyEnabled() Then
-                                ErrorAdd("VJOY is disabled !  Trying to restart it...", "")
-                                VJoy_Start()
-                            End If
+                            'If Not Joy.vJoyEnabled() Then ' this does a memory leak of 500Kb every time it passes here !!!!!
+                            '    ErrorAdd("VJOY is disabled !  Trying to restart it...", "")
+                            '    VJoy_Start()
+                            'End If
 
                             Dim j As New vJoyInterfaceWrap.vJoy.JoystickState
 
