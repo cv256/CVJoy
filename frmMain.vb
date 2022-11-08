@@ -891,6 +891,15 @@ start:
         End If
 
         desiredTotalStrength = desiredTotalStrength / 10000 * FFGain '  now becomes  -255 ~ 255 (but can get to a lot more by summing up FF effects)
+
+        Dim slipFront As Single
+
+        Dim freq As Integer = 10
+        Dim period As Integer = 1000 / freq
+        Dim max As Integer = 200
+
+        desiredTotalStrength += (Now.Millisecond Mod (period / 2 / max) - max) * (1 - slipFront)
+
         If graph IsNot Nothing Then graph.UpdateFFWheel(Math.Abs(desiredTotalStrength))
 
         ' final output:
