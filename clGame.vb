@@ -65,6 +65,7 @@ End Class
 Public Structure clGameOutputs ' info that needs updating very frequently
     Public Wind As Byte ' 0~255
     Public ShakePower As Byte  ' 0~255
+    Public ShakeSpeed As Byte  ' 0~255
     Public Pitch As Single ' radians
     Public Roll As Single ' radians
 
