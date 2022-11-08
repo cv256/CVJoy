@@ -154,7 +154,7 @@ start:
                 ElseIf WheelPosition >= 16380 Then
                     .wheelPower = 255
                 Else
-                    .wheelPower = FFSteer(WheelPosition)
+                    .wheelPower = FFSteer(WheelPosition, (GameOutputs.SlipFL + GameOutputs.SlipFR) / 2)
                 End If
             End If
 
@@ -846,7 +846,7 @@ start:
     End Sub
 
 
-    Private Function FFSteer(pWheelPosition As Integer) As Integer
+    Private Function FFSteer(pWheelPosition As Integer, pSlipFront As Single) As Integer
         ' calculate steeringwheel ForceFeedback from -255 to 255:
         ' 
         Dim desiredTotalStrength As Single = 0 ' nominal = -10000 ~ 10000 (but can get to a lot more by summing up FF effects)
@@ -893,13 +893,12 @@ start:
 
         desiredTotalStrength = desiredTotalStrength / 10000 * FFGain '  now becomes  -255 ~ 255 (but can get to a lot more by summing up FF effects)
 
-        Dim slipFront As Single
-
-        Dim freq As Integer = 10
-        Dim period As Integer = 1000 / freq
-        Dim max As Integer = 200
-
-        desiredTotalStrength += (Now.Millisecond Mod (period / 2 / max) - max) * (1 - slipFront)
+        If pSlipFront > 0 Then
+            Const freq As Integer = 10
+            Const period As Integer = 1000 / freq
+            Const max As Integer = 10
+            desiredTotalStrength += Math.Sin((Now.Millisecond Mod period) / period * Math.PI * 2) * max * pSlipFront
+        End If
 
         If graph IsNot Nothing Then graph.UpdateFFWheel(Math.Abs(desiredTotalStrength))
 
