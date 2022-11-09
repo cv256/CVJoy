@@ -105,10 +105,10 @@ Public Class GameAC
                 State = ACS.ACVersion & "   " & ACS.CarModel & "   " & ACS.Track & "   " & ACS.TrackConfiguration
                 If tmpFrm IsNot Nothing Then tmpFrm.lbMaxRPM.Text = ACS.MaxRpm
             End If
-            res.SlipFL = Math.Min(ACP.WheelSlip(0) / Me.Slip * 255, 255)
-            res.SlipFR = Math.Min(ACP.WheelSlip(1) / Me.Slip * 255, 255)
-            res.SlipRL = Math.Min(ACP.WheelSlip(2) / Me.Slip * 255, 255)
-            res.SlipRR = Math.Min(ACP.WheelSlip(3) / Me.Slip * 255, 255)
+            res.SlipFL = Math.Min(ACP.WheelSlip(0) / Me.Slip * 82, 255)
+            res.SlipFR = Math.Min(ACP.WheelSlip(1) / Me.Slip * 82, 255)
+            res.SlipRL = Math.Min(ACP.WheelSlip(2) / Me.Slip * 82, 255)
+            res.SlipRR = Math.Min(ACP.WheelSlip(3) / Me.Slip * 82, 255)
             res.Speed = ACP.SpeedKmh
             res.RPM = ACP.Rpms
             res.Gear = ACP.Gear + 1
