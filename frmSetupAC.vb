@@ -15,7 +15,7 @@ Public Class frmSetupAC
     Private Sub ShowFromGameSettings()
         txtWheelSensitivity.Text = (Game.WheelSensitivity * 100).ToString("+0000;-0000")
 
-        txtSlip.Text = Game.Slip
+        txtSlip.Text = Game.SlipMax
         txtPitch.Text = Game.Pitch * 100
         txtRoll.Text = Game.Roll * 100
 
@@ -65,7 +65,7 @@ Public Class frmSetupAC
         If txt_Validate(pShowMsg:=True) > "" Then Return False
         Game.WheelSensitivity = CInt(txtWheelSensitivity.Text) / 100
 
-        Game.Slip = txtSlip.Text
+        Game.SlipMax = txtSlip.Text
         Game.Pitch = txtPitch.Text / 100
         Game.Roll = txtRoll.Text / 100
 
@@ -125,6 +125,7 @@ Public Class frmSetupAC
         lbACTurn.Text = acP.AccG(0).ToString("0.0") & "G"
         lbACPitch.Text = (acP.Pitch * 57.29).ToString("0.0") & "º"
         lbACRoll.Text = (acP.Roll * 57.29).ToString("0.0") & "º"
+
         UcACGraph1.UpdateValues(acP)
     End Sub
 

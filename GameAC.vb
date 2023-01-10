@@ -11,7 +11,7 @@ Public Class GameAC
 
     ' Public Rpm1 As Single = 0.4
     ' Public Rpm2 As Single = 0.93
-    Public Slip As Short = 1
+    Public SlipMax As Short = 1
 
     Public WindMinSpeed As Integer = 50
     Public WindMaxSpeed As Integer = 290
@@ -105,21 +105,21 @@ Public Class GameAC
                 State = ACS.ACVersion & "   " & ACS.CarModel & "   " & ACS.Track & "   " & ACS.TrackConfiguration
                 If tmpFrm IsNot Nothing Then tmpFrm.lbMaxRPM.Text = ACS.MaxRpm
             End If
-            res.SlipFL = Math.Min(ACP.WheelSlip(0) / Me.Slip * 82, 255)
-            res.SlipFR = Math.Min(ACP.WheelSlip(1) / Me.Slip * 82, 255)
-            res.SlipRL = Math.Min(ACP.WheelSlip(2) / Me.Slip * 82, 255)
-            res.SlipRR = Math.Min(ACP.WheelSlip(3) / Me.Slip * 82, 255)
+            res.SlipFL = Math.Min(ACP.WheelSlip(0) / Me.SlipMax * 82, 255)
+            res.SlipFR = Math.Min(ACP.WheelSlip(1) / Me.SlipMax * 82, 255)
+            res.SlipRL = Math.Min(ACP.WheelSlip(2) / Me.SlipMax * 82, 255)
+            res.SlipRR = Math.Min(ACP.WheelSlip(3) / Me.SlipMax * 82, 255)
             res.Speed = ACP.SpeedKmh
             res.RPM = ACP.Rpms
             res.Gear = ACP.Gear + 1
             res.GearAuto = ACP.AutoShifterOn > 0
             If (ACP.TyreDirtyLevel IsNot Nothing) Then
-                res.TyreDirtFL = Math.Min(ACP.TyreDirtyLevel(0) / Me.Slip * 255, 255)
-                res.TyreDirtFR = Math.Min(ACP.TyreDirtyLevel(1) / Me.Slip * 255, 255)
-                res.TyreDirtRL = Math.Min(ACP.TyreDirtyLevel(2) / Me.Slip * 255, 255)
-                res.TyreDirtRR = Math.Min(ACP.TyreDirtyLevel(3) / Me.Slip * 255, 255)
+                res.TyreDirtFL = Math.Min(ACP.TyreDirtyLevel(0) / Me.SlipMax * 255, 255)
+                res.TyreDirtFR = Math.Min(ACP.TyreDirtyLevel(1) / Me.SlipMax * 255, 255)
+                res.TyreDirtRL = Math.Min(ACP.TyreDirtyLevel(2) / Me.SlipMax * 255, 255)
+                res.TyreDirtRR = Math.Min(ACP.TyreDirtyLevel(3) / Me.SlipMax * 255, 255)
             End If
-
+            res.TurboBoost = ACP.TurboBoost * 100
         End If
 
         ' Set Output :

@@ -13,10 +13,11 @@
             .MinInput = 1
             .MinPower = 0
             .Gama = 100
-            .Factor = 1
+            .MaxOut = 255
             .Range = 255
             If ParentButton Is Nothing Then Return res
             Dim frmSetup As frmSetup = ParentButton.FindForm
+
             If frmSetup.txt_Validate(pShowMsg:=False) > "" Then Return res
             If ParentButton Is frmSetup.btAccelGraph Then
                 Integer.TryParse(frmSetup.txtAccelMin.Text, .MinInput)
@@ -31,10 +32,9 @@
                 Integer.TryParse(frmSetup.txtClutchMax.Text, .Range)
                 Integer.TryParse(frmSetup.txtClutchGama.Text, .Gama)
             ElseIf ParentButton Is frmSetup.btWheelGraph Then
-                Integer.TryParse(frmSetup.txtWheelMinInput.Text, .MinInput)
-                Integer.TryParse(frmSetup.txtWheelPowerForMin.Text, .MinPower)
-                Integer.TryParse(frmSetup.txtWheelPowerGama.Text, .Gama)
-                Single.TryParse(frmSetup.txtWheelPowerFactor.Text, .Factor)
+                Integer.TryParse(frmSetup.txtWheelMidIn.Text, .MinInput)
+                Integer.TryParse(frmSetup.txtWheelMidOut.Text, .Gama)
+                Integer.TryParse(frmSetup.txtWheelMaxOut.Text, .MaxOut)
             ElseIf ParentButton Is frmSetup.btWindGraph Then
                 'Integer.TryParse(Game.txtSpeedMinInput.Text, .MinInput)
                 Integer.TryParse(frmSetup.txtWindMin.Text, .MinPower)
@@ -57,12 +57,21 @@
         Next
         ' draw gama graph:
         e.Graphics.DrawLine(Drawing.Pens.Yellow, 0, Me.Height, Me.Width, 40) ' this is the linear reference line, gamma=100, factor=1
+
+        If ParentButton Is Nothing Then Return
+
         Dim graphHeight As Integer = Me.Height - 40
         Dim screenLastY As Integer = Me.Height
         With GetValues()
             If .Range > 0 Then
+                Dim frmSetup As frmSetup = ParentButton.FindForm
+                Dim y As Integer
                 For x As Integer = 0 To .Range '  this is the used gama line:
-                    Dim y As Integer = .CalculateOutput(x)
+                    If (ParentButton Is frmSetup.btWheelGraph) Then
+                        y = Module1.CalculateOutput2(x, .MinInput, .Gama, .MaxOut)
+                    Else
+                        y = Module1.CalculateOutput(x, .Range, .MinInput, .MinPower, .Gama, 1)
+                    End If
                     Dim screenX As Integer = x / .Range * Me.Width
                     Dim screenY As Integer = Me.Height - y / .Range * graphHeight
                     e.Graphics.DrawLine(Drawing.Pens.White, screenX - 1, screenLastY, screenX, screenY)
@@ -125,10 +134,7 @@
         Public MinInput As Integer
         Public MinPower As Integer
         Public Gama As Integer
-        Public Factor As Single
-        Public Function CalculateOutput(pInput As Integer) As Integer
-            Return Module1.CalculateOutput(pInput, Range, MinInput, MinPower, Gama, Factor)
-        End Function
+        Public MaxOut As Integer
     End Structure
 
 End Class

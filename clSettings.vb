@@ -17,11 +17,9 @@
     Public ClutchMax As Integer = 1020
     Public ClutchGama As Single = 0.7
 
-    Public WheelMinInput As Integer = 1
-
-    Public WheelPowerGama As Single = 100
-    Public WheelPowerForMin As Integer = 29
-    Public WheelPowerFactor As Single = 1.0
+    Public WheelMidIn As Integer = 128
+    Public WheelMidOut As Single = 128
+    Public WheelMaxOut As Single = 255
     Public WheelInertia As Single = 0
     Public WheelDampFactor As Integer = 500
 

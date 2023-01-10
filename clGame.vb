@@ -75,12 +75,13 @@ Public Structure clGameOutputs ' info that needs updating very frequently
     Public SlipRR As Byte
     Public Speed As Integer
     Public RPM As Integer
-    Public Gear As Integer ' 0=" "  1="R"   2="N"  3="1"  4="2"...
+    Public Gear As Byte ' 0=" "  1="R"   2="N"  3="1"  4="2"...
     Public GearAuto As Boolean
     Public TyreDirtFL As Byte
     Public TyreDirtFR As Byte
     Public TyreDirtRL As Byte
     Public TyreDirtRR As Byte
+    Public TurboBoost As Integer '   x100
 End Structure
 
 

@@ -36,6 +36,13 @@
         Return output
     End Function
 
+    Public Function CalculateOutput2(pInput As Single, MidIn As Integer, MidOut As Single, MaxOut As Single) As Integer
+        If pInput <= MidIn Then
+            Return pInput / MidIn * MidOut
+        Else
+            Return MidOut + (pInput - MidIn) / (255 - MidIn) * (MaxOut - MidOut)
+        End If
+    End Function
 
     Public Function ScaleValue(pValue As Single, pFromMin As Single, pFromMax As Single, pToMin As Single, pToMax As Single) As Single
         If pValue = 0 Then Return 0

@@ -30,8 +30,6 @@ Partial Class frmSetup
         Me.Label21 = New System.Windows.Forms.Label()
         Me.txtMaxScrewUp = New System.Windows.Forms.MaskedTextBox()
         Me.Label18 = New System.Windows.Forms.Label()
-        Me.txtWheelPowerForMin = New System.Windows.Forms.MaskedTextBox()
-        Me.Label1 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.txtGPowerForMin = New System.Windows.Forms.MaskedTextBox()
         Me.Label7 = New System.Windows.Forms.Label()
@@ -60,13 +58,9 @@ Partial Class frmSetup
         Me.txtClutchMin = New System.Windows.Forms.MaskedTextBox()
         Me.txtWheelDampFactor = New System.Windows.Forms.MaskedTextBox()
         Me.Label28 = New System.Windows.Forms.Label()
-        Me.Label5 = New System.Windows.Forms.Label()
         Me.btDefaults = New System.Windows.Forms.Button()
-        Me.Label30 = New System.Windows.Forms.Label()
-        Me.txtWheelPowerGama = New System.Windows.Forms.MaskedTextBox()
-        Me.Label31 = New System.Windows.Forms.Label()
         Me.Label29 = New System.Windows.Forms.Label()
-        Me.txtWheelPowerFactor = New System.Windows.Forms.MaskedTextBox()
+        Me.txtWheelMaxOut = New System.Windows.Forms.MaskedTextBox()
         Me.Label32 = New System.Windows.Forms.Label()
         Me.Label37 = New System.Windows.Forms.Label()
         Me.txtWindGama = New System.Windows.Forms.MaskedTextBox()
@@ -84,7 +78,7 @@ Partial Class frmSetup
         Me.btWheelGraph = New System.Windows.Forms.Button()
         Me.Label45 = New System.Windows.Forms.Label()
         Me.Label46 = New System.Windows.Forms.Label()
-        Me.txtWheelMinInput = New System.Windows.Forms.MaskedTextBox()
+        Me.txtWheelMidIn = New System.Windows.Forms.MaskedTextBox()
         Me.Label47 = New System.Windows.Forms.Label()
         Me.Label48 = New System.Windows.Forms.Label()
         Me.Label49 = New System.Windows.Forms.Label()
@@ -157,11 +151,14 @@ Partial Class frmSetup
         Me.Label16 = New System.Windows.Forms.Label()
         Me.txtWheelInertia = New System.Windows.Forms.MaskedTextBox()
         Me.Label27 = New System.Windows.Forms.Label()
-        Me.UcControlGGraph1 = New CVJoy.ucControlGGraph()
-        Me.UcControlGraph1 = New CVJoy.ucControlGraph()
         Me.Label44 = New System.Windows.Forms.Label()
         Me.txtComBaud = New System.Windows.Forms.MaskedTextBox()
         Me.btShakePowerGraph = New System.Windows.Forms.Button()
+        Me.UcControlGGraph1 = New CVJoy.ucControlGGraph()
+        Me.UcControlGraph1 = New CVJoy.ucControlGraph()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.txtWheelMidOut = New System.Windows.Forms.MaskedTextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'Label3
@@ -226,27 +223,6 @@ Partial Class frmSetup
         Me.Label18.Size = New System.Drawing.Size(93, 13)
         Me.Label18.TabIndex = 82
         Me.Label18.Text = "Left bolt center at:"
-        '
-        'txtWheelPowerForMin
-        '
-        Me.txtWheelPowerForMin.AllowPromptAsInput = False
-        Me.txtWheelPowerForMin.BeepOnError = True
-        Me.txtWheelPowerForMin.HidePromptOnLeave = True
-        Me.txtWheelPowerForMin.Location = New System.Drawing.Point(295, 94)
-        Me.txtWheelPowerForMin.Mask = "#990"
-        Me.txtWheelPowerForMin.Name = "txtWheelPowerForMin"
-        Me.txtWheelPowerForMin.Size = New System.Drawing.Size(25, 20)
-        Me.txtWheelPowerForMin.TabIndex = 87
-        Me.txtWheelPowerForMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(232, 98)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(60, 13)
-        Me.Label1.TabIndex = 86
-        Me.Label1.Text = "Min.Power:"
         '
         'Label6
         '
@@ -330,7 +306,7 @@ Partial Class frmSetup
         '
         Me.btTestWheelLeft.BackColor = System.Drawing.Color.Gold
         Me.btTestWheelLeft.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btTestWheelLeft.Location = New System.Drawing.Point(353, 94)
+        Me.btTestWheelLeft.Location = New System.Drawing.Point(597, 94)
         Me.btTestWheelLeft.Name = "btTestWheelLeft"
         Me.btTestWheelLeft.Size = New System.Drawing.Size(59, 20)
         Me.btTestWheelLeft.TabIndex = 116
@@ -341,7 +317,7 @@ Partial Class frmSetup
         '
         Me.btTestWheelRight.BackColor = System.Drawing.Color.Gold
         Me.btTestWheelRight.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btTestWheelRight.Location = New System.Drawing.Point(411, 94)
+        Me.btTestWheelRight.Location = New System.Drawing.Point(655, 94)
         Me.btTestWheelRight.Name = "btTestWheelRight"
         Me.btTestWheelRight.Size = New System.Drawing.Size(59, 20)
         Me.btTestWheelRight.TabIndex = 115
@@ -534,9 +510,9 @@ Partial Class frmSetup
         'txtWheelDampFactor
         '
         Me.txtWheelDampFactor.AllowPromptAsInput = False
-        Me.txtWheelDampFactor.BackColor = System.Drawing.SystemColors.Control
+        Me.txtWheelDampFactor.BackColor = System.Drawing.SystemColors.Window
         Me.txtWheelDampFactor.BeepOnError = True
-        Me.txtWheelDampFactor.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.txtWheelDampFactor.ForeColor = System.Drawing.SystemColors.WindowText
         Me.txtWheelDampFactor.HidePromptOnLeave = True
         Me.txtWheelDampFactor.Location = New System.Drawing.Point(90, 119)
         Me.txtWheelDampFactor.Mask = "#0000"
@@ -556,16 +532,6 @@ Partial Class frmSetup
         Me.Label28.TabIndex = 148
         Me.Label28.Text = "FFDamp Factor:"
         '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(323, 99)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(28, 12)
-        Me.Label5.TabIndex = 150
-        Me.Label5.Text = "0-255"
-        '
         'btDefaults
         '
         Me.btDefaults.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -577,67 +543,36 @@ Partial Class frmSetup
         Me.btDefaults.Text = "defaults"
         Me.btDefaults.UseVisualStyleBackColor = False
         '
-        'Label30
-        '
-        Me.Label30.AutoSize = True
-        Me.Label30.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label30.Location = New System.Drawing.Point(553, 99)
-        Me.Label30.Name = "Label30"
-        Me.Label30.Size = New System.Drawing.Size(51, 12)
-        Me.Label30.TabIndex = 159
-        Me.Label30.Text = "0-800 (100)"
-        '
-        'txtWheelPowerGama
-        '
-        Me.txtWheelPowerGama.AllowPromptAsInput = False
-        Me.txtWheelPowerGama.BeepOnError = True
-        Me.txtWheelPowerGama.HidePromptOnLeave = True
-        Me.txtWheelPowerGama.Location = New System.Drawing.Point(525, 94)
-        Me.txtWheelPowerGama.Mask = "#990"
-        Me.txtWheelPowerGama.Name = "txtWheelPowerGama"
-        Me.txtWheelPowerGama.Size = New System.Drawing.Size(25, 20)
-        Me.txtWheelPowerGama.TabIndex = 158
-        Me.txtWheelPowerGama.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'Label31
-        '
-        Me.Label31.AutoSize = True
-        Me.Label31.Location = New System.Drawing.Point(484, 98)
-        Me.Label31.Name = "Label31"
-        Me.Label31.Size = New System.Drawing.Size(38, 13)
-        Me.Label31.TabIndex = 157
-        Me.Label31.Text = "Gama:"
-        '
         'Label29
         '
         Me.Label29.AutoSize = True
         Me.Label29.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label29.Location = New System.Drawing.Point(686, 99)
+        Me.Label29.Location = New System.Drawing.Point(484, 99)
         Me.Label29.Name = "Label29"
-        Me.Label29.Size = New System.Drawing.Size(34, 12)
+        Me.Label29.Size = New System.Drawing.Size(28, 12)
         Me.Label29.TabIndex = 162
-        Me.Label29.Text = "0.5-3.0"
+        Me.Label29.Text = "0-255"
         '
-        'txtWheelPowerFactor
+        'txtWheelMaxOut
         '
-        Me.txtWheelPowerFactor.AllowPromptAsInput = False
-        Me.txtWheelPowerFactor.BeepOnError = True
-        Me.txtWheelPowerFactor.HidePromptOnLeave = True
-        Me.txtWheelPowerFactor.Location = New System.Drawing.Point(658, 94)
-        Me.txtWheelPowerFactor.Mask = "0.00"
-        Me.txtWheelPowerFactor.Name = "txtWheelPowerFactor"
-        Me.txtWheelPowerFactor.Size = New System.Drawing.Size(25, 20)
-        Me.txtWheelPowerFactor.TabIndex = 161
-        Me.txtWheelPowerFactor.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtWheelMaxOut.AllowPromptAsInput = False
+        Me.txtWheelMaxOut.BeepOnError = True
+        Me.txtWheelMaxOut.HidePromptOnLeave = True
+        Me.txtWheelMaxOut.Location = New System.Drawing.Point(456, 94)
+        Me.txtWheelMaxOut.Mask = "9990"
+        Me.txtWheelMaxOut.Name = "txtWheelMaxOut"
+        Me.txtWheelMaxOut.Size = New System.Drawing.Size(25, 20)
+        Me.txtWheelMaxOut.TabIndex = 161
+        Me.txtWheelMaxOut.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label32
         '
         Me.Label32.AutoSize = True
-        Me.Label32.Location = New System.Drawing.Point(615, 98)
+        Me.Label32.Location = New System.Drawing.Point(389, 98)
         Me.Label32.Name = "Label32"
-        Me.Label32.Size = New System.Drawing.Size(40, 13)
+        Me.Label32.Size = New System.Drawing.Size(63, 13)
         Me.Label32.TabIndex = 160
-        Me.Label32.Text = "Factor:"
+        Me.Label32.Text = "Max output:"
         '
         'Label37
         '
@@ -813,32 +748,32 @@ Partial Class frmSetup
         '
         Me.Label46.AutoSize = True
         Me.Label46.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label46.Location = New System.Drawing.Point(109, 100)
+        Me.Label46.Location = New System.Drawing.Point(119, 100)
         Me.Label46.Name = "Label46"
         Me.Label46.Size = New System.Drawing.Size(28, 12)
         Me.Label46.TabIndex = 193
         Me.Label46.Text = "0-255"
         '
-        'txtWheelMinInput
+        'txtWheelMidIn
         '
-        Me.txtWheelMinInput.AllowPromptAsInput = False
-        Me.txtWheelMinInput.BeepOnError = True
-        Me.txtWheelMinInput.HidePromptOnLeave = True
-        Me.txtWheelMinInput.Location = New System.Drawing.Point(81, 95)
-        Me.txtWheelMinInput.Mask = "9990"
-        Me.txtWheelMinInput.Name = "txtWheelMinInput"
-        Me.txtWheelMinInput.Size = New System.Drawing.Size(25, 20)
-        Me.txtWheelMinInput.TabIndex = 192
-        Me.txtWheelMinInput.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.txtWheelMidIn.AllowPromptAsInput = False
+        Me.txtWheelMidIn.BeepOnError = True
+        Me.txtWheelMidIn.HidePromptOnLeave = True
+        Me.txtWheelMidIn.Location = New System.Drawing.Point(90, 95)
+        Me.txtWheelMidIn.Mask = "9990"
+        Me.txtWheelMidIn.Name = "txtWheelMidIn"
+        Me.txtWheelMidIn.Size = New System.Drawing.Size(25, 20)
+        Me.txtWheelMidIn.TabIndex = 192
+        Me.txtWheelMidIn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Label47
         '
         Me.Label47.AutoSize = True
         Me.Label47.Location = New System.Drawing.Point(4, 99)
         Me.Label47.Name = "Label47"
-        Me.Label47.Size = New System.Drawing.Size(54, 13)
+        Me.Label47.Size = New System.Drawing.Size(53, 13)
         Me.Label47.TabIndex = 191
-        Me.Label47.Text = "Min.Input:"
+        Me.Label47.Text = "Mid point:"
         '
         'Label48
         '
@@ -1543,7 +1478,7 @@ Partial Class frmSetup
         '
         Me.btTestWheelCenter.BackColor = System.Drawing.Color.Gold
         Me.btTestWheelCenter.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btTestWheelCenter.Location = New System.Drawing.Point(376, 113)
+        Me.btTestWheelCenter.Location = New System.Drawing.Point(620, 113)
         Me.btTestWheelCenter.Name = "btTestWheelCenter"
         Me.btTestWheelCenter.Size = New System.Drawing.Size(71, 20)
         Me.btTestWheelCenter.TabIndex = 274
@@ -1581,28 +1516,6 @@ Partial Class frmSetup
         Me.Label27.TabIndex = 275
         Me.Label27.Text = "Inertia compensation:"
         '
-        'UcControlGGraph1
-        '
-        Me.UcControlGGraph1.BackColor = System.Drawing.Color.FromArgb(CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer))
-        Me.UcControlGGraph1.Dock = System.Windows.Forms.DockStyle.Top
-        Me.UcControlGGraph1.Location = New System.Drawing.Point(0, 0)
-        Me.UcControlGGraph1.Name = "UcControlGGraph1"
-        Me.UcControlGGraph1.Size = New System.Drawing.Size(770, 10)
-        Me.UcControlGGraph1.TabIndex = 225
-        Me.UcControlGGraph1.Visible = False
-        '
-        'UcControlGraph1
-        '
-        Me.UcControlGraph1.BackColor = System.Drawing.Color.FromArgb(CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer))
-        Me.UcControlGraph1.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.UcControlGraph1.Location = New System.Drawing.Point(0, 455)
-        Me.UcControlGraph1.Margin = New System.Windows.Forms.Padding(0)
-        Me.UcControlGraph1.Name = "UcControlGraph1"
-        Me.UcControlGraph1.Size = New System.Drawing.Size(770, 11)
-        Me.UcControlGraph1.TabIndex = 184
-        Me.UcControlGraph1.TabStop = False
-        Me.UcControlGraph1.Visible = False
-        '
         'Label44
         '
         Me.Label44.AutoSize = True
@@ -1635,11 +1548,67 @@ Partial Class frmSetup
         Me.btShakePowerGraph.Text = "Graph Power"
         Me.btShakePowerGraph.UseVisualStyleBackColor = False
         '
+        'UcControlGGraph1
+        '
+        Me.UcControlGGraph1.BackColor = System.Drawing.Color.FromArgb(CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer))
+        Me.UcControlGGraph1.Dock = System.Windows.Forms.DockStyle.Top
+        Me.UcControlGGraph1.Location = New System.Drawing.Point(0, 0)
+        Me.UcControlGGraph1.Name = "UcControlGGraph1"
+        Me.UcControlGGraph1.Size = New System.Drawing.Size(770, 10)
+        Me.UcControlGGraph1.TabIndex = 225
+        Me.UcControlGGraph1.Visible = False
+        '
+        'UcControlGraph1
+        '
+        Me.UcControlGraph1.BackColor = System.Drawing.Color.FromArgb(CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer), CType(CType(16, Byte), Integer))
+        Me.UcControlGraph1.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.UcControlGraph1.Location = New System.Drawing.Point(0, 455)
+        Me.UcControlGraph1.Margin = New System.Windows.Forms.Padding(0)
+        Me.UcControlGraph1.Name = "UcControlGraph1"
+        Me.UcControlGraph1.Size = New System.Drawing.Size(770, 11)
+        Me.UcControlGraph1.TabIndex = 184
+        Me.UcControlGraph1.TabStop = False
+        Me.UcControlGraph1.Visible = False
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(322, 99)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(28, 12)
+        Me.Label1.TabIndex = 283
+        Me.Label1.Text = "0-255"
+        '
+        'txtWheelMidOut
+        '
+        Me.txtWheelMidOut.AllowPromptAsInput = False
+        Me.txtWheelMidOut.BeepOnError = True
+        Me.txtWheelMidOut.HidePromptOnLeave = True
+        Me.txtWheelMidOut.Location = New System.Drawing.Point(294, 94)
+        Me.txtWheelMidOut.Mask = "9990"
+        Me.txtWheelMidOut.Name = "txtWheelMidOut"
+        Me.txtWheelMidOut.Size = New System.Drawing.Size(25, 20)
+        Me.txtWheelMidOut.TabIndex = 282
+        Me.txtWheelMidOut.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(231, 98)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(60, 13)
+        Me.Label5.TabIndex = 281
+        Me.Label5.Text = "Mid output:"
+        '
         'frmSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(770, 466)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.txtWheelMidOut)
+        Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.btShakePowerGraph)
         Me.Controls.Add(Me.txtComBaud)
         Me.Controls.Add(Me.Label44)
@@ -1716,7 +1685,7 @@ Partial Class frmSetup
         Me.Controls.Add(Me.Label49)
         Me.Controls.Add(Me.Label48)
         Me.Controls.Add(Me.Label46)
-        Me.Controls.Add(Me.txtWheelMinInput)
+        Me.Controls.Add(Me.txtWheelMidIn)
         Me.Controls.Add(Me.Label47)
         Me.Controls.Add(Me.Label45)
         Me.Controls.Add(Me.btWheelGraph)
@@ -1734,13 +1703,9 @@ Partial Class frmSetup
         Me.Controls.Add(Me.txtWindGama)
         Me.Controls.Add(Me.Label38)
         Me.Controls.Add(Me.Label29)
-        Me.Controls.Add(Me.txtWheelPowerFactor)
+        Me.Controls.Add(Me.txtWheelMaxOut)
         Me.Controls.Add(Me.Label32)
-        Me.Controls.Add(Me.Label30)
-        Me.Controls.Add(Me.txtWheelPowerGama)
-        Me.Controls.Add(Me.Label31)
         Me.Controls.Add(Me.btDefaults)
-        Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.Label28)
         Me.Controls.Add(Me.txtWheelDampFactor)
         Me.Controls.Add(Me.txtClutchMax)
@@ -1768,8 +1733,6 @@ Partial Class frmSetup
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.txtGPowerForMin)
         Me.Controls.Add(Me.Label7)
-        Me.Controls.Add(Me.txtWheelPowerForMin)
-        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.Label21)
         Me.Controls.Add(Me.txtMaxScrewUp)
         Me.Controls.Add(Me.Label18)
@@ -1790,8 +1753,6 @@ Partial Class frmSetup
     Friend WithEvents Label21 As Label
     Friend WithEvents txtMaxScrewUp As MaskedTextBox
     Friend WithEvents Label18 As Label
-    Friend WithEvents txtWheelPowerForMin As MaskedTextBox
-    Friend WithEvents Label1 As Label
     Friend WithEvents Label6 As Label
     Friend WithEvents txtGPowerForMin As MaskedTextBox
     Friend WithEvents Label7 As Label
@@ -1820,13 +1781,9 @@ Partial Class frmSetup
     Friend WithEvents txtClutchMin As MaskedTextBox
     Friend WithEvents txtWheelDampFactor As MaskedTextBox
     Friend WithEvents Label28 As Label
-    Friend WithEvents Label5 As Label
     Friend WithEvents btDefaults As Button
-    Friend WithEvents Label30 As Label
-    Friend WithEvents txtWheelPowerGama As MaskedTextBox
-    Friend WithEvents Label31 As Label
     Friend WithEvents Label29 As Label
-    Friend WithEvents txtWheelPowerFactor As MaskedTextBox
+    Friend WithEvents txtWheelMaxOut As MaskedTextBox
     Friend WithEvents Label32 As Label
     Friend WithEvents Label37 As Label
     Friend WithEvents txtWindGama As MaskedTextBox
@@ -1845,7 +1802,7 @@ Partial Class frmSetup
     Friend WithEvents btWheelGraph As Button
     Friend WithEvents Label45 As Label
     Friend WithEvents Label46 As Label
-    Friend WithEvents txtWheelMinInput As MaskedTextBox
+    Friend WithEvents txtWheelMidIn As MaskedTextBox
     Friend WithEvents Label47 As Label
     Friend WithEvents Label48 As Label
     Friend WithEvents Label49 As Label
@@ -1922,4 +1879,7 @@ Partial Class frmSetup
     Friend WithEvents Label44 As Label
     Friend WithEvents txtComBaud As MaskedTextBox
     Friend WithEvents btShakePowerGraph As Button
+    Friend WithEvents Label1 As Label
+    Friend WithEvents txtWheelMidOut As MaskedTextBox
+    Friend WithEvents Label5 As Label
 End Class

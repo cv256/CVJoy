@@ -154,7 +154,7 @@ start:
                 ElseIf WheelPosition >= 16380 Then
                     .wheelPower = 255
                 Else
-                    .wheelPower = FFSteer(WheelPosition, (CSng(GameOutputs.SlipFL) + CSng(GameOutputs.SlipFR)) / 2)
+                    .wheelPower = FFSteer(WheelPosition)
                 End If
             End If
 
@@ -328,35 +328,35 @@ start:
         If chkUDP.Checked AndAlso Game IsNot Nothing AndAlso Game.Started Then
             Dim udpBytes As Byte()
             If ScreenUpdateTimeElapsed > 0.5 Then ' 2Hz 
-                udpBytes = New Byte(33) {}
+                udpBytes = New Byte(35) {}
                 With Game.UpdateExtra()
-                    udpBytes(18) = .TyreWearFL
-                    udpBytes(19) = .TyreWearFR
-                    udpBytes(20) = .TyreWearRL
-                    udpBytes(21) = .TyreWearRR
-                    udpBytes(22) = BitConverter.GetBytes(Math.Abs(.RpmMax))(0)
-                    udpBytes(23) = BitConverter.GetBytes(Math.Abs(.RpmMax))(1)
-                    udpBytes(24) = .MaxFuel
-                    udpBytes(25) = .Fuel
-                    udpBytes(26) = .NumCars
-                    udpBytes(27) = .Position
-                    udpBytes(28) = .NumberOfLaps
-                    udpBytes(29) = .CompletedLaps
-                    udpBytes(30) = BitConverter.GetBytes(Math.Abs(.DistanceTraveled))(0)
-                    udpBytes(31) = BitConverter.GetBytes(Math.Abs(.DistanceTraveled))(1)
-                    udpBytes(32) = BitConverter.GetBytes(.FuelAvg)(0)
-                    udpBytes(33) = BitConverter.GetBytes(.FuelAvg)(1)
+                    udpBytes(20) = .TyreWearFL
+                    udpBytes(21) = .TyreWearFR
+                    udpBytes(22) = .TyreWearRL
+                    udpBytes(23) = .TyreWearRR
+                    udpBytes(24) = BitConverter.GetBytes(Math.Abs(.RpmMax))(0)
+                    udpBytes(25) = BitConverter.GetBytes(Math.Abs(.RpmMax))(1)
+                    udpBytes(26) = .MaxFuel
+                    udpBytes(27) = .Fuel
+                    udpBytes(28) = .NumCars
+                    udpBytes(29) = .Position
+                    udpBytes(30) = .NumberOfLaps
+                    udpBytes(31) = .CompletedLaps
+                    udpBytes(32) = BitConverter.GetBytes(Math.Abs(.DistanceTraveled))(0)
+                    udpBytes(33) = BitConverter.GetBytes(Math.Abs(.DistanceTraveled))(1)
+                    udpBytes(34) = BitConverter.GetBytes(.FuelAvg)(0)
+                    udpBytes(35) = BitConverter.GetBytes(.FuelAvg)(1)
                     'ErrorAdd(String.Join(",", udpBytes), "")
                 End With
             Else
-                udpBytes = New Byte(17) {}
+                udpBytes = New Byte(19) {}
             End If
             udpBytes(0) = 255
             udpBytes(1) = BitConverter.GetBytes(Math.Abs(GameOutputs.Speed))(0)
             udpBytes(2) = BitConverter.GetBytes(Math.Abs(GameOutputs.Speed))(1)
             udpBytes(3) = BitConverter.GetBytes(Math.Abs(GameOutputs.RPM))(0)
             udpBytes(4) = BitConverter.GetBytes(Math.Abs(GameOutputs.RPM))(1)
-            udpBytes(5) = BitConverter.GetBytes(Math.Abs(GameOutputs.Gear))(0)
+            udpBytes(5) = GameOutputs.Gear
             udpBytes(6) = GameOutputs.SlipFL
             udpBytes(7) = GameOutputs.SlipFR
             udpBytes(8) = GameOutputs.SlipRL
@@ -369,6 +369,8 @@ start:
             udpBytes(15) = fromArduino.AccelCorrected
             udpBytes(16) = fromArduino.BrakeCorrected
             udpBytes(17) = fromArduino.ClutchCorrected
+            udpBytes(18) = BitConverter.GetBytes(Math.Abs(GameOutputs.TurboBoost))(0)
+            udpBytes(19) = BitConverter.GetBytes(Math.Abs(GameOutputs.TurboBoost))(1)
             Try
                 Dim udpClient As New Sockets.UdpClient
                 udpClient.SendAsync(udpBytes, udpBytes.Length, SettingsMain.UdpIp, 45000)
@@ -851,7 +853,7 @@ start:
     ''' <param name="pWheelPosition"></param>
     ''' <param name="pSlipFront">0~255</param>
     ''' <returns></returns>
-    Private Function FFSteer(pWheelPosition As Integer, pSlipFront As Single) As Integer
+    Private Function FFSteer(pWheelPosition As Integer) As Integer
         ' calculate steeringwheel ForceFeedback from -255 to 255:
         ' 
         Dim desiredTotalStrength As Single = 0 ' nominal = -10000 ~ 10000 (but can get to a lot more by summing up FF effects)
@@ -909,7 +911,7 @@ start:
         ' final output:
         Dim powerToApply As Integer = 0
         Try
-            powerToApply = CalculateOutput(Math.Min(Math.Abs(desiredTotalStrength), 255), 255, SettingsMain.WheelMinInput, SettingsMain.WheelPowerForMin, SettingsMain.WheelPowerGama, SettingsMain.WheelPowerFactor) * Math.Sign(desiredTotalStrength)
+            powerToApply = CalculateOutput2(Math.Min(Math.Abs(desiredTotalStrength), 255), SettingsMain.WheelMidIn, SettingsMain.WheelMidOut, SettingsMain.WheelMaxOut) * Math.Sign(desiredTotalStrength) '  SettingsMain.WheelPowerForMin, 
         Catch ex As Exception
             'ErrorAdd($"808 : desiredTotalStrength={desiredTotalStrength}   pWheelPosition={pWheelPosition}  timeElapsed={timeElapsed}  q={Math.Abs(q).ToString("00000")}  {ex.Message}", "")
         End Try

@@ -31,10 +31,9 @@ Public Class frmSetup
 
         txtComBaud.Text = SettingsMain.ComBaud
 
-        txtWheelMinInput.Text = SettingsMain.WheelMinInput
-        txtWheelPowerForMin.Text = SettingsMain.WheelPowerForMin
-        txtWheelPowerGama.Text = SettingsMain.WheelPowerGama
-        txtWheelPowerFactor.Text = SettingsMain.WheelPowerFactor.ToString("0.00")
+        txtWheelMidIn.Text = SettingsMain.WheelMidIn
+        txtWheelMidOut.Text = SettingsMain.WheelMidOut
+        txtWheelMaxOut.Text = SettingsMain.WheelMaxOut
         txtWheelDampFactor.Text = SettingsMain.WheelDampFactor.ToString("+0000;-0000")
         txtWheelInertia.Text = SettingsMain.WheelInertia * 100
 
@@ -75,10 +74,9 @@ Public Class frmSetup
         Dim res As String = ""
         res &= ValidateNumber(txtFreq, 11, 999, "Refresh Rate")
 
-        res &= ValidateNumber(txtWheelMinInput, 0, 1023, "Wheel FF Min Input")
-        res &= ValidateNumber(txtWheelPowerForMin, 0, 255, "Wheel FF Power For Min")
-        res &= ValidateNumber(txtWheelPowerGama, 0, 800, "Wheel FF Power Gama")
-        res &= ValidateNumber(txtWheelPowerFactor, 0.5, 3, "Wheel FF Power Factor")
+        res &= ValidateNumber(txtWheelMidIn, 0, 255, "Wheel FF Mid Input")
+        res &= ValidateNumber(txtWheelMidOut, 0, 255, "Wheel FF Mid Output")
+        res &= ValidateNumber(txtWheelMaxOut, 0, 255, "Wheel FF Max Output")
         res &= ValidateNumber(txtWheelDampFactor, -9999, 9999, "Wheel FF Damp Factor")
         res &= ValidateNumber(txtWheelInertia, -100, 100, "Wheel Inertia Compensation")
 
@@ -130,10 +128,9 @@ Public Class frmSetup
         SettingsMain.UdpIp = txtUdpIp.Text.Replace(",", ".")
         SettingsMain.ComBaud = txtComBaud.Text
 
-        SettingsMain.WheelMinInput = txtWheelMinInput.Text
-        SettingsMain.WheelPowerForMin = txtWheelPowerForMin.Text
-        SettingsMain.WheelPowerGama = txtWheelPowerGama.Text
-        SettingsMain.WheelPowerFactor = txtWheelPowerFactor.Text
+        SettingsMain.WheelMidIn = txtWheelMidIn.Text
+        SettingsMain.WheelMidOut = txtWheelMidOut.Text
+        SettingsMain.WheelMaxOut = txtWheelMaxOut.Text
         SettingsMain.WheelDampFactor = txtWheelDampFactor.Text
         SettingsMain.WheelInertia = CInt(txtWheelInertia.Text) / 100
 
@@ -187,7 +184,7 @@ Public Class frmSetup
         If txt_Validate(pShowMsg:=True) > "" Then Return
         With CType(Me.Owner, frmCVJoy)
             If sender.Equals(btTestWheelLeft) OrElse sender.Equals(btTestWheelRight) OrElse sender.Equals(btTestWheelCenter) Then
-                .TestValue = CInt(txtWheelPowerForMin.Text) * If(sender.Equals(btTestWheelRight), -1, 1)
+                .TestValue = CInt(txtWheelMidIn.Text) * If(sender.Equals(btTestWheelRight), -1, 1)
                 .TestMode = If(sender.Equals(btTestWheelCenter), frmCVJoy.Motor.WheelCenter, frmCVJoy.Motor.Wheel)
             ElseIf sender.Equals(btTestWind) Then
                 .TestValue = CInt(txtWindMin.Text)
