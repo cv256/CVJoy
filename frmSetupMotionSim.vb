@@ -1,9 +1,7 @@
-﻿Imports AssettoCorsaSharedMemory
+﻿Public Class frmSetupMotionSim
+    Public _FrmCVJoy As frmCVJoy, Game As GameMotionSim
 
-Public Class frmSetupAC
-    Public _FrmCVJoy As frmCVJoy, Game As GameAC
-
-    Public Sub Init(pOwner As frmCVJoy, pGame As GameAC)
+    Public Sub Init(pOwner As frmCVJoy, pGame As GameMotionSim)
         Me.Owner = pOwner
         _FrmCVJoy = pOwner
         Game = pGame
@@ -14,12 +12,14 @@ Public Class frmSetupAC
 
     Private Sub ShowFromGameSettings()
         txtWheelSensitivity.Text = (Game.WheelSensitivity * 100).ToString("+0000;-0000")
+        txtUdpPort.Text = Game.UdpPort
         UcButtons1.ShowFromGameSettings()
     End Sub
 
     Private Function txt_Validate(pShowMsg As Boolean) As String
         Dim res As String = ""
         res &= ValidateNumber(txtWheelSensitivity, -9999, 9999, "Wheel Sensitivity")
+        res &= ValidateNumber(txtUdpPort, 0, 65535, "UDP Port")
 
         If Not String.IsNullOrEmpty(res) Then
             MsgBox(res)
@@ -31,6 +31,7 @@ Public Class frmSetupAC
     Private Function StoreToGameSettings() As Boolean
         If txt_Validate(pShowMsg:=True) > "" Then Return False
         Game.WheelSensitivity = CInt(txtWheelSensitivity.Text) / 100
+        Game.UdpPort = CInt(txtUdpPort.Text)
         UcButtons1.StoreToGameSettings()
         _FrmCVJoy.UcButtons1.ShowFromGameSettings()
 
@@ -38,7 +39,7 @@ Public Class frmSetupAC
     End Function
 
     Private Sub btDefaults_Click(sender As Object, e As EventArgs) Handles btDefaults.Click
-        Game = New GameAC(_FrmCVJoy)
+        Game = New GameMotionSim(_FrmCVJoy)
         ShowFromGameSettings()
     End Sub
 
@@ -58,21 +59,5 @@ Public Class frmSetupAC
     Private Sub ckKeepVisible_CheckedChanged(sender As Object, e As EventArgs) Handles ckKeepVisible.CheckedChanged
         Me.TopMost = ckKeepVisible.Checked
     End Sub
-
-    'Public Sub ShowGameValues()
-    '    lbACSpeed.Text = acP.SpeedKmh
-    '    lbACRPM.Text = acP.Rpms
-    '    lbACSlipFront.Text = Math.Min(acP.WheelSlip(0), acP.WheelSlip(1))
-    '    lbACSlipBack.Text = Math.Min(acP.WheelSlip(2), acP.WheelSlip(3))
-    '    lbACDirt.Text = If(acP.TyreDirtyLevel Is Nothing, "", acP.TyreDirtyLevel(3))
-    '    lbACWear.Text = If(acP.TyreWear Is Nothing, "", acP.TyreWear(3))
-    '    lbACJump.Text = acP.AccG(1).ToString("0.0") & "G"
-    '    lbACAccel.Text = acP.AccG(2).ToString("0.0") & "G"
-    '    lbACTurn.Text = acP.AccG(0).ToString("0.0") & "G"
-    '    lbACPitch.Text = (acP.Pitch * 57.29).ToString("0.0") & "º"
-    '    lbACRoll.Text = (acP.Roll * 57.29).ToString("0.0") & "º"
-
-    '    UcACGraph1.UpdateValues(acP)
-    'End Sub
 
 End Class

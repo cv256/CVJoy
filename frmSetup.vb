@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports AssettoCorsaSharedMemory
 
 Public Class frmSetup
     Public _FrmCVJoy As frmCVJoy
@@ -68,6 +69,26 @@ Public Class frmSetup
 
         CalculateMaxAngleDown(Me, Nothing)
         CalculateMaxAngleUp(Me, Nothing)
+
+        txtWindMinSpeed.Text = SettingsMain.WindMinSpeed
+        txtWindMaxSpeed.Text = SettingsMain.WindMaxSpeed
+        txtWindMaxJump.Text = SettingsMain.WindMaxJump.ToString("+0.0;-0.0")
+        txtWindMaxAccel.Text = SettingsMain.WindMaxAccel.ToString("+0.0;-0.0")
+
+        txtShakeSpeedMinInput.Text = SettingsMain.ShakeSpeedMinSpeed
+        txtShakeSpeedMaxSpeed.Text = SettingsMain.ShakeSpeedMaxSpeed
+        txtShakeSpeedMaxJump.Text = SettingsMain.ShakeSpeedMaxJump.ToString("+0.0;-0.0")
+        txtShakeSpeedMaxAccel.Text = SettingsMain.ShakeSpeedMaxAccel.ToString("+0.0;-0.0")
+
+        txtShakePowerMaxJump.Text = SettingsMain.ShakePowerMaxJump.ToString("+0.0;-0.0")
+        txtShakePowerMaxAccel.Text = SettingsMain.ShakePowerMaxAccel.ToString("+0.0;-0.0")
+
+        txtSlip.Text = SettingsMain.SlipMax
+        txtAccel.Text = (SettingsMain.Accel * 57.3).ToString("00.0")
+        txtTurn.Text = (SettingsMain.Turn * 57.3).ToString("00.0")
+        txtPitch.Text = SettingsMain.Pitch * 100
+        txtRoll.Text = SettingsMain.Roll * 100
+
     End Sub
 
     Public Function txt_Validate(pShowMsg As Boolean) As String
@@ -113,6 +134,19 @@ Public Class frmSetup
             If CInt(txtBrakeMax.Text) <= CInt(txtBrakeMin.Text) Then res &= "Brake Max cant be less than Min" & vbCrLf
             If CInt(txtClutchMax.Text) <= CInt(txtClutchMin.Text) Then res &= "Clutch Max cant be less than Min" & vbCrLf
         End If
+
+        res &= ValidateNumber(txtSlip, 0, 200, "Slip for turning led on")
+        res &= ValidateNumber(txtPitch, -300, 300, "Car Pitch effect on Simulator Pitch")
+        res &= ValidateNumber(txtRoll, -300, 300, "Car Roll effect on Simulator Roll")
+
+        res &= ValidateNumber(txtWindMaxSpeed, 0, 999, "Car Speed for max Simulator Wind")
+        res &= ValidateNumber(txtWindMaxJump, -9.9, 9.9, "Car Up/Down effect on Wind")
+
+        res &= ValidateNumber(txtShakeSpeedMaxSpeed, 0, 999, "Car Speed for max Simulator Shake")
+        res &= ValidateNumber(txtShakeSpeedMaxJump, -9.9, 9.9, "Car Up/Down effect on Shake")
+
+        'res &= ValidateNumber(txtAccel, -90, 90, "Car Acceleration effect on Simulator Pitch")
+        'res &= ValidateNumber(txtTurn, -90, 90, "Car Turning effect on Simulator Roll")
 
         If Not String.IsNullOrEmpty(res) Then
             MsgBox(res)
@@ -162,6 +196,26 @@ Public Class frmSetup
         SettingsMain.UltrasonicDamper = CInt(txtUltrasonicDamper.Text) / 100
         SettingsMain.GMaxMotorEfficiency = CInt(txtGMaxMotorEfficiency.Text)
         SettingsMain.GMinMotorEfficiency = CInt(txtGMinMotorEfficiency.Text)
+
+        SettingsMain.SlipMax = txtSlip.Text
+        SettingsMain.Pitch = txtPitch.Text / 100
+        SettingsMain.Roll = txtRoll.Text / 100
+
+        SettingsMain.WindMinSpeed = txtWindMinSpeed.Text
+        SettingsMain.WindMaxSpeed = txtWindMaxSpeed.Text
+        SettingsMain.WindMaxJump = txtWindMaxJump.Text.Replace("G", "")
+        SettingsMain.WindMaxAccel = txtWindMaxAccel.Text.Replace("G", "")
+
+        SettingsMain.ShakeSpeedMinSpeed = txtShakeSpeedMinInput.Text
+        SettingsMain.ShakeSpeedMaxSpeed = txtShakeSpeedMaxSpeed.Text
+        SettingsMain.ShakeSpeedMaxJump = txtShakeSpeedMaxJump.Text.Replace("G", "")
+        SettingsMain.ShakeSpeedMaxAccel = txtShakeSpeedMaxAccel.Text.Replace("G", "")
+
+        SettingsMain.ShakePowerMaxJump = txtShakePowerMaxJump.Text.Replace("G", "")
+        SettingsMain.ShakePowerMaxAccel = txtShakePowerMaxAccel.Text.Replace("G", "")
+
+        SettingsMain.Accel = CDec(txtAccel.Text) / 10 / 57.3
+        SettingsMain.Turn = CDec(txtTurn.Text) / 10 / 57.3
 
         SettingsMain.SaveSettingstoFile()
 
@@ -299,5 +353,24 @@ Public Class frmSetup
     '    End Try
     'End Sub
 
+
+
+    Public Sub ShowGameValues(GameOutputs As clGameOutputs, GameOutputsExtra As clGameOutputsExtra)
+        lbMaxRPM.Text = GameOutputsExtra.RpmMax
+        lbACSpeed.Text = GameOutputs.Speed
+        lbACRPM.Text = GameOutputs.RPM
+        lbACSlipFront.Text = Math.Min(GameOutputs.SlipFR, GameOutputs.SlipFL)
+        lbACSlipBack.Text = Math.Min(GameOutputs.SlipRR, GameOutputs.SlipRL)
+        'lbACDirt.Text = GameOutputs.TyreDirtFR  If(acP.TyreDirtyLevel Is Nothing, "", acP.TyreDirtyLevel(3))
+        'lbACWear.Text = If(acP.TyreWear Is Nothing, "", acP.TyreWear(3))
+        lbACJump.Text = GameOutputs.GameAccelZ.ToString("0.0") & "G"
+        lbACAccel.Text = GameOutputs.Acceleration.ToString("0.0")
+        lbACTurn.Text = GameOutputs.Rotation.ToString("0.0")
+        lbACPitch.Text = (GameOutputs.GamePitch * 57.29).ToString("0.0") & "º"
+        lbACRoll.Text = (GameOutputs.GameRoll * 57.29).ToString("0.0") & "º"
+        ' TODO: podia mostrar tambem o RigPitch, RigRoll, Rig...
+
+        'UcACGraph1.UpdateValues(acP)
+    End Sub
 
 End Class

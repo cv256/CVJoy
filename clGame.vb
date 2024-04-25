@@ -1,6 +1,12 @@
 ﻿Public MustInherit Class clGame
     Inherits clSettings
 
+
+    Public WheelSensitivity As Single = 8.5
+    Public Bt(17) As String
+    Public BtDescr(17) As String
+
+
     Friend Owner As frmCVJoy
     Public MustOverride Function GameName() As String
 
@@ -11,12 +17,12 @@
     Public MustOverride Sub Start()
     Public MustOverride Sub [Stop]()
     Public MustOverride Function Started() As Boolean
-    Public MustOverride Function Update() As clGameOutputs
-    Public MustOverride Function UpdateExtra() As clGameOutputsExtra
+    Public MustOverride Function GetGameOutputs() As clGameOutputs
+    Public MustOverride Function GetGameOutputsExtra() As clGameOutputsExtra
     Public MustOverride Sub ShowSetup()
-    Public WheelSensitivity As Single = 8.5
 
     Public Event StateChanged()
+
     Private _State As String
     Public Property State() As String
         Get
@@ -28,9 +34,6 @@
         End Set
     End Property
 
-
-    Public Bt(17) As String
-    Public BtDescr(17) As String
 
     ' these PP are used by Reflection in clSettings.SaveSettingstoFile() and LoadSettingsFromFile() !!!!
     Public Property Bts() As String
@@ -63,17 +66,18 @@ End Class
 
 
 Public Structure clGameOutputs ' info that needs updating very frequently
-    Public Wind As Byte ' 0~255
-    Public ShakePower As Byte  ' 0~255
-    Public ShakeSpeed As Byte  ' 0~255
-    Public Pitch As Single ' radians
-    Public Roll As Single ' radians
+    Public RigWind As Byte ' 0~255  calculated wind to apply to motion rig
+    Public RigShakePower As Byte  ' 0~255 calculated shake to apply to motion rig
+    Public RigShakeSpeed As Byte  ' 0~255 calculated shake to apply to motion rig
+    Public RigPitch As Single ' radians calculated pitch to apply to motion rig
+    Public RigRoll As Single ' radians calculated roll to apply to motion rig
 
+    Public GamePitch As Single, GameRoll As Single, GameAccelZ As Single
     Public SlipFL As Byte
     Public SlipFR As Byte
     Public SlipRL As Byte
     Public SlipRR As Byte
-    Public Speed As Integer
+    Public Speed As Single ' Km/h ' has to be Single so that GameAC can check if is EXACTLY the same as last time
     Public RPM As Integer
     Public Gear As Byte ' 0=" "  1="R"   2="N"  3="1"  4="2"...
     Public GearAuto As Boolean
@@ -82,6 +86,101 @@ Public Structure clGameOutputs ' info that needs updating very frequently
     Public TyreDirtRL As Byte
     Public TyreDirtRR As Byte
     Public TurboBoost As Integer '   x100
+    Public Acceleration As Single '  calculated  delta Km/h / delta milliseconds * 15
+    Public Rotation As Single '  calculated ?...
+    Public GameLastRead As Date
+
+    Private GameLastSpeed As Single
+
+    Public Shared Function PausedGameOutputs(pSpeedTest As Single) As clGameOutputs
+        Dim res As clGameOutputs
+        res.Speed = pSpeedTest
+        res.Calculate(IsPaused:=True)
+        Return res
+    End Function
+
+    Public Sub Calculate(Optional IsPaused As Boolean = False)
+        If IsPaused Then
+            Acceleration = 0
+            Rotation = 0
+            Me.RigPitch = 0
+            Me.RigRoll = 0
+            Me.RigWind = FFWind(SpeedKmh:=Speed, pJump:=0, pAcceleration:=0)
+            Me.RigShakePower = FFShakePower(pJump:=0, pAcceleration:=0, SpeedKmh:=0)
+            Me.RigShakeSpeed = FFShakeSpeed(pJump:=0, pAcceleration:=0, SpeedKmh:=0)
+            Return
+        End If
+
+        Const damping As Single = 0.7
+        Acceleration = Acceleration * damping + (Speed - GameLastSpeed) / Now.Subtract(GameLastRead).TotalMilliseconds * 15 * (1 - damping)
+        GameLastSpeed = Speed
+        GameLastRead = Now
+        ' TODO: calculate Rotation
+        Me.RigPitch = GamePitch * SettingsMain.Pitch + Acceleration * SettingsMain.Accel ' everything in Radians (me.accel has allready been converted) ' acP.AccG(2) has lots of noise, unusable!
+        Me.RigRoll = -GameRoll * SettingsMain.Roll + Rotation * SettingsMain.Turn '' everything in Radians (me.turn has allready been converted)
+        Dim Jump As Single = Math.Abs(GameAccelZ) ^ 2 * Math.Sign(GameAccelZ) * 10
+        Me.RigWind = FFWind(SpeedKmh:=Speed, pJump:=Jump, pAcceleration:=Acceleration)
+        Me.RigShakePower = FFShakePower(pJump:=Jump, pAcceleration:=Acceleration, SpeedKmh:=Speed)
+        Me.RigShakeSpeed = FFShakeSpeed(pJump:=Jump, pAcceleration:=Acceleration, SpeedKmh:=Speed)
+    End Sub
+
+    Private Function FFWind(SpeedKmh As Single, pJump As Single, pAcceleration As Single) As Byte
+        Dim res As Integer = 0  ' typical 0~255, but can get to something like -2000~2000
+
+        If SettingsMain.WindMaxSpeed > SettingsMain.WindMinSpeed AndAlso SpeedKmh > SettingsMain.WindMinSpeed Then
+            res += (SpeedKmh - SettingsMain.WindMinSpeed) * 255 / (SettingsMain.WindMaxSpeed - SettingsMain.WindMinSpeed)
+        End If
+
+        If SettingsMain.WindMaxJump > 0 Then
+            res += pJump / SettingsMain.WindMaxJump * 255
+        End If
+
+        If SettingsMain.WindMaxAccel > 0 Then
+            res += pAcceleration / SettingsMain.WindMaxAccel * 255
+        End If
+
+        res = CalculateOutput(res, 255, 1, SettingsMain.WindMinPower, SettingsMain.WindGama, 1)
+        If graph IsNot Nothing Then graph.UpdateWind(res)
+        Return res
+    End Function
+
+
+    Private Function FFShakeSpeed(pJump As Single, pAcceleration As Single, SpeedKmh As Single) As Byte
+        Dim res As Integer = 0
+
+        If SettingsMain.ShakeSpeedMaxSpeed > SettingsMain.ShakeSpeedMinSpeed AndAlso SpeedKmh > SettingsMain.ShakeSpeedMinSpeed Then
+            res = (CSng(SpeedKmh - SettingsMain.ShakeSpeedMinSpeed) / CSng(SettingsMain.ShakeSpeedMaxSpeed - SettingsMain.ShakeSpeedMinSpeed)) ^ (SettingsMain.ShakeGama / 100) * 255
+        End If
+
+        If SettingsMain.ShakeSpeedMaxJump <> 0 AndAlso Math.Abs(pJump) > 0.01 Then
+            res += pJump * 255 / SettingsMain.ShakeSpeedMaxJump
+        End If
+
+        If SettingsMain.ShakeSpeedMaxAccel <> 0 Then
+            res += pAcceleration * 255 / SettingsMain.ShakeSpeedMaxAccel
+        End If
+
+        res = Math.Max(Math.Min(res, 255), 0)
+        If graph IsNot Nothing Then graph.UpdateShakeSpeed(res)
+        Return res
+    End Function
+
+    Private Function FFShakePower(pJump As Single, pAcceleration As Single, SpeedKmh As Single) As Byte
+        Dim res As Integer = SettingsMain.ShakePowerNominal - SpeedKmh / CSng(6)     ' typical 0~255, but can get to something like -2000~2000
+
+        If SettingsMain.ShakePowerMaxJump <> 0 Then
+            res += pJump * 255 / SettingsMain.ShakePowerMaxJump
+        End If
+
+        If SettingsMain.ShakePowerMaxAccel <> 0 Then
+            res += Math.Abs(pAcceleration) * 255 / SettingsMain.ShakePowerMaxAccel
+        End If
+
+        res = Math.Max(Math.Min(res, 255), 0)
+        If graph IsNot Nothing Then graph.UpdateShakePower(res)
+        Return res
+    End Function
+
 End Structure
 
 

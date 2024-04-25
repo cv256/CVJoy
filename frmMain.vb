@@ -8,7 +8,7 @@ Public Class frmCVJoy
     ' System.Timers.Timer != System.Threading.Timer != System.Windows.Forms.Timer (55ms accuracy is not enough)
     'Public WithEvents TimerSendToArduino As New System.Timers.Timer
     Public WithEvents TimerScreenAndUDP As New Windows.Forms.Timer
-    Private GameOutputs As clGameOutputs
+    Private GameOutputs As clGameOutputs, GameOutputsExtra As clGameOutputsExtra
     Public Joy As vJoyInterfaceWrap.vJoy ' http://vjoystick.sourceforge.net/site/includes/SDK_ReadMe.pdf
 
     Private FFGain As Single = 255
@@ -50,6 +50,7 @@ Public Class frmCVJoy
         cbLogFF.SelectedIndex = 0
 
         cbGames.Items.Add("Assetto Corsa")
+        cbGames.Items.Add("MotionSim")
         cbGames.Items.Add("Standard")
 
         SettingsMain.LoadSettingsFromFile()
@@ -60,10 +61,14 @@ Public Class frmCVJoy
 
     Private Sub cbGames_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbGames.SelectedIndexChanged
         If Game IsNot Nothing Then Game.Stop()
-        If cbGames.SelectedIndex = 1 Then
+        If cbGames.SelectedIndex = 2 Then
             Game = New GameStd(Me)
             btGameStart.Visible = False
             lbGameInfo.Text = ""
+        ElseIf cbGames.SelectedIndex = 1 Then
+            Game = New GameMotionSim(Me)
+            btGameStart.Visible = True
+            AddHandler Game.StateChanged, AddressOf GameStateChanged
         Else
             Game = New GameAC(Me)
             btGameStart.Visible = True
@@ -141,7 +146,7 @@ start:
             End If
 
             If Game IsNot Nothing AndAlso Game.Started Then
-                GameOutputs = Game.Update() ' get realtime data from the Game 
+                GameOutputs = Game.GetGameOutputs() ' get realtime data from the Game 
             End If
 
             If TestMode = Motor.Wheel Then
@@ -170,17 +175,17 @@ start:
             If TestMode = Motor.Wind Then
                 .windPower = TestValue
             ElseIf Not chkNoWind.Checked Then
-                .windPower = GameOutputs.Wind
+                .windPower = GameOutputs.RigWind
             Else
                 .windPower = 0
             End If
 
             If TestMode = Motor.Shake Then
                 .shakePower = TestValue
-                .shakeSpeed = GameOutputs.ShakeSpeed
+                .shakeSpeed = GameOutputs.RigShakeSpeed
             ElseIf Not chkNoWind.Checked Then
-                .shakePower = GameOutputs.ShakePower
-                .shakeSpeed = GameOutputs.ShakeSpeed
+                .shakePower = GameOutputs.RigShakePower
+                .shakeSpeed = GameOutputs.RigShakeSpeed
             Else
                 .shakePower = 0
                 .shakeSpeed = 0
@@ -323,13 +328,16 @@ start:
     Public Sub ScreenAndUDP() Handles TimerScreenAndUDP.Tick
         TimerScreenAndUDP.Stop()
         Dim ScreenUpdateTimeElapsed As Single = Now.Subtract(ScreenUpdateLastTime).Ticks / 10000000 ' seconds
+        If ScreenUpdateTimeElapsed > 0.5 Then ' 2Hz 
+            GameOutputsExtra = Game.GetGameOutputsExtra()
+        End If
 
         ' send UDP:
         If chkUDP.Checked AndAlso Game IsNot Nothing AndAlso Game.Started Then
             Dim udpBytes As Byte()
             If ScreenUpdateTimeElapsed > 0.5 Then ' 2Hz 
                 udpBytes = New Byte(35) {}
-                With Game.UpdateExtra()
+                With GameOutputsExtra
                     udpBytes(20) = .TyreWearFL
                     udpBytes(21) = .TyreWearFR
                     udpBytes(22) = .TyreWearRL
@@ -380,7 +388,6 @@ start:
         End If
 
         If Not ckDontShow.Checked AndAlso Me.WindowState <> FormWindowState.Minimized Then
-
             '  show wheel + FFB:
             With toArduino
                 Dim g As System.Drawing.Graphics = lbWheelPos.CreateGraphics()
@@ -434,6 +441,10 @@ start:
             End If
 
         End If
+
+        '' show game data on setup screen:
+        Dim frmSetupOK As frmSetup = Me.OwnedForms.FirstOrDefault(Function(f) TypeOf f Is frmSetup AndAlso f.WindowState <> FormWindowState.Minimized)
+        If frmSetupOK IsNot Nothing Then frmSetupOK.ShowGameValues(GameOutputs, GameOutputsExtra)
 
         If graph IsNot Nothing Then graph.UpdatePedals()
 

@@ -43,6 +43,30 @@
     Public GMinMotorEfficiency As Single = 20
     Public GMaxMotorEfficiency As Single = 127
 
+
+    ' Public Rpm1 As Single = 0.4
+    ' Public Rpm2 As Single = 0.93
+    Public SlipMax As Short = 1
+
+    Public WindMinSpeed As Integer = 50
+    Public WindMaxSpeed As Integer = 290
+    Public WindMaxJump As Single = 1.1
+    Public WindMaxAccel As Single = 1.1
+
+    Public ShakeSpeedMinSpeed As Integer = 6
+    Public ShakeSpeedMaxSpeed As Integer = 320
+    Public ShakeSpeedMaxJump As Single = 1.1
+    Public ShakeSpeedMaxAccel As Single = 1.1
+
+    Public ShakePowerMaxJump As Single = 1.1
+    Public ShakePowerMaxAccel As Single = 1.1
+
+    Public Pitch As Single = 0.26
+    Public Roll As Single = 0.65
+    Public Accel As Single = 0.07155323
+    Public Turn As Single = 0.05235602
+
+
     Public Overrides Function FileName() As String
         Return "Settings.INI"
     End Function

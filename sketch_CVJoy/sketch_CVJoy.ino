@@ -83,7 +83,7 @@ unsigned long lastSerialRecv;
 unsigned long lastMainsZero;
 //unsigned long dimmerLeftDelay;
 //unsigned long dimmerRightDelay;
-unsigned long dimmerWindDelay; bool windOn; byte windMotorPower;
+//unsigned long dimmerWindDelay; bool windOn; byte windMotorPower;
 unsigned long shakeOnTime; unsigned long shakeDuty; bool shakeOn; byte shakeMotorPower; long shakeDelay;
 
 //char leftMotorPower;// -127 to 127
@@ -221,7 +221,7 @@ void loop()
     }
     analogWrite(pinWheelMotorPower, serialReceived[2]);
 
-    windMotorPower = serialReceived[3];
+    analogWrite(pinWindMotor , serialReceived[3]); //windMotorPower = serialReceived[3];
 
     if (serialReceived[5] == 0 || serialReceived[5] == 0) {
       shakeMotorPower = 0;
@@ -232,7 +232,7 @@ void loop()
     } else {
       shakeMotorPower = serialReceived[4];
       shakeDelay = (unsigned long)256 - (unsigned long)serialReceived[5]; // 255~1
-      shakeDuty = shakeDelay * 256  ; 
+      shakeDuty = shakeDelay * 256  ;
       shakeDelay = ( shakeDelay * shakeDelay ); // 65025~1
       //shakeDuty = shakeDelay + 6500 ; // 71525~6500
       shakeDelay = (unsigned long)4 * shakeDelay;
@@ -251,8 +251,7 @@ noData:
     //leftMotorPower = 0;
     //rightMotorPower = 0;
 
-    digitalWrite(pinWindMotor, LOW);
-    windMotorPower = 0;
+    analogWrite(pinWindMotor, 0);//digitalWrite(pinWindMotor, LOW);    //windMotorPower = 0;
 
     analogWrite(pinShakeMotor, 0);
     shakeMotorPower = 0;
@@ -429,15 +428,15 @@ void zero_cross_ISR() {
     dimmerWindDelay = dimmerWindDelay % 255;
     }
   */
-  /* 220v PWM: */
-  digitalWrite(pinWindMotor, LOW);
-  windOn = false;
-  if (windMotorPower == 0) { // zero:
+  /* 220v PWM:
+    digitalWrite(pinWindMotor, LOW);
+    windOn = false;
+    if (windMotorPower == 0) { // zero:
     dimmerWindDelay = 0;
-  } else {
+    } else {
     dimmerWindDelay = lastMainsZero + (255 - windMotorPower) * 35;
-  }
-
+    }
+  */
   /* 12v PSM+PWM:
     dimmershakeOnTime += shakeMotorSpeed;
     if (dimmershakeOnTime >= 255) {
@@ -471,22 +470,22 @@ void triacs() {
     }
     }
   */
-
-  if (dimmerWindDelay != 0) {
-    if (!windOn) {
-      if (micros() >= dimmerWindDelay) {
-        windOn = true;
-        digitalWrite(pinWindMotor, HIGH);
-      }
-    } else {
-      if (micros() >= dimmerWindDelay + 15) { // the triac's gate dont need to be High for the whole cycle, about 10us is the time you need to make sure the TRIAC got on
-        dimmerWindDelay = 0;
-        windOn = false;
-        digitalWrite(pinWindMotor, LOW);
+  /*
+    if (dimmerWindDelay != 0) {
+      if (!windOn) {
+        if (micros() >= dimmerWindDelay) {
+          windOn = true;
+          digitalWrite(pinWindMotor, HIGH);
+        }
+      } else {
+        if (micros() >= dimmerWindDelay + 15) { // the triac's gate dont need to be High for the whole cycle, about 10us is the time you need to make sure the TRIAC got on
+          dimmerWindDelay = 0;
+          windOn = false;
+          digitalWrite(pinWindMotor, LOW);
+        }
       }
     }
-  }
-
+  */
   /*
     if (micros()-lastMainsZero > 15) { // the triac's gate dont need to be High for the whole cycle, about 10us is the time you need to make sure the TRIAC got on
     digitalWrite(pinWindMotor, LOW);

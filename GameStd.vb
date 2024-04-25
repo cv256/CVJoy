@@ -33,13 +33,13 @@
         Return True ' AC IsNot Nothing
     End Function
 
-    Public Overrides Function Update() As clGameOutputs
+    Public Overrides Function GetGameOutputs() As clGameOutputs
         Dim res As clGameOutputs
         'res.LedBottom = True
         Return res
     End Function
 
-    Public Overrides Function UpdateExtra() As clGameOutputsExtra
+    Public Overrides Function GetGameOutputsExtra() As clGameOutputsExtra
         Dim res As clGameOutputsExtra
         'res.LedBottom = True
         Return res
