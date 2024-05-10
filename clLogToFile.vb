@@ -11,10 +11,10 @@
         LogToFile.AppendLine(CInt(Now.Subtract(StartTime).TotalMilliseconds).ToString & vbTab & pConstMagnitude.ToString())
     End Sub
     Public Sub LogWheelPosInOut(pPos As Integer)
-        LogToFile.AppendLine(CInt(Now.Subtract(StartTime).TotalMilliseconds).ToString & vbTab & vbTab & pPos.ToString())
+        'LogToFile.AppendLine(CInt(Now.Subtract(StartTime).TotalMilliseconds).ToString & vbTab & vbTab & pPos.ToString())
     End Sub
-    Public Sub LogWheelMotorOut(pPower As Integer)
-        LogToFile.AppendLine(CInt(Now.Subtract(StartTime).TotalMilliseconds).ToString & vbTab & vbTab & vbTab & pPower.ToString())
+    Public Sub LogWheelMotorOut(pPower As Integer, pPos As Integer)
+        LogToFile.AppendLine(CInt(Now.Subtract(StartTime).TotalMilliseconds).ToString & vbTab & vbTab & pPos.ToString() & vbTab & pPower.ToString())
     End Sub
 
     Public Sub SaveToFile()

@@ -20,7 +20,7 @@ Public Class frmCVJoy
     'Private _realOKLeft As Single, _realOKRight As Single ' position now (from sensor plus corrections) in milimeters, tipically from   minus GMaxScrewDown    to    Zero (center)    to    GMaxScrewUp
     'Private _lastLeftMotorSpeed As Single, _lastRightMotorSpeed As Single ' -100~100 negative=bolt going down
     'Private _motorOverHeat As Single
-    Private WheelPosition As Integer
+    Private WheelPosition As Integer ', WheelPositionDesired As Integer
     ' Date datatype accuracy is 0,1ms = 10kHz
     Private WheelReadTime As Date = Now.AddSeconds(-1), WheelPositionPrevious As Integer, WheelReadPreviousTime As Date = Now.AddSeconds(-1) ' these are only for the Conditional FFB calulations
     Private ButtonsLast(8) As Boolean, ButtonOther As Boolean
@@ -145,6 +145,7 @@ start:
 
             If TestMode = Motor.Reset Then
                 .Reset = True
+                ' WheelPositionDesired = 0
                 TestMode = Motor.None
             Else
                 .Reset = False
@@ -156,17 +157,24 @@ start:
 
             If TestMode = Motor.Wheel Then
                 .wheelPower = TestValue
+                'WheelPositionDesired -= .wheelPower
             ElseIf TestMode = Motor.WheelCenter Then
                 .wheelPower = If(WheelPosition < 0, -TestValue, If(WheelPosition > 0, TestValue, 0))
+                'WheelPositionDesired = 0
             Else
                 If WheelPosition <= -16380 Then
                     .wheelPower = -255
+                    'WheelPositionDesired = -16379
                 ElseIf WheelPosition >= 16380 Then
                     .wheelPower = 255
+                    'WheelPositionDesired = 16379
                 Else
                     .wheelPower = FFSteer(WheelPosition)
+                    'WheelPositionDesired -= .wheelPower / 4
                 End If
             End If
+            '.wheelPower = -Math.Min(Math.Max((WheelPositionDesired - WheelPosition) / 20, -255), 255)
+            'Debug.Print(WheelPosition & "    " & WheelPositionDesired & "    " & .wheelPower)
 
             WheelPositionPrevious = WheelPosition
             WheelReadPreviousTime = WheelReadTime
@@ -176,7 +184,7 @@ start:
             Static lastwheelPower As Integer
             .wheelPower = Math.Min(Math.Max(.wheelPower + CInt((.wheelPower - lastwheelPower) * SettingsMain.WheelInertia), -255), 255)
             lastwheelPower = tmpInt
-            If LogToFile IsNot Nothing Then LogToFile.LogWheelMotorOut(.wheelPower)
+            If LogToFile IsNot Nothing Then LogToFile.LogWheelMotorOut(.wheelPower, WheelPosition)
 
             If TestMode = Motor.Wind Then
                 .windPower = TestValue
