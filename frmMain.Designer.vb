@@ -72,6 +72,7 @@ Partial Class frmCVJoy
         Me.Label13 = New System.Windows.Forms.Label()
         Me.lbToArduinoHz = New System.Windows.Forms.Label()
         Me.btCountersReset = New System.Windows.Forms.Button()
+        Me.chkLogToFile = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'btArduinoStart
@@ -607,12 +608,24 @@ Partial Class frmCVJoy
         Me.btCountersReset.Text = "reset"
         Me.btCountersReset.UseVisualStyleBackColor = False
         '
+        'chkLogToFile
+        '
+        Me.chkLogToFile.AutoSize = True
+        Me.chkLogToFile.BackColor = System.Drawing.Color.Transparent
+        Me.chkLogToFile.Location = New System.Drawing.Point(136, 82)
+        Me.chkLogToFile.Name = "chkLogToFile"
+        Me.chkLogToFile.Size = New System.Drawing.Size(72, 17)
+        Me.chkLogToFile.TabIndex = 158
+        Me.chkLogToFile.Text = "Log to file"
+        Me.chkLogToFile.UseVisualStyleBackColor = False
+        '
         'frmCVJoy
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ClientSize = New System.Drawing.Size(567, 386)
+        Me.Controls.Add(Me.chkLogToFile)
         Me.Controls.Add(Me.btCountersReset)
         Me.Controls.Add(Me.Label12)
         Me.Controls.Add(Me.Label13)
@@ -720,4 +733,5 @@ Partial Class frmCVJoy
     Friend WithEvents lbToArduinoHz As Label
     Friend WithEvents lbAccel As Label
     Friend WithEvents btCountersReset As Button
+    Friend WithEvents chkLogToFile As CheckBox
 End Class

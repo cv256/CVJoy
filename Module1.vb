@@ -3,6 +3,7 @@
     Public SettingsMain As New clSettingsMain
     Public toArduino As New SerialSend, fromArduino As New SerialRead
     Public Game As clGame
+    Public LogToFile As clLogToFile
 
     Public graph As ucControlGraph, Ggraph As ucControlGGraph
     'Public timeStart As DateTime, timeSent As DateTime, timeRead As DateTime

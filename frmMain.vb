@@ -129,6 +129,11 @@ Public Class frmCVJoy
         SendToArduino()
     End Sub
 
+    ''' <summary>
+    ''' Sends forces to Wheel, based on FFB readings or test buttons.
+    ''' Send forces to wind and shake, based on game's reading or test buttons.
+    ''' This runs all the time, even if not connected to the Arduino or game, so that the screen is updated
+    ''' </summary>
     Public Sub SendToArduino() 'Handles TimerSendToArduino.Elapsed
         'TimerSendToArduino.Stop()
 start:
@@ -171,6 +176,7 @@ start:
             Static lastwheelPower As Integer
             .wheelPower = Math.Min(Math.Max(.wheelPower + CInt((.wheelPower - lastwheelPower) * SettingsMain.WheelInertia), -255), 255)
             lastwheelPower = tmpInt
+            If LogToFile IsNot Nothing Then LogToFile.LogWheelMotorOut(.wheelPower)
 
             If TestMode = Motor.Wind Then
                 .windPower = TestValue
@@ -490,7 +496,9 @@ start:
                         SerialReceiveBuffer.RemoveRange(0, 1)
                         GoTo start
                     End If
-                    WheelPosition = (SerialReceiveBuffer(1) + SerialReceiveBuffer(2) * 256 - 32768) * Game.WheelSensitivity  ' -32768 ~ 0 ~ 32768 * 3 
+                    WheelPosition = (SerialReceiveBuffer(1) + SerialReceiveBuffer(2) * 256 - 32768)  ' -32768 ~ 0 ~ 32768 
+                    If LogToFile IsNot Nothing Then LogToFile.LogWheelPosInOut(WheelPosition)
+                    WheelPosition *= Game.WheelSensitivity  ' -32768 ~ 0 ~ 32768 * 3 
                     SerialReceiveBuffer.RemoveRange(0, 4)
                     Joy.SetAxis(Math.Max(Math.Min(WheelPosition + 16384, 32767), 0), SettingsMain.vJoyId, HID_USAGES.HID_USAGE_X) ' 0-16384-32767
 
@@ -666,6 +674,15 @@ start:
         ScreenUpdateLastTime = Now
     End Sub
 
+    Private Sub chkLogToFile_CheckedChanged(sender As Object, e As EventArgs) Handles chkLogToFile.CheckedChanged
+        If chkLogToFile.Checked Then
+            LogToFile = New clLogToFile()
+        ElseIf LogToFile IsNot Nothing Then
+            LogToFile.SaveToFile()
+            LogToFile = Nothing
+        End If
+    End Sub
+
     Private Sub btSetup_Click(sender As Object, e As EventArgs) Handles btSetup.Click
         If Me.OwnedForms.Any(Function(f) TypeOf f Is frmSetup) Then
             Me.OwnedForms.First(Function(f) TypeOf f Is frmSetup).Show()
@@ -817,7 +834,7 @@ start:
                     'Else
                     '    thisCase = t.ToString
                     'End If
-
+                    If LogToFile IsNot Nothing Then LogToFile.LogWheelFFBIn(FFWheel_Const.Magnitude)
                 Case Else
                     thisCase = "???  " & t.ToString
             End Select

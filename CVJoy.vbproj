@@ -128,6 +128,7 @@
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="clGame.vb" />
+    <Compile Include="clLogToFile.vb" />
     <Compile Include="clSettings.vb" />
     <Compile Include="clCommArduino.vb" />
     <Compile Include="frmSetupMotionSim.Designer.vb">

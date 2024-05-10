@@ -264,10 +264,10 @@ noData:
   if (wheelPosition != wheelPositionLast ) {
     wheelPositionLast = wheelPosition;
     byte serialWrite[3];
-    serialWrite[0] = 255;
-    serialWrite[1] = wheelPosition & 255;
-    serialWrite[2] = ((wheelPosition & 0xFF00) >> 8);
-    serialWrite[3] = serialWrite[1] ^ serialWrite[2];
+    serialWrite[0] = 255; // record type = «wheel info»
+    serialWrite[1] = wheelPosition & 255; // position lo part
+    serialWrite[2] = ((wheelPosition & 0xFF00) >> 8); // position hi part
+    serialWrite[3] = serialWrite[1] ^ serialWrite[2]; // checkdigit
 
     Serial.write(serialWrite, 4);
   }
