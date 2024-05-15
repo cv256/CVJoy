@@ -120,7 +120,7 @@ Public Class frmCVJoy
     End Sub
 
     Private Sub frmCVJoy_Shown(sender As Object, e As EventArgs) Handles Me.Shown
-        TimerScreenAndUDP.Interval = 1000 / 10
+        TimerScreenAndUDP.Interval = 1000 / 14
         TimerScreenAndUDP.Start()
 
         'TimerSendToArduino.Interval = 1000 / SettingsMain.RefreshRate '  the accuracy of the System.Timers.Timer is only 30Hz
@@ -374,8 +374,8 @@ start:
                 udpBytes = New Byte(19) {}
             End If
             udpBytes(0) = 255
-            udpBytes(1) = BitConverter.GetBytes(Math.Abs(GameOutputs.Speed))(0)
-            udpBytes(2) = BitConverter.GetBytes(Math.Abs(GameOutputs.Speed))(1)
+            udpBytes(1) = BitConverter.GetBytes(Math.Abs(CShort(GameOutputs.Speed)))(0)
+            udpBytes(2) = BitConverter.GetBytes(Math.Abs(CShort(GameOutputs.Speed)))(1)
             udpBytes(3) = BitConverter.GetBytes(Math.Abs(GameOutputs.RPM))(0)
             udpBytes(4) = BitConverter.GetBytes(Math.Abs(GameOutputs.RPM))(1)
             udpBytes(5) = GameOutputs.Gear
