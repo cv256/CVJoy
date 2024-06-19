@@ -21,7 +21,7 @@ Public Class frmCVJoy
     'Private _realOKLeft As Single, _realOKRight As Single ' position now (from sensor plus corrections) in milimeters, tipically from   minus GMaxScrewDown    to    Zero (center)    to    GMaxScrewUp
     'Private _lastLeftMotorSpeed As Single, _lastRightMotorSpeed As Single ' -100~100 negative=bolt going down
     'Private _motorOverHeat As Single
-    Private WheelPosition As Integer
+    Private WheelPosition As Integer ', WheelPositionDesired As Integer
     ' Date datatype accuracy is 0,1ms = 10kHz
     Private WheelReadTime As Date = Now.AddSeconds(-1), WheelPositionPrevious As Integer, WheelReadPreviousTime As Date = Now.AddSeconds(-1) ' these are only for the Conditional FFB calulations
     Private ButtonsLast(8) As Boolean, ButtonOther As Boolean
@@ -180,9 +180,9 @@ start:
         End If
 
         If TestMode = Motor.Wheel Then
-            toArduino.wheelPower = TestValue
+            .wheelPower = TestValue
         ElseIf TestMode = Motor.WheelCenter Then
-            toArduino.wheelPower = If(WheelPosition < 0, -TestValue, If(WheelPosition > 0, TestValue, 0))
+            .wheelPower = If(WheelPosition < 0, -TestValue, If(WheelPosition > 0, TestValue, 0))
         Else
             If WheelPosition <= -16380 Then
                 toArduino.wheelPower = -255
@@ -197,11 +197,11 @@ start:
         WheelReadPreviousTime = WheelReadTime
         WheelReadTime = Now
 
-        Dim tmpInt As Integer = toArduino.wheelPower ' just to swap
+        Dim tmpInt As Integer = .wheelPower ' just to swap
         Static lastwheelPower As Integer
-        toArduino.wheelPower = Math.Min(Math.Max(toArduino.wheelPower + CInt((toArduino.wheelPower - lastwheelPower) * SettingsMain.WheelInertia), -255), 255)
+        .wheelPower = Math.Min(Math.Max(.wheelPower + CInt((.wheelPower - lastwheelPower) * SettingsMain.WheelInertia), -255), 255)
         lastwheelPower = tmpInt
-        If LogToFile IsNot Nothing Then LogToFile.LogWheelMotorOut(toArduino.wheelPower)
+        If LogToFile IsNot Nothing Then LogToFile.LogWheelMotorOut(.wheelPower)
 
         If TestMode = Motor.Wind Then
             toArduino2.windPower = TestValue
@@ -405,8 +405,8 @@ start:
                 udpBytes = New Byte(19) {}
             End If
             udpBytes(0) = 255
-            udpBytes(1) = BitConverter.GetBytes(Math.Abs(GameOutputs.Speed))(0)
-            udpBytes(2) = BitConverter.GetBytes(Math.Abs(GameOutputs.Speed))(1)
+            udpBytes(1) = BitConverter.GetBytes(Math.Abs(CShort(GameOutputs.Speed)))(0)
+            udpBytes(2) = BitConverter.GetBytes(Math.Abs(CShort(GameOutputs.Speed)))(1)
             udpBytes(3) = BitConverter.GetBytes(Math.Abs(GameOutputs.RPM))(0)
             udpBytes(4) = BitConverter.GetBytes(Math.Abs(GameOutputs.RPM))(1)
             udpBytes(5) = GameOutputs.Gear
