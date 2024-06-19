@@ -61,10 +61,9 @@ Partial Class frmCVJoy
         Me.chkLogHideDups = New System.Windows.Forms.CheckBox()
         Me.btLogClear = New System.Windows.Forms.Button()
         Me.chkUDP = New System.Windows.Forms.CheckBox()
-        Me.UcButtons1 = New CVJoy.ucButtons()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
-        Me.lbReadPedalsHz = New System.Windows.Forms.Label()
+        Me.lbReadArduinoHz = New System.Windows.Forms.Label()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.lbReadFFBHz = New System.Windows.Forms.Label()
@@ -73,14 +72,22 @@ Partial Class frmCVJoy
         Me.lbToArduinoHz = New System.Windows.Forms.Label()
         Me.btCountersReset = New System.Windows.Forms.Button()
         Me.chkLogToFile = New System.Windows.Forms.CheckBox()
+        Me.btArduinoStart2 = New System.Windows.Forms.Button()
+        Me.UcButtons1 = New CVJoy.ucButtons()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.lbUDPHz = New System.Windows.Forms.Label()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.lbReadArduino2Hz = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'btArduinoStart
         '
         Me.btArduinoStart.BackColor = System.Drawing.Color.Gold
-        Me.btArduinoStart.Location = New System.Drawing.Point(459, 184)
+        Me.btArduinoStart.Location = New System.Drawing.Point(61, 184)
         Me.btArduinoStart.Name = "btArduinoStart"
-        Me.btArduinoStart.Size = New System.Drawing.Size(108, 22)
+        Me.btArduinoStart.Size = New System.Drawing.Size(118, 22)
         Me.btArduinoStart.TabIndex = 0
         Me.btArduinoStart.Text = "Connect to Arduino"
         Me.btArduinoStart.UseVisualStyleBackColor = False
@@ -195,7 +202,7 @@ Partial Class frmCVJoy
         'btSetup
         '
         Me.btSetup.BackColor = System.Drawing.Color.Gold
-        Me.btSetup.Location = New System.Drawing.Point(396, 184)
+        Me.btSetup.Location = New System.Drawing.Point(2, 184)
         Me.btSetup.Name = "btSetup"
         Me.btSetup.Size = New System.Drawing.Size(59, 22)
         Me.btSetup.TabIndex = 82
@@ -254,11 +261,13 @@ Partial Class frmCVJoy
         '
         'lbAccel
         '
-        Me.lbAccel.Location = New System.Drawing.Point(42, 73)
+        Me.lbAccel.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.lbAccel.Location = New System.Drawing.Point(39, 73)
         Me.lbAccel.Name = "lbAccel"
-        Me.lbAccel.Size = New System.Drawing.Size(34, 13)
+        Me.lbAccel.Size = New System.Drawing.Size(32, 13)
         Me.lbAccel.TabIndex = 100
         Me.lbAccel.Text = "1024"
+        Me.lbAccel.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label5
         '
@@ -271,11 +280,13 @@ Partial Class frmCVJoy
         '
         'lbBrake
         '
-        Me.lbBrake.Location = New System.Drawing.Point(42, 90)
+        Me.lbBrake.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.lbBrake.Location = New System.Drawing.Point(39, 90)
         Me.lbBrake.Name = "lbBrake"
-        Me.lbBrake.Size = New System.Drawing.Size(34, 13)
+        Me.lbBrake.Size = New System.Drawing.Size(32, 13)
         Me.lbBrake.TabIndex = 102
         Me.lbBrake.Text = "1024"
+        Me.lbBrake.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label18
         '
@@ -288,11 +299,13 @@ Partial Class frmCVJoy
         '
         'lbClutch
         '
-        Me.lbClutch.Location = New System.Drawing.Point(42, 107)
+        Me.lbClutch.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.lbClutch.Location = New System.Drawing.Point(39, 107)
         Me.lbClutch.Name = "lbClutch"
-        Me.lbClutch.Size = New System.Drawing.Size(34, 13)
+        Me.lbClutch.Size = New System.Drawing.Size(32, 13)
         Me.lbClutch.TabIndex = 104
         Me.lbClutch.Text = "1024"
+        Me.lbClutch.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label27
         '
@@ -307,7 +320,7 @@ Partial Class frmCVJoy
         '
         Me.ckKeepVisible.AutoSize = True
         Me.ckKeepVisible.BackColor = System.Drawing.Color.Transparent
-        Me.ckKeepVisible.Location = New System.Drawing.Point(136, 46)
+        Me.ckKeepVisible.Location = New System.Drawing.Point(107, 46)
         Me.ckKeepVisible.Name = "ckKeepVisible"
         Me.ckKeepVisible.Size = New System.Drawing.Size(84, 17)
         Me.ckKeepVisible.TabIndex = 105
@@ -318,7 +331,7 @@ Partial Class frmCVJoy
         '
         Me.chkNoWind.AutoSize = True
         Me.chkNoWind.BackColor = System.Drawing.Color.Transparent
-        Me.chkNoWind.Location = New System.Drawing.Point(87, 187)
+        Me.chkNoWind.Location = New System.Drawing.Point(190, 210)
         Me.chkNoWind.Name = "chkNoWind"
         Me.chkNoWind.Size = New System.Drawing.Size(89, 17)
         Me.chkNoWind.TabIndex = 114
@@ -365,7 +378,7 @@ Partial Class frmCVJoy
         'btGameStart
         '
         Me.btGameStart.BackColor = System.Drawing.Color.Gold
-        Me.btGameStart.Location = New System.Drawing.Point(459, 207)
+        Me.btGameStart.Location = New System.Drawing.Point(459, 184)
         Me.btGameStart.Name = "btGameStart"
         Me.btGameStart.Size = New System.Drawing.Size(108, 22)
         Me.btGameStart.TabIndex = 129
@@ -388,7 +401,7 @@ Partial Class frmCVJoy
         'btGameSetup
         '
         Me.btGameSetup.BackColor = System.Drawing.Color.Gold
-        Me.btGameSetup.Location = New System.Drawing.Point(396, 207)
+        Me.btGameSetup.Location = New System.Drawing.Point(399, 184)
         Me.btGameSetup.Name = "btGameSetup"
         Me.btGameSetup.Size = New System.Drawing.Size(59, 22)
         Me.btGameSetup.TabIndex = 130
@@ -399,7 +412,7 @@ Partial Class frmCVJoy
         '
         Me.cbGames.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbGames.FormattingEnabled = True
-        Me.cbGames.Location = New System.Drawing.Point(188, 208)
+        Me.cbGames.Location = New System.Drawing.Point(194, 185)
         Me.cbGames.Name = "cbGames"
         Me.cbGames.Size = New System.Drawing.Size(203, 21)
         Me.cbGames.TabIndex = 133
@@ -407,21 +420,24 @@ Partial Class frmCVJoy
         'lbTemperature
         '
         Me.lbTemperature.BackColor = System.Drawing.Color.Transparent
+        Me.lbTemperature.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.lbTemperature.Location = New System.Drawing.Point(338, 129)
         Me.lbTemperature.Name = "lbTemperature"
         Me.lbTemperature.Size = New System.Drawing.Size(23, 13)
         Me.lbTemperature.TabIndex = 135
         Me.lbTemperature.Text = "9.9"
+        Me.lbTemperature.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label2
         '
         Me.Label2.AutoSize = True
         Me.Label2.BackColor = System.Drawing.Color.Transparent
-        Me.Label2.Location = New System.Drawing.Point(274, 129)
+        Me.Label2.Location = New System.Drawing.Point(283, 129)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(54, 13)
+        Me.Label2.Size = New System.Drawing.Size(51, 13)
         Me.Label2.TabIndex = 134
-        Me.Label2.Text = "Overheat:"
+        Me.Label2.Text = "Overheat"
+        Me.Label2.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label3
         '
@@ -437,7 +453,7 @@ Partial Class frmCVJoy
         '
         Me.chkNoMotors.AutoSize = True
         Me.chkNoMotors.BackColor = System.Drawing.Color.Transparent
-        Me.chkNoMotors.Location = New System.Drawing.Point(211, 187)
+        Me.chkNoMotors.Location = New System.Drawing.Point(292, 210)
         Me.chkNoMotors.Name = "chkNoMotors"
         Me.chkNoMotors.Size = New System.Drawing.Size(112, 17)
         Me.chkNoMotors.TabIndex = 137
@@ -448,7 +464,7 @@ Partial Class frmCVJoy
         'lbMainsPower
         '
         Me.lbMainsPower.BackColor = System.Drawing.Color.Transparent
-        Me.lbMainsPower.Location = New System.Drawing.Point(274, 111)
+        Me.lbMainsPower.Location = New System.Drawing.Point(104, 105)
         Me.lbMainsPower.Name = "lbMainsPower"
         Me.lbMainsPower.Size = New System.Drawing.Size(93, 13)
         Me.lbMainsPower.TabIndex = 138
@@ -500,62 +516,57 @@ Partial Class frmCVJoy
         Me.chkUDP.BackColor = System.Drawing.Color.Transparent
         Me.chkUDP.Checked = True
         Me.chkUDP.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkUDP.Location = New System.Drawing.Point(2, 187)
+        Me.chkUDP.Location = New System.Drawing.Point(4, 210)
         Me.chkUDP.Name = "chkUDP"
         Me.chkUDP.Size = New System.Drawing.Size(49, 17)
         Me.chkUDP.TabIndex = 145
         Me.chkUDP.Text = "UDP"
         Me.chkUDP.UseVisualStyleBackColor = False
         '
-        'UcButtons1
-        '
-        Me.UcButtons1.Location = New System.Drawing.Point(2, 0)
-        Me.UcButtons1.Name = "UcButtons1"
-        Me.UcButtons1.ReadOnly = False
-        Me.UcButtons1.ShowDescriptions = False
-        Me.UcButtons1.Size = New System.Drawing.Size(391, 37)
-        Me.UcButtons1.TabIndex = 144
-        '
         'Label6
         '
         Me.Label6.BackColor = System.Drawing.Color.Transparent
-        Me.Label6.Location = New System.Drawing.Point(286, 66)
+        Me.Label6.Location = New System.Drawing.Point(288, 74)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(51, 12)
         Me.Label6.TabIndex = 150
         Me.Label6.Text = "read FFB"
+        Me.Label6.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label7
         '
         Me.Label7.BackColor = System.Drawing.Color.Transparent
-        Me.Label7.Location = New System.Drawing.Point(365, 48)
+        Me.Label7.Location = New System.Drawing.Point(365, 42)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(26, 12)
         Me.Label7.TabIndex = 149
         Me.Label7.Text = "Hz"
         '
-        'lbReadPedalsHz
+        'lbReadArduinoHz
         '
-        Me.lbReadPedalsHz.BackColor = System.Drawing.Color.Transparent
-        Me.lbReadPedalsHz.Location = New System.Drawing.Point(336, 48)
-        Me.lbReadPedalsHz.Name = "lbReadPedalsHz"
-        Me.lbReadPedalsHz.Size = New System.Drawing.Size(33, 12)
-        Me.lbReadPedalsHz.TabIndex = 148
-        Me.lbReadPedalsHz.Text = "0000"
+        Me.lbReadArduinoHz.BackColor = System.Drawing.Color.Transparent
+        Me.lbReadArduinoHz.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.lbReadArduinoHz.Location = New System.Drawing.Point(338, 42)
+        Me.lbReadArduinoHz.Name = "lbReadArduinoHz"
+        Me.lbReadArduinoHz.Size = New System.Drawing.Size(31, 12)
+        Me.lbReadArduinoHz.TabIndex = 148
+        Me.lbReadArduinoHz.Text = "0000"
+        Me.lbReadArduinoHz.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label9
         '
         Me.Label9.BackColor = System.Drawing.Color.Transparent
-        Me.Label9.Location = New System.Drawing.Point(286, 48)
+        Me.Label9.Location = New System.Drawing.Point(228, 42)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(51, 12)
+        Me.Label9.Size = New System.Drawing.Size(111, 12)
         Me.Label9.TabIndex = 153
-        Me.Label9.Text = "Pedals -> Joy"
+        Me.Label9.Text = "read Arduino 1"
+        Me.Label9.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label10
         '
         Me.Label10.BackColor = System.Drawing.Color.Transparent
-        Me.Label10.Location = New System.Drawing.Point(365, 66)
+        Me.Label10.Location = New System.Drawing.Point(365, 74)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(26, 12)
         Me.Label10.TabIndex = 152
@@ -564,25 +575,28 @@ Partial Class frmCVJoy
         'lbReadFFBHz
         '
         Me.lbReadFFBHz.BackColor = System.Drawing.Color.Transparent
-        Me.lbReadFFBHz.Location = New System.Drawing.Point(336, 66)
+        Me.lbReadFFBHz.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.lbReadFFBHz.Location = New System.Drawing.Point(338, 74)
         Me.lbReadFFBHz.Name = "lbReadFFBHz"
-        Me.lbReadFFBHz.Size = New System.Drawing.Size(33, 12)
+        Me.lbReadFFBHz.Size = New System.Drawing.Size(31, 12)
         Me.lbReadFFBHz.TabIndex = 151
         Me.lbReadFFBHz.Text = "0000"
+        Me.lbReadFFBHz.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label12
         '
         Me.Label12.BackColor = System.Drawing.Color.Transparent
-        Me.Label12.Location = New System.Drawing.Point(229, 83)
+        Me.Label12.Location = New System.Drawing.Point(192, 91)
         Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(108, 12)
+        Me.Label12.Size = New System.Drawing.Size(147, 12)
         Me.Label12.TabIndex = 156
-        Me.Label12.Text = "FFB+Game -> Motors"
+        Me.Label12.Text = "read game/send to Arduinos"
+        Me.Label12.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label13
         '
         Me.Label13.BackColor = System.Drawing.Color.Transparent
-        Me.Label13.Location = New System.Drawing.Point(365, 83)
+        Me.Label13.Location = New System.Drawing.Point(365, 91)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(26, 12)
         Me.Label13.TabIndex = 155
@@ -591,17 +605,19 @@ Partial Class frmCVJoy
         'lbToArduinoHz
         '
         Me.lbToArduinoHz.BackColor = System.Drawing.Color.Transparent
-        Me.lbToArduinoHz.Location = New System.Drawing.Point(336, 84)
+        Me.lbToArduinoHz.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.lbToArduinoHz.Location = New System.Drawing.Point(338, 92)
         Me.lbToArduinoHz.Name = "lbToArduinoHz"
-        Me.lbToArduinoHz.Size = New System.Drawing.Size(33, 12)
+        Me.lbToArduinoHz.Size = New System.Drawing.Size(31, 12)
         Me.lbToArduinoHz.TabIndex = 154
         Me.lbToArduinoHz.Text = "0000"
+        Me.lbToArduinoHz.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'btCountersReset
         '
         Me.btCountersReset.BackColor = System.Drawing.Color.Gold
         Me.btCountersReset.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btCountersReset.Location = New System.Drawing.Point(241, 62)
+        Me.btCountersReset.Location = New System.Drawing.Point(250, 72)
         Me.btCountersReset.Name = "btCountersReset"
         Me.btCountersReset.Size = New System.Drawing.Size(37, 20)
         Me.btCountersReset.TabIndex = 157
@@ -612,12 +628,91 @@ Partial Class frmCVJoy
         '
         Me.chkLogToFile.AutoSize = True
         Me.chkLogToFile.BackColor = System.Drawing.Color.Transparent
-        Me.chkLogToFile.Location = New System.Drawing.Point(136, 82)
+        Me.chkLogToFile.Location = New System.Drawing.Point(107, 65)
         Me.chkLogToFile.Name = "chkLogToFile"
         Me.chkLogToFile.Size = New System.Drawing.Size(72, 17)
         Me.chkLogToFile.TabIndex = 158
         Me.chkLogToFile.Text = "Log to file"
         Me.chkLogToFile.UseVisualStyleBackColor = False
+        '
+        'btArduinoStart2
+        '
+        Me.btArduinoStart2.BackColor = System.Drawing.Color.Gold
+        Me.btArduinoStart2.Location = New System.Drawing.Point(61, 206)
+        Me.btArduinoStart2.Name = "btArduinoStart2"
+        Me.btArduinoStart2.Size = New System.Drawing.Size(118, 22)
+        Me.btArduinoStart2.TabIndex = 159
+        Me.btArduinoStart2.Text = "Connect to Arduino 2"
+        Me.btArduinoStart2.UseVisualStyleBackColor = False
+        '
+        'UcButtons1
+        '
+        Me.UcButtons1.Location = New System.Drawing.Point(2, 0)
+        Me.UcButtons1.Name = "UcButtons1"
+        Me.UcButtons1.ReadOnly = False
+        Me.UcButtons1.ShowDescriptions = False
+        Me.UcButtons1.Size = New System.Drawing.Size(391, 37)
+        Me.UcButtons1.TabIndex = 144
+        '
+        'Label1
+        '
+        Me.Label1.BackColor = System.Drawing.Color.Transparent
+        Me.Label1.Location = New System.Drawing.Point(225, 108)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(114, 12)
+        Me.Label1.TabIndex = 162
+        Me.Label1.Text = "screen/send UDP"
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'Label4
+        '
+        Me.Label4.BackColor = System.Drawing.Color.Transparent
+        Me.Label4.Location = New System.Drawing.Point(365, 108)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(26, 12)
+        Me.Label4.TabIndex = 161
+        Me.Label4.Text = "Hz"
+        '
+        'lbUDPHz
+        '
+        Me.lbUDPHz.BackColor = System.Drawing.Color.Transparent
+        Me.lbUDPHz.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.lbUDPHz.Location = New System.Drawing.Point(338, 109)
+        Me.lbUDPHz.Name = "lbUDPHz"
+        Me.lbUDPHz.Size = New System.Drawing.Size(31, 12)
+        Me.lbUDPHz.TabIndex = 160
+        Me.lbUDPHz.Text = "0000"
+        Me.lbUDPHz.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'Label8
+        '
+        Me.Label8.BackColor = System.Drawing.Color.Transparent
+        Me.Label8.Location = New System.Drawing.Point(228, 59)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(111, 12)
+        Me.Label8.TabIndex = 165
+        Me.Label8.Text = "read Arduino 2"
+        Me.Label8.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'Label11
+        '
+        Me.Label11.BackColor = System.Drawing.Color.Transparent
+        Me.Label11.Location = New System.Drawing.Point(365, 59)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(26, 12)
+        Me.Label11.TabIndex = 164
+        Me.Label11.Text = "Hz"
+        '
+        'lbReadArduino2Hz
+        '
+        Me.lbReadArduino2Hz.BackColor = System.Drawing.Color.Transparent
+        Me.lbReadArduino2Hz.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.lbReadArduino2Hz.Location = New System.Drawing.Point(338, 59)
+        Me.lbReadArduino2Hz.Name = "lbReadArduino2Hz"
+        Me.lbReadArduino2Hz.Size = New System.Drawing.Size(31, 12)
+        Me.lbReadArduino2Hz.TabIndex = 163
+        Me.lbReadArduino2Hz.Text = "0000"
+        Me.lbReadArduino2Hz.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'frmCVJoy
         '
@@ -625,6 +720,13 @@ Partial Class frmCVJoy
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ClientSize = New System.Drawing.Size(567, 386)
+        Me.Controls.Add(Me.Label8)
+        Me.Controls.Add(Me.Label11)
+        Me.Controls.Add(Me.lbReadArduino2Hz)
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.lbUDPHz)
+        Me.Controls.Add(Me.btArduinoStart2)
         Me.Controls.Add(Me.chkLogToFile)
         Me.Controls.Add(Me.btCountersReset)
         Me.Controls.Add(Me.Label12)
@@ -635,7 +737,7 @@ Partial Class frmCVJoy
         Me.Controls.Add(Me.lbReadFFBHz)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.Label7)
-        Me.Controls.Add(Me.lbReadPedalsHz)
+        Me.Controls.Add(Me.lbReadArduinoHz)
         Me.Controls.Add(Me.chkUDP)
         Me.Controls.Add(Me.UcButtons1)
         Me.Controls.Add(Me.btLogClear)
@@ -724,7 +826,7 @@ Partial Class frmCVJoy
     Friend WithEvents chkUDP As CheckBox
     Friend WithEvents Label6 As Label
     Friend WithEvents Label7 As Label
-    Friend WithEvents lbReadPedalsHz As Label
+    Friend WithEvents lbReadArduinoHz As Label
     Friend WithEvents Label9 As Label
     Friend WithEvents Label10 As Label
     Friend WithEvents lbReadFFBHz As Label
@@ -734,4 +836,11 @@ Partial Class frmCVJoy
     Friend WithEvents lbAccel As Label
     Friend WithEvents btCountersReset As Button
     Friend WithEvents chkLogToFile As CheckBox
+    Friend WithEvents btArduinoStart2 As Button
+    Friend WithEvents Label1 As Label
+    Friend WithEvents Label4 As Label
+    Friend WithEvents lbUDPHz As Label
+    Friend WithEvents Label8 As Label
+    Friend WithEvents Label11 As Label
+    Friend WithEvents lbReadArduino2Hz As Label
 End Class

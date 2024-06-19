@@ -1,7 +1,4 @@
-﻿Imports System.ComponentModel
-Imports AssettoCorsaSharedMemory
-
-Public Class frmSetup
+﻿Public Class frmSetup
     Public _FrmCVJoy As frmCVJoy
 
     Public Sub Init(pOwner As frmCVJoy)
@@ -11,6 +8,9 @@ Public Class frmSetup
         cbComPort.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames())
         cbComPort.SelectedValue = SettingsMain.ArduinoComPort
         If cbComPort.SelectedIndex = -1 AndAlso cbComPort.Items.Count = 1 Then cbComPort.SelectedIndex = 0
+
+        cbComPort2.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames())
+        cbComPort2.SelectedValue = SettingsMain.ArduinoComPort2
 
         For n As Integer = 1 To 16 : cbVjoy.Items.Add(n) : Next
         cbVjoy.SelectedIndex = SettingsMain.vJoyId - 1
@@ -31,6 +31,7 @@ Public Class frmSetup
         txtUdpIp.Text = SettingsMain.UdpIp
 
         txtComBaud.Text = SettingsMain.ComBaud
+        txtComBaud2.Text = SettingsMain.ComBaud2
 
         txtWheelMidIn.Text = SettingsMain.WheelMidIn
         txtWheelMidOut.Text = SettingsMain.WheelMidOut
@@ -157,10 +158,12 @@ Public Class frmSetup
     Private Function SaveSettings() As Boolean
         If txt_Validate(pShowMsg:=True) > "" Then Return False
         If cbComPort.SelectedIndex >= 0 Then SettingsMain.ArduinoComPort = cbComPort.SelectedItem
+        If cbComPort2.SelectedIndex >= 0 Then SettingsMain.ArduinoComPort2 = cbComPort2.SelectedItem
         If cbVjoy.SelectedIndex >= 0 Then SettingsMain.vJoyId = cbVjoy.SelectedItem
         SettingsMain.RefreshRate = txtFreq.Text
         SettingsMain.UdpIp = txtUdpIp.Text.Replace(",", ".")
         SettingsMain.ComBaud = txtComBaud.Text
+        SettingsMain.ComBaud2 = txtComBaud2.Text
 
         SettingsMain.WheelMidIn = txtWheelMidIn.Text
         SettingsMain.WheelMidOut = txtWheelMidOut.Text

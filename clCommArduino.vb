@@ -1,32 +1,62 @@
 ﻿Public Structure SerialSend
     Public wheelPower As Integer ' -255~255  0=no force
-    Public windPower As Byte
-    Public shakePower As Byte
-    Public shakeSpeed As Byte
     Public Reset As Boolean
-    'Public leftPower As SByte  ' -127~127  0=no force
-    'Public rightPower As SByte ' -127~127  0=no force
 
-    Public Const PacketLen As Byte = 6
+    Public Const PacketLen As Byte = 3
 
     Public Function GetSerialData() As Byte()
         Dim res(PacketLen - 1) As Byte
-        res(0) = If(Reset, 252, If(wheelPower < 0, 253, 254)) ' checkdigit + wheelPowerDir
+        res(0) = If(Reset, 252, If(wheelPower < 0, 253, 254)) ' recordtype + wheelPowerDir
         res(2) = Math.Abs(wheelPower)
-        res(3) = windPower
-        res(4) = shakePower
-        res(5) = shakeSpeed
-        res(1) = CByte(255) - (res(2) Xor res(3) Xor res(4) Xor res(5))
-        'res(2) = leftPower + 128
-        'res(3) = rightPower + 128
+        res(1) = CByte(255) - res(2) ' checkdigit
         Return res
     End Function
 
 End Structure
 
 
+Public Structure SerialSend2
+    Public windPower As Byte
+    Public shakePower As Byte
+    Public shakeSpeed As Byte
+    Public leftPower As SByte  ' -127~127  0=no force
+    Public rightPower As SByte ' -127~127  0=no force
+
+    Public Const PacketLen As Byte = 7
+
+    Public Function GetSerialData() As Byte()
+        Dim res(PacketLen - 1) As Byte
+        res(0) = 255 ' recordtype 
+        res(2) = windPower
+        res(3) = shakePower
+        res(4) = shakeSpeed
+        res(5) = leftPower + 128
+        res(6) = rightPower + 128
+        res(1) = CByte(255) - (res(2) Xor res(3) Xor res(4) Xor res(5) Xor res(6)) ' checkdigit
+        Return res
+    End Function
+
+End Structure
+
+Public Class SerialRead2
+    Public Const PacketLen As Byte = 2
+
+    'Public RealLeft As Single
+    'Public RealRight As Single
+    Public Sub SetSerialData(pSerialData As List(Of Byte))
+        'pSerialData(0) = recordType
+        'pSerialData(1) = errors / ACpower
+
+        'Const soundSpeed As Single = 0.172922 ' 331300 + 606 * tempAirCelsius / 1000000 / 2   =   mm per microsecond , go and return  <=>  34cm =  0,002 seconds
+        'RealLeft = CSng(pSerialData(11) + pSerialData(12) * 256) * soundSpeed
+        'RealRight = CSng(pSerialData(13) + pSerialData(14) * 256) * soundSpeed
+    End Sub
+End Class
+
 
 Public Class SerialRead
+    Public Const PacketLen As Byte = 8
+
     Public pedalAccel As Integer
     Public pedalBreak As Integer
     Public pedalClutch As Integer
@@ -44,10 +74,8 @@ Public Class SerialRead
     Public BrakeCorrected As Byte
     Public ClutchCorrected As Byte
 
-    ' Public RealLeft As Single
-    ' Public RealRight As Single
-
     Public Sub SetSerialData(pSerialData As List(Of Byte))
+        'pSerialData(0) = recordType
         buttons(8) = (pSerialData(1) And 32) <> 0
         buttons(0) = (pSerialData(2) And 1) <> 0
         buttons(1) = (pSerialData(2) And 2) <> 0
@@ -71,9 +99,7 @@ Public Class SerialRead
         pedalBreak = pSerialData(5)
         pedalClutch = pSerialData(6)
 
-        'Const soundSpeed As Single = 0.172922 ' 331300 + 606 * tempAirCelsius / 1000000 / 2   =   mm per microsecond , go and return  <=>  34cm =  0,002 seconds
-        'RealLeft = CSng(pSerialData(11) + pSerialData(12) * 256) * soundSpeed
-        'RealRight = CSng(pSerialData(13) + pSerialData(14) * 256) * soundSpeed
+        ' pSerialData(7) = Checksum !
 
         ' corrected analogic values:
         AccelCorrected = ScaleValue(pedalAccel, SettingsMain.AccelMin, SettingsMain.AccelMax, 0, 255, SettingsMain.AccelGama)

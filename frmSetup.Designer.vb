@@ -217,6 +217,10 @@ Partial Class frmSetup
         Me.Label93 = New System.Windows.Forms.Label()
         Me.UcControlGGraph1 = New CVJoy.ucControlGGraph()
         Me.UcControlGraph1 = New CVJoy.ucControlGraph()
+        Me.txtComBaud2 = New System.Windows.Forms.MaskedTextBox()
+        Me.Label64 = New System.Windows.Forms.Label()
+        Me.Label100 = New System.Windows.Forms.Label()
+        Me.cbComPort2 = New System.Windows.Forms.ComboBox()
         Me.SuspendLayout()
         '
         'Label3
@@ -225,9 +229,9 @@ Partial Class frmSetup
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.Location = New System.Drawing.Point(112, 7)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(263, 12)
+        Me.Label3.Size = New System.Drawing.Size(224, 12)
         Me.Label3.TabIndex = 10
-        Me.Label3.Text = "Hz (fps) between Arduino <-> CVJoy <-> vJoy + Assetto Corsa"
+        Me.Label3.Text = "Hz (fps) between Arduino <-> CVJoy <-> vJoy+Game"
         '
         'txtFreq
         '
@@ -327,17 +331,17 @@ Partial Class frmSetup
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(428, 7)
+        Me.Label13.Location = New System.Drawing.Point(363, 7)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(92, 13)
+        Me.Label13.Size = New System.Drawing.Size(240, 13)
         Me.Label13.TabIndex = 105
-        Me.Label13.Text = "Arduino Com Port:"
+        Me.Label13.Text = "Gears+Buttons+Wheel+Pedals Arduino Com Port:"
         '
         'cbComPort
         '
         Me.cbComPort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbComPort.FormattingEnabled = True
-        Me.cbComPort.Location = New System.Drawing.Point(523, 3)
+        Me.cbComPort.Location = New System.Drawing.Point(604, 3)
         Me.cbComPort.Name = "cbComPort"
         Me.cbComPort.Size = New System.Drawing.Size(73, 21)
         Me.cbComPort.TabIndex = 104
@@ -345,7 +349,7 @@ Partial Class frmSetup
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(451, 32)
+        Me.Label14.Location = New System.Drawing.Point(251, 32)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(69, 13)
         Me.Label14.TabIndex = 107
@@ -355,7 +359,7 @@ Partial Class frmSetup
         '
         Me.cbVjoy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbVjoy.FormattingEnabled = True
-        Me.cbVjoy.Location = New System.Drawing.Point(523, 28)
+        Me.cbVjoy.Location = New System.Drawing.Point(323, 28)
         Me.cbVjoy.Name = "cbVjoy"
         Me.cbVjoy.Size = New System.Drawing.Size(47, 21)
         Me.cbVjoy.TabIndex = 106
@@ -1570,7 +1574,7 @@ Partial Class frmSetup
         'Label44
         '
         Me.Label44.AutoSize = True
-        Me.Label44.Location = New System.Drawing.Point(602, 7)
+        Me.Label44.Location = New System.Drawing.Point(683, 7)
         Me.Label44.Name = "Label44"
         Me.Label44.Size = New System.Drawing.Size(35, 13)
         Me.Label44.TabIndex = 278
@@ -1581,7 +1585,7 @@ Partial Class frmSetup
         Me.txtComBaud.AllowPromptAsInput = False
         Me.txtComBaud.BeepOnError = True
         Me.txtComBaud.HidePromptOnLeave = True
-        Me.txtComBaud.Location = New System.Drawing.Point(640, 3)
+        Me.txtComBaud.Location = New System.Drawing.Point(721, 3)
         Me.txtComBaud.Mask = "#999990"
         Me.txtComBaud.Name = "txtComBaud"
         Me.txtComBaud.Size = New System.Drawing.Size(48, 20)
@@ -2317,11 +2321,54 @@ Partial Class frmSetup
         Me.UcControlGraph1.TabStop = False
         Me.UcControlGraph1.Visible = False
         '
+        'txtComBaud2
+        '
+        Me.txtComBaud2.AllowPromptAsInput = False
+        Me.txtComBaud2.BeepOnError = True
+        Me.txtComBaud2.HidePromptOnLeave = True
+        Me.txtComBaud2.Location = New System.Drawing.Point(721, 28)
+        Me.txtComBaud2.Mask = "#999990"
+        Me.txtComBaud2.Name = "txtComBaud2"
+        Me.txtComBaud2.Size = New System.Drawing.Size(48, 20)
+        Me.txtComBaud2.TabIndex = 358
+        Me.txtComBaud2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label64
+        '
+        Me.Label64.AutoSize = True
+        Me.Label64.Location = New System.Drawing.Point(683, 32)
+        Me.Label64.Name = "Label64"
+        Me.Label64.Size = New System.Drawing.Size(35, 13)
+        Me.Label64.TabIndex = 357
+        Me.Label64.Text = "Baud:"
+        '
+        'Label100
+        '
+        Me.Label100.AutoSize = True
+        Me.Label100.Location = New System.Drawing.Point(401, 32)
+        Me.Label100.Name = "Label100"
+        Me.Label100.Size = New System.Drawing.Size(200, 13)
+        Me.Label100.TabIndex = 356
+        Me.Label100.Text = "Position+Wind+Shake Arduino Com Port:"
+        '
+        'cbComPort2
+        '
+        Me.cbComPort2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbComPort2.FormattingEnabled = True
+        Me.cbComPort2.Location = New System.Drawing.Point(604, 28)
+        Me.cbComPort2.Name = "cbComPort2"
+        Me.cbComPort2.Size = New System.Drawing.Size(73, 21)
+        Me.cbComPort2.TabIndex = 355
+        '
         'frmSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(770, 626)
+        Me.Controls.Add(Me.txtComBaud2)
+        Me.Controls.Add(Me.Label64)
+        Me.Controls.Add(Me.Label100)
+        Me.Controls.Add(Me.cbComPort2)
         Me.Controls.Add(Me.UcControlGGraph1)
         Me.Controls.Add(Me.UcControlGraph1)
         Me.Controls.Add(Me.txtTurn)
@@ -2714,4 +2761,8 @@ Partial Class frmSetup
     Friend WithEvents Label89 As Label
     Friend WithEvents txtSlip As MaskedTextBox
     Friend WithEvents Label93 As Label
+    Friend WithEvents txtComBaud2 As MaskedTextBox
+    Friend WithEvents Label64 As Label
+    Friend WithEvents Label100 As Label
+    Friend WithEvents cbComPort2 As ComboBox
 End Class

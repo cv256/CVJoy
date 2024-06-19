@@ -1,7 +1,7 @@
 ﻿Module Module1
 
     Public SettingsMain As New clSettingsMain
-    Public toArduino As New SerialSend, fromArduino As New SerialRead
+    Public toArduino As New SerialSend, fromArduino As New SerialRead, toArduino2 As New SerialSend2
     Public Game As clGame
     Public LogToFile As clLogToFile
 
