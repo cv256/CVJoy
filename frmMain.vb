@@ -180,9 +180,9 @@ start:
         End If
 
         If TestMode = Motor.Wheel Then
-            .wheelPower = TestValue
+            toArduino.wheelPower = TestValue
         ElseIf TestMode = Motor.WheelCenter Then
-            .wheelPower = If(WheelPosition < 0, -TestValue, If(WheelPosition > 0, TestValue, 0))
+            toArduino.wheelPower = If(WheelPosition < 0, -TestValue, If(WheelPosition > 0, TestValue, 0))
         Else
             If WheelPosition <= -16380 Then
                 toArduino.wheelPower = -255
@@ -197,11 +197,11 @@ start:
         WheelReadPreviousTime = WheelReadTime
         WheelReadTime = Now
 
-        Dim tmpInt As Integer = .wheelPower ' just to swap
+        Dim tmpInt As Integer = toArduino.wheelPower ' just to swap
         Static lastwheelPower As Integer
-        .wheelPower = Math.Min(Math.Max(.wheelPower + CInt((.wheelPower - lastwheelPower) * SettingsMain.WheelInertia), -255), 255)
+        toArduino.wheelPower = Math.Min(Math.Max(toArduino.wheelPower + CInt((toArduino.wheelPower - lastwheelPower) * SettingsMain.WheelInertia), -255), 255)
         lastwheelPower = tmpInt
-        If LogToFile IsNot Nothing Then LogToFile.LogWheelMotorOut(.wheelPower)
+        If LogToFile IsNot Nothing Then LogToFile.LogWheelMotorOut(toArduino.wheelPower, WheelPosition)
 
         If TestMode = Motor.Wind Then
             toArduino2.windPower = TestValue

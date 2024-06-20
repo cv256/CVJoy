@@ -16,6 +16,7 @@ End Structure
 
 
 Public Structure SerialSend2
+    Public BreakLed As Boolean
     Public windPower As Byte
     Public shakePower As Byte
     Public shakeSpeed As Byte
@@ -26,7 +27,7 @@ Public Structure SerialSend2
 
     Public Function GetSerialData() As Byte()
         Dim res(PacketLen - 1) As Byte
-        res(0) = 255 ' recordtype 
+        res(0) = 254 + If(BreakLed, 1, 0) ' recordtype 
         res(2) = windPower
         res(3) = shakePower
         res(4) = shakeSpeed
