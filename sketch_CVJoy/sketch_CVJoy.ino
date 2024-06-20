@@ -54,7 +54,7 @@
 #define pinWheelMotorDir1  22
 #define pinWheelMotorDir2  23
 #define pinWindMotor  10 // LED_BUILTIN=13
-#define pinShakeMotor 7
+#define pinShakeMotor 9
 
 
 void setup()

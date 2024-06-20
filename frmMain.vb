@@ -213,7 +213,7 @@ start:
 
         If TestMode = Motor.Shake Then
             toArduino.shakePower = TestValue
-            toArduino.shakeSpeed = GameOutputs.RigShakeSpeed
+            toArduino.shakeSpeed = 100 'GameOutputs.RigShakeSpeed
         ElseIf Not chkNoWind.Checked Then
             toArduino.shakePower = GameOutputs.RigShakePower
             toArduino.shakeSpeed = GameOutputs.RigShakeSpeed
@@ -222,6 +222,7 @@ start:
             toArduino.shakeSpeed = 0
         End If
 
+        toArduino2.BreakLed = fromArduino.BrakeCorrected > 0
 
 #Region "PowerFromAngle: calculates power to apply now, based on the previous position readings"
 
