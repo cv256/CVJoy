@@ -110,7 +110,7 @@ Partial Class frmSetupMotionSim
         Me.UcButtons1.Name = "UcButtons1"
         Me.UcButtons1.ReadOnly = False
         Me.UcButtons1.ShowDescriptions = False
-        Me.UcButtons1.Size = New System.Drawing.Size(367, 37)
+        Me.UcButtons1.Size = New System.Drawing.Size(416, 37)
         Me.UcButtons1.TabIndex = 230
         '
         'txtUdpPort

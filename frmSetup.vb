@@ -6,11 +6,11 @@
         _FrmCVJoy = pOwner
 
         cbComPort.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames())
-        cbComPort.SelectedValue = SettingsMain.ArduinoComPort
+        cbComPort.SelectedIndex = cbComPort.Items.IndexOf(SettingsMain.ArduinoComPort)
         If cbComPort.SelectedIndex = -1 AndAlso cbComPort.Items.Count = 1 Then cbComPort.SelectedIndex = 0
 
         cbComPort2.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames())
-        cbComPort2.SelectedValue = SettingsMain.ArduinoComPort2
+        cbComPort2.SelectedIndex = cbComPort2.Items.IndexOf(SettingsMain.ArduinoComPort2)
 
         For n As Integer = 1 To 16 : cbVjoy.Items.Add(n) : Next
         cbVjoy.SelectedIndex = SettingsMain.vJoyId - 1

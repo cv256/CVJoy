@@ -24,7 +24,7 @@ Public Class frmCVJoy
     Private WheelPosition As Integer ', WheelPositionDesired As Integer
     ' Date datatype accuracy is 0,1ms = 10kHz
     Private WheelReadTime As Date = Now.AddSeconds(-1), WheelPositionPrevious As Integer, WheelReadPreviousTime As Date = Now.AddSeconds(-1) ' these are only for the Conditional FFB calulations
-    Private ButtonsLast(8) As Boolean, ButtonOther As Boolean
+    Private ButtonsLast(clGame.BtCount - 1) As Boolean, ButtonOther As Boolean
     Private SendToArduinoCount As UInteger, ReadArduino1Count As UInteger, ReadArduino2Count As UInteger, FFBReadCount As UInteger, UDPCount As UInteger, ScreenUpdateLastTime As Date = Now
 
 
@@ -363,7 +363,7 @@ start:
 
         If TestMode = Motor.StopProcesss Then Exit Sub
         'TimerSendToArduino.Start()
-        If SettingsMain.RefreshRate < 100 Then System.Threading.Thread.Sleep(900 / SettingsMain.RefreshRate) ' give time to finnish processing eventualy received data from arduino
+        If SettingsMain.RefreshRate < 200 Then System.Threading.Thread.Sleep(900 / SettingsMain.RefreshRate) ' give time to finnish processing eventualy received data from arduino
         Application.DoEvents()
         GoTo start
     End Sub
@@ -604,14 +604,14 @@ start:
                                 End If
                                 ButtonOther = False
                             Else
-                                For i As Integer = 1 To clGame.BtCount
+                                For i As Integer = 1 To clGame.BtCount - 1
                                     If Game.Bt(i) > "" Then
                                         If .buttons(i) Then
                                             If ButtonsLast(i) Then Continue For
                                             MySendKeys(Game.Bt(i))
                                         End If
                                     ElseIf .buttons(i) Then
-                                        buttonBit += 2 ^ i ' VJoy buttons (0~31) from 1 to BtCount (2~1024)
+                                        buttonBit += 2 ^ i ' VJoy buttons (0~31) from 1 to BtCount-1 (2~512)
                                     End If
                                 Next i
                             End If

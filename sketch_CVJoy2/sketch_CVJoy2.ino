@@ -56,8 +56,6 @@ void setup()
 	// pinMode(pinRightMotorPower, OUTPUT);
 	// pinMode(pinRightMotorDir1, OUTPUT);
 	// pinMode(pinRightMotorDir2, OUTPUT);
-	pinMode(pinWindMotor, OUTPUT);
-	pinMode(pinShakeMotor, OUTPUT);
 	pinMode(pinBreakLed, OUTPUT);
 	pinMode(LED_BUILTIN, OUTPUT);
 
@@ -78,6 +76,7 @@ void setup()
 } //...setup
 
 
+
 //unsigned long dimmerLeftDelay;
 //unsigned long dimmerRightDelay;
 //char leftMotorPower;// -127 to 127
@@ -88,6 +87,7 @@ byte errors; // 1=not receiving data / 2=got invalid data from computer / 16=ACP
 unsigned long lastSerialRecv;
 unsigned long lastMainsZero;
 unsigned int every30Hz;
+
 
 
 void loop()
@@ -120,7 +120,11 @@ void loop()
 		serialReceivedIdx = 0;
 		lastSerialRecv = millis();
 
-		if ((serialReceived[0] & 1) == 0) analogWrite(pinBreakLed, LOW) else analogWrite(pinBreakLed, HIGH);
+		if ((serialReceived[0] & 1) == 0) {
+		  analogWrite(pinBreakLed, LOW);
+		} else {
+		  analogWrite(pinBreakLed, HIGH);
+		}
 
 	}
 

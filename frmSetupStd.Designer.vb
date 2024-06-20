@@ -94,7 +94,7 @@ Partial Class frmSetupStd
         Me.UcButtons1.Name = "UcButtons1"
         Me.UcButtons1.ReadOnly = False
         Me.UcButtons1.ShowDescriptions = False
-        Me.UcButtons1.Size = New System.Drawing.Size(373, 37)
+        Me.UcButtons1.Size = New System.Drawing.Size(421, 37)
         Me.UcButtons1.TabIndex = 230
         '
         'ckKeepVisible
