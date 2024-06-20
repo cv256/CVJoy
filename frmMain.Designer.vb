@@ -177,10 +177,11 @@ Partial Class frmCVJoy
         '
         'lbAttitude
         '
+        Me.lbAttitude.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lbAttitude.BackColor = System.Drawing.Color.White
         Me.lbAttitude.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.lbAttitude.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbAttitude.Location = New System.Drawing.Point(397, 0)
+        Me.lbAttitude.Location = New System.Drawing.Point(422, 0)
         Me.lbAttitude.Name = "lbAttitude"
         Me.lbAttitude.Size = New System.Drawing.Size(170, 170)
         Me.lbAttitude.TabIndex = 81
@@ -209,26 +210,29 @@ Partial Class frmCVJoy
         Me.txtErrors.Multiline = True
         Me.txtErrors.Name = "txtErrors"
         Me.txtErrors.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.txtErrors.Size = New System.Drawing.Size(567, 142)
+        Me.txtErrors.Size = New System.Drawing.Size(592, 142)
         Me.txtErrors.TabIndex = 83
         Me.txtErrors.WordWrap = False
         '
         'lbWheelPos
         '
+        Me.lbWheelPos.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lbWheelPos.BackColor = System.Drawing.Color.White
         Me.lbWheelPos.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.lbWheelPos.ImageAlign = System.Drawing.ContentAlignment.TopLeft
         Me.lbWheelPos.Location = New System.Drawing.Point(0, 172)
         Me.lbWheelPos.Name = "lbWheelPos"
-        Me.lbWheelPos.Size = New System.Drawing.Size(567, 9)
+        Me.lbWheelPos.Size = New System.Drawing.Size(592, 9)
         Me.lbWheelPos.TabIndex = 86
         Me.lbWheelPos.UseMnemonic = False
         '
         'btWheelCenter
         '
+        Me.btWheelCenter.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.btWheelCenter.BackColor = System.Drawing.Color.Gold
         Me.btWheelCenter.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btWheelCenter.Location = New System.Drawing.Point(254, 152)
+        Me.btWheelCenter.Location = New System.Drawing.Point(267, 152)
         Me.btWheelCenter.Name = "btWheelCenter"
         Me.btWheelCenter.Size = New System.Drawing.Size(59, 20)
         Me.btWheelCenter.TabIndex = 88
@@ -329,7 +333,7 @@ Partial Class frmCVJoy
         '
         Me.cbLogFF.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbLogFF.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbLogFF.Location = New System.Drawing.Point(458, 328)
+        Me.cbLogFF.Location = New System.Drawing.Point(483, 328)
         Me.cbLogFF.Name = "cbLogFF"
         Me.cbLogFF.Size = New System.Drawing.Size(92, 21)
         Me.cbLogFF.TabIndex = 125
@@ -364,8 +368,9 @@ Partial Class frmCVJoy
         '
         'btGameStart
         '
+        Me.btGameStart.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btGameStart.BackColor = System.Drawing.Color.Gold
-        Me.btGameStart.Location = New System.Drawing.Point(459, 184)
+        Me.btGameStart.Location = New System.Drawing.Point(484, 184)
         Me.btGameStart.Name = "btGameStart"
         Me.btGameStart.Size = New System.Drawing.Size(108, 22)
         Me.btGameStart.TabIndex = 129
@@ -381,14 +386,15 @@ Partial Class frmCVJoy
         Me.lbGameInfo.ForeColor = System.Drawing.SystemColors.InfoText
         Me.lbGameInfo.Location = New System.Drawing.Point(1, 228)
         Me.lbGameInfo.Name = "lbGameInfo"
-        Me.lbGameInfo.Size = New System.Drawing.Size(566, 13)
+        Me.lbGameInfo.Size = New System.Drawing.Size(591, 13)
         Me.lbGameInfo.TabIndex = 128
         Me.lbGameInfo.Text = "   connection to selected game..."
         '
         'btGameSetup
         '
+        Me.btGameSetup.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btGameSetup.BackColor = System.Drawing.Color.Gold
-        Me.btGameSetup.Location = New System.Drawing.Point(399, 184)
+        Me.btGameSetup.Location = New System.Drawing.Point(424, 184)
         Me.btGameSetup.Name = "btGameSetup"
         Me.btGameSetup.Size = New System.Drawing.Size(59, 22)
         Me.btGameSetup.TabIndex = 130
@@ -397,18 +403,20 @@ Partial Class frmCVJoy
         '
         'cbGames
         '
+        Me.cbGames.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbGames.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbGames.FormattingEnabled = True
-        Me.cbGames.Location = New System.Drawing.Point(194, 185)
+        Me.cbGames.Location = New System.Drawing.Point(219, 185)
         Me.cbGames.Name = "cbGames"
         Me.cbGames.Size = New System.Drawing.Size(203, 21)
         Me.cbGames.TabIndex = 133
         '
         'lbTemperature
         '
+        Me.lbTemperature.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lbTemperature.BackColor = System.Drawing.Color.Transparent
         Me.lbTemperature.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.lbTemperature.Location = New System.Drawing.Point(338, 129)
+        Me.lbTemperature.Location = New System.Drawing.Point(365, 129)
         Me.lbTemperature.Name = "lbTemperature"
         Me.lbTemperature.Size = New System.Drawing.Size(23, 13)
         Me.lbTemperature.TabIndex = 135
@@ -417,9 +425,10 @@ Partial Class frmCVJoy
         '
         'Label2
         '
+        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label2.AutoSize = True
         Me.Label2.BackColor = System.Drawing.Color.Transparent
-        Me.Label2.Location = New System.Drawing.Point(283, 129)
+        Me.Label2.Location = New System.Drawing.Point(310, 129)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(51, 13)
         Me.Label2.TabIndex = 134
@@ -428,9 +437,10 @@ Partial Class frmCVJoy
         '
         'Label3
         '
+        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label3.AutoSize = True
         Me.Label3.BackColor = System.Drawing.Color.Transparent
-        Me.Label3.Location = New System.Drawing.Point(365, 129)
+        Me.Label3.Location = New System.Drawing.Point(392, 129)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(23, 13)
         Me.Label3.TabIndex = 136
@@ -476,7 +486,7 @@ Partial Class frmCVJoy
         Me.chkLogHideDups.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.chkLogHideDups.Checked = True
         Me.chkLogHideDups.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkLogHideDups.Location = New System.Drawing.Point(458, 310)
+        Me.chkLogHideDups.Location = New System.Drawing.Point(483, 310)
         Me.chkLogHideDups.Name = "chkLogHideDups"
         Me.chkLogHideDups.Size = New System.Drawing.Size(92, 17)
         Me.chkLogHideDups.TabIndex = 142
@@ -490,7 +500,7 @@ Partial Class frmCVJoy
         Me.btLogClear.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btLogClear.BackColor = System.Drawing.Color.Gold
         Me.btLogClear.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btLogClear.Location = New System.Drawing.Point(458, 350)
+        Me.btLogClear.Location = New System.Drawing.Point(483, 350)
         Me.btLogClear.Name = "btLogClear"
         Me.btLogClear.Size = New System.Drawing.Size(92, 20)
         Me.btLogClear.TabIndex = 143
@@ -512,8 +522,9 @@ Partial Class frmCVJoy
         '
         'Label6
         '
+        Me.Label6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label6.BackColor = System.Drawing.Color.Transparent
-        Me.Label6.Location = New System.Drawing.Point(288, 74)
+        Me.Label6.Location = New System.Drawing.Point(315, 74)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(51, 12)
         Me.Label6.TabIndex = 150
@@ -522,8 +533,9 @@ Partial Class frmCVJoy
         '
         'Label7
         '
+        Me.Label7.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label7.BackColor = System.Drawing.Color.Transparent
-        Me.Label7.Location = New System.Drawing.Point(365, 42)
+        Me.Label7.Location = New System.Drawing.Point(392, 42)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(26, 12)
         Me.Label7.TabIndex = 149
@@ -531,9 +543,10 @@ Partial Class frmCVJoy
         '
         'lbReadArduinoHz
         '
+        Me.lbReadArduinoHz.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lbReadArduinoHz.BackColor = System.Drawing.Color.Transparent
         Me.lbReadArduinoHz.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.lbReadArduinoHz.Location = New System.Drawing.Point(338, 42)
+        Me.lbReadArduinoHz.Location = New System.Drawing.Point(365, 42)
         Me.lbReadArduinoHz.Name = "lbReadArduinoHz"
         Me.lbReadArduinoHz.Size = New System.Drawing.Size(31, 12)
         Me.lbReadArduinoHz.TabIndex = 148
@@ -542,8 +555,9 @@ Partial Class frmCVJoy
         '
         'Label9
         '
+        Me.Label9.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label9.BackColor = System.Drawing.Color.Transparent
-        Me.Label9.Location = New System.Drawing.Point(228, 42)
+        Me.Label9.Location = New System.Drawing.Point(255, 42)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(111, 12)
         Me.Label9.TabIndex = 153
@@ -552,8 +566,9 @@ Partial Class frmCVJoy
         '
         'Label10
         '
+        Me.Label10.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label10.BackColor = System.Drawing.Color.Transparent
-        Me.Label10.Location = New System.Drawing.Point(365, 74)
+        Me.Label10.Location = New System.Drawing.Point(392, 74)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(26, 12)
         Me.Label10.TabIndex = 152
@@ -561,9 +576,10 @@ Partial Class frmCVJoy
         '
         'lbReadFFBHz
         '
+        Me.lbReadFFBHz.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lbReadFFBHz.BackColor = System.Drawing.Color.Transparent
         Me.lbReadFFBHz.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.lbReadFFBHz.Location = New System.Drawing.Point(338, 74)
+        Me.lbReadFFBHz.Location = New System.Drawing.Point(365, 74)
         Me.lbReadFFBHz.Name = "lbReadFFBHz"
         Me.lbReadFFBHz.Size = New System.Drawing.Size(31, 12)
         Me.lbReadFFBHz.TabIndex = 151
@@ -572,8 +588,9 @@ Partial Class frmCVJoy
         '
         'Label12
         '
+        Me.Label12.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label12.BackColor = System.Drawing.Color.Transparent
-        Me.Label12.Location = New System.Drawing.Point(192, 91)
+        Me.Label12.Location = New System.Drawing.Point(219, 91)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(147, 12)
         Me.Label12.TabIndex = 156
@@ -582,8 +599,9 @@ Partial Class frmCVJoy
         '
         'Label13
         '
+        Me.Label13.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label13.BackColor = System.Drawing.Color.Transparent
-        Me.Label13.Location = New System.Drawing.Point(365, 91)
+        Me.Label13.Location = New System.Drawing.Point(392, 91)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(26, 12)
         Me.Label13.TabIndex = 155
@@ -591,9 +609,10 @@ Partial Class frmCVJoy
         '
         'lbToArduinoHz
         '
+        Me.lbToArduinoHz.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lbToArduinoHz.BackColor = System.Drawing.Color.Transparent
         Me.lbToArduinoHz.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.lbToArduinoHz.Location = New System.Drawing.Point(338, 92)
+        Me.lbToArduinoHz.Location = New System.Drawing.Point(365, 92)
         Me.lbToArduinoHz.Name = "lbToArduinoHz"
         Me.lbToArduinoHz.Size = New System.Drawing.Size(31, 12)
         Me.lbToArduinoHz.TabIndex = 154
@@ -602,9 +621,10 @@ Partial Class frmCVJoy
         '
         'btCountersReset
         '
+        Me.btCountersReset.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btCountersReset.BackColor = System.Drawing.Color.Gold
         Me.btCountersReset.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btCountersReset.Location = New System.Drawing.Point(250, 72)
+        Me.btCountersReset.Location = New System.Drawing.Point(277, 72)
         Me.btCountersReset.Name = "btCountersReset"
         Me.btCountersReset.Size = New System.Drawing.Size(37, 20)
         Me.btCountersReset.TabIndex = 157
@@ -634,8 +654,9 @@ Partial Class frmCVJoy
         '
         'Label1
         '
+        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label1.BackColor = System.Drawing.Color.Transparent
-        Me.Label1.Location = New System.Drawing.Point(225, 108)
+        Me.Label1.Location = New System.Drawing.Point(252, 108)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(114, 12)
         Me.Label1.TabIndex = 162
@@ -644,8 +665,9 @@ Partial Class frmCVJoy
         '
         'Label4
         '
+        Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label4.BackColor = System.Drawing.Color.Transparent
-        Me.Label4.Location = New System.Drawing.Point(365, 108)
+        Me.Label4.Location = New System.Drawing.Point(392, 108)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(26, 12)
         Me.Label4.TabIndex = 161
@@ -653,9 +675,10 @@ Partial Class frmCVJoy
         '
         'lbUDPHz
         '
+        Me.lbUDPHz.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lbUDPHz.BackColor = System.Drawing.Color.Transparent
         Me.lbUDPHz.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.lbUDPHz.Location = New System.Drawing.Point(338, 109)
+        Me.lbUDPHz.Location = New System.Drawing.Point(365, 109)
         Me.lbUDPHz.Name = "lbUDPHz"
         Me.lbUDPHz.Size = New System.Drawing.Size(31, 12)
         Me.lbUDPHz.TabIndex = 160
@@ -664,8 +687,9 @@ Partial Class frmCVJoy
         '
         'Label8
         '
+        Me.Label8.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label8.BackColor = System.Drawing.Color.Transparent
-        Me.Label8.Location = New System.Drawing.Point(228, 59)
+        Me.Label8.Location = New System.Drawing.Point(255, 59)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(111, 12)
         Me.Label8.TabIndex = 165
@@ -674,8 +698,9 @@ Partial Class frmCVJoy
         '
         'Label11
         '
+        Me.Label11.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label11.BackColor = System.Drawing.Color.Transparent
-        Me.Label11.Location = New System.Drawing.Point(365, 59)
+        Me.Label11.Location = New System.Drawing.Point(392, 59)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(26, 12)
         Me.Label11.TabIndex = 164
@@ -683,9 +708,10 @@ Partial Class frmCVJoy
         '
         'lbReadArduino2Hz
         '
+        Me.lbReadArduino2Hz.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lbReadArduino2Hz.BackColor = System.Drawing.Color.Transparent
         Me.lbReadArduino2Hz.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.lbReadArduino2Hz.Location = New System.Drawing.Point(338, 59)
+        Me.lbReadArduino2Hz.Location = New System.Drawing.Point(365, 59)
         Me.lbReadArduino2Hz.Name = "lbReadArduino2Hz"
         Me.lbReadArduino2Hz.Size = New System.Drawing.Size(31, 12)
         Me.lbReadArduino2Hz.TabIndex = 163
@@ -694,11 +720,13 @@ Partial Class frmCVJoy
         '
         'UcButtons1
         '
+        Me.UcButtons1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.UcButtons1.Location = New System.Drawing.Point(2, 0)
         Me.UcButtons1.Name = "UcButtons1"
         Me.UcButtons1.ReadOnly = False
         Me.UcButtons1.ShowDescriptions = False
-        Me.UcButtons1.Size = New System.Drawing.Size(391, 37)
+        Me.UcButtons1.Size = New System.Drawing.Size(420, 37)
         Me.UcButtons1.TabIndex = 144
         '
         'frmCVJoy
@@ -706,7 +734,7 @@ Partial Class frmCVJoy
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
-        Me.ClientSize = New System.Drawing.Size(567, 386)
+        Me.ClientSize = New System.Drawing.Size(592, 386)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.Label11)
         Me.Controls.Add(Me.lbReadArduino2Hz)

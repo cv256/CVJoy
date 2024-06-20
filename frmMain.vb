@@ -146,7 +146,7 @@ Public Class frmCVJoy
 
 
     Private Sub frmCVJoy_Shown(sender As Object, e As EventArgs) Handles Me.Shown
-        TimerScreenAndUDP.Interval = 1000 / 20
+        TimerScreenAndUDP.Interval = 1000 / 25
         TimerScreenAndUDP.Start()
 
         'TimerSendToArduino.Interval = 1000 / SettingsMain.RefreshRate '  the accuracy of the System.Timers.Timer is only 30Hz
@@ -363,7 +363,7 @@ start:
 
         If TestMode = Motor.StopProcesss Then Exit Sub
         'TimerSendToArduino.Start()
-        System.Threading.Thread.Sleep(900 / SettingsMain.RefreshRate) ' give time to finnish processing eventualy received data from arduino
+        If SettingsMain.RefreshRate < 100 Then System.Threading.Thread.Sleep(900 / SettingsMain.RefreshRate) ' give time to finnish processing eventualy received data from arduino
         Application.DoEvents()
         GoTo start
     End Sub
