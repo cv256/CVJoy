@@ -7,7 +7,7 @@
         If Not _inited Then Return ' this is to avoid erasing Game when form loads and the designer.vb calls ShowDescriptions
         For Each c As Control In Me.Controls
             If Not c.Name.StartsWith("bt") Then Continue For
-            Dim i As Integer = CInt(c.Name.Substring(2))
+            Dim i As Integer = CInt(c.Name.Replace("x", "").Substring(2)) + If(c.Name.Contains("x"), clGame.BtCount, 0)
             If _showDescriptions Then
                 Game.BtDescr(i) = c.Text
             Else
@@ -19,7 +19,7 @@
     Public Sub ShowFromGameSettings()
         For Each c As Control In Me.Controls
             If Not c.Name.StartsWith("bt") Then Continue For
-            Dim i As Integer = CInt(c.Name.Substring(2))
+            Dim i As Integer = CInt(c.Name.Replace("x", "").Substring(2)) + If(c.Name.Contains("x"), clGame.BtCount, 0)
             If _showDescriptions Then
                 c.Text = Game.BtDescr(i)
             Else
@@ -44,7 +44,6 @@
             If value Then Label1.Text = ""
             For Each c As Control In Me.Controls
                 If Not c.Name.StartsWith("bt") Then Continue For
-                Dim i As Integer = CInt(c.Name.Substring(2))
                 DirectCast(c, TextBox).ReadOnly = value
             Next
         End Set

@@ -3,8 +3,9 @@
 
 
     Public WheelSensitivity As Single = 8.5
-    Public Bt(17) As String
-    Public BtDescr(17) As String
+    Public Const BtCount = 10
+    Public Bt(2 * BtCount - 1) As String ' 0~9 & 10~19
+    Public BtDescr(2 * BtCount - 1) As String ' 0~9 & 10~19
 
 
     Friend Owner As frmCVJoy

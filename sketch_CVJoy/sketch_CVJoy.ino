@@ -33,15 +33,16 @@
 #define pinPedalBreak  5 // analog input// A2 is damaged?...
 #define pinPedalClutch  3 // analog input
 #define pinHandbrake 4 // analog input
-#define pinButton1 42 // ESC
+#define pinButton1 42 // esq - ESC
 #define pinButton2 37 // esq
-#define pinButton3 39 // esq 
-#define pinButton4 41 // pisca 
-#define pinButton5 38 // pisca 
-#define pinButton6 40 // pisca 
+#define pinButton3 39 // direita 
+#define pinButton4 41 // direita 
+#define pinButton5 38 // direita 
+#define pinButton6 40 // direita 
 #define pinButton7 36 // direita 
-#define pinButton8 35 // direita 
-#define pinButton9 34 // direita 
+#define pinButton8 35 // shiftup
+#define pinButton9 34 // shiftdown 
+#define pinButton10 33 // Engine Start
 #define pinGear1 43
 #define pinGear2 48
 #define pinGear3 46
@@ -49,22 +50,12 @@
 #define pinGear5 47
 #define pinGear6 45
 #define pinGearR 49
-
 #define pinWheelMotorPower  6
 #define pinWheelMotorDir1  22
 #define pinWheelMotorDir2  23
+#define pinWindMotor  10 // LED_BUILTIN=13
+#define pinShakeMotor 7
 
-byte serialReceived[3]; // SerialSend1.PacketLen
-byte serialReceivedIdx;
-byte errors; // 1=not receiving data / 2=got invalid data from computer
-unsigned long lastSerialRecv;
-
-// volatile byte WheelEncAFlag = 0; // let's us know when we're expecting a rising edge on pinA to signal that the encoder has arrived at a detent
-// volatile byte WheelEncBFlag = 0; // let's us know when we're expecting a rising edge on pinB to signal that the encoder has arrived at a detent (opposite direction to when aFlag is set)
-volatile unsigned int wheelPosition = 32768; //this variable stores our current value of encoder position
-unsigned int wheelPositionLast;
-bool wheelMotorDir253;
-unsigned int every30Hz;
 
 void setup()
 {
@@ -84,6 +75,7 @@ void setup()
 	pinMode(pinButton7, INPUT_PULLUP);
 	pinMode(pinButton8, INPUT_PULLUP);
 	pinMode(pinButton9, INPUT_PULLUP);
+	pinMode(pinButton10, INPUT_PULLUP);
 	pinMode(pinGear1, INPUT_PULLUP);
 	pinMode(pinGear2, INPUT_PULLUP);
 	pinMode(pinGear3, INPUT_PULLUP);
@@ -93,11 +85,11 @@ void setup()
 	pinMode(pinGearR, INPUT_PULLUP);
 
 	// arduino -> external hardware
-	// steeringwheel FF:
 	pinMode(pinWheelMotorPower, OUTPUT);
 	pinMode(pinWheelMotorDir1, OUTPUT);
 	pinMode(pinWheelMotorDir2, OUTPUT);
-
+	pinMode(pinWindMotor, OUTPUT);
+	pinMode(pinShakeMotor, OUTPUT);
 	pinMode(LED_BUILTIN, OUTPUT);
 
 	noInterrupts();           // disable all interrupts
@@ -116,6 +108,19 @@ void setup()
 } //...setup
 
 
+// volatile byte WheelEncAFlag = 0; // let's us know when we're expecting a rising edge on pinA to signal that the encoder has arrived at a detent
+// volatile byte WheelEncBFlag = 0; // let's us know when we're expecting a rising edge on pinB to signal that the encoder has arrived at a detent (opposite direction to when aFlag is set)
+volatile unsigned int wheelPosition = 32768; //this variable stores our current value of encoder position
+unsigned int wheelPositionLast;
+bool wheelMotorDir253;
+unsigned long shakeOnTime; unsigned long shakeDuty; bool shakeOn; byte shakeMotorPower; long shakeDelay;
+
+byte serialReceived[6]; // SerialSend.PacketLen
+byte serialReceivedIdx;
+byte errors; // 1=not receiving data / 2=got invalid data from computer
+unsigned long lastSerialRecv;
+unsigned int every30Hz;
+
 
 void loop()
 {
@@ -124,7 +129,7 @@ void loop()
 		serialReceived[serialReceivedIdx] = Serial.read();
 		serialReceivedIdx++;
 
-		if (serialReceivedIdx < 3) { // SerialSend1.PacketLen
+		if (serialReceivedIdx < 6) { // SerialSend.PacketLen
 			goto noData;
 		}
 
@@ -135,7 +140,7 @@ void loop()
 		}
 
 		byte chk1 = serialReceived[1];
-		byte chk2 = (byte)255 - (serialReceived[2]);
+		byte chk2 = (byte)255 - (serialReceived[2] ^ serialReceived[3] ^ serialReceived[4] ^ serialReceived[5]);
 		if (chk1 != chk2) {
 			shift1();
 			errors = errors | 2;
@@ -167,14 +172,34 @@ void loop()
 		}
 		analogWrite(pinWheelMotorPower, serialReceived[2]);
 
+		analogWrite(pinWindMotor, serialReceived[3]); //windMotorPower = serialReceived[3];
+
+		if (serialReceived[4] == 0 || serialReceived[5] == 0) {
+			shakeMotorPower = 0;
+			shakeOnTime = 0;
+			shakeDuty = 0;
+			shakeOn = false;
+			analogWrite(pinShakeMotor, 0);
+		}
+		else {
+			shakeMotorPower = serialReceived[4];
+			shakeDelay = (unsigned long)256 - (unsigned long)serialReceived[5]; // 255~1
+			shakeDuty = shakeDelay * 256;
+			shakeDelay = (shakeDelay * shakeDelay); // 65025~1
+			//shakeDuty = shakeDelay + 6500 ; // 71525~6500
+			shakeDelay = (unsigned long)4 * shakeDelay;
+		}
+
 	}
 
 noData:
 
-
 	// if we lost communication with the computer stop the motors, dont let them in the last state or they will make ugly damage !
 	if (millis() - lastSerialRecv > 200) { // 200 = 5 fps , lower than that and it will start bumping
 		analogWrite(pinWheelMotorPower, 0);
+		analogWrite(pinWindMotor, 0);//digitalWrite(pinWindMotor, LOW);    //windMotorPower = 0;
+		analogWrite(pinShakeMotor, 0);
+		shakeMotorPower = 0;
 		// SerialReset();
 		errors = errors | 1;
 	}
@@ -190,18 +215,18 @@ noData:
 		Serial.write(serialWrite, 4);
 	}
 
-
 	// send Pedals+Gears+Buttons(+RealBolts) -> ARDUINO -> PC -> joy:
 	every30Hz++;
 	if (every30Hz >= 4000) {
 		every30Hz = 0;
 
 		// read from hardware / SEND to computer : --------------------- must be equal to CVJoyAc.SerialRead
-		byte serialWrite[7];
+		byte serialWrite[7]; // SerialRead.PacketLen
 		serialWrite[0] = 254;
 
 		byte tmpByte = 192; // checkdigit (64+128)
 		if (digitalRead(pinButton9) == LOW) tmpByte += 32;
+		if (digitalRead(pinButton10) == LOW) tmpByte += 16;
 		tmpByte = tmpByte | errors;
 		errors = 0;
 		serialWrite[1] = tmpByte;
@@ -224,7 +249,6 @@ noData:
 		if (digitalRead(pinGear5) == LOW) tmpByte += 16;
 		if (digitalRead(pinGear6) == LOW) tmpByte += 32;
 		if (digitalRead(pinGearR) == LOW) tmpByte += 64;
-		// if (digitalRead(pinHandbrake) == LOW) tmpByte += 128;
 		serialWrite[3] = tmpByte;
 
 		unsigned int tmpUInt;
@@ -239,6 +263,22 @@ noData:
 		Serial.write(serialWrite, 8);
 	}
 
+	// control 24v DC motors
+	if (shakeMotorPower != 0) {
+		if (!shakeOn) {
+			if (micros() >= shakeOnTime + shakeDelay) {
+				shakeOn = true;
+				analogWrite(pinShakeMotor, shakeMotorPower);
+				shakeOnTime = micros();
+			}
+		}
+		else {
+			if (micros() >= shakeOnTime + shakeDuty) {
+				shakeOn = false;
+				analogWrite(pinShakeMotor, 0);
+			}
+		}
+	}
 
 } //...loop
 

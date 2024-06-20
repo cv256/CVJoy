@@ -32,16 +32,18 @@ Partial Class ucButtons
         Me.bt8 = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.bt0 = New System.Windows.Forms.TextBox()
-        Me.bt9 = New System.Windows.Forms.TextBox()
+        Me.btx0 = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.bt10 = New System.Windows.Forms.TextBox()
-        Me.bt11 = New System.Windows.Forms.TextBox()
-        Me.bt12 = New System.Windows.Forms.TextBox()
-        Me.bt13 = New System.Windows.Forms.TextBox()
-        Me.bt14 = New System.Windows.Forms.TextBox()
-        Me.bt15 = New System.Windows.Forms.TextBox()
-        Me.bt16 = New System.Windows.Forms.TextBox()
-        Me.bt17 = New System.Windows.Forms.TextBox()
+        Me.btx1 = New System.Windows.Forms.TextBox()
+        Me.btx2 = New System.Windows.Forms.TextBox()
+        Me.btx3 = New System.Windows.Forms.TextBox()
+        Me.btx4 = New System.Windows.Forms.TextBox()
+        Me.btx5 = New System.Windows.Forms.TextBox()
+        Me.btx6 = New System.Windows.Forms.TextBox()
+        Me.btx7 = New System.Windows.Forms.TextBox()
+        Me.btx8 = New System.Windows.Forms.TextBox()
+        Me.btx9 = New System.Windows.Forms.TextBox()
+        Me.bt9 = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
         'bt1
@@ -63,7 +65,7 @@ Partial Class ucButtons
         Me.bt2.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt2.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt2.Location = New System.Drawing.Point(120, 1)
+        Me.bt2.Location = New System.Drawing.Point(123, 1)
         Me.bt2.MaxLength = 32000
         Me.bt2.Name = "bt2"
         Me.bt2.ShortcutsEnabled = False
@@ -77,7 +79,7 @@ Partial Class ucButtons
         Me.bt3.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt3.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt3.Location = New System.Drawing.Point(155, 1)
+        Me.bt3.Location = New System.Drawing.Point(158, 1)
         Me.bt3.MaxLength = 32000
         Me.bt3.Name = "bt3"
         Me.bt3.ShortcutsEnabled = False
@@ -91,7 +93,7 @@ Partial Class ucButtons
         Me.bt4.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt4.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt4.Location = New System.Drawing.Point(190, 1)
+        Me.bt4.Location = New System.Drawing.Point(193, 1)
         Me.bt4.MaxLength = 32000
         Me.bt4.Name = "bt4"
         Me.bt4.ShortcutsEnabled = False
@@ -105,7 +107,7 @@ Partial Class ucButtons
         Me.bt5.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt5.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt5.Location = New System.Drawing.Point(225, 1)
+        Me.bt5.Location = New System.Drawing.Point(228, 1)
         Me.bt5.MaxLength = 32000
         Me.bt5.Name = "bt5"
         Me.bt5.ShortcutsEnabled = False
@@ -119,7 +121,7 @@ Partial Class ucButtons
         Me.bt6.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt6.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt6.Location = New System.Drawing.Point(260, 1)
+        Me.bt6.Location = New System.Drawing.Point(263, 1)
         Me.bt6.MaxLength = 32000
         Me.bt6.Name = "bt6"
         Me.bt6.ShortcutsEnabled = False
@@ -133,7 +135,7 @@ Partial Class ucButtons
         Me.bt7.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt7.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt7.Location = New System.Drawing.Point(298, 1)
+        Me.bt7.Location = New System.Drawing.Point(304, 1)
         Me.bt7.MaxLength = 32000
         Me.bt7.Name = "bt7"
         Me.bt7.ShortcutsEnabled = False
@@ -147,7 +149,7 @@ Partial Class ucButtons
         Me.bt8.BackColor = System.Drawing.Color.WhiteSmoke
         Me.bt8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.bt8.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt8.Location = New System.Drawing.Point(333, 1)
+        Me.bt8.Location = New System.Drawing.Point(339, 1)
         Me.bt8.MaxLength = 32000
         Me.bt8.Name = "bt8"
         Me.bt8.ShortcutsEnabled = False
@@ -179,20 +181,20 @@ Partial Class ucButtons
         Me.bt0.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.bt0.WordWrap = False
         '
-        'bt9
+        'btx0
         '
-        Me.bt9.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bt9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.bt9.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt9.Location = New System.Drawing.Point(47, 19)
-        Me.bt9.MaxLength = 32000
-        Me.bt9.Name = "bt9"
-        Me.bt9.ShortcutsEnabled = False
-        Me.bt9.Size = New System.Drawing.Size(33, 18)
-        Me.bt9.TabIndex = 37
-        Me.bt9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.bt9.Visible = False
-        Me.bt9.WordWrap = False
+        Me.btx0.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.btx0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.btx0.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btx0.Location = New System.Drawing.Point(47, 19)
+        Me.btx0.MaxLength = 32000
+        Me.btx0.Name = "btx0"
+        Me.btx0.ShortcutsEnabled = False
+        Me.btx0.Size = New System.Drawing.Size(33, 18)
+        Me.btx0.TabIndex = 37
+        Me.btx0.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.btx0.Visible = False
+        Me.btx0.WordWrap = False
         '
         'Label2
         '
@@ -203,132 +205,162 @@ Partial Class ucButtons
         Me.Label2.TabIndex = 46
         Me.Label2.Text = "with BT1:"
         '
-        'bt10
+        'btx1
         '
-        Me.bt10.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bt10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.bt10.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt10.Location = New System.Drawing.Point(82, 19)
-        Me.bt10.MaxLength = 32000
-        Me.bt10.Name = "bt10"
-        Me.bt10.ShortcutsEnabled = False
-        Me.bt10.Size = New System.Drawing.Size(33, 18)
-        Me.bt10.TabIndex = 38
-        Me.bt10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.bt10.WordWrap = False
+        Me.btx1.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.btx1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.btx1.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btx1.Location = New System.Drawing.Point(82, 19)
+        Me.btx1.MaxLength = 32000
+        Me.btx1.Name = "btx1"
+        Me.btx1.ShortcutsEnabled = False
+        Me.btx1.Size = New System.Drawing.Size(33, 18)
+        Me.btx1.TabIndex = 38
+        Me.btx1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.btx1.WordWrap = False
         '
-        'bt11
+        'btx2
         '
-        Me.bt11.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bt11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.bt11.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt11.Location = New System.Drawing.Point(120, 19)
-        Me.bt11.MaxLength = 32000
-        Me.bt11.Name = "bt11"
-        Me.bt11.ShortcutsEnabled = False
-        Me.bt11.Size = New System.Drawing.Size(33, 18)
-        Me.bt11.TabIndex = 39
-        Me.bt11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.bt11.WordWrap = False
+        Me.btx2.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.btx2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.btx2.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btx2.Location = New System.Drawing.Point(123, 19)
+        Me.btx2.MaxLength = 32000
+        Me.btx2.Name = "btx2"
+        Me.btx2.ShortcutsEnabled = False
+        Me.btx2.Size = New System.Drawing.Size(33, 18)
+        Me.btx2.TabIndex = 39
+        Me.btx2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.btx2.WordWrap = False
         '
-        'bt12
+        'btx3
         '
-        Me.bt12.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bt12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.bt12.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt12.Location = New System.Drawing.Point(155, 19)
-        Me.bt12.MaxLength = 32000
-        Me.bt12.Name = "bt12"
-        Me.bt12.ShortcutsEnabled = False
-        Me.bt12.Size = New System.Drawing.Size(33, 18)
-        Me.bt12.TabIndex = 40
-        Me.bt12.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.bt12.WordWrap = False
+        Me.btx3.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.btx3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.btx3.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btx3.Location = New System.Drawing.Point(158, 19)
+        Me.btx3.MaxLength = 32000
+        Me.btx3.Name = "btx3"
+        Me.btx3.ShortcutsEnabled = False
+        Me.btx3.Size = New System.Drawing.Size(33, 18)
+        Me.btx3.TabIndex = 40
+        Me.btx3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.btx3.WordWrap = False
         '
-        'bt13
+        'btx4
         '
-        Me.bt13.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bt13.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.bt13.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt13.Location = New System.Drawing.Point(190, 19)
-        Me.bt13.MaxLength = 32000
-        Me.bt13.Name = "bt13"
-        Me.bt13.ShortcutsEnabled = False
-        Me.bt13.Size = New System.Drawing.Size(33, 18)
-        Me.bt13.TabIndex = 41
-        Me.bt13.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.bt13.WordWrap = False
+        Me.btx4.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.btx4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.btx4.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btx4.Location = New System.Drawing.Point(193, 19)
+        Me.btx4.MaxLength = 32000
+        Me.btx4.Name = "btx4"
+        Me.btx4.ShortcutsEnabled = False
+        Me.btx4.Size = New System.Drawing.Size(33, 18)
+        Me.btx4.TabIndex = 41
+        Me.btx4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.btx4.WordWrap = False
         '
-        'bt14
+        'btx5
         '
-        Me.bt14.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bt14.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.bt14.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt14.Location = New System.Drawing.Point(225, 19)
-        Me.bt14.MaxLength = 32000
-        Me.bt14.Name = "bt14"
-        Me.bt14.ShortcutsEnabled = False
-        Me.bt14.Size = New System.Drawing.Size(33, 18)
-        Me.bt14.TabIndex = 42
-        Me.bt14.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.bt14.WordWrap = False
+        Me.btx5.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.btx5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.btx5.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btx5.Location = New System.Drawing.Point(228, 19)
+        Me.btx5.MaxLength = 32000
+        Me.btx5.Name = "btx5"
+        Me.btx5.ShortcutsEnabled = False
+        Me.btx5.Size = New System.Drawing.Size(33, 18)
+        Me.btx5.TabIndex = 42
+        Me.btx5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.btx5.WordWrap = False
         '
-        'bt15
+        'btx6
         '
-        Me.bt15.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bt15.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.bt15.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt15.Location = New System.Drawing.Point(260, 19)
-        Me.bt15.MaxLength = 32000
-        Me.bt15.Name = "bt15"
-        Me.bt15.ShortcutsEnabled = False
-        Me.bt15.Size = New System.Drawing.Size(33, 18)
-        Me.bt15.TabIndex = 43
-        Me.bt15.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.bt15.WordWrap = False
+        Me.btx6.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.btx6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.btx6.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btx6.Location = New System.Drawing.Point(263, 19)
+        Me.btx6.MaxLength = 32000
+        Me.btx6.Name = "btx6"
+        Me.btx6.ShortcutsEnabled = False
+        Me.btx6.Size = New System.Drawing.Size(33, 18)
+        Me.btx6.TabIndex = 43
+        Me.btx6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.btx6.WordWrap = False
         '
-        'bt16
+        'btx7
         '
-        Me.bt16.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bt16.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.bt16.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt16.Location = New System.Drawing.Point(298, 19)
-        Me.bt16.MaxLength = 32000
-        Me.bt16.Name = "bt16"
-        Me.bt16.ShortcutsEnabled = False
-        Me.bt16.Size = New System.Drawing.Size(33, 18)
-        Me.bt16.TabIndex = 44
-        Me.bt16.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.bt16.WordWrap = False
+        Me.btx7.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.btx7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.btx7.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btx7.Location = New System.Drawing.Point(304, 19)
+        Me.btx7.MaxLength = 32000
+        Me.btx7.Name = "btx7"
+        Me.btx7.ShortcutsEnabled = False
+        Me.btx7.Size = New System.Drawing.Size(33, 18)
+        Me.btx7.TabIndex = 44
+        Me.btx7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.btx7.WordWrap = False
         '
-        'bt17
+        'btx8
         '
-        Me.bt17.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.bt17.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.bt17.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.bt17.Location = New System.Drawing.Point(333, 19)
-        Me.bt17.MaxLength = 32000
-        Me.bt17.Name = "bt17"
-        Me.bt17.ShortcutsEnabled = False
-        Me.bt17.Size = New System.Drawing.Size(33, 18)
-        Me.bt17.TabIndex = 45
-        Me.bt17.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.bt17.WordWrap = False
+        Me.btx8.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.btx8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.btx8.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btx8.Location = New System.Drawing.Point(339, 19)
+        Me.btx8.MaxLength = 32000
+        Me.btx8.Name = "btx8"
+        Me.btx8.ShortcutsEnabled = False
+        Me.btx8.Size = New System.Drawing.Size(33, 18)
+        Me.btx8.TabIndex = 45
+        Me.btx8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.btx8.WordWrap = False
+        '
+        'btx9
+        '
+        Me.btx9.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.btx9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.btx9.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btx9.Location = New System.Drawing.Point(380, 18)
+        Me.btx9.MaxLength = 32000
+        Me.btx9.Name = "btx9"
+        Me.btx9.ShortcutsEnabled = False
+        Me.btx9.Size = New System.Drawing.Size(33, 18)
+        Me.btx9.TabIndex = 48
+        Me.btx9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.btx9.WordWrap = False
+        '
+        'bt9
+        '
+        Me.bt9.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.bt9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.bt9.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.bt9.Location = New System.Drawing.Point(380, 0)
+        Me.bt9.MaxLength = 32000
+        Me.bt9.Name = "bt9"
+        Me.bt9.ShortcutsEnabled = False
+        Me.bt9.Size = New System.Drawing.Size(33, 18)
+        Me.bt9.TabIndex = 47
+        Me.bt9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.bt9.WordWrap = False
         '
         'ucButtons
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.btx9)
         Me.Controls.Add(Me.bt9)
+        Me.Controls.Add(Me.btx0)
         Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.bt10)
-        Me.Controls.Add(Me.bt11)
-        Me.Controls.Add(Me.bt12)
-        Me.Controls.Add(Me.bt13)
-        Me.Controls.Add(Me.bt14)
-        Me.Controls.Add(Me.bt15)
-        Me.Controls.Add(Me.bt16)
-        Me.Controls.Add(Me.bt17)
+        Me.Controls.Add(Me.btx1)
+        Me.Controls.Add(Me.btx2)
+        Me.Controls.Add(Me.btx3)
+        Me.Controls.Add(Me.btx4)
+        Me.Controls.Add(Me.btx5)
+        Me.Controls.Add(Me.btx6)
+        Me.Controls.Add(Me.btx7)
+        Me.Controls.Add(Me.btx8)
         Me.Controls.Add(Me.bt0)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.bt1)
@@ -340,7 +372,7 @@ Partial Class ucButtons
         Me.Controls.Add(Me.bt7)
         Me.Controls.Add(Me.bt8)
         Me.Name = "ucButtons"
-        Me.Size = New System.Drawing.Size(367, 37)
+        Me.Size = New System.Drawing.Size(415, 37)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -355,14 +387,16 @@ Partial Class ucButtons
     Public WithEvents bt8 As TextBox
     Friend WithEvents Label1 As Label
     Public WithEvents bt0 As TextBox
-    Public WithEvents bt9 As TextBox
+    Public WithEvents btx0 As TextBox
     Friend WithEvents Label2 As Label
-    Public WithEvents bt10 As TextBox
-    Public WithEvents bt11 As TextBox
-    Public WithEvents bt12 As TextBox
-    Public WithEvents bt13 As TextBox
-    Public WithEvents bt14 As TextBox
-    Public WithEvents bt15 As TextBox
-    Public WithEvents bt16 As TextBox
-    Public WithEvents bt17 As TextBox
+    Public WithEvents btx1 As TextBox
+    Public WithEvents btx2 As TextBox
+    Public WithEvents btx3 As TextBox
+    Public WithEvents btx4 As TextBox
+    Public WithEvents btx5 As TextBox
+    Public WithEvents btx6 As TextBox
+    Public WithEvents btx7 As TextBox
+    Public WithEvents btx8 As TextBox
+    Public WithEvents btx9 As TextBox
+    Public WithEvents bt9 As TextBox
 End Class

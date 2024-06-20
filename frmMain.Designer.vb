@@ -30,7 +30,6 @@ Partial Class frmCVJoy
         Me.G5 = New System.Windows.Forms.Label()
         Me.G6 = New System.Windows.Forms.Label()
         Me.GR = New System.Windows.Forms.Label()
-        Me.lbHandbrake = New System.Windows.Forms.Label()
         Me.lbAttitude = New System.Windows.Forms.Label()
         Me.btSetup = New System.Windows.Forms.Button()
         Me.txtErrors = New System.Windows.Forms.TextBox()
@@ -73,13 +72,13 @@ Partial Class frmCVJoy
         Me.btCountersReset = New System.Windows.Forms.Button()
         Me.chkLogToFile = New System.Windows.Forms.CheckBox()
         Me.btArduinoStart2 = New System.Windows.Forms.Button()
-        Me.UcButtons1 = New CVJoy.ucButtons()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.lbUDPHz = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.lbReadArduino2Hz = New System.Windows.Forms.Label()
+        Me.UcButtons1 = New CVJoy.ucButtons()
         Me.SuspendLayout()
         '
         'btArduinoStart
@@ -175,18 +174,6 @@ Partial Class frmCVJoy
         Me.GR.TabIndex = 19
         Me.GR.Text = "R"
         Me.GR.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'lbHandbrake
-        '
-        Me.lbHandbrake.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.lbHandbrake.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lbHandbrake.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbHandbrake.Location = New System.Drawing.Point(198, 122)
-        Me.lbHandbrake.Name = "lbHandbrake"
-        Me.lbHandbrake.Size = New System.Drawing.Size(45, 20)
-        Me.lbHandbrake.TabIndex = 20
-        Me.lbHandbrake.Text = "Brake"
-        Me.lbHandbrake.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'lbAttitude
         '
@@ -645,15 +632,6 @@ Partial Class frmCVJoy
         Me.btArduinoStart2.Text = "Connect to Arduino 2"
         Me.btArduinoStart2.UseVisualStyleBackColor = False
         '
-        'UcButtons1
-        '
-        Me.UcButtons1.Location = New System.Drawing.Point(2, 0)
-        Me.UcButtons1.Name = "UcButtons1"
-        Me.UcButtons1.ReadOnly = False
-        Me.UcButtons1.ShowDescriptions = False
-        Me.UcButtons1.Size = New System.Drawing.Size(391, 37)
-        Me.UcButtons1.TabIndex = 144
-        '
         'Label1
         '
         Me.Label1.BackColor = System.Drawing.Color.Transparent
@@ -714,6 +692,15 @@ Partial Class frmCVJoy
         Me.lbReadArduino2Hz.Text = "0000"
         Me.lbReadArduino2Hz.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
+        'UcButtons1
+        '
+        Me.UcButtons1.Location = New System.Drawing.Point(2, 0)
+        Me.UcButtons1.Name = "UcButtons1"
+        Me.UcButtons1.ReadOnly = False
+        Me.UcButtons1.ShowDescriptions = False
+        Me.UcButtons1.Size = New System.Drawing.Size(391, 37)
+        Me.UcButtons1.TabIndex = 144
+        '
         'frmCVJoy
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -766,7 +753,6 @@ Partial Class frmCVJoy
         Me.Controls.Add(Me.lbWheelPos)
         Me.Controls.Add(Me.txtErrors)
         Me.Controls.Add(Me.btSetup)
-        Me.Controls.Add(Me.lbHandbrake)
         Me.Controls.Add(Me.GR)
         Me.Controls.Add(Me.G6)
         Me.Controls.Add(Me.G5)
@@ -793,7 +779,6 @@ Partial Class frmCVJoy
     Friend WithEvents G5 As Label
     Friend WithEvents G6 As Label
     Friend WithEvents GR As Label
-    Friend WithEvents lbHandbrake As Label
     Friend WithEvents lbAttitude As Label
     Friend WithEvents btSetup As Button
     Public WithEvents txtErrors As TextBox

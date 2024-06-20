@@ -26,40 +26,19 @@
 // Serial communication on pins TX/RX uses TTL logic levels (5V or 3.3V depending on the board). Don’t connect these pins directly to an RS232 serial port; they operate at +/- 12V and can damage your Arduino board.
 #define serialSpeed 115200 // data rate in bits per second (baud) for serial data transmission. For communicating with the computer, use one of these rates: 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, or 115200. The highest without error seems to be actually 115200 - which is the standard
 
-// external hardware -> arduino :
 #define pinZeroCrossDetector  19 //on Mega, Mega2560, MegaADK interrupt pins are 2, 3, 18, 19, 20, 21
 #define pinLeftUSSend 14
 #define pinLeftUSRead 15
 #define pinRightUSSend 17
 #define pinRightUSRead 16
-
 // #define pinLeftMotorPower  8
 // #define pinLeftMotorDir1  24
 // #define pinLeftMotorDir2  25
-
 // #define pinRightMotorPower  9
 // #define pinRightMotorDir1  26
 // #define pinRightMotorDir2  27
-
-#define pinWindMotor  10 // LED_BUILTIN=13
-#define pinShakeMotor 7
 #define pinBreakLed 11
 
-
-byte serialReceived[7]; // SerialSend2.PacketLen
-byte serialReceivedIdx;
-byte errors; // 1=not receiving data / 2=got invalid data from computer / 16=ACPower
-unsigned long lastSerialRecv;
-unsigned long lastMainsZero;
-//unsigned long dimmerLeftDelay;
-//unsigned long dimmerRightDelay;
-//unsigned long dimmerWindDelay; bool windOn; byte windMotorPower;
-unsigned long shakeOnTime; unsigned long shakeDuty; bool shakeOn; byte shakeMotorPower; long shakeDelay;
-
-//char leftMotorPower;// -127 to 127
-//char rightMotorPower;// -127 to 127
-
-unsigned int every30Hz;
 
 void setup()
 {
@@ -71,18 +50,15 @@ void setup()
 	pinMode(pinRightUSRead, INPUT);
 
 	// arduino -> external hardware
-	// pitch and roll :
 	// pinMode(pinLeftMotorPower, OUTPUT);
 	// pinMode(pinLeftMotorDir1, OUTPUT);
 	// pinMode(pinLeftMotorDir2, OUTPUT);
 	// pinMode(pinRightMotorPower, OUTPUT);
 	// pinMode(pinRightMotorDir1, OUTPUT);
 	// pinMode(pinRightMotorDir2, OUTPUT);
-	// wind & shake :
 	pinMode(pinWindMotor, OUTPUT);
 	pinMode(pinShakeMotor, OUTPUT);
 	pinMode(pinBreakLed, OUTPUT);
-
 	pinMode(LED_BUILTIN, OUTPUT);
 
 	noInterrupts();           // disable all interrupts
@@ -102,6 +78,17 @@ void setup()
 } //...setup
 
 
+//unsigned long dimmerLeftDelay;
+//unsigned long dimmerRightDelay;
+//char leftMotorPower;// -127 to 127
+//char rightMotorPower;// -127 to 127
+byte serialReceived[4]; // SerialSend2.PacketLen
+byte serialReceivedIdx;
+byte errors; // 1=not receiving data / 2=got invalid data from computer / 16=ACPower
+unsigned long lastSerialRecv;
+unsigned long lastMainsZero;
+unsigned int every30Hz;
+
 
 void loop()
 {
@@ -110,7 +97,7 @@ void loop()
 		serialReceived[serialReceivedIdx] = Serial.read();
 		serialReceivedIdx++;
 
-		if (serialReceivedIdx < 7) {  // SerialSend2.PacketLen
+		if (serialReceivedIdx < 4) {  // SerialSend2.PacketLen
 			goto noData;
 		}
 
@@ -121,7 +108,7 @@ void loop()
 		}
 
 		byte chk1 = serialReceived[1];
-		byte chk2 = (byte)255 - (serialReceived[2] ^ serialReceived[3] ^ serialReceived[4] ^ serialReceived[5] ^ serialReceived[6]);
+		byte chk2 = (byte)255 - (serialReceived[2] ^ serialReceived[3]);
 		if (chk1 != chk2) {
 			shift1();
 			errors = errors | 2;
@@ -133,41 +120,18 @@ void loop()
 		serialReceivedIdx = 0;
 		lastSerialRecv = millis();
 
-		if ( (serialReceived[0] & 1)==0 ) analogWrite(pinBreakLed, LOW) else analogWrite(pinBreakLed, HIGH);
-		analogWrite(pinWindMotor, serialReceived[2]);
+		if ((serialReceived[0] & 1) == 0) analogWrite(pinBreakLed, LOW) else analogWrite(pinBreakLed, HIGH);
 
-		if (serialReceived[3] == 0 || serialReceived[4] == 0) {
-			shakeMotorPower = 0;
-			shakeOnTime = 0;
-			shakeDuty = 0;
-			shakeOn = false;
-			analogWrite(pinShakeMotor, 0);
-		}
-		else {
-			shakeMotorPower = serialReceived[3];
-			shakeDelay = (unsigned long)256 - (unsigned long)serialReceived[4]; // 255~1
-			shakeDuty = shakeDelay * 256;
-			shakeDelay = (shakeDelay * shakeDelay); // 65025~1
-			//shakeDuty = shakeDelay + 6500 ; // 71525~6500
-			shakeDelay = (unsigned long)4 * shakeDelay;
-		}
 	}
 
 noData:
 
 	// if we lost communication with the computer stop the motors, dont let them in the last state or they will make ugly damage !
 	if (millis() - lastSerialRecv > 200) { // 200 = 5 fps , lower than that and it will start bumping
-
 		//digitalWrite(pinLeftMotorPower, LOW);
 		//digitalWrite(pinRightMotorPower, LOW);
 		//leftMotorPower = 0;
 		//rightMotorPower = 0;
-
-		analogWrite(pinWindMotor, 0);//digitalWrite(pinWindMotor, LOW);    //windMotorPower = 0;
-
-		analogWrite(pinShakeMotor, 0);
-		shakeMotorPower = 0;
-
 		// SerialReset();
 		errors = errors | 1;
 	}
@@ -182,24 +146,6 @@ noData:
 		serialWrite[0] = 253; // checkdigit
 		serialWrite[1] = errors;
 		Serial.write(serialWrite, 8);
-		if (errors & 1) return; // if we lost communication we have just stopped the motors and dont want the following code to power them again
-	}
-
-	// control 24v DC motors
-	if (shakeMotorPower != 0) {
-		if (!shakeOn) {
-			if (micros() >= shakeOnTime + shakeDelay) {
-				shakeOn = true;
-				analogWrite(pinShakeMotor, shakeMotorPower);
-				shakeOnTime = micros();
-			}
-		}
-		else {
-			if (micros() >= shakeOnTime + shakeDuty) {
-				shakeOn = false;
-				analogWrite(pinShakeMotor, 0);
-			}
-		}
 	}
 
 	/*
@@ -220,8 +166,9 @@ noData:
 	  // TODO: define the motors powers based of the actual positions versus the desired position
 	 */
 
-	 // control 220v AC motors:
-	triacs();
+	if ((errors & 1) == 0) {  // if we lost communication we have just stopped the motors and dont want the following code to power them again
+		triacs();
+	}
 
 } //...loop
 

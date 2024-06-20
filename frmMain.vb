@@ -204,22 +204,22 @@ start:
         If LogToFile IsNot Nothing Then LogToFile.LogWheelMotorOut(toArduino.wheelPower, WheelPosition)
 
         If TestMode = Motor.Wind Then
-            toArduino2.windPower = TestValue
+            toArduino.windPower = TestValue
         ElseIf Not chkNoWind.Checked Then
-            toArduino2.windPower = GameOutputs.RigWind
+            toArduino.windPower = GameOutputs.RigWind
         Else
-            toArduino2.windPower = 0
+            toArduino.windPower = 0
         End If
 
         If TestMode = Motor.Shake Then
-            toArduino2.shakePower = TestValue
-            toArduino2.shakeSpeed = GameOutputs.RigShakeSpeed
+            toArduino.shakePower = TestValue
+            toArduino.shakeSpeed = GameOutputs.RigShakeSpeed
         ElseIf Not chkNoWind.Checked Then
-            toArduino2.shakePower = GameOutputs.RigShakePower
-            toArduino2.shakeSpeed = GameOutputs.RigShakeSpeed
+            toArduino.shakePower = GameOutputs.RigShakePower
+            toArduino.shakeSpeed = GameOutputs.RigShakeSpeed
         Else
-            toArduino2.shakePower = 0
-            toArduino2.shakeSpeed = 0
+            toArduino.shakePower = 0
+            toArduino.shakeSpeed = 0
         End If
 
 
@@ -461,7 +461,6 @@ start:
                     G5.BackColor = If(.gear5, Color.Green, Color.White)
                     G6.BackColor = If(.gear6, Color.Green, Color.White)
                     GR.BackColor = If(.gearR, Color.Green, Color.White)
-                    lbHandbrake.BackColor = If(.handbrake, Color.Green, Color.White)
                     UcButtons1.bt0.BackColor = If(.buttons(0), Color.DarkGreen, Color.LightGray)
                     UcButtons1.bt1.BackColor = If(.buttons(0) = False AndAlso .buttons(1), Color.Green, Color.White)
                     UcButtons1.bt2.BackColor = If(.buttons(0) = False AndAlso .buttons(2), Color.Green, Color.White)
@@ -471,14 +470,16 @@ start:
                     UcButtons1.bt6.BackColor = If(.buttons(0) = False AndAlso .buttons(6), Color.Green, Color.White)
                     UcButtons1.bt7.BackColor = If(.buttons(0) = False AndAlso .buttons(7), Color.Green, Color.White)
                     UcButtons1.bt8.BackColor = If(.buttons(0) = False AndAlso .buttons(8), Color.Green, Color.White)
-                    UcButtons1.bt10.BackColor = If(.buttons(0) AndAlso .buttons(1), Color.Green, Color.White)
-                    UcButtons1.bt11.BackColor = If(.buttons(0) AndAlso .buttons(2), Color.Green, Color.White)
-                    UcButtons1.bt12.BackColor = If(.buttons(0) AndAlso .buttons(3), Color.Green, Color.White)
-                    UcButtons1.bt13.BackColor = If(.buttons(0) AndAlso .buttons(4), Color.Green, Color.White)
-                    UcButtons1.bt14.BackColor = If(.buttons(0) AndAlso .buttons(5), Color.Green, Color.White)
-                    UcButtons1.bt15.BackColor = If(.buttons(0) AndAlso .buttons(6), Color.Green, Color.White)
-                    UcButtons1.bt16.BackColor = If(.buttons(0) AndAlso .buttons(7), Color.Green, Color.White)
-                    UcButtons1.bt17.BackColor = If(.buttons(0) AndAlso .buttons(8), Color.Green, Color.White)
+                    UcButtons1.bt9.BackColor = If(.buttons(0) = False AndAlso .buttons(9), Color.Green, Color.White)
+                    UcButtons1.btx1.BackColor = If(.buttons(0) AndAlso .buttons(1), Color.Green, Color.White)
+                    UcButtons1.btx2.BackColor = If(.buttons(0) AndAlso .buttons(2), Color.Green, Color.White)
+                    UcButtons1.btx3.BackColor = If(.buttons(0) AndAlso .buttons(3), Color.Green, Color.White)
+                    UcButtons1.btx4.BackColor = If(.buttons(0) AndAlso .buttons(4), Color.Green, Color.White)
+                    UcButtons1.btx5.BackColor = If(.buttons(0) AndAlso .buttons(5), Color.Green, Color.White)
+                    UcButtons1.btx6.BackColor = If(.buttons(0) AndAlso .buttons(6), Color.Green, Color.White)
+                    UcButtons1.btx7.BackColor = If(.buttons(0) AndAlso .buttons(7), Color.Green, Color.White)
+                    UcButtons1.btx8.BackColor = If(.buttons(0) AndAlso .buttons(8), Color.Green, Color.White)
+                    UcButtons1.btx9.BackColor = If(.buttons(0) AndAlso .buttons(9), Color.Green, Color.White)
                 End With
 
                 If ScreenUpdateTimeElapsed <> 0 Then
@@ -569,7 +570,7 @@ start:
                     End If
 
                     fromArduino.SetSerialData(SerialReceiveBuffer)
-                    SerialReceiveBuffer.RemoveRange(0, 8)
+                    SerialReceiveBuffer.RemoveRange(0, SerialRead.PacketLen)
                     ReadArduino1Count += 1
 
                     With fromArduino
@@ -578,15 +579,15 @@ start:
 
                         If .buttons(0) Then ' if button0 is being pressed:      
 
-                            For i As Integer = 1 To 8
-                                If Game.Bt(i + 9) > "" Then
+                            For i As Integer = 1 To clGame.BtCount - 1
+                                If Game.Bt(i + clGame.BtCount) > "" Then
                                     If .buttons(i) Then
                                         If ButtonsLast(i) Then Continue For
-                                        MySendKeys(Game.Bt(i + 9))
+                                        MySendKeys(Game.Bt(i + clGame.BtCount))
                                         ButtonOther = True
                                     End If
                                 ElseIf .buttons(i) Then
-                                    buttonBit += 2 ^ (i + 16)
+                                    buttonBit += 2 ^ (i + clGame.BtCount) ' VJoy buttons (0~31) from BtCount+1 to 2*BtCount-1 (2048~524288)
                                     ButtonOther = True
                                 End If
                             Next i
@@ -598,19 +599,19 @@ start:
                                     If Game.Bt(0) > "" Then
                                         MySendKeys(Game.Bt(0))
                                     Else
-                                        buttonBit = 1
+                                        buttonBit = 1  ' VJoy button 0 (0~31)
                                     End If
                                 End If
                                 ButtonOther = False
                             Else
-                                For i As Integer = 1 To 8
+                                For i As Integer = 1 To clGame.BtCount
                                     If Game.Bt(i) > "" Then
                                         If .buttons(i) Then
                                             If ButtonsLast(i) Then Continue For
                                             MySendKeys(Game.Bt(i))
                                         End If
                                     ElseIf .buttons(i) Then
-                                        buttonBit += 2 ^ i
+                                        buttonBit += 2 ^ i ' VJoy buttons (0~31) from 1 to BtCount (2~1024)
                                     End If
                                 Next i
                             End If
@@ -627,14 +628,15 @@ start:
 
                             Dim j As New vJoyInterfaceWrap.vJoy.JoystickState
 
+                            ' VJoy buttons (0~31) gears are from 2*BtCount to 2*BtCount+7 :
                             j.Buttons = buttonBit _
-                    + If(.gear1, 1024, 0) _
-                    + If(.gear2, 2048, 0) _
-                    + If(.gear3, 4096, 0) _
-                    + If(.gear4, 8192, 0) _
-                    + If(.gear5, 16384, 0) _
-                    + If(.gear6, 32768, 0) _
-                    + If(.gearR, 65536, 0)
+                    + If(.gear1, 1048576UI, 0) _
+                    + If(.gear2, 2097152UI, 0) _
+                    + If(.gear3, 4194304UI, 0) _
+                    + If(.gear4, 8388608UI, 0) _
+                    + If(.gear5, 16777216UI, 0) _
+                    + If(.gear6, 33554432UI, 0) _
+                    + If(.gearR, 67108864UI, 0)
 
                             j.AxisX = Math.Max(Math.Min(WheelPosition + 16384, 32767), 0)  ' 0-16384-32767
                             j.AxisY = .AccelCorrected * 128 ' 0-32767
