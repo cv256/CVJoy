@@ -43,18 +43,17 @@ Partial Class frmCVJoy
         Me.lbClutch = New System.Windows.Forms.Label()
         Me.Label27 = New System.Windows.Forms.Label()
         Me.ckKeepVisible = New System.Windows.Forms.CheckBox()
-        Me.chkNoWind = New System.Windows.Forms.CheckBox()
+        Me.chkWind = New System.Windows.Forms.CheckBox()
         Me.cbLogFF = New System.Windows.Forms.ComboBox()
         Me.chkFFConst = New System.Windows.Forms.CheckBox()
         Me.chkFFCond = New System.Windows.Forms.CheckBox()
         Me.btGameStart = New System.Windows.Forms.Button()
-        Me.lbGameInfo = New System.Windows.Forms.Label()
         Me.btGameSetup = New System.Windows.Forms.Button()
         Me.cbGames = New System.Windows.Forms.ComboBox()
         Me.lbTemperature = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
-        Me.chkNoMotors = New System.Windows.Forms.CheckBox()
+        Me.chkMove = New System.Windows.Forms.CheckBox()
         Me.lbMainsPower = New System.Windows.Forms.Label()
         Me.chkFFIgnore = New System.Windows.Forms.CheckBox()
         Me.chkLogHideDups = New System.Windows.Forms.CheckBox()
@@ -78,6 +77,10 @@ Partial Class frmCVJoy
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.lbReadArduino2Hz = New System.Windows.Forms.Label()
+        Me.chkShakeSpeed = New System.Windows.Forms.CheckBox()
+        Me.lbGameInfo = New System.Windows.Forms.Label()
+        Me.chkShakeAccel = New System.Windows.Forms.CheckBox()
+        Me.chkShakeJump = New System.Windows.Forms.CheckBox()
         Me.UcButtons1 = New CVJoy.ucButtons()
         Me.SuspendLayout()
         '
@@ -318,16 +321,18 @@ Partial Class frmCVJoy
         Me.ckKeepVisible.Text = "Keep Visible"
         Me.ckKeepVisible.UseVisualStyleBackColor = False
         '
-        'chkNoWind
+        'chkWind
         '
-        Me.chkNoWind.AutoSize = True
-        Me.chkNoWind.BackColor = System.Drawing.Color.Transparent
-        Me.chkNoWind.Location = New System.Drawing.Point(190, 210)
-        Me.chkNoWind.Name = "chkNoWind"
-        Me.chkNoWind.Size = New System.Drawing.Size(89, 17)
-        Me.chkNoWind.TabIndex = 114
-        Me.chkNoWind.Text = "Disable Wind"
-        Me.chkNoWind.UseVisualStyleBackColor = False
+        Me.chkWind.AutoSize = True
+        Me.chkWind.BackColor = System.Drawing.Color.Transparent
+        Me.chkWind.Checked = True
+        Me.chkWind.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkWind.Location = New System.Drawing.Point(264, 210)
+        Me.chkWind.Name = "chkWind"
+        Me.chkWind.Size = New System.Drawing.Size(51, 17)
+        Me.chkWind.TabIndex = 114
+        Me.chkWind.Text = "Wind"
+        Me.chkWind.UseVisualStyleBackColor = False
         '
         'cbLogFF
         '
@@ -376,19 +381,6 @@ Partial Class frmCVJoy
         Me.btGameStart.TabIndex = 129
         Me.btGameStart.Text = "Connect to game"
         Me.btGameStart.UseVisualStyleBackColor = False
-        '
-        'lbGameInfo
-        '
-        Me.lbGameInfo.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lbGameInfo.BackColor = System.Drawing.SystemColors.Info
-        Me.lbGameInfo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbGameInfo.ForeColor = System.Drawing.SystemColors.InfoText
-        Me.lbGameInfo.Location = New System.Drawing.Point(1, 228)
-        Me.lbGameInfo.Name = "lbGameInfo"
-        Me.lbGameInfo.Size = New System.Drawing.Size(591, 13)
-        Me.lbGameInfo.TabIndex = 128
-        Me.lbGameInfo.Text = "   connection to selected game..."
         '
         'btGameSetup
         '
@@ -446,17 +438,19 @@ Partial Class frmCVJoy
         Me.Label3.TabIndex = 136
         Me.Label3.Text = "mm"
         '
-        'chkNoMotors
+        'chkMove
         '
-        Me.chkNoMotors.AutoSize = True
-        Me.chkNoMotors.BackColor = System.Drawing.Color.Transparent
-        Me.chkNoMotors.Location = New System.Drawing.Point(292, 210)
-        Me.chkNoMotors.Name = "chkNoMotors"
-        Me.chkNoMotors.Size = New System.Drawing.Size(112, 17)
-        Me.chkNoMotors.TabIndex = 137
-        Me.chkNoMotors.Text = "Disable Pitch&Roll"
-        Me.chkNoMotors.UseMnemonic = False
-        Me.chkNoMotors.UseVisualStyleBackColor = False
+        Me.chkMove.AutoSize = True
+        Me.chkMove.BackColor = System.Drawing.Color.Transparent
+        Me.chkMove.Checked = True
+        Me.chkMove.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkMove.Location = New System.Drawing.Point(185, 210)
+        Me.chkMove.Name = "chkMove"
+        Me.chkMove.Size = New System.Drawing.Size(74, 17)
+        Me.chkMove.TabIndex = 137
+        Me.chkMove.Text = "Pitch&Roll"
+        Me.chkMove.UseMnemonic = False
+        Me.chkMove.UseVisualStyleBackColor = False
         '
         'lbMainsPower
         '
@@ -718,6 +712,58 @@ Partial Class frmCVJoy
         Me.lbReadArduino2Hz.Text = "0000"
         Me.lbReadArduino2Hz.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
+        'chkShakeSpeed
+        '
+        Me.chkShakeSpeed.AutoSize = True
+        Me.chkShakeSpeed.BackColor = System.Drawing.Color.Transparent
+        Me.chkShakeSpeed.Checked = True
+        Me.chkShakeSpeed.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkShakeSpeed.Location = New System.Drawing.Point(324, 210)
+        Me.chkShakeSpeed.Name = "chkShakeSpeed"
+        Me.chkShakeSpeed.Size = New System.Drawing.Size(91, 17)
+        Me.chkShakeSpeed.TabIndex = 166
+        Me.chkShakeSpeed.Text = "Shake Speed"
+        Me.chkShakeSpeed.UseVisualStyleBackColor = False
+        '
+        'lbGameInfo
+        '
+        Me.lbGameInfo.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lbGameInfo.BackColor = System.Drawing.SystemColors.Info
+        Me.lbGameInfo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbGameInfo.ForeColor = System.Drawing.SystemColors.InfoText
+        Me.lbGameInfo.Location = New System.Drawing.Point(1, 228)
+        Me.lbGameInfo.Name = "lbGameInfo"
+        Me.lbGameInfo.Size = New System.Drawing.Size(591, 13)
+        Me.lbGameInfo.TabIndex = 128
+        Me.lbGameInfo.Text = "   connection to selected game..."
+        '
+        'chkShakeAccel
+        '
+        Me.chkShakeAccel.AutoSize = True
+        Me.chkShakeAccel.BackColor = System.Drawing.Color.Transparent
+        Me.chkShakeAccel.Checked = True
+        Me.chkShakeAccel.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkShakeAccel.Location = New System.Drawing.Point(421, 210)
+        Me.chkShakeAccel.Name = "chkShakeAccel"
+        Me.chkShakeAccel.Size = New System.Drawing.Size(87, 17)
+        Me.chkShakeAccel.TabIndex = 167
+        Me.chkShakeAccel.Text = "Shake Accel"
+        Me.chkShakeAccel.UseVisualStyleBackColor = False
+        '
+        'chkShakeJump
+        '
+        Me.chkShakeJump.AutoSize = True
+        Me.chkShakeJump.BackColor = System.Drawing.Color.Transparent
+        Me.chkShakeJump.Checked = True
+        Me.chkShakeJump.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkShakeJump.Location = New System.Drawing.Point(513, 210)
+        Me.chkShakeJump.Name = "chkShakeJump"
+        Me.chkShakeJump.Size = New System.Drawing.Size(85, 17)
+        Me.chkShakeJump.TabIndex = 168
+        Me.chkShakeJump.Text = "Shake Jump"
+        Me.chkShakeJump.UseVisualStyleBackColor = False
+        '
         'UcButtons1
         '
         Me.UcButtons1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -735,6 +781,9 @@ Partial Class frmCVJoy
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ClientSize = New System.Drawing.Size(592, 386)
+        Me.Controls.Add(Me.chkShakeJump)
+        Me.Controls.Add(Me.chkShakeAccel)
+        Me.Controls.Add(Me.chkShakeSpeed)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.Label11)
         Me.Controls.Add(Me.lbReadArduino2Hz)
@@ -758,7 +807,7 @@ Partial Class frmCVJoy
         Me.Controls.Add(Me.btLogClear)
         Me.Controls.Add(Me.chkLogHideDups)
         Me.Controls.Add(Me.chkFFIgnore)
-        Me.Controls.Add(Me.chkNoMotors)
+        Me.Controls.Add(Me.chkMove)
         Me.Controls.Add(Me.lbAttitude)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.lbTemperature)
@@ -770,7 +819,7 @@ Partial Class frmCVJoy
         Me.Controls.Add(Me.chkFFCond)
         Me.Controls.Add(Me.chkFFConst)
         Me.Controls.Add(Me.cbLogFF)
-        Me.Controls.Add(Me.chkNoWind)
+        Me.Controls.Add(Me.chkWind)
         Me.Controls.Add(Me.lbClutch)
         Me.Controls.Add(Me.Label27)
         Me.Controls.Add(Me.lbBrake)
@@ -819,18 +868,17 @@ Partial Class frmCVJoy
     Friend WithEvents lbClutch As Label
     Friend WithEvents Label27 As Label
     Friend WithEvents ckKeepVisible As CheckBox
-    Friend WithEvents chkNoWind As CheckBox
+    Friend WithEvents chkWind As CheckBox
     Friend WithEvents cbLogFF As ComboBox
     Friend WithEvents chkFFConst As CheckBox
     Friend WithEvents chkFFCond As CheckBox
     Friend WithEvents btGameStart As Button
-    Friend WithEvents lbGameInfo As Label
     Friend WithEvents btGameSetup As Button
     Friend WithEvents cbGames As ComboBox
     Friend WithEvents lbTemperature As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents Label3 As Label
-    Friend WithEvents chkNoMotors As CheckBox
+    Friend WithEvents chkMove As CheckBox
     Friend WithEvents lbMainsPower As Label
     Friend WithEvents chkFFIgnore As CheckBox
     Friend WithEvents chkLogHideDups As CheckBox
@@ -856,4 +904,8 @@ Partial Class frmCVJoy
     Friend WithEvents Label8 As Label
     Friend WithEvents Label11 As Label
     Friend WithEvents lbReadArduino2Hz As Label
+    Friend WithEvents chkShakeSpeed As CheckBox
+    Friend WithEvents lbGameInfo As Label
+    Friend WithEvents chkShakeAccel As CheckBox
+    Friend WithEvents chkShakeJump As CheckBox
 End Class

@@ -98,7 +98,7 @@
 
         res &= ValidateNumber(txtWheelMidIn, 0, 255, "Wheel FF Mid Input")
         res &= ValidateNumber(txtWheelMidOut, 0, 255, "Wheel FF Mid Output")
-        res &= ValidateNumber(txtWheelMaxOut, 0, 255, "Wheel FF Max Output")
+        res &= ValidateNumber(txtWheelMaxOut, 0, 512, "Wheel FF Max Output")
         res &= ValidateNumber(txtWheelDampFactor, -9999, 9999, "Wheel FF Damp Factor")
         res &= ValidateNumber(txtWheelInertia, -100, 100, "Wheel Inertia Compensation")
 

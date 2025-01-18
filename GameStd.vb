@@ -33,7 +33,7 @@
         Return True ' AC IsNot Nothing
     End Function
 
-    Public Overrides Function GetGameOutputs() As clGameOutputs
+    Public Overrides Function GetGameOutputs(pDoWind As Boolean, pDoShakeSpeed As Boolean, pDoShakeAccel As Boolean, pDoShakeJump As Boolean) As clGameOutputs
         Dim res As clGameOutputs
         'res.LedBottom = True
         Return res

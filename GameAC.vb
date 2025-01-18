@@ -40,7 +40,7 @@ Public Class GameAC
         Return AC IsNot Nothing
     End Function
 
-    Public Overrides Function GetGameOutputs() As clGameOutputs
+    Public Overrides Function GetGameOutputs(pDoWind As Boolean, pDoShakeSpeed As Boolean, pDoShakeAccel As Boolean, pDoShakeJump As Boolean) As clGameOutputs
         ' Get data from AC:
         Dim ACstopped As Boolean = False
         If AC Is Nothing Then
@@ -69,25 +69,25 @@ Public Class GameAC
             State = ACS.ACVersion & "   " & ACS.CarModel & "   " & ACS.Track & "   " & ACS.TrackConfiguration
         End If
         GameOutputs.SlipFL = Math.Min(ACP.WheelSlip(0) / SettingsMain.SlipMax * 82, 255)
-            GameOutputs.SlipFR = Math.Min(ACP.WheelSlip(1) / SettingsMain.SlipMax * 82, 255)
-            GameOutputs.SlipRL = Math.Min(ACP.WheelSlip(2) / SettingsMain.SlipMax * 82, 255)
-            GameOutputs.SlipRR = Math.Min(ACP.WheelSlip(3) / SettingsMain.SlipMax * 82, 255)
-            GameOutputs.Speed = ACP.SpeedKmh
-            GameOutputs.RPM = ACP.Rpms
-            GameOutputs.Gear = ACP.Gear + 1
-            GameOutputs.GearAuto = ACP.AutoShifterOn > 0
-            If (ACP.TyreDirtyLevel IsNot Nothing) Then
-                GameOutputs.TyreDirtFL = Math.Min(ACP.TyreDirtyLevel(0) / SettingsMain.SlipMax * 255, 255)
-                GameOutputs.TyreDirtFR = Math.Min(ACP.TyreDirtyLevel(1) / SettingsMain.SlipMax * 255, 255)
-                GameOutputs.TyreDirtRL = Math.Min(ACP.TyreDirtyLevel(2) / SettingsMain.SlipMax * 255, 255)
-                GameOutputs.TyreDirtRR = Math.Min(ACP.TyreDirtyLevel(3) / SettingsMain.SlipMax * 255, 255)
-            End If
-            GameOutputs.TurboBoost = ACP.TurboBoost * 100
-            GameOutputs.GamePitch = ACP.Pitch
-            GameOutputs.GameRoll = ACP.Roll
-            GameOutputs.GameAccelZ = ACP.AccG(1)
+        GameOutputs.SlipFR = Math.Min(ACP.WheelSlip(1) / SettingsMain.SlipMax * 82, 255)
+        GameOutputs.SlipRL = Math.Min(ACP.WheelSlip(2) / SettingsMain.SlipMax * 82, 255)
+        GameOutputs.SlipRR = Math.Min(ACP.WheelSlip(3) / SettingsMain.SlipMax * 82, 255)
+        GameOutputs.Speed = ACP.SpeedKmh
+        GameOutputs.RPM = ACP.Rpms
+        GameOutputs.Gear = ACP.Gear + 1
+        GameOutputs.GearAuto = ACP.AutoShifterOn > 0
+        If (ACP.TyreDirtyLevel IsNot Nothing) Then
+            GameOutputs.TyreDirtFL = Math.Min(ACP.TyreDirtyLevel(0) / SettingsMain.SlipMax * 255, 255)
+            GameOutputs.TyreDirtFR = Math.Min(ACP.TyreDirtyLevel(1) / SettingsMain.SlipMax * 255, 255)
+            GameOutputs.TyreDirtRL = Math.Min(ACP.TyreDirtyLevel(2) / SettingsMain.SlipMax * 255, 255)
+            GameOutputs.TyreDirtRR = Math.Min(ACP.TyreDirtyLevel(3) / SettingsMain.SlipMax * 255, 255)
+        End If
+        GameOutputs.TurboBoost = ACP.TurboBoost * 100
+        GameOutputs.GamePitch = ACP.Pitch
+        GameOutputs.GameRoll = ACP.Roll
+        GameOutputs.GameAccelZ = ACP.AccG(1)
 
-        GameOutputs.Calculate()
+        GameOutputs.Calculate(IsPaused:=False, pDoWind, pDoShakeSpeed, pDoShakeAccel, pDoShakeJump)
         Return GameOutputs
     End Function
 

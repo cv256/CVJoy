@@ -176,7 +176,7 @@ start:
         End If
 
         If Game IsNot Nothing AndAlso Game.Started Then
-            GameOutputs = Game.GetGameOutputs() ' get realtime data from the Game 
+            GameOutputs = Game.GetGameOutputs(pDoWind:=chkWind.Checked, pDoShakeSpeed:=chkShakeSpeed.Checked, pDoShakeAccel:=chkShakeAccel.Checked, pDoShakeJump:=chkShakeJump.Checked) ' get realtime data from the Game 
         End If
 
         If TestMode = Motor.Wheel Then
@@ -205,21 +205,16 @@ start:
 
         If TestMode = Motor.Wind Then
             toArduino.windPower = TestValue
-        ElseIf Not chkNoWind.Checked Then
-            toArduino.windPower = GameOutputs.RigWind
         Else
-            toArduino.windPower = 0
+            toArduino.windPower = GameOutputs.RigWind
         End If
 
         If TestMode = Motor.Shake Then
             toArduino.shakePower = TestValue
             toArduino.shakeSpeed = 100 'GameOutputs.RigShakeSpeed
-        ElseIf Not chkNoWind.Checked Then
+        Else
             toArduino.shakePower = GameOutputs.RigShakePower
             toArduino.shakeSpeed = GameOutputs.RigShakeSpeed
-        Else
-            toArduino.shakePower = 0
-            toArduino.shakeSpeed = 0
         End If
 
         toArduino2.BreakLed = fromArduino.BrakeCorrected > 0

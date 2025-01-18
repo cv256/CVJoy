@@ -18,7 +18,7 @@
     Public MustOverride Sub Start()
     Public MustOverride Sub [Stop]()
     Public MustOverride Function Started() As Boolean
-    Public MustOverride Function GetGameOutputs() As clGameOutputs
+    Public MustOverride Function GetGameOutputs(pDoWind As Boolean, pDoShakeSpeed As Boolean, pDoShakeAccel As Boolean, pDoShakeJump As Boolean) As clGameOutputs
     Public MustOverride Function GetGameOutputsExtra() As clGameOutputsExtra
     Public MustOverride Sub ShowSetup()
 
@@ -96,11 +96,11 @@ Public Structure clGameOutputs ' info that needs updating very frequently
     Public Shared Function PausedGameOutputs(pSpeedTest As Single) As clGameOutputs
         Dim res As clGameOutputs
         res.Speed = pSpeedTest
-        res.Calculate(IsPaused:=True)
+        res.Calculate(IsPaused:=True, pDoWind:=False, pDoShakeSpeed:=False, pDoShakeAccel:=False, pDoShakeJump:=False)
         Return res
     End Function
 
-    Public Sub Calculate(Optional IsPaused As Boolean = False)
+    Public Sub Calculate(IsPaused As Boolean, pDoWind As Boolean, pDoShakeSpeed As Boolean, pDoShakeAccel As Boolean, pDoShakeJump As Boolean)
         If IsPaused Then
             Acceleration = 0
             Rotation = 0
@@ -120,9 +120,9 @@ Public Structure clGameOutputs ' info that needs updating very frequently
         Me.RigPitch = GamePitch * SettingsMain.Pitch + Acceleration * SettingsMain.Accel ' everything in Radians (me.accel has allready been converted) ' acP.AccG(2) has lots of noise, unusable!
         Me.RigRoll = -GameRoll * SettingsMain.Roll + Rotation * SettingsMain.Turn '' everything in Radians (me.turn has allready been converted)
         Dim Jump As Single = Math.Abs(GameAccelZ) ^ 2 * Math.Sign(GameAccelZ) * 10
-        Me.RigWind = FFWind(SpeedKmh:=Speed, pJump:=Jump, pAcceleration:=Acceleration)
-        Me.RigShakePower = FFShakePower(pJump:=Jump, pAcceleration:=Acceleration, SpeedKmh:=Speed)
-        Me.RigShakeSpeed = FFShakeSpeed(pJump:=Jump, pAcceleration:=Acceleration, SpeedKmh:=Speed)
+        Me.RigWind = If(pDoWind, FFWind(SpeedKmh:=Speed, pJump:=Jump, pAcceleration:=Acceleration), 0)
+        Me.RigShakePower = FFShakePower(pJump:=If(pDoShakeJump, Jump, 0), pAcceleration:=If(pDoShakeAccel, Acceleration, 0), SpeedKmh:=If(pDoShakeSpeed, Speed, 0))
+        Me.RigShakeSpeed = FFShakeSpeed(pJump:=If(pDoShakeJump, Jump, 0), pAcceleration:=If(pDoShakeAccel, Acceleration, 0), SpeedKmh:=If(pDoShakeSpeed, Speed, 0))
     End Sub
 
     Private Function FFWind(SpeedKmh As Single, pJump As Single, pAcceleration As Single) As Byte

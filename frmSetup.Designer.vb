@@ -613,7 +613,7 @@ Partial Class frmSetup
         Me.Label29.Name = "Label29"
         Me.Label29.Size = New System.Drawing.Size(28, 12)
         Me.Label29.TabIndex = 162
-        Me.Label29.Text = "0-255"
+        Me.Label29.Text = "0-512"
         '
         'txtWheelMaxOut
         '

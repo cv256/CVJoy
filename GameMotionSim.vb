@@ -98,13 +98,13 @@ Public Class GameMotionSim
         End If
     End Sub
 
-    Public Overrides Function GetGameOutputs() As clGameOutputs
+    Public Overrides Function GetGameOutputs(pDoWind As Boolean, pDoShakeSpeed As Boolean, pDoShakeAccel As Boolean, pDoShakeJump As Boolean) As clGameOutputs
         If Now.Subtract(LastUDPReceived).TotalMilliseconds > 1000 Then
             State = "PAUSED"
             Return clGameOutputs.PausedGameOutputs(fromArduino.AccelCorrected)  'If tmpFrm IsNot Nothing Then Integer.TryParse(tmpFrm.lbACSpeed.Text, ACP.SpeedKmh) ' if not connected to AC, user can input data to simulate AC
         End If
         State = "RUNNING"
-        GameOutputs.Calculate()
+        GameOutputs.Calculate(IsPaused:=False, pDoWind, pDoShakeSpeed, pDoShakeAccel, pDoShakeJump)
         Return GameOutputs
     End Function
 
