@@ -37,7 +37,7 @@
 // #define pinRightMotorPower  9
 // #define pinRightMotorDir1  26
 // #define pinRightMotorDir2  27
-#define pinBreakLed 11
+#define pinBreakLed 52
 
 
 void setup()
@@ -76,17 +76,19 @@ void setup()
 } //...setup
 
 
+const byte SerialSend2PacketLen=4; // from PC to Arduino
+const byte SerialRead2PacketLen=6; // from Arduino to PC
 
 //unsigned long dimmerLeftDelay;
 //unsigned long dimmerRightDelay;
 //char leftMotorPower;// -127 to 127
 //char rightMotorPower;// -127 to 127
-byte serialReceived[4]; // SerialSend2.PacketLen
+byte serialReceived[SerialSend2PacketLen]; 
 byte serialReceivedIdx;
 byte errors; // 1=not receiving data / 2=got invalid data from computer / 16=ACPower
 unsigned long lastSerialRecv;
 unsigned long lastMainsZero;
-unsigned int every30Hz;
+unsigned long lastSerialSend;
 
 
 
@@ -97,12 +99,12 @@ void loop()
 		serialReceived[serialReceivedIdx] = Serial.read();
 		serialReceivedIdx++;
 
-		if (serialReceivedIdx < 4) {  // SerialSend2.PacketLen
+		if (serialReceivedIdx < SerialSend2PacketLen) { 
 			goto noData;
 		}
 
 		// READ from computer / write to hardware: --------------------- must be equal to CVJoyAc.SerialSend
-		if (serialReceived[0] < 254) {
+		if (serialReceived[0] < 254) {  // if it doesnt start with the correct header then it is trash
 			shift1();
 			goto noData;
 		}
@@ -121,9 +123,9 @@ void loop()
 		lastSerialRecv = millis();
 
 		if ((serialReceived[0] & 1) == 0) {
-		  analogWrite(pinBreakLed, LOW);
+		  digitalWrite(pinBreakLed, LOW);
 		} else {
-		  analogWrite(pinBreakLed, HIGH);
+		  digitalWrite(pinBreakLed, HIGH);
 		}
 
 	}
@@ -140,39 +142,39 @@ noData:
 		errors = errors | 1;
 	}
 
-	if (micros() - lastMainsZero > 11000) errors += 16; // No Mains power / MainsPower freq lower than 50Hz+10%
+	if (micros() - lastMainsZero > 11000) errors = errors | 16; // No Mains power / MainsPower freq lower than 50Hz+10%
 
-	// send to PC:
-	every30Hz++;
-	if (every30Hz >= 4000) {
-		every30Hz = 0;
-		byte serialWrite[1]; // must be equal to CVJoyAc.SerialRead
-		serialWrite[0] = 253; // checkdigit
-		serialWrite[1] = errors;
-		Serial.write(serialWrite, 8);
-	}
+    byte serialWrite[SerialRead2PacketLen];
 
-	/*
 	  // Read Left Distance :
+    int tmpUInt=0;
 	  digitalWrite(pinLeftUSSend, HIGH);// The PING is triggered by a HIGH pulse of 10 or more microseconds
 	  delayMicroseconds(12);
 	  digitalWrite(pinLeftUSSend, LOW);
-	  tmpUInt=pulseIn(pinLeftUSRead, HIGH, 2100); // microseconds of (total) sound travel, timeout at 70cm;
-	  serialWrite[11]=tmpUInt & 255;
-	  serialWrite[12]=tmpUInt / 256;
+	  //tmpUInt=pulseIn(pinLeftUSRead, HIGH, 2100); // microseconds of (total) sound travel, timeout at 70cm;
+	  serialWrite[2]=tmpUInt & 255;
+	  serialWrite[3]=tmpUInt / 256;
 	  // Read Right Distance :
 	  digitalWrite(pinRightUSSend, HIGH);// The PING is triggered by a HIGH pulse of 10 or more microseconds
 	  delayMicroseconds(12);
 	  digitalWrite(pinRightUSSend, LOW);
-	  tmpUInt=pulseIn(pinRightUSRead, HIGH, 2100); // microseconds of (total) sound travel, timeout at 70cm;
-	  serialWrite[13]=tmpUInt & 255;
-	  serialWrite[14]=tmpUInt / 256;
+	  //tmpUInt=pulseIn(pinRightUSRead, HIGH, 2100); // microseconds of (total) sound travel, timeout at 70cm;
+	  serialWrite[4]=tmpUInt & 255;
+	  serialWrite[5]=tmpUInt / 256;
 	  // TODO: define the motors powers based of the actual positions versus the desired position
-	 */
-
+	 
 	if ((errors & 1) == 0) {  // if we lost communication we have just stopped the motors and dont want the following code to power them again
 		triacs();
 	}
+
+  // send to PC:
+  if (millis()-lastSerialSend >= 40) {
+    serialWrite[0] = 253; // checkdigit
+    serialWrite[1] = errors;
+    errors=0;
+    Serial.write(serialWrite, SerialRead2PacketLen);
+    lastSerialSend = millis();
+  }
 
 } //...loop
 

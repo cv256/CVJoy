@@ -40,17 +40,17 @@ Public Structure SerialSend2
 End Structure
 
 Public Class SerialRead2
-    Public Const PacketLen As Byte = 2
+    Public Const PacketLen As Byte = 6
 
-    'Public RealLeft As Single
-    'Public RealRight As Single
+    Public RealLeft As Single
+    Public RealRight As Single
     Public Sub SetSerialData(pSerialData As List(Of Byte))
         'pSerialData(0) = recordType
         'pSerialData(1) = errors / ACpower
 
-        'Const soundSpeed As Single = 0.172922 ' 331300 + 606 * tempAirCelsius / 1000000 / 2   =   mm per microsecond , go and return  <=>  34cm =  0,002 seconds
-        'RealLeft = CSng(pSerialData(11) + pSerialData(12) * 256) * soundSpeed
-        'RealRight = CSng(pSerialData(13) + pSerialData(14) * 256) * soundSpeed
+        Const soundSpeed As Single = 0.172922 ' 331300 + 606 * tempAirCelsius / 1000000 / 2   =   mm per microsecond , go and return  <=>  34cm =  0,002 seconds
+        RealLeft = CSng(pSerialData(2) + pSerialData(3) * 256) * soundSpeed
+        RealRight = CSng(pSerialData(4) + pSerialData(5) * 256) * soundSpeed
     End Sub
 End Class
 

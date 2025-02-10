@@ -17,10 +17,12 @@ Public Class frmCVJoy
     Public FFWheel_Cond As New vJoyInterfaceWrap.vJoy.FFB_EFF_COND
     Public FFWheel_Const As New vJoyInterfaceWrap.vJoy.FFB_EFF_CONSTANT
 
-    'Private _realLeft As Single, _realRight As Single ' position now (from sensor) in milimeters, tipically from   minus GMaxScrewDown    to    Zero (center)    to    GMaxScrewUp
-    'Private _realOKLeft As Single, _realOKRight As Single ' position now (from sensor plus corrections) in milimeters, tipically from   minus GMaxScrewDown    to    Zero (center)    to    GMaxScrewUp
-    'Private _lastLeftMotorSpeed As Single, _lastRightMotorSpeed As Single ' -100~100 negative=bolt going down
-    'Private _motorOverHeat As Single
+    Private Arduino2LastRead As Date
+    Private _realLeft As Single, _realRight As Single ' position now (from sensor) in milimeters, tipically from   minus GMaxScrewDown    to    Zero (center)    to    GMaxScrewUp
+    Private _realOKLeft As Single, _realOKRight As Single ' position now (from sensor plus corrections) in milimeters, tipically from   minus GMaxScrewDown    to    Zero (center)    to    GMaxScrewUp
+    Private _lastLeftMotorSpeed As Single, _lastRightMotorSpeed As Single ' -100~100 negative=bolt going down
+    Private _motorOverHeat As Single
+
     Private WheelPosition As Integer ', WheelPositionDesired As Integer
     ' Date datatype accuracy is 0,1ms = 10kHz
     Private WheelReadTime As Date = Now.AddSeconds(-1), WheelPositionPrevious As Integer, WheelReadPreviousTime As Date = Now.AddSeconds(-1) ' these are only for the Conditional FFB calulations
@@ -28,7 +30,7 @@ Public Class frmCVJoy
     Private SendToArduinoCount As UInteger, ReadArduino1Count As UInteger, ReadArduino2Count As UInteger, FFBReadCount As UInteger, UDPCount As UInteger, ScreenUpdateLastTime As Date = Now
 
 
-    Public Enum Motor
+    Public Enum enumTestMode
         None
         StopProcesss
         Reset
@@ -41,7 +43,7 @@ Public Class frmCVJoy
         Wind
         Shake
     End Enum
-    Public TestMode As Motor, TestValue As Integer = 0
+    Public TestMode As enumTestMode, TestValue As Integer = 0
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Text &= "  " & Application.ProductVersion
@@ -127,7 +129,7 @@ Public Class frmCVJoy
             btArduinoStart2.Text = "Start"
         Else
             Try
-                SerialPort2.PortName = SettingsMain.ArduinoComPort
+                SerialPort2.PortName = SettingsMain.ArduinoComPort2
                 SerialPort2.BaudRate = SettingsMain.ComBaud
                 SerialPort2.DataBits = 8
                 SerialPort2.Parity = Parity.None
@@ -168,9 +170,9 @@ start:
 
         ' prepare data to send to the Arduino :
 
-        If TestMode = Motor.Reset Then
+        If TestMode = enumTestMode.Reset Then
             toArduino.Reset = True
-            TestMode = Motor.None
+            TestMode = enumTestMode.None
         Else
             toArduino.Reset = False
         End If
@@ -179,9 +181,9 @@ start:
             GameOutputs = Game.GetGameOutputs(pDoWind:=chkWind.Checked, pDoShakeSpeed:=chkShakeSpeed.Checked, pDoShakeAccel:=chkShakeAccel.Checked, pDoShakeJump:=chkShakeJump.Checked) ' get realtime data from the Game 
         End If
 
-        If TestMode = Motor.Wheel Then
+        If TestMode = enumTestMode.Wheel Then
             toArduino.wheelPower = TestValue
-        ElseIf TestMode = Motor.WheelCenter Then
+        ElseIf TestMode = enumTestMode.WheelCenter Then
             toArduino.wheelPower = If(WheelPosition < 0, -TestValue, If(WheelPosition > 0, TestValue, 0))
         Else
             If WheelPosition <= -16380 Then
@@ -203,13 +205,13 @@ start:
         lastwheelPower = tmpInt
         If LogToFile IsNot Nothing Then LogToFile.LogWheelMotorOut(toArduino.wheelPower, WheelPosition)
 
-        If TestMode = Motor.Wind Then
+        If TestMode = enumTestMode.Wind Then
             toArduino.windPower = TestValue
         Else
             toArduino.windPower = GameOutputs.RigWind
         End If
 
-        If TestMode = Motor.Shake Then
+        If TestMode = enumTestMode.Shake Then
             toArduino.shakePower = TestValue
             toArduino.shakeSpeed = 100 'GameOutputs.RigShakeSpeed
         Else
@@ -222,111 +224,111 @@ start:
 #Region "PowerFromAngle: calculates power to apply now, based on the previous position readings"
 
         '' convert Desired Angles into Desired Screw Positions:
-        'If GameOutputs.Pitch > 0 Then GameOutputs.Pitch = (GameOutputs.Pitch * 20) ^ SettingsMain.UltrasonicGama / 12
-        'Dim DesiredLeftScrew As Integer = -SettingsMain.GZDistance * Math.Sin(GameOutputs.Pitch) + SettingsMain.GXDistance * Math.Sin(GameOutputs.Roll) ' in mm
-        'Dim DesiredRightScrew As Integer = -SettingsMain.GZDistance * Math.Sin(GameOutputs.Pitch) - SettingsMain.GXDistance * Math.Sin(GameOutputs.Roll) ' in mm
-        'If DesiredLeftScrew > SettingsMain.GMaxScrewUp Then DesiredLeftScrew = SettingsMain.GMaxScrewUp
-        'If DesiredLeftScrew < -SettingsMain.GMaxScrewDown Then DesiredLeftScrew = -SettingsMain.GMaxScrewDown
-        'If DesiredRightScrew > SettingsMain.GMaxScrewUp Then DesiredRightScrew = SettingsMain.GMaxScrewUp
-        'If DesiredRightScrew < -SettingsMain.GMaxScrewDown Then DesiredRightScrew = -SettingsMain.GMaxScrewDown
+        If GameOutputs.RigPitch > 0 Then GameOutputs.RigPitch = (GameOutputs.RigPitch * 20) ^ SettingsMain.UltrasonicGama / 12
+        Dim DesiredLeftScrew As Integer = -SettingsMain.GZDistance * Math.Sin(GameOutputs.RigPitch) + SettingsMain.GXDistance * Math.Sin(GameOutputs.RigRoll) ' in mm
+        Dim DesiredRightScrew As Integer = -SettingsMain.GZDistance * Math.Sin(GameOutputs.RigPitch) - SettingsMain.GXDistance * Math.Sin(GameOutputs.RigRoll) ' in mm
+        If DesiredLeftScrew > SettingsMain.GMaxScrewUp Then DesiredLeftScrew = SettingsMain.GMaxScrewUp
+        If DesiredLeftScrew < -SettingsMain.GMaxScrewDown Then DesiredLeftScrew = -SettingsMain.GMaxScrewDown
+        If DesiredRightScrew > SettingsMain.GMaxScrewUp Then DesiredRightScrew = SettingsMain.GMaxScrewUp
+        If DesiredRightScrew < -SettingsMain.GMaxScrewDown Then DesiredRightScrew = -SettingsMain.GMaxScrewDown
 
-        'Const PowerInertia As Single = 0.86
-        'Dim leftMotorSpeed As Single = _lastLeftMotorSpeed * PowerInertia
-        'Dim rightMotorSpeed As Single = _lastRightMotorSpeed * PowerInertia
-        '' calculate power to apply on Left and Right Motors:
-        '.leftPower = 0
-        '.rightPower = 0
-        'Dim GMinDiffProtected As Integer = SettingsMain.GMinDiff
-        'If Now.Subtract(ArduinoLastRead).TotalMilliseconds > 200 _
-        '    AndAlso SerialPort1.IsOpen Then ' SHIIIT,  STOP everything ! dont even try to correct it, wires, relays or screws may be swaped or broken !
-        '    ErrorAdd("NO POSITION DATA FROM ARDUINO !", $"   last read {(Now.Subtract(ArduinoLastRead).TotalMilliseconds / 1000).ToString("0.00")} seconds ago")
-        'ElseIf (_realOKLeft > (SettingsMain.GMaxScrewUp + SettingsMain.GMinDiff * 2) _
-        'OrElse _realOKLeft < -(SettingsMain.GMaxScrewDown + SettingsMain.GMinDiff * 2) _
-        'OrElse _realOKRight > (SettingsMain.GMaxScrewUp + SettingsMain.GMinDiff * 2) _
-        'OrElse _realOKRight < -(SettingsMain.GMaxScrewDown + SettingsMain.GMinDiff * 2)) _
-        'AndAlso SerialPort1.IsOpen Then ' SHIIIT, stop everything ! dont even try to correct it, wires, relays or screws may be swaped or broken !
-        '    If Not chkNoMotors.Checked Then ErrorAdd("OUT OF BOUNDS !", $"   LeftPosition={CInt(_realOKLeft)}mm     RightPosition={CInt(_realOKRight)}mm")
-        'Else ' No shit, normal :
-        '    Dim leftDiff As Integer = 0 ' positive = bolt is downer than what we want (car attitude is too up)
-        '    Dim rightDiff As Integer = 0
-        '    If TestMode = Motor.Pitch Then
-        '        leftDiff = TestValue
-        '        rightDiff = TestValue
-        '    ElseIf TestMode = Motor.Roll Then
-        '        leftDiff = TestValue
-        '        rightDiff = -TestValue
-        '    ElseIf TestMode = Motor.Left Then
-        '        leftDiff = TestValue
-        '    ElseIf TestMode = Motor.Right Then
-        '        rightDiff = TestValue
-        '    ElseIf Not chkNoMotors.Checked Then
-        '        leftDiff = DesiredLeftScrew - _realOKLeft
-        '        rightDiff = DesiredRightScrew - _realOKRight
-        '        GMinDiffProtected = SettingsMain.GMinDiff + _motorOverHeat  '  if motors's temperature is getting to hight, widen deadzone, avoid details, do just the most important moves
-        '    End If
-        '    If leftDiff >= If(_lastLeftMotorSpeed >= SettingsMain.GMinMotorEfficiency, 1, GMinDiffProtected) Then
-        '        If _realOKLeft >= SettingsMain.GMaxScrewUp Then ' no more power up here, we are at the upper limit
-        '        Else ' push the bolt up:
-        '            .leftPower = Math.Min(127, ScaleValue(leftDiff, 0, SettingsMain.GMaxDiff, SettingsMain.GPowerForMin, 127))
-        '            leftMotorSpeed += ScaleValue(.leftPower, SettingsMain.GPowerForMin, 127, SettingsMain.GMinMotorEfficiency, SettingsMain.GMaxMotorEfficiency) * (1 - PowerInertia)
-        '        End If
-        '    ElseIf leftDiff <= -If(_lastLeftMotorSpeed <= -SettingsMain.GMinMotorEfficiency, 1, GMinDiffProtected) Then
-        '        If _realOKLeft <= -SettingsMain.GMaxScrewDown Then ' no more power down here, we are at the lower limit
-        '        Else ' push the bolt down:
-        '            .leftPower = -Math.Min(127, ScaleValue(-leftDiff, 0, SettingsMain.GMaxDiff, SettingsMain.GPowerForMin, 127))
-        '            leftMotorSpeed += -ScaleValue(- .leftPower, SettingsMain.GPowerForMin, 127, SettingsMain.GMinMotorEfficiency, SettingsMain.GMaxMotorEfficiency) * (1 - PowerInertia)
-        '        End If
-        '    End If
-        '    If rightDiff >= If(_lastRightMotorSpeed >= SettingsMain.GMinMotorEfficiency, 1, GMinDiffProtected) Then
-        '        If _realOKRight >= SettingsMain.GMaxScrewUp Then ' no more power up here, we are at the upper limit
-        '        Else ' push the bolt up:
-        '            .rightPower = Math.Min(127, ScaleValue(rightDiff, 0, SettingsMain.GMaxDiff, SettingsMain.GPowerForMin, 127))
-        '            rightMotorSpeed += ScaleValue(.rightPower, SettingsMain.GPowerForMin, 127, SettingsMain.GMinMotorEfficiency, SettingsMain.GMaxMotorEfficiency) * (1 - PowerInertia)
-        '        End If
-        '    ElseIf rightDiff <= -If(_lastRightMotorSpeed <= -SettingsMain.GMinMotorEfficiency, 1, GMinDiffProtected) Then
-        '        If _realOKRight <= -SettingsMain.GMaxScrewDown Then ' no more power down here, we are at the lower limit
-        '        Else ' push the bolt down:
-        '            .rightPower = -Math.Min(127, ScaleValue(-rightDiff, 0, SettingsMain.GMaxDiff, SettingsMain.GPowerForMin, 127))
-        '            rightMotorSpeed += -ScaleValue(- .rightPower, SettingsMain.GPowerForMin, 127, SettingsMain.GMinMotorEfficiency, SettingsMain.GMaxMotorEfficiency) * (1 - PowerInertia)
-        '        End If
-        '    End If
-        'End If
+        Const PowerInertia As Single = 0.86
+        Dim leftMotorSpeed As Single = _lastLeftMotorSpeed * PowerInertia
+        Dim rightMotorSpeed As Single = _lastRightMotorSpeed * PowerInertia
+        ' calculate power to apply on Left and Right Motors:
+        toArduino2.leftPower = 0
+        toArduino2.rightPower = 0
+        Dim GMinDiffProtected As Integer = SettingsMain.GMinDiff
+        If Now.Subtract(Arduino2LastRead).TotalMilliseconds > 200 _
+            AndAlso SerialPort2.IsOpen Then ' SHIIIT,  STOP everything ! dont even try to correct it, wires, relays or screws may be swaped or broken !
+            ErrorAdd("NO POSITION DATA FROM ARDUINO !", $"   last read {(Now.Subtract(Arduino2LastRead).TotalMilliseconds / 1000).ToString("0.00")} seconds ago")
+        ElseIf (_realOKLeft > (SettingsMain.GMaxScrewUp + SettingsMain.GMinDiff * 2) _
+        OrElse _realOKLeft < -(SettingsMain.GMaxScrewDown + SettingsMain.GMinDiff * 2) _
+        OrElse _realOKRight > (SettingsMain.GMaxScrewUp + SettingsMain.GMinDiff * 2) _
+        OrElse _realOKRight < -(SettingsMain.GMaxScrewDown + SettingsMain.GMinDiff * 2)) _
+        AndAlso SerialPort1.IsOpen Then ' SHIIIT, stop everything ! dont even try to correct it, wires, relays or screws may be swaped or broken !
+            If Not chkMove.Checked Then ErrorAdd("OUT OF BOUNDS !", $"   LeftPosition={CInt(_realOKLeft)}mm     RightPosition={CInt(_realOKRight)}mm")
+        Else ' No shit, normal :
+            Dim leftDiff As Integer = 0 ' positive = bolt is downer than what we want (car attitude is too up)
+            Dim rightDiff As Integer = 0
+            If TestMode = enumTestMode.Pitch Then
+                leftDiff = TestValue
+                rightDiff = TestValue
+            ElseIf TestMode = enumTestMode.Roll Then
+                leftDiff = TestValue
+                rightDiff = -TestValue
+            ElseIf TestMode = enumTestMode.Left Then
+                leftDiff = TestValue
+            ElseIf TestMode = enumTestMode.Right Then
+                rightDiff = TestValue
+            ElseIf Not chkMove.Checked Then
+                leftDiff = DesiredLeftScrew - _realOKLeft
+                rightDiff = DesiredRightScrew - _realOKRight
+                GMinDiffProtected = SettingsMain.GMinDiff + _motorOverHeat  '  if motors's temperature is getting to hight, widen deadzone, avoid details, do just the most important moves
+            End If
+            If leftDiff >= If(_lastLeftMotorSpeed >= SettingsMain.GMinMotorEfficiency, 1, GMinDiffProtected) Then
+                If _realOKLeft >= SettingsMain.GMaxScrewUp Then ' no more power up here, we are at the upper limit
+                Else ' push the bolt up:
+                    toArduino2.leftPower = Math.Min(127, ScaleValue(leftDiff, 0, SettingsMain.GMaxDiff, SettingsMain.GPowerForMin, 127))
+                    leftMotorSpeed += ScaleValue(toArduino2.leftPower, SettingsMain.GPowerForMin, 127, SettingsMain.GMinMotorEfficiency, SettingsMain.GMaxMotorEfficiency) * (1 - PowerInertia)
+                End If
+            ElseIf leftDiff <= -If(_lastLeftMotorSpeed <= -SettingsMain.GMinMotorEfficiency, 1, GMinDiffProtected) Then
+                If _realOKLeft <= -SettingsMain.GMaxScrewDown Then ' no more power down here, we are at the lower limit
+                Else ' push the bolt down:
+                    toArduino2.leftPower = -Math.Min(127, ScaleValue(-leftDiff, 0, SettingsMain.GMaxDiff, SettingsMain.GPowerForMin, 127))
+                    leftMotorSpeed += -ScaleValue(-toArduino2.leftPower, SettingsMain.GPowerForMin, 127, SettingsMain.GMinMotorEfficiency, SettingsMain.GMaxMotorEfficiency) * (1 - PowerInertia)
+                End If
+            End If
+            If rightDiff >= If(_lastRightMotorSpeed >= SettingsMain.GMinMotorEfficiency, 1, GMinDiffProtected) Then
+                If _realOKRight >= SettingsMain.GMaxScrewUp Then ' no more power up here, we are at the upper limit
+                Else ' push the bolt up:
+                    toArduino2.rightPower = Math.Min(127, ScaleValue(rightDiff, 0, SettingsMain.GMaxDiff, SettingsMain.GPowerForMin, 127))
+                    rightMotorSpeed += ScaleValue(toArduino2.rightPower, SettingsMain.GPowerForMin, 127, SettingsMain.GMinMotorEfficiency, SettingsMain.GMaxMotorEfficiency) * (1 - PowerInertia)
+                End If
+            ElseIf rightDiff <= -If(_lastRightMotorSpeed <= -SettingsMain.GMinMotorEfficiency, 1, GMinDiffProtected) Then
+                If _realOKRight <= -SettingsMain.GMaxScrewDown Then ' no more power down here, we are at the lower limit
+                Else ' push the bolt down:
+                    toArduino2.rightPower = -Math.Min(127, ScaleValue(-rightDiff, 0, SettingsMain.GMaxDiff, SettingsMain.GPowerForMin, 127))
+                    rightMotorSpeed += -ScaleValue(-toArduino2.rightPower, SettingsMain.GPowerForMin, 127, SettingsMain.GMinMotorEfficiency, SettingsMain.GMaxMotorEfficiency) * (1 - PowerInertia)
+                End If
+            End If
+        End If
 
-        '' guess motors's temperature: TODO: we should compare LastPower versus Power, not LastSpeed against Power ?
-        'If Math.Sign(_lastLeftMotorSpeed) <> Math.Sign(.leftPower) AndAlso _lastLeftMotorSpeed <> 0 AndAlso .leftPower <> 0 Then _motorOverHeat += Math.Abs(_lastLeftMotorSpeed - .leftPower) / 8000
-        'If Math.Sign(_lastRightMotorSpeed) <> Math.Sign(.rightPower) AndAlso _lastRightMotorSpeed <> 0 AndAlso .rightPower <> 0 Then _motorOverHeat += Math.Abs(_lastRightMotorSpeed - .rightPower) / 8000
-        '_motorOverHeat *= 0.9975
-        '_lastLeftMotorSpeed = leftMotorSpeed
-        '_lastRightMotorSpeed = rightMotorSpeed
+        ' guess motors's temperature: TODO: we should compare LastPower versus Power, not LastSpeed against Power ?
+        If Math.Sign(_lastLeftMotorSpeed) <> Math.Sign(toArduino2.leftPower) AndAlso _lastLeftMotorSpeed <> 0 AndAlso toArduino2.leftPower <> 0 Then _motorOverHeat += Math.Abs(_lastLeftMotorSpeed - toArduino2.leftPower) / 8000
+        If Math.Sign(_lastRightMotorSpeed) <> Math.Sign(toArduino2.rightPower) AndAlso _lastRightMotorSpeed <> 0 AndAlso toArduino2.rightPower <> 0 Then _motorOverHeat += Math.Abs(_lastRightMotorSpeed - toArduino2.rightPower) / 8000
+        _motorOverHeat *= 0.9975
+        _lastLeftMotorSpeed = leftMotorSpeed
+        _lastRightMotorSpeed = rightMotorSpeed
 
-        '' this is the real reading, damped, plus the compensation for the lag introduced by the damping of the real data... (we have to guess the actual position)
-        '_realOKLeft = _realOKLeft * SettingsMain.UltrasonicDamper + _realLeft * (1 - SettingsMain.UltrasonicDamper) + leftMotorSpeed / 40 * SettingsMain.UltrasonicDamper
-        '_realOKRight = _realOKRight * SettingsMain.UltrasonicDamper + _realRight * (1 - SettingsMain.UltrasonicDamper) + rightMotorSpeed / 40 * SettingsMain.UltrasonicDamper
+        ' this is the real reading, damped, plus the compensation for the lag introduced by the damping of the real data... (we have to guess the actual position)
+        _realOKLeft = _realOKLeft * SettingsMain.UltrasonicDamper + _realLeft * (1 - SettingsMain.UltrasonicDamper) + leftMotorSpeed / 40 * SettingsMain.UltrasonicDamper
+        _realOKRight = _realOKRight * SettingsMain.UltrasonicDamper + _realRight * (1 - SettingsMain.UltrasonicDamper) + rightMotorSpeed / 40 * SettingsMain.UltrasonicDamper
 
-        '' graph:
-        'If Ggraph IsNot Nothing Then Ggraph.UpdateValue(GMinDiffProtected, _realLeft, _realRight, _realOKLeft, _realOKRight, DesiredLeftScrew, DesiredRightScrew, .leftPower, .rightPower, leftMotorSpeed, rightMotorSpeed)
+        ' graph:
+        If Ggraph IsNot Nothing Then Ggraph.UpdateValue(GMinDiffProtected, _realLeft, _realRight, _realOKLeft, _realOKRight, DesiredLeftScrew, DesiredRightScrew, toArduino2.leftPower, toArduino2.rightPower, leftMotorSpeed, rightMotorSpeed)
 
-        '' draw Attitude:
-        'If Me.WindowState <> FormWindowState.Minimized AndAlso ckDontShow.Checked = False Then
-        '    lbTemperature.Text = _motorOverHeat.ToString("0.0")
-        '    With lbAttitude.CreateGraphics()
-        '        Dim centerX As Integer = lbAttitude.Width / 2, centerY As Integer = lbAttitude.Height / 2
-        '        Dim backcolor As Color = Color.White ' If(_realPitch > SettingsMain.MaxPitch OrElse _realPitch < -SettingsMain.MinPitch, Color.Red, Color.White)
-        '        .Clear(backcolor)
-        '        ' paint red squares if overflowing:
-        '        If DesiredLeftScrew >= SettingsMain.GMaxScrewUp Then .FillRectangle(New SolidBrush(Color.Red), 0, 0, centerX, centerY)
-        '        If DesiredLeftScrew <= -SettingsMain.GMaxScrewDown Then .FillRectangle(New SolidBrush(Color.Red), 0, centerY, centerX, centerY)
-        '        If DesiredRightScrew >= SettingsMain.GMaxScrewUp Then .FillRectangle(New SolidBrush(Color.Red), centerX, 0, centerX, centerY)
-        '        If DesiredRightScrew <= -SettingsMain.GMaxScrewDown Then .FillRectangle(New SolidBrush(Color.Red), centerX, centerY, centerX, centerY)
-        '        ' draw center cross:
-        '        .DrawLine(Pens.Green, centerX - 8, centerY, centerX + 8, centerY) : .DrawLine(Pens.Green, centerX, centerY - 8, centerX, centerY + 8)
-        '        Dim racioY As Single = centerY / Math.Max(SettingsMain.GMaxScrewUp, SettingsMain.GMaxScrewDown)
-        '        ' draw desired position line:
-        '        .DrawLine(Pens.Green, 0, centerY - CInt(DesiredLeftScrew * racioY), lbAttitude.Width, centerY - CInt(DesiredRightScrew * racioY))
-        '        ' draw real position line:
-        '        .DrawLine(Pens.Black, 0, centerY - CInt(_realOKLeft * racioY), lbAttitude.Width, centerY - CInt(_realOKRight * racioY))
-        '    End With
-        'End If
+        ' draw Attitude:
+        If Me.WindowState <> FormWindowState.Minimized AndAlso ckDontShow.Checked = False Then
+            lbTemperature.Text = _motorOverHeat.ToString("0.0")
+            With lbAttitude.CreateGraphics()
+                Dim centerX As Integer = lbAttitude.Width / 2, centerY As Integer = lbAttitude.Height / 2
+                Dim backcolor As Color = Color.White ' If(_realPitch > SettingsMain.MaxPitch OrElse _realPitch < -SettingsMain.MinPitch, Color.Red, Color.White)
+                .Clear(backcolor)
+                ' paint red squares if overflowing:
+                If DesiredLeftScrew >= SettingsMain.GMaxScrewUp Then .FillRectangle(New SolidBrush(Color.Red), 0, 0, centerX, centerY)
+                If DesiredLeftScrew <= -SettingsMain.GMaxScrewDown Then .FillRectangle(New SolidBrush(Color.Red), 0, centerY, centerX, centerY)
+                If DesiredRightScrew >= SettingsMain.GMaxScrewUp Then .FillRectangle(New SolidBrush(Color.Red), centerX, 0, centerX, centerY)
+                If DesiredRightScrew <= -SettingsMain.GMaxScrewDown Then .FillRectangle(New SolidBrush(Color.Red), centerX, centerY, centerX, centerY)
+                ' draw center cross:
+                .DrawLine(Pens.Green, centerX - 8, centerY, centerX + 8, centerY) : .DrawLine(Pens.Green, centerX, centerY - 8, centerX, centerY + 8)
+                Dim racioY As Single = centerY / Math.Max(SettingsMain.GMaxScrewUp, SettingsMain.GMaxScrewDown)
+                ' draw desired position line:
+                .DrawLine(Pens.Green, 0, centerY - CInt(DesiredLeftScrew * racioY), lbAttitude.Width, centerY - CInt(DesiredRightScrew * racioY))
+                ' draw real position line:
+                .DrawLine(Pens.Black, 0, centerY - CInt(_realOKLeft * racioY), lbAttitude.Width, centerY - CInt(_realOKRight * racioY))
+            End With
+        End If
 #End Region
 
         If SerialPort1.IsOpen Then
@@ -354,10 +356,10 @@ start:
             ' FOR DEBUGGING :
             'ErrorAdd("SerialPort2 Send " & String.Join(" ", toArduino2.GetSerialData), "")
 
-            'SerialPort2_DataReceived(Nothing, Nothing)
+            SerialPort2_DataReceived(Nothing, Nothing)
         End If
 
-        If TestMode = Motor.StopProcesss Then Exit Sub
+        If TestMode = enumTestMode.StopProcesss Then Exit Sub
         'TimerSendToArduino.Start()
         If SettingsMain.RefreshRate < 200 Then System.Threading.Thread.Sleep(900 / SettingsMain.RefreshRate) ' give time to finnish processing eventualy received data from arduino
         Application.DoEvents()
@@ -673,7 +675,7 @@ start:
             ' remove garbage at the begining:
             Do
                 If SerialReceiveBuffer2.Count < SerialRead2.PacketLen Then Exit Sub
-                If SerialReceiveBuffer2(0) <> 253 Then Exit Do ' valid recordTypes are 253
+                If SerialReceiveBuffer2(0) = 253 Then Exit Do ' valid recordTypes are 253
                 SerialReceiveBuffer2.RemoveAt(0) ' if it was not a valid recordType ignore it, and check if the next position is a valid recordType
             Loop
 
@@ -700,8 +702,9 @@ start:
                 ErrorAdd("Mains power OK", "")
             End If
 
-            'fromArduino2.SetSerialData(SerialReceiveBuffer2)
+            fromArduino2.SetSerialData(SerialReceiveBuffer2)
             SerialReceiveBuffer2.RemoveRange(0, SerialRead2.PacketLen)
+            Arduino2LastRead = Now
             ReadArduino2Count += 1
 
             GoTo start
@@ -713,7 +716,7 @@ start:
 
     Public Sub MySendKeys(keysToSend As String)
         If keysToSend = "reset" Then
-            TestMode = Motor.Reset
+            TestMode = enumTestMode.Reset
             FFGain = 255
             FFWheel_Type = FFBEType.ET_NONE
             FFWheel_Cond = New vJoyInterfaceWrap.vJoy.FFB_EFF_COND
@@ -751,7 +754,7 @@ start:
     End Sub
 
     Private Sub btWheelCenter_Click(sender As Object, e As EventArgs) Handles btWheelCenter.Click
-        TestMode = Motor.Reset
+        TestMode = enumTestMode.Reset
     End Sub
 
     Private Sub btCountersReset_Click() Handles btCountersReset.Click
@@ -946,7 +949,7 @@ start:
 
 
     Private Sub frmCVJoy_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
-        TestMode = Motor.StopProcesss
+        TestMode = enumTestMode.StopProcesss
         System.Threading.Thread.Sleep(300)
 
         If Game IsNot Nothing Then Game.Stop()

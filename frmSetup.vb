@@ -242,13 +242,13 @@
         With CType(Me.Owner, frmCVJoy)
             If sender.Equals(btTestWheelLeft) OrElse sender.Equals(btTestWheelRight) OrElse sender.Equals(btTestWheelCenter) Then
                 .TestValue = CInt(txtWheelMidIn.Text) * If(sender.Equals(btTestWheelRight), -1, 1)
-                .TestMode = If(sender.Equals(btTestWheelCenter), frmCVJoy.Motor.WheelCenter, frmCVJoy.Motor.Wheel)
+                .TestMode = If(sender.Equals(btTestWheelCenter), frmCVJoy.enumTestMode.WheelCenter, frmCVJoy.enumTestMode.Wheel)
             ElseIf sender.Equals(btTestWind) Then
                 .TestValue = CInt(txtWindMin.Text)
-                .TestMode = frmCVJoy.Motor.Wind
+                .TestMode = frmCVJoy.enumTestMode.Wind
             ElseIf sender.Equals(btTestShake) Then
                 .TestValue = CInt(txtShakeMin.Text)
-                .TestMode = frmCVJoy.Motor.Shake
+                .TestMode = frmCVJoy.enumTestMode.Shake
             End If
         End With
     End Sub
@@ -265,16 +265,16 @@
         With CType(Me.Owner, frmCVJoy)
             If sender.Equals(btTestGDown) OrElse sender.Equals(btTestGUp) Then
                 .TestValue = CInt(txtGTestDiff.Text) * If(sender.Equals(btTestGDown), 1, -1)
-                .TestMode = frmCVJoy.Motor.Pitch
+                .TestMode = frmCVJoy.enumTestMode.Pitch
             ElseIf sender.Equals(btTestGLeft) OrElse sender.Equals(btTestGRight) Then
                 .TestValue = CInt(txtGTestDiff.Text) * If(sender.Equals(btTestGLeft), -1, 1)
-                .TestMode = frmCVJoy.Motor.Roll
+                .TestMode = frmCVJoy.enumTestMode.Roll
             ElseIf sender.Equals(btTestGLeftDown) OrElse sender.Equals(btTestGLeftUp) Then
                 .TestValue = CInt(txtGTestDiff.Text) * If(sender.Equals(btTestGLeftDown), 1, -1)
-                .TestMode = frmCVJoy.Motor.Left
+                .TestMode = frmCVJoy.enumTestMode.Left
             ElseIf sender.Equals(btTestGRightDown) OrElse sender.Equals(btTestGRightUp) Then
                 .TestValue = CInt(txtGTestDiff.Text) * If(sender.Equals(btTestGRightDown), 1, -1)
-                .TestMode = frmCVJoy.Motor.Right
+                .TestMode = frmCVJoy.enumTestMode.Right
             End If
         End With
     End Sub
@@ -283,7 +283,7 @@
         , btTestGDown.MouseUp, btTestGUp.MouseUp, btTestGLeft.MouseUp, btTestGRight.MouseUp _
         , btTestGLeftDown.MouseUp, btTestGLeftUp.MouseUp, btTestGRightDown.MouseUp, btTestGRightUp.MouseUp _
         , btTestWind.MouseUp, btTestShake.MouseUp
-        CType(Me.Owner, frmCVJoy).TestMode = frmCVJoy.Motor.None
+        CType(Me.Owner, frmCVJoy).TestMode = frmCVJoy.enumTestMode.None
     End Sub
 
     Private Sub btDefaults_Click(sender As Object, e As EventArgs) Handles btDefaults.Click
