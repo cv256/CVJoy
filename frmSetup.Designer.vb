@@ -141,7 +141,6 @@ Partial Class frmSetup
         Me.Label42 = New System.Windows.Forms.Label()
         Me.txtGTestDiff = New System.Windows.Forms.MaskedTextBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.Label43 = New System.Windows.Forms.Label()
         Me.txtUltrasonicGama = New System.Windows.Forms.MaskedTextBox()
         Me.Label69 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -221,6 +220,10 @@ Partial Class frmSetup
         Me.Label64 = New System.Windows.Forms.Label()
         Me.Label100 = New System.Windows.Forms.Label()
         Me.cbComPort2 = New System.Windows.Forms.ComboBox()
+        Me.Label101 = New System.Windows.Forms.Label()
+        Me.Label102 = New System.Windows.Forms.Label()
+        Me.txtPowerInertia = New System.Windows.Forms.MaskedTextBox()
+        Me.Label43 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'Label3
@@ -259,7 +262,7 @@ Partial Class frmSetup
         'Label21
         '
         Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(4, 449)
+        Me.Label21.Location = New System.Drawing.Point(4, 426)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(100, 13)
         Me.Label21.TabIndex = 84
@@ -280,7 +283,7 @@ Partial Class frmSetup
         'Label18
         '
         Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(4, 425)
+        Me.Label18.Location = New System.Drawing.Point(4, 402)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(93, 13)
         Me.Label18.TabIndex = 82
@@ -289,7 +292,7 @@ Partial Class frmSetup
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(417, 449)
+        Me.Label6.Location = New System.Drawing.Point(417, 476)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(94, 13)
         Me.Label6.TabIndex = 92
@@ -300,7 +303,7 @@ Partial Class frmSetup
         Me.txtGPowerForMin.AllowPromptAsInput = False
         Me.txtGPowerForMin.BeepOnError = True
         Me.txtGPowerForMin.HidePromptOnLeave = True
-        Me.txtGPowerForMin.Location = New System.Drawing.Point(353, 446)
+        Me.txtGPowerForMin.Location = New System.Drawing.Point(353, 473)
         Me.txtGPowerForMin.Mask = "#990"
         Me.txtGPowerForMin.Name = "txtGPowerForMin"
         Me.txtGPowerForMin.Size = New System.Drawing.Size(25, 20)
@@ -310,7 +313,7 @@ Partial Class frmSetup
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(290, 449)
+        Me.Label7.Location = New System.Drawing.Point(290, 476)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(60, 13)
         Me.Label7.TabIndex = 90
@@ -439,7 +442,7 @@ Partial Class frmSetup
         Me.txtGMinDiff.AsciiOnly = True
         Me.txtGMinDiff.BeepOnError = True
         Me.txtGMinDiff.HidePromptOnLeave = True
-        Me.txtGMinDiff.Location = New System.Drawing.Point(221, 446)
+        Me.txtGMinDiff.Location = New System.Drawing.Point(221, 473)
         Me.txtGMinDiff.Mask = "990"
         Me.txtGMinDiff.Name = "txtGMinDiff"
         Me.txtGMinDiff.Size = New System.Drawing.Size(25, 20)
@@ -975,7 +978,7 @@ Partial Class frmSetup
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(169, 449)
+        Me.Label10.Location = New System.Drawing.Point(169, 476)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(49, 13)
         Me.Label10.TabIndex = 207
@@ -994,7 +997,7 @@ Partial Class frmSetup
         '
         Me.Label62.AutoSize = True
         Me.Label62.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label62.Location = New System.Drawing.Point(381, 450)
+        Me.Label62.Location = New System.Drawing.Point(381, 477)
         Me.Label62.Name = "Label62"
         Me.Label62.Size = New System.Drawing.Size(28, 12)
         Me.Label62.TabIndex = 213
@@ -1123,7 +1126,7 @@ Partial Class frmSetup
         Me.txtGMaxDiff.AsciiOnly = True
         Me.txtGMaxDiff.BeepOnError = True
         Me.txtGMaxDiff.HidePromptOnLeave = True
-        Me.txtGMaxDiff.Location = New System.Drawing.Point(514, 446)
+        Me.txtGMaxDiff.Location = New System.Drawing.Point(514, 473)
         Me.txtGMaxDiff.Mask = "990"
         Me.txtGMaxDiff.Name = "txtGMaxDiff"
         Me.txtGMaxDiff.Size = New System.Drawing.Size(25, 20)
@@ -1154,7 +1157,7 @@ Partial Class frmSetup
         '
         Me.lbAlarm.AutoSize = True
         Me.lbAlarm.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbAlarm.Location = New System.Drawing.Point(249, 450)
+        Me.lbAlarm.Location = New System.Drawing.Point(249, 477)
         Me.lbAlarm.Name = "lbAlarm"
         Me.lbAlarm.Size = New System.Drawing.Size(21, 12)
         Me.lbAlarm.TabIndex = 231
@@ -1164,7 +1167,7 @@ Partial Class frmSetup
         '
         Me.Label17.AutoSize = True
         Me.Label17.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.Location = New System.Drawing.Point(542, 450)
+        Me.Label17.Location = New System.Drawing.Point(542, 477)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(21, 12)
         Me.Label17.TabIndex = 230
@@ -1174,7 +1177,7 @@ Partial Class frmSetup
         '
         Me.Label9.AutoSize = True
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(137, 426)
+        Me.Label9.Location = New System.Drawing.Point(137, 403)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(21, 12)
         Me.Label9.TabIndex = 235
@@ -1185,7 +1188,7 @@ Partial Class frmSetup
         Me.txtLeftScrewCenter.AsciiOnly = True
         Me.txtLeftScrewCenter.BeepOnError = True
         Me.txtLeftScrewCenter.HidePromptOnLeave = True
-        Me.txtLeftScrewCenter.Location = New System.Drawing.Point(110, 422)
+        Me.txtLeftScrewCenter.Location = New System.Drawing.Point(110, 399)
         Me.txtLeftScrewCenter.Mask = "990"
         Me.txtLeftScrewCenter.Name = "txtLeftScrewCenter"
         Me.txtLeftScrewCenter.Size = New System.Drawing.Size(25, 20)
@@ -1196,7 +1199,7 @@ Partial Class frmSetup
         '
         Me.Label12.AutoSize = True
         Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.Location = New System.Drawing.Point(137, 450)
+        Me.Label12.Location = New System.Drawing.Point(137, 427)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(21, 12)
         Me.Label12.TabIndex = 237
@@ -1207,7 +1210,7 @@ Partial Class frmSetup
         Me.txtRightScrewCenter.AsciiOnly = True
         Me.txtRightScrewCenter.BeepOnError = True
         Me.txtRightScrewCenter.HidePromptOnLeave = True
-        Me.txtRightScrewCenter.Location = New System.Drawing.Point(110, 446)
+        Me.txtRightScrewCenter.Location = New System.Drawing.Point(110, 423)
         Me.txtRightScrewCenter.Mask = "990"
         Me.txtRightScrewCenter.Name = "txtRightScrewCenter"
         Me.txtRightScrewCenter.Size = New System.Drawing.Size(25, 20)
@@ -1218,7 +1221,7 @@ Partial Class frmSetup
         '
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(138, 473)
+        Me.Label8.Location = New System.Drawing.Point(381, 449)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(13, 12)
         Me.Label8.TabIndex = 240
@@ -1227,7 +1230,7 @@ Partial Class frmSetup
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(4, 473)
+        Me.Label11.Location = New System.Drawing.Point(247, 449)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(91, 13)
         Me.Label11.TabIndex = 239
@@ -1238,7 +1241,7 @@ Partial Class frmSetup
         Me.txtUltrasonicDamper.AsciiOnly = True
         Me.txtUltrasonicDamper.BeepOnError = True
         Me.txtUltrasonicDamper.HidePromptOnLeave = True
-        Me.txtUltrasonicDamper.Location = New System.Drawing.Point(110, 470)
+        Me.txtUltrasonicDamper.Location = New System.Drawing.Point(353, 446)
         Me.txtUltrasonicDamper.Mask = "90"
         Me.txtUltrasonicDamper.Name = "txtUltrasonicDamper"
         Me.txtUltrasonicDamper.Size = New System.Drawing.Size(25, 20)
@@ -1248,7 +1251,7 @@ Partial Class frmSetup
         'lbGLeftMotorEfficiency
         '
         Me.lbGLeftMotorEfficiency.AutoSize = True
-        Me.lbGLeftMotorEfficiency.Location = New System.Drawing.Point(181, 473)
+        Me.lbGLeftMotorEfficiency.Location = New System.Drawing.Point(181, 500)
         Me.lbGLeftMotorEfficiency.Name = "lbGLeftMotorEfficiency"
         Me.lbGLeftMotorEfficiency.Size = New System.Drawing.Size(86, 13)
         Me.lbGLeftMotorEfficiency.TabIndex = 245
@@ -1259,7 +1262,7 @@ Partial Class frmSetup
         Me.txtGMaxMotorEfficiency.AsciiOnly = True
         Me.txtGMaxMotorEfficiency.BeepOnError = True
         Me.txtGMaxMotorEfficiency.HidePromptOnLeave = True
-        Me.txtGMaxMotorEfficiency.Location = New System.Drawing.Point(514, 470)
+        Me.txtGMaxMotorEfficiency.Location = New System.Drawing.Point(514, 497)
         Me.txtGMaxMotorEfficiency.Mask = "990"
         Me.txtGMaxMotorEfficiency.Name = "txtGMaxMotorEfficiency"
         Me.txtGMaxMotorEfficiency.Size = New System.Drawing.Size(25, 20)
@@ -1371,7 +1374,7 @@ Partial Class frmSetup
         Me.txtGMinMotorEfficiency.AsciiOnly = True
         Me.txtGMinMotorEfficiency.BeepOnError = True
         Me.txtGMinMotorEfficiency.HidePromptOnLeave = True
-        Me.txtGMinMotorEfficiency.Location = New System.Drawing.Point(353, 470)
+        Me.txtGMinMotorEfficiency.Location = New System.Drawing.Point(353, 497)
         Me.txtGMinMotorEfficiency.Mask = "990"
         Me.txtGMinMotorEfficiency.Name = "txtGMinMotorEfficiency"
         Me.txtGMinMotorEfficiency.Size = New System.Drawing.Size(25, 20)
@@ -1429,7 +1432,7 @@ Partial Class frmSetup
         'Label36
         '
         Me.Label36.AutoSize = True
-        Me.Label36.Location = New System.Drawing.Point(273, 473)
+        Me.Label36.Location = New System.Drawing.Point(273, 500)
         Me.Label36.Name = "Label36"
         Me.Label36.Size = New System.Drawing.Size(76, 13)
         Me.Label36.TabIndex = 263
@@ -1438,7 +1441,7 @@ Partial Class frmSetup
         'Label60
         '
         Me.Label60.AutoSize = True
-        Me.Label60.Location = New System.Drawing.Point(428, 473)
+        Me.Label60.Location = New System.Drawing.Point(428, 500)
         Me.Label60.Name = "Label60"
         Me.Label60.Size = New System.Drawing.Size(82, 13)
         Me.Label60.TabIndex = 265
@@ -1477,22 +1480,12 @@ Partial Class frmSetup
         Me.txtGTestDiff.TabIndex = 266
         Me.txtGTestDiff.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
-        'Label43
-        '
-        Me.Label43.AutoSize = True
-        Me.Label43.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label43.Location = New System.Drawing.Point(138, 403)
-        Me.Label43.Name = "Label43"
-        Me.Label43.Size = New System.Drawing.Size(51, 12)
-        Me.Label43.TabIndex = 271
-        Me.Label43.Text = "0-800 (100)"
-        '
         'txtUltrasonicGama
         '
         Me.txtUltrasonicGama.AllowPromptAsInput = False
         Me.txtUltrasonicGama.BeepOnError = True
         Me.txtUltrasonicGama.HidePromptOnLeave = True
-        Me.txtUltrasonicGama.Location = New System.Drawing.Point(110, 399)
+        Me.txtUltrasonicGama.Location = New System.Drawing.Point(514, 446)
         Me.txtUltrasonicGama.Mask = "#990"
         Me.txtUltrasonicGama.Name = "txtUltrasonicGama"
         Me.txtUltrasonicGama.Size = New System.Drawing.Size(25, 20)
@@ -1502,7 +1495,7 @@ Partial Class frmSetup
         'Label69
         '
         Me.Label69.AutoSize = True
-        Me.Label69.Location = New System.Drawing.Point(4, 402)
+        Me.Label69.Location = New System.Drawing.Point(417, 449)
         Me.Label69.Name = "Label69"
         Me.Label69.Size = New System.Drawing.Size(79, 13)
         Me.Label69.TabIndex = 269
@@ -1814,7 +1807,7 @@ Partial Class frmSetup
         Me.lbACWear.BackColor = System.Drawing.SystemColors.Info
         Me.lbACWear.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.lbACWear.ForeColor = System.Drawing.Color.Navy
-        Me.lbACWear.Location = New System.Drawing.Point(439, 534)
+        Me.lbACWear.Location = New System.Drawing.Point(411, 580)
         Me.lbACWear.Name = "lbACWear"
         Me.lbACWear.Size = New System.Drawing.Size(61, 13)
         Me.lbACWear.TabIndex = 327
@@ -1826,7 +1819,7 @@ Partial Class frmSetup
         Me.Label79.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label79.AutoSize = True
         Me.Label79.ForeColor = System.Drawing.Color.Navy
-        Me.Label79.Location = New System.Drawing.Point(401, 534)
+        Me.Label79.Location = New System.Drawing.Point(373, 580)
         Me.Label79.Name = "Label79"
         Me.Label79.Size = New System.Drawing.Size(36, 13)
         Me.Label79.TabIndex = 326
@@ -1838,7 +1831,7 @@ Partial Class frmSetup
         Me.lbACDirt.BackColor = System.Drawing.SystemColors.Info
         Me.lbACDirt.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.lbACDirt.ForeColor = System.Drawing.Color.Navy
-        Me.lbACDirt.Location = New System.Drawing.Point(302, 534)
+        Me.lbACDirt.Location = New System.Drawing.Point(293, 580)
         Me.lbACDirt.Name = "lbACDirt"
         Me.lbACDirt.Size = New System.Drawing.Size(61, 13)
         Me.lbACDirt.TabIndex = 325
@@ -1850,7 +1843,7 @@ Partial Class frmSetup
         Me.Label80.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label80.AutoSize = True
         Me.Label80.ForeColor = System.Drawing.Color.Navy
-        Me.Label80.Location = New System.Drawing.Point(275, 534)
+        Me.Label80.Location = New System.Drawing.Point(254, 580)
         Me.Label80.Name = "Label80"
         Me.Label80.Size = New System.Drawing.Size(26, 13)
         Me.Label80.TabIndex = 324
@@ -1917,7 +1910,7 @@ Partial Class frmSetup
         Me.lbACJump.BackColor = System.Drawing.SystemColors.Info
         Me.lbACJump.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.lbACJump.ForeColor = System.Drawing.Color.Navy
-        Me.lbACJump.Location = New System.Drawing.Point(196, 510)
+        Me.lbACJump.Location = New System.Drawing.Point(169, 567)
         Me.lbACJump.Name = "lbACJump"
         Me.lbACJump.Size = New System.Drawing.Size(41, 13)
         Me.lbACJump.TabIndex = 317
@@ -1929,7 +1922,7 @@ Partial Class frmSetup
         Me.Label83.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label83.AutoSize = True
         Me.Label83.ForeColor = System.Drawing.Color.Navy
-        Me.Label83.Location = New System.Drawing.Point(136, 510)
+        Me.Label83.Location = New System.Drawing.Point(111, 566)
         Me.Label83.Name = "Label83"
         Me.Label83.Size = New System.Drawing.Size(50, 13)
         Me.Label83.TabIndex = 316
@@ -1941,7 +1934,7 @@ Partial Class frmSetup
         Me.lbACTurn.BackColor = System.Drawing.SystemColors.Info
         Me.lbACTurn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.lbACTurn.ForeColor = System.Drawing.Color.Navy
-        Me.lbACTurn.Location = New System.Drawing.Point(196, 579)
+        Me.lbACTurn.Location = New System.Drawing.Point(169, 547)
         Me.lbACTurn.Name = "lbACTurn"
         Me.lbACTurn.Size = New System.Drawing.Size(41, 13)
         Me.lbACTurn.TabIndex = 311
@@ -1953,7 +1946,7 @@ Partial Class frmSetup
         Me.Label86.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label86.AutoSize = True
         Me.Label86.ForeColor = System.Drawing.Color.Navy
-        Me.Label86.Location = New System.Drawing.Point(136, 579)
+        Me.Label86.Location = New System.Drawing.Point(111, 547)
         Me.Label86.Name = "Label86"
         Me.Label86.Size = New System.Drawing.Size(42, 13)
         Me.Label86.TabIndex = 310
@@ -1965,7 +1958,7 @@ Partial Class frmSetup
         Me.lbACRoll.BackColor = System.Drawing.SystemColors.Info
         Me.lbACRoll.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.lbACRoll.ForeColor = System.Drawing.Color.Navy
-        Me.lbACRoll.Location = New System.Drawing.Point(59, 579)
+        Me.lbACRoll.Location = New System.Drawing.Point(46, 547)
         Me.lbACRoll.Name = "lbACRoll"
         Me.lbACRoll.Size = New System.Drawing.Size(41, 13)
         Me.lbACRoll.TabIndex = 309
@@ -1977,7 +1970,7 @@ Partial Class frmSetup
         Me.Label87.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label87.AutoSize = True
         Me.Label87.ForeColor = System.Drawing.Color.Navy
-        Me.Label87.Location = New System.Drawing.Point(12, 579)
+        Me.Label87.Location = New System.Drawing.Point(3, 547)
         Me.Label87.Name = "Label87"
         Me.Label87.Size = New System.Drawing.Size(28, 13)
         Me.Label87.TabIndex = 308
@@ -1989,7 +1982,7 @@ Partial Class frmSetup
         Me.lbACAccel.BackColor = System.Drawing.SystemColors.Info
         Me.lbACAccel.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.lbACAccel.ForeColor = System.Drawing.Color.Navy
-        Me.lbACAccel.Location = New System.Drawing.Point(196, 559)
+        Me.lbACAccel.Location = New System.Drawing.Point(169, 527)
         Me.lbACAccel.Name = "lbACAccel"
         Me.lbACAccel.Size = New System.Drawing.Size(41, 13)
         Me.lbACAccel.TabIndex = 303
@@ -2001,7 +1994,7 @@ Partial Class frmSetup
         Me.Label90.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label90.AutoSize = True
         Me.Label90.ForeColor = System.Drawing.Color.Navy
-        Me.Label90.Location = New System.Drawing.Point(136, 559)
+        Me.Label90.Location = New System.Drawing.Point(111, 527)
         Me.Label90.Name = "Label90"
         Me.Label90.Size = New System.Drawing.Size(50, 13)
         Me.Label90.TabIndex = 302
@@ -2013,7 +2006,7 @@ Partial Class frmSetup
         Me.lbACPitch.BackColor = System.Drawing.SystemColors.Info
         Me.lbACPitch.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.lbACPitch.ForeColor = System.Drawing.Color.Navy
-        Me.lbACPitch.Location = New System.Drawing.Point(59, 559)
+        Me.lbACPitch.Location = New System.Drawing.Point(46, 527)
         Me.lbACPitch.Name = "lbACPitch"
         Me.lbACPitch.Size = New System.Drawing.Size(41, 13)
         Me.lbACPitch.TabIndex = 301
@@ -2025,7 +2018,7 @@ Partial Class frmSetup
         Me.Label91.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label91.AutoSize = True
         Me.Label91.ForeColor = System.Drawing.Color.Navy
-        Me.Label91.Location = New System.Drawing.Point(12, 559)
+        Me.Label91.Location = New System.Drawing.Point(3, 527)
         Me.Label91.Name = "Label91"
         Me.Label91.Size = New System.Drawing.Size(34, 13)
         Me.Label91.TabIndex = 300
@@ -2036,7 +2029,7 @@ Partial Class frmSetup
         Me.Label92.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label92.AutoSize = True
         Me.Label92.ForeColor = System.Drawing.Color.Navy
-        Me.Label92.Location = New System.Drawing.Point(368, 510)
+        Me.Label92.Location = New System.Drawing.Point(93, 599)
         Me.Label92.Name = "Label92"
         Me.Label92.Size = New System.Drawing.Size(12, 13)
         Me.Label92.TabIndex = 299
@@ -2048,7 +2041,7 @@ Partial Class frmSetup
         Me.lbMaxRPM.BackColor = System.Drawing.SystemColors.Info
         Me.lbMaxRPM.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.lbMaxRPM.ForeColor = System.Drawing.Color.Navy
-        Me.lbMaxRPM.Location = New System.Drawing.Point(383, 510)
+        Me.lbMaxRPM.Location = New System.Drawing.Point(108, 599)
         Me.lbMaxRPM.Name = "lbMaxRPM"
         Me.lbMaxRPM.Size = New System.Drawing.Size(41, 13)
         Me.lbMaxRPM.TabIndex = 298
@@ -2082,7 +2075,7 @@ Partial Class frmSetup
         Me.lbACSlipBack.BackColor = System.Drawing.SystemColors.Info
         Me.lbACSlipBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.lbACSlipBack.ForeColor = System.Drawing.Color.Navy
-        Me.lbACSlipBack.Location = New System.Drawing.Point(196, 534)
+        Me.lbACSlipBack.Location = New System.Drawing.Point(431, 599)
         Me.lbACSlipBack.Name = "lbACSlipBack"
         Me.lbACSlipBack.Size = New System.Drawing.Size(41, 13)
         Me.lbACSlipBack.TabIndex = 293
@@ -2094,11 +2087,11 @@ Partial Class frmSetup
         Me.Label95.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label95.AutoSize = True
         Me.Label95.ForeColor = System.Drawing.Color.Navy
-        Me.Label95.Location = New System.Drawing.Point(136, 534)
+        Me.Label95.Location = New System.Drawing.Point(373, 599)
         Me.Label95.Name = "Label95"
-        Me.Label95.Size = New System.Drawing.Size(53, 13)
+        Me.Label95.Size = New System.Drawing.Size(33, 13)
         Me.Label95.TabIndex = 292
-        Me.Label95.Text = "Slip Rear:"
+        Me.Label95.Text = "Rear:"
         '
         'lbACSlipFront
         '
@@ -2106,7 +2099,7 @@ Partial Class frmSetup
         Me.lbACSlipFront.BackColor = System.Drawing.SystemColors.Info
         Me.lbACSlipFront.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.lbACSlipFront.ForeColor = System.Drawing.Color.Navy
-        Me.lbACSlipFront.Location = New System.Drawing.Point(68, 534)
+        Me.lbACSlipFront.Location = New System.Drawing.Point(313, 599)
         Me.lbACSlipFront.Name = "lbACSlipFront"
         Me.lbACSlipFront.Size = New System.Drawing.Size(41, 13)
         Me.lbACSlipFront.TabIndex = 291
@@ -2118,7 +2111,7 @@ Partial Class frmSetup
         Me.Label96.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label96.AutoSize = True
         Me.Label96.ForeColor = System.Drawing.Color.Navy
-        Me.Label96.Location = New System.Drawing.Point(12, 534)
+        Me.Label96.Location = New System.Drawing.Point(254, 599)
         Me.Label96.Name = "Label96"
         Me.Label96.Size = New System.Drawing.Size(54, 13)
         Me.Label96.TabIndex = 290
@@ -2130,7 +2123,7 @@ Partial Class frmSetup
         Me.lbACRPM.BackColor = System.Drawing.SystemColors.Info
         Me.lbACRPM.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.lbACRPM.ForeColor = System.Drawing.Color.Navy
-        Me.lbACRPM.Location = New System.Drawing.Point(322, 510)
+        Me.lbACRPM.Location = New System.Drawing.Point(47, 599)
         Me.lbACRPM.Name = "lbACRPM"
         Me.lbACRPM.Size = New System.Drawing.Size(41, 13)
         Me.lbACRPM.TabIndex = 289
@@ -2142,7 +2135,7 @@ Partial Class frmSetup
         Me.Label97.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label97.AutoSize = True
         Me.Label97.ForeColor = System.Drawing.Color.Navy
-        Me.Label97.Location = New System.Drawing.Point(275, 510)
+        Me.Label97.Location = New System.Drawing.Point(3, 599)
         Me.Label97.Name = "Label97"
         Me.Label97.Size = New System.Drawing.Size(34, 13)
         Me.Label97.TabIndex = 288
@@ -2153,7 +2146,7 @@ Partial Class frmSetup
         Me.lbACSpeed.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.lbACSpeed.BackColor = System.Drawing.SystemColors.Info
         Me.lbACSpeed.ForeColor = System.Drawing.Color.Navy
-        Me.lbACSpeed.Location = New System.Drawing.Point(68, 508)
+        Me.lbACSpeed.Location = New System.Drawing.Point(46, 577)
         Me.lbACSpeed.Name = "lbACSpeed"
         Me.lbACSpeed.Size = New System.Drawing.Size(41, 20)
         Me.lbACSpeed.TabIndex = 287
@@ -2165,7 +2158,7 @@ Partial Class frmSetup
         Me.Label98.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label98.AutoSize = True
         Me.Label98.ForeColor = System.Drawing.Color.Navy
-        Me.Label98.Location = New System.Drawing.Point(12, 510)
+        Me.Label98.Location = New System.Drawing.Point(3, 579)
         Me.Label98.Name = "Label98"
         Me.Label98.Size = New System.Drawing.Size(41, 13)
         Me.Label98.TabIndex = 286
@@ -2186,7 +2179,7 @@ Partial Class frmSetup
         Me.txtTurn.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtTurn.BeepOnError = True
         Me.txtTurn.HidePromptOnLeave = True
-        Me.txtTurn.Location = New System.Drawing.Point(705, 576)
+        Me.txtTurn.Location = New System.Drawing.Point(414, 544)
         Me.txtTurn.Mask = "00.0\º\/\G"
         Me.txtTurn.Name = "txtTurn"
         Me.txtTurn.Size = New System.Drawing.Size(56, 20)
@@ -2198,7 +2191,7 @@ Partial Class frmSetup
         '
         Me.Label84.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label84.AutoSize = True
-        Me.Label84.Location = New System.Drawing.Point(639, 579)
+        Me.Label84.Location = New System.Drawing.Point(348, 547)
         Me.Label84.Name = "Label84"
         Me.Label84.Size = New System.Drawing.Size(54, 13)
         Me.Label84.TabIndex = 353
@@ -2210,7 +2203,7 @@ Partial Class frmSetup
         Me.txtRoll.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtRoll.BeepOnError = True
         Me.txtRoll.HidePromptOnLeave = True
-        Me.txtRoll.Location = New System.Drawing.Point(597, 576)
+        Me.txtRoll.Location = New System.Drawing.Point(306, 544)
         Me.txtRoll.Mask = "000\%"
         Me.txtRoll.Name = "txtRoll"
         Me.txtRoll.Size = New System.Drawing.Size(30, 20)
@@ -2222,7 +2215,7 @@ Partial Class frmSetup
         '
         Me.Label85.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label85.AutoSize = True
-        Me.Label85.Location = New System.Drawing.Point(539, 579)
+        Me.Label85.Location = New System.Drawing.Point(248, 547)
         Me.Label85.Name = "Label85"
         Me.Label85.Size = New System.Drawing.Size(50, 13)
         Me.Label85.TabIndex = 351
@@ -2234,7 +2227,7 @@ Partial Class frmSetup
         Me.txtAccel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtAccel.BeepOnError = True
         Me.txtAccel.HidePromptOnLeave = True
-        Me.txtAccel.Location = New System.Drawing.Point(705, 556)
+        Me.txtAccel.Location = New System.Drawing.Point(414, 524)
         Me.txtAccel.Mask = "00.0\º\/\G"
         Me.txtAccel.Name = "txtAccel"
         Me.txtAccel.Size = New System.Drawing.Size(56, 20)
@@ -2246,7 +2239,7 @@ Partial Class frmSetup
         '
         Me.Label88.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label88.AutoSize = True
-        Me.Label88.Location = New System.Drawing.Point(639, 559)
+        Me.Label88.Location = New System.Drawing.Point(348, 527)
         Me.Label88.Name = "Label88"
         Me.Label88.Size = New System.Drawing.Size(62, 13)
         Me.Label88.TabIndex = 349
@@ -2258,7 +2251,7 @@ Partial Class frmSetup
         Me.txtPitch.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtPitch.BeepOnError = True
         Me.txtPitch.HidePromptOnLeave = True
-        Me.txtPitch.Location = New System.Drawing.Point(597, 556)
+        Me.txtPitch.Location = New System.Drawing.Point(306, 524)
         Me.txtPitch.Mask = "000\%"
         Me.txtPitch.Name = "txtPitch"
         Me.txtPitch.Size = New System.Drawing.Size(30, 20)
@@ -2270,7 +2263,7 @@ Partial Class frmSetup
         '
         Me.Label89.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label89.AutoSize = True
-        Me.Label89.Location = New System.Drawing.Point(538, 559)
+        Me.Label89.Location = New System.Drawing.Point(247, 527)
         Me.Label89.Name = "Label89"
         Me.Label89.Size = New System.Drawing.Size(56, 13)
         Me.Label89.TabIndex = 347
@@ -2282,7 +2275,7 @@ Partial Class frmSetup
         Me.txtSlip.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtSlip.BeepOnError = True
         Me.txtSlip.HidePromptOnLeave = True
-        Me.txtSlip.Location = New System.Drawing.Point(705, 531)
+        Me.txtSlip.Location = New System.Drawing.Point(516, 596)
         Me.txtSlip.Mask = "00"
         Me.txtSlip.Name = "txtSlip"
         Me.txtSlip.Size = New System.Drawing.Size(23, 20)
@@ -2293,11 +2286,11 @@ Partial Class frmSetup
         '
         Me.Label93.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label93.AutoSize = True
-        Me.Label93.Location = New System.Drawing.Point(623, 534)
+        Me.Label93.Location = New System.Drawing.Point(470, 599)
         Me.Label93.Name = "Label93"
-        Me.Label93.Size = New System.Drawing.Size(76, 13)
+        Me.Label93.Size = New System.Drawing.Size(42, 13)
         Me.Label93.TabIndex = 345
-        Me.Label93.Text = "Slipery Red at:"
+        Me.Label93.Text = "Red at:"
         '
         'UcControlGGraph1
         '
@@ -2360,11 +2353,55 @@ Partial Class frmSetup
         Me.cbComPort2.Size = New System.Drawing.Size(73, 21)
         Me.cbComPort2.TabIndex = 355
         '
+        'Label101
+        '
+        Me.Label101.AutoSize = True
+        Me.Label101.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label101.Location = New System.Drawing.Point(138, 497)
+        Me.Label101.Name = "Label101"
+        Me.Label101.Size = New System.Drawing.Size(13, 12)
+        Me.Label101.TabIndex = 361
+        Me.Label101.Text = "%"
+        '
+        'Label102
+        '
+        Me.Label102.AutoSize = True
+        Me.Label102.Location = New System.Drawing.Point(4, 497)
+        Me.Label102.Name = "Label102"
+        Me.Label102.Size = New System.Drawing.Size(69, 13)
+        Me.Label102.TabIndex = 360
+        Me.Label102.Text = "Motor Inertia:"
+        '
+        'txtPowerInertia
+        '
+        Me.txtPowerInertia.AsciiOnly = True
+        Me.txtPowerInertia.BeepOnError = True
+        Me.txtPowerInertia.HidePromptOnLeave = True
+        Me.txtPowerInertia.Location = New System.Drawing.Point(110, 494)
+        Me.txtPowerInertia.Mask = "90"
+        Me.txtPowerInertia.Name = "txtPowerInertia"
+        Me.txtPowerInertia.Size = New System.Drawing.Size(25, 20)
+        Me.txtPowerInertia.TabIndex = 359
+        Me.txtPowerInertia.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'Label43
+        '
+        Me.Label43.AutoSize = True
+        Me.Label43.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label43.Location = New System.Drawing.Point(542, 450)
+        Me.Label43.Name = "Label43"
+        Me.Label43.Size = New System.Drawing.Size(51, 12)
+        Me.Label43.TabIndex = 271
+        Me.Label43.Text = "0-800 (100)"
+        '
         'frmSetup
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(770, 626)
+        Me.Controls.Add(Me.Label101)
+        Me.Controls.Add(Me.Label102)
+        Me.Controls.Add(Me.txtPowerInertia)
         Me.Controls.Add(Me.txtComBaud2)
         Me.Controls.Add(Me.Label64)
         Me.Controls.Add(Me.Label100)
@@ -2687,7 +2724,6 @@ Partial Class frmSetup
     Friend WithEvents Label42 As Label
     Friend WithEvents txtGTestDiff As MaskedTextBox
     Friend WithEvents ToolTip1 As ToolTip
-    Friend WithEvents Label43 As Label
     Friend WithEvents txtUltrasonicGama As MaskedTextBox
     Friend WithEvents Label69 As Label
     Friend WithEvents Label4 As Label
@@ -2765,4 +2801,8 @@ Partial Class frmSetup
     Friend WithEvents Label64 As Label
     Friend WithEvents Label100 As Label
     Friend WithEvents cbComPort2 As ComboBox
+    Friend WithEvents Label101 As Label
+    Friend WithEvents Label102 As Label
+    Friend WithEvents txtPowerInertia As MaskedTextBox
+    Friend WithEvents Label43 As Label
 End Class

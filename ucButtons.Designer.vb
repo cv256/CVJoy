@@ -42,7 +42,6 @@ Partial Class ucButtons
         Me.btx6 = New System.Windows.Forms.TextBox()
         Me.btx7 = New System.Windows.Forms.TextBox()
         Me.btx8 = New System.Windows.Forms.TextBox()
-        Me.btx9 = New System.Windows.Forms.TextBox()
         Me.bt9 = New System.Windows.Forms.TextBox()
         Me.SuspendLayout()
         '
@@ -317,20 +316,6 @@ Partial Class ucButtons
         Me.btx8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.btx8.WordWrap = False
         '
-        'btx9
-        '
-        Me.btx9.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.btx9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.btx9.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btx9.Location = New System.Drawing.Point(380, 18)
-        Me.btx9.MaxLength = 32000
-        Me.btx9.Name = "btx9"
-        Me.btx9.ShortcutsEnabled = False
-        Me.btx9.Size = New System.Drawing.Size(33, 18)
-        Me.btx9.TabIndex = 48
-        Me.btx9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.btx9.WordWrap = False
-        '
         'bt9
         '
         Me.bt9.BackColor = System.Drawing.Color.WhiteSmoke
@@ -349,7 +334,6 @@ Partial Class ucButtons
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.btx9)
         Me.Controls.Add(Me.bt9)
         Me.Controls.Add(Me.btx0)
         Me.Controls.Add(Me.Label2)
@@ -397,6 +381,5 @@ Partial Class ucButtons
     Public WithEvents btx6 As TextBox
     Public WithEvents btx7 As TextBox
     Public WithEvents btx8 As TextBox
-    Public WithEvents btx9 As TextBox
     Public WithEvents bt9 As TextBox
 End Class

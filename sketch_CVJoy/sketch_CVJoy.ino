@@ -42,7 +42,6 @@
 #define pinButton7 36 // direita 
 #define pinButton8 35 // shiftup
 #define pinButton9 34 // shiftdown 
-#define pinButton10 33 // Engine Start
 #define pinGear1 43
 #define pinGear2 48
 #define pinGear3 46
@@ -75,7 +74,6 @@ void setup()
 	pinMode(pinButton7, INPUT_PULLUP);
 	pinMode(pinButton8, INPUT_PULLUP);
 	pinMode(pinButton9, INPUT_PULLUP);
-	pinMode(pinButton10, INPUT_PULLUP);
 	pinMode(pinGear1, INPUT_PULLUP);
 	pinMode(pinGear2, INPUT_PULLUP);
 	pinMode(pinGear3, INPUT_PULLUP);
@@ -226,7 +224,7 @@ noData:
 
 		byte tmpByte = 192; // checkdigit (64+128)
 		if (digitalRead(pinButton9) == LOW) tmpByte += 32;
-		if (digitalRead(pinButton10) == LOW) tmpByte += 16;
+		//if (digitalRead(pinButton10) == LOW) tmpByte += 16;
 		tmpByte = tmpByte | errors;
 		errors = 0;
 		serialWrite[1] = tmpByte;

@@ -44,7 +44,7 @@
     Public UltrasonicDamper As Single = 0.92
     Public GMinMotorEfficiency As Single = 20
     Public GMaxMotorEfficiency As Single = 127
-
+    Public PowerInertia As Single = 0.86
 
     ' Public Rpm1 As Single = 0.4
     ' Public Rpm2 As Single = 0.93

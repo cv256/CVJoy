@@ -67,6 +67,7 @@
         txtUltrasonicDamper.Text = SettingsMain.UltrasonicDamper * 100
         txtGMinMotorEfficiency.Text = SettingsMain.GMinMotorEfficiency
         txtGMaxMotorEfficiency.Text = SettingsMain.GMaxMotorEfficiency
+        txtPowerInertia.Text = SettingsMain.PowerInertia * 100
 
         CalculateMaxAngleDown(Me, Nothing)
         CalculateMaxAngleUp(Me, Nothing)
@@ -199,7 +200,7 @@
         SettingsMain.UltrasonicDamper = CInt(txtUltrasonicDamper.Text) / 100
         SettingsMain.GMaxMotorEfficiency = CInt(txtGMaxMotorEfficiency.Text)
         SettingsMain.GMinMotorEfficiency = CInt(txtGMinMotorEfficiency.Text)
-
+        SettingsMain.PowerInertia = CInt(txtPowerInertia.text) / 100
         SettingsMain.SlipMax = txtSlip.Text
         SettingsMain.Pitch = txtPitch.Text / 100
         SettingsMain.Roll = txtRoll.Text / 100

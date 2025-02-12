@@ -31,8 +31,8 @@ Public Structure SerialSend2
     Public Function GetSerialData() As Byte()
         Dim res(PacketLen - 1) As Byte
         res(0) = 254 + If(BreakLed, 1, 0) ' recordtype 
-        res(2) = leftPower + 128
-        res(3) = rightPower + 128
+        res(2) = leftPower + 128  ' 0=erro  1~127 128 129~255   -128 = -127 0 127
+        res(3) = rightPower + 128 ' 0=erro  1~127 128 129~255   -128 = -127 0 127
         res(1) = CByte(255) - (res(2) Xor res(3)) ' checkdigit
         Return res
     End Function
@@ -42,15 +42,18 @@ End Structure
 Public Class SerialRead2
     Public Const PacketLen As Byte = 6
 
-    Public RealLeft As Single
-    Public RealRight As Single
+    Public RealLeft As Single ' position now (from sensor) in milimeters, tipically from   minus GMaxScrewDown    to    Zero (center)    to    GMaxScrewUp
+    Public RealRight As Single ' position now (from sensor) in milimeters, tipically from   minus GMaxScrewDown    to    Zero (center)    to    GMaxScrewUp
+    Public KeyOn As Boolean
+
     Public Sub SetSerialData(pSerialData As List(Of Byte))
         'pSerialData(0) = recordType
         'pSerialData(1) = errors / ACpower
-
+        ' microseconds of (total) sound travel, reflect and come back. 50cm x 2 = 2915 microseconds
         Const soundSpeed As Single = 0.172922 ' 331300 + 606 * tempAirCelsius / 1000000 / 2   =   mm per microsecond , go and return  <=>  34cm =  0,002 seconds
         RealLeft = CSng(pSerialData(2) + pSerialData(3) * 256) * soundSpeed
         RealRight = CSng(pSerialData(4) + pSerialData(5) * 256) * soundSpeed
+        KeyOn = (pSerialData(0) Or 1) = 1
     End Sub
 End Class
 
