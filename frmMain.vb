@@ -1,5 +1,6 @@
 ﻿Imports System.IO.Ports
 Imports System.Net
+Imports CVJoy.frmCVJoy
 
 
 Public Class frmCVJoy
@@ -41,8 +42,9 @@ Public Class frmCVJoy
         Right
         Wind
         Shake
+        Position
     End Enum
-    Public TestMode As enumTestMode, TestValue As Integer = 0
+    Public TestMode As enumTestMode, TestValue As Integer = 0, TestValue2 As Integer = 0
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Text &= "  " & Application.ProductVersion
@@ -97,11 +99,11 @@ Public Class frmCVJoy
     End Sub
 
 
-    Public Sub ArduinoStart(sender As Object, e As EventArgs) Handles btArduinoStart.Click
+    Public Sub ArduinoStart1(sender As Object, e As EventArgs) Handles btArduinoStart1.Click
         If SerialPort1.IsOpen Then
             System.Threading.Thread.Sleep(200) ' give time to finnish processing eventualy received data from arduino
             SerialPort1.Close()
-            btArduinoStart.Text = "Start"
+            btArduinoStart1.Text = "Start"
         Else
             Try
                 SerialPort1.PortName = SettingsMain.ArduinoComPort
@@ -112,10 +114,10 @@ Public Class frmCVJoy
                 SerialPort1.Handshake = Handshake.None
                 SerialPort1.RtsEnable = False
                 SerialPort1.ReceivedBytesThreshold = 1
-                SerialPort1.WriteTimeout = 500
+                SerialPort1.WriteTimeout = 1000
                 ' SerialPort1.WriteBufferSize = SerialSend.PacketLen ' The WriteBufferSize property ignores any value smaller than 2048.
                 SerialPort1.Open()
-                btArduinoStart.Text = "Stop"
+                btArduinoStart1.Text = "Stop"
             Catch ex As Exception
                 MsgBox("btArduinoStart.Click " & ex.Message)
             End Try
@@ -137,7 +139,7 @@ Public Class frmCVJoy
                 SerialPort2.Handshake = Handshake.None
                 SerialPort2.RtsEnable = False
                 SerialPort2.ReceivedBytesThreshold = 1
-                SerialPort2.WriteTimeout = 500
+                SerialPort2.WriteTimeout = 1000
                 ' SerialPort2.WriteBufferSize = SerialSend.PacketLen ' The WriteBufferSize property ignores any value smaller than 2048.
                 SerialPort2.Open()
                 btArduinoStart2.Text = "Stop"
@@ -172,10 +174,10 @@ start:
         ' prepare data to send to the Arduino :
 
         If TestMode = enumTestMode.Reset Then
-            toArduino.Reset = True
+            toArduino1.Reset = True
             TestMode = enumTestMode.None
         Else
-            toArduino.Reset = False
+            toArduino1.Reset = False
         End If
 
         If Game IsNot Nothing AndAlso Game.Started Then
@@ -183,16 +185,16 @@ start:
         End If
 
         If TestMode = enumTestMode.Wheel Then
-            toArduino.wheelPower = TestValue
+            toArduino1.wheelPower = TestValue
         ElseIf TestMode = enumTestMode.WheelCenter Then
-            toArduino.wheelPower = If(WheelPosition < 0, -TestValue, If(WheelPosition > 0, TestValue, 0))
+            toArduino1.wheelPower = If(WheelPosition < 0, -TestValue, If(WheelPosition > 0, TestValue, 0))
         Else
             If WheelPosition <= -16380 Then
-                toArduino.wheelPower = -255
+                toArduino1.wheelPower = -255
             ElseIf WheelPosition >= 16380 Then
-                toArduino.wheelPower = 255
+                toArduino1.wheelPower = 255
             Else
-                toArduino.wheelPower = FFSteer(WheelPosition)
+                toArduino1.wheelPower = FFSteer(WheelPosition)
             End If
         End If
 
@@ -200,27 +202,27 @@ start:
         WheelReadPreviousTime = WheelReadTime
         WheelReadTime = Now
 
-        Dim tmpInt As Integer = toArduino.wheelPower ' just to swap
+        Dim tmpInt As Integer = toArduino1.wheelPower ' just to swap
         Static lastwheelPower As Integer
-        toArduino.wheelPower = Math.Min(Math.Max(toArduino.wheelPower + CInt((toArduino.wheelPower - lastwheelPower) * SettingsMain.WheelInertia), -255), 255)
+        toArduino1.wheelPower = Math.Min(Math.Max(toArduino1.wheelPower + CInt((toArduino1.wheelPower - lastwheelPower) * SettingsMain.WheelInertia), -255), 255)
         lastwheelPower = tmpInt
-        If LogToFile IsNot Nothing Then LogToFile.LogWheelMotorOut(toArduino.wheelPower, WheelPosition)
+        If LogToFile IsNot Nothing Then LogToFile.LogWheelMotorOut(toArduino1.wheelPower, WheelPosition)
 
         If TestMode = enumTestMode.Wind Then
-            toArduino.windPower = TestValue
+            toArduino1.windPower = TestValue
         Else
-            toArduino.windPower = GameOutputs.RigWind
+            toArduino1.windPower = GameOutputs.RigWind
         End If
 
         If TestMode = enumTestMode.Shake Then
-            toArduino.shakePower = TestValue
-            toArduino.shakeSpeed = 100 'GameOutputs.RigShakeSpeed
+            toArduino1.shakePower = TestValue
+            toArduino1.shakeSpeed = 100 'GameOutputs.RigShakeSpeed
         Else
-            toArduino.shakePower = GameOutputs.RigShakePower
-            toArduino.shakeSpeed = GameOutputs.RigShakeSpeed
+            toArduino1.shakePower = GameOutputs.RigShakePower
+            toArduino1.shakeSpeed = GameOutputs.RigShakeSpeed
         End If
 
-        toArduino2.BreakLed = fromArduino.BrakeCorrected > 0
+        toArduino2.BreakLed = fromArduino1.BrakeCorrected > 0
 
 #Region "PowerFromAngle: calculates power to apply now, based on the previous position readings"
 
@@ -268,7 +270,11 @@ start:
                 leftDiff = TestValue
             ElseIf TestMode = enumTestMode.Right Then
                 rightDiff = TestValue
-            ElseIf chkMove.Checked Then
+            ElseIf TestMode = enumTestMode.Position Then
+                DesiredLeftScrew = TestValue
+                DesiredRightScrew = TestValue2
+            End If
+            If TestMode = enumTestMode.Position OrElse (TestMode = enumTestMode.None AndAlso chkMove.Checked) Then
                 leftDiff = DesiredLeftScrew - _realOKLeft
                 rightDiff = DesiredRightScrew - _realOKRight
                 GMinDiffProtected = SettingsMain.GMinDiff + _motorOverHeat  '  if motors's temperature is getting to hight, widen deadzone, avoid details, do just the most important moves
@@ -338,28 +344,36 @@ start:
         End If
 #End Region
 
-        If SerialPort1.IsOpen Then
+        If SerialPort1 IsNot Nothing AndAlso SerialPort1.IsOpen Then
             ' SEND SERIAL DATA TO ARDUINO:
             If SerialPort1.BytesToWrite <> 0 Then
                 ErrorAdd("SerialPort1 Write buffer still busy", SerialPort1.BytesToWrite.ToString)
                 SerialPort1.DiscardOutBuffer()
             End If
-            SerialPort1.Write(toArduino.GetSerialData, 0, SerialSend.PacketLen)
-
+            Try
+                SerialPort1.Write(toArduino1.GetSerialData, 0, SerialSend.PacketLen)
+            Catch ex As Exception
+                ErrorAdd("Arduino1 SerialPort.Write " & ex.Message, "")
+                ArduinoStart1(Nothing, Nothing)
+            End Try
             ' FOR DEBUGGING :
             'ErrorAdd("SerialPort Send " & String.Join(" ", toArduino.GetSerialData), "")
 
             SerialPort1_DataReceived(Nothing, Nothing)
         End If
 
-        If SerialPort2.IsOpen Then
+        If SerialPort2 IsNot Nothing AndAlso SerialPort2.IsOpen Then
             ' SEND SERIAL DATA TO ARDUINO:
             If SerialPort2.BytesToWrite <> 0 Then
                 ErrorAdd("SerialPort2 Write buffer still busy", SerialPort2.BytesToWrite.ToString)
                 SerialPort2.DiscardOutBuffer()
             End If
-            SerialPort2.Write(toArduino2.GetSerialData, 0, SerialSend2.PacketLen)
-
+            Try
+                SerialPort2.Write(toArduino2.GetSerialData, 0, SerialSend2.PacketLen)
+            Catch ex As Exception
+                ErrorAdd("Arduino2 SerialPort.Write " & ex.Message, "")
+                ArduinoStart2(Nothing, Nothing)
+            End Try
             ' FOR DEBUGGING :
             'ErrorAdd("SerialPort2 Send " & String.Join(" ", toArduino2.GetSerialData), "")
 
@@ -424,9 +438,9 @@ start:
             udpBytes(12) = GameOutputs.TyreDirtFR
             udpBytes(13) = GameOutputs.TyreDirtRL
             udpBytes(14) = GameOutputs.TyreDirtRR
-            udpBytes(15) = fromArduino.AccelCorrected
-            udpBytes(16) = fromArduino.BrakeCorrected
-            udpBytes(17) = fromArduino.ClutchCorrected
+            udpBytes(15) = fromArduino1.AccelCorrected
+            udpBytes(16) = fromArduino1.BrakeCorrected
+            udpBytes(17) = fromArduino1.ClutchCorrected
             udpBytes(18) = BitConverter.GetBytes(Math.Abs(GameOutputs.TurboBoost))(0)
             udpBytes(19) = BitConverter.GetBytes(Math.Abs(GameOutputs.TurboBoost))(1)
             Try
@@ -441,7 +455,7 @@ start:
 
             If Not ckDontShow.Checked AndAlso Me.WindowState <> FormWindowState.Minimized Then
                 '  show wheel + FFB:
-                With toArduino
+                With toArduino1
                     Dim g As System.Drawing.Graphics = lbWheelPos.CreateGraphics()
                     g.Clear(Color.White)
                     Dim xHalf As Integer = CInt(lbWheelPos.Width / 2)
@@ -455,7 +469,7 @@ start:
                 End With
 
                 ' show buttons and gears:
-                With fromArduino
+                With fromArduino1
                     lbAccel.Text = .pedalAccel
                     lbBrake.Text = .pedalBreak
                     lbClutch.Text = .pedalClutch
@@ -573,25 +587,23 @@ start:
                         ErrorAdd("ARDUINO1 says INVALID DATA", "")
                     End If
 
-                    fromArduino.SetSerialData(SerialReceiveBuffer)
+                    fromArduino1.SetSerialData(SerialReceiveBuffer)
                     SerialReceiveBuffer.RemoveRange(0, SerialRead.PacketLen)
                     ReadArduino1Count += 1
 
-                    With fromArduino
+                    With fromArduino1
 #Region "buttons:  emulate keystrokes  or  send as joystick buttons"
-                        Dim buttonBit As UInteger = 0
+                        .buttons(9) = fromArduino2.KeyOn
+                        Dim buttonsJoy As UInteger = 0
 
                         If .buttons(0) Then ' if button0 is being pressed:      
 
                             For i As Integer = 1 To clGame.BtCount - 1
-                                If Game.Bt(i + clGame.BtCount) > "" Then
-                                    If .buttons(i) Then
-                                        If ButtonsLast(i) Then Continue For
-                                        MySendKeys(Game.Bt(i + clGame.BtCount))
-                                        ButtonOther = True
+                                If .buttons(i) Then
+                                    If Game.Bt(i + clGame.BtCount) > "" Then
+                                        If Not ButtonsLast(i) Then MySendKeys(Game.Bt(i + clGame.BtCount))
                                     End If
-                                ElseIf .buttons(i) Then
-                                    buttonBit += 2 ^ (i + clGame.BtCount) ' VJoy buttons (0~31) from BtCount+1 to 2*BtCount-1 (2048~524288)
+                                    buttonsJoy += 2 ^ (i + clGame.BtCount) ' VJoy buttons (0~31) from BtCount+1 to 2*BtCount-1 (2048~524288)
                                     ButtonOther = True
                                 End If
                             Next i
@@ -600,27 +612,22 @@ start:
 
                             If ButtonsLast(0) Then ' if was pressed alone and we just released it:
                                 If Not ButtonOther Then ' and no other button had been pressed
-                                    If Game.Bt(0) > "" Then
-                                        MySendKeys(Game.Bt(0))
-                                    Else
-                                        buttonBit = 1  ' VJoy button 0 (0~31)
-                                    End If
+                                    If Game.Bt(0) > "" Then MySendKeys(Game.Bt(0))
+                                    buttonsJoy = 1  ' VJoy button 0 (0~31)
                                 End If
                                 ButtonOther = False
-                            Else
+                            Else ' normal:
                                 For i As Integer = 1 To clGame.BtCount - 1
-                                    If Game.Bt(i) > "" Then
-                                        If .buttons(i) Then
-                                            If ButtonsLast(i) Then Continue For
-                                            MySendKeys(Game.Bt(i))
+                                    If .buttons(i) Then
+                                        If Game.Bt(i) > "" Then
+                                            If Not ButtonsLast(i) Then MySendKeys(Game.Bt(i))
                                         End If
-                                    ElseIf .buttons(i) Then
-                                        buttonBit += 2 ^ i ' VJoy buttons (0~31) from 1 to BtCount-1 (2~512)
+                                        buttonsJoy += 2 ^ i ' VJoy buttons (0~31) from 1 to BtCount-1 (2~512)
                                     End If
                                 Next i
                             End If
                         End If
-                        fromArduino.buttons.CopyTo(ButtonsLast, 0)
+                        fromArduino1.buttons.CopyTo(ButtonsLast, 0)
 #End Region
 
                         If Joy IsNot Nothing Then
@@ -633,7 +640,7 @@ start:
                             Dim j As New vJoyInterfaceWrap.vJoy.JoystickState
 
                             ' VJoy buttons (0~31) gears are from 2*BtCount to 2*BtCount+7 :
-                            j.Buttons = buttonBit _
+                            j.Buttons = buttonsJoy _
                     + If(.gear1, 1048576UI, 0) _
                     + If(.gear2, 2097152UI, 0) _
                     + If(.gear3, 4194304UI, 0) _
@@ -961,7 +968,7 @@ start:
         If Game IsNot Nothing Then Game.Stop()
         Game = Nothing
 
-        If SerialPort1.IsOpen Then ArduinoStart(Nothing, Nothing) ' this stops arduino 
+        If SerialPort1.IsOpen Then ArduinoStart1(Nothing, Nothing) ' this stops arduino 
         SerialPort1 = Nothing
 
         If Joy IsNot Nothing Then

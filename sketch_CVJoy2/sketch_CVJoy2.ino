@@ -150,7 +150,7 @@ noData:
 
     if (lastMainsZero+12000 < micros()) errors = errors | 16; // No Mains power / MainsPower freq lower than 50Hz(10000+12+2915+12+2915+...) // NÂO MUSAR NADINHA NESTA LINHA !!!  ver o meu Testar_ZeroCross.INO
 
-//	triacs(); // TODO: define the motors powers based of the actual positions versus the desired position
+ 	triacs(); // TODO: define the motors powers based of the actual positions versus the desired position
 	
 	// send to PC:
 	if (millis()-lastSerialSend >= 25) {

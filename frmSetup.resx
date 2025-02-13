@@ -255,6 +255,21 @@ After calibrating:
 - enable Pitch and Roll
 - redo de tests and calibrations until it doesnt bounce</value>
   </data>
+  <data name="btTestGPosition.ToolTip" xml:space="preserve">
+    <value>How to calibrate Motor Efficiency:
+- set sensors damping to 99%
+- disable Pitch and Roll
+- set Min.Power
+- test with min.diff, adjust Efficiency@Min.Power so that when motor stops
+   , the calculated sensor line is at tha same level the real sensor will be when it stabilises
+- test with big diff, adjust Efficiency@Max.Power so that when stops
+   , the calculated sensor line is at tha same level the real sensor will be when it stabilises
+
+After calibrating:
+- set sensors damping to good value (90~94%)
+- enable Pitch and Roll
+- redo de tests and calibrations until it doesnt bounce</value>
+  </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>37</value>
   </metadata>

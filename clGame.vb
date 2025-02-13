@@ -149,8 +149,8 @@ Public Structure clGameOutputs ' info that needs updating very frequently
     Private Function FFShakeSpeed(pJump As Single, pAcceleration As Single, SpeedKmh As Single) As Byte
         Dim res As Integer = 0
 
-        If SettingsMain.ShakeSpeedMaxSpeed > SettingsMain.ShakeSpeedMinSpeed AndAlso SpeedKmh > SettingsMain.ShakeSpeedMinSpeed Then
-            res = (CSng(SpeedKmh - SettingsMain.ShakeSpeedMinSpeed) / CSng(SettingsMain.ShakeSpeedMaxSpeed - SettingsMain.ShakeSpeedMinSpeed)) ^ (SettingsMain.ShakeGama / 100) * 255
+        If SettingsMain.ShakeSpeedMaxSpeed > SettingsMain.ShakeSpeedMinSpeed AndAlso Math.Abs(SpeedKmh) > SettingsMain.ShakeSpeedMinSpeed Then
+            res = (CSng(Math.Abs(SpeedKmh) - SettingsMain.ShakeSpeedMinSpeed) / CSng(SettingsMain.ShakeSpeedMaxSpeed - SettingsMain.ShakeSpeedMinSpeed)) ^ (SettingsMain.ShakeGama / 100) * 255
         End If
 
         If SettingsMain.ShakeSpeedMaxJump <> 0 AndAlso Math.Abs(pJump) > 0.01 Then

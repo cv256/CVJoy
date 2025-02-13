@@ -61,7 +61,7 @@ Public Class GameAC
 
         If ACstopped Then
             ACS.MaxRpm = 0 ' using  acS.MaxRpm=0  as a flag to indicate AC was not running
-            Return clGameOutputs.PausedGameOutputs(fromArduino.AccelCorrected)  'If tmpFrm IsNot Nothing Then Integer.TryParse(tmpFrm.lbACSpeed.Text, ACP.SpeedKmh) ' if not connected to AC, user can input data to simulate AC
+            Return clGameOutputs.PausedGameOutputs(fromArduino1.AccelCorrected)  'If tmpFrm IsNot Nothing Then Integer.TryParse(tmpFrm.lbACSpeed.Text, ACP.SpeedKmh) ' if not connected to AC, user can input data to simulate AC
         End If
 
         If ACS.MaxRpm = 0 Then ' if AC just started or restarted:

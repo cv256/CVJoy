@@ -22,7 +22,7 @@ Partial Class frmCVJoy
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.btArduinoStart = New System.Windows.Forms.Button()
+        Me.btArduinoStart1 = New System.Windows.Forms.Button()
         Me.G1 = New System.Windows.Forms.Label()
         Me.G2 = New System.Windows.Forms.Label()
         Me.G3 = New System.Windows.Forms.Label()
@@ -86,13 +86,13 @@ Partial Class frmCVJoy
         '
         'btArduinoStart
         '
-        Me.btArduinoStart.BackColor = System.Drawing.Color.Gold
-        Me.btArduinoStart.Location = New System.Drawing.Point(61, 184)
-        Me.btArduinoStart.Name = "btArduinoStart"
-        Me.btArduinoStart.Size = New System.Drawing.Size(118, 22)
-        Me.btArduinoStart.TabIndex = 0
-        Me.btArduinoStart.Text = "Connect to Arduino"
-        Me.btArduinoStart.UseVisualStyleBackColor = False
+        Me.btArduinoStart1.BackColor = System.Drawing.Color.Gold
+        Me.btArduinoStart1.Location = New System.Drawing.Point(61, 184)
+        Me.btArduinoStart1.Name = "btArduinoStart"
+        Me.btArduinoStart1.Size = New System.Drawing.Size(118, 22)
+        Me.btArduinoStart1.TabIndex = 0
+        Me.btArduinoStart1.Text = "Connect to Arduino"
+        Me.btArduinoStart1.UseVisualStyleBackColor = False
         '
         'G1
         '
@@ -837,7 +837,7 @@ Partial Class frmCVJoy
         Me.Controls.Add(Me.G3)
         Me.Controls.Add(Me.G2)
         Me.Controls.Add(Me.G1)
-        Me.Controls.Add(Me.btArduinoStart)
+        Me.Controls.Add(Me.btArduinoStart1)
         Me.Controls.Add(Me.ckKeepVisible)
         Me.Controls.Add(Me.ckDontShow)
         Me.Controls.Add(Me.lbMainsPower)
@@ -848,7 +848,7 @@ Partial Class frmCVJoy
 
     End Sub
 
-    Friend WithEvents btArduinoStart As Button
+    Friend WithEvents btArduinoStart1 As Button
     Friend WithEvents G1 As Label
     Friend WithEvents G2 As Label
     Friend WithEvents G3 As Label

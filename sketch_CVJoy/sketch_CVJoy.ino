@@ -193,7 +193,7 @@ void loop()
 noData:
 
 	// if we lost communication with the computer stop the motors, dont let them in the last state or they will make ugly damage !
-	if (millis() - lastSerialRecv > 200) { // 200 = 5 fps , lower than that and it will start bumping
+	if ( lastSerialRecv+200 < millis() ) { // 200 = 5 fps , lower than that and it will start bumping
 		analogWrite(pinWheelMotorPower, 0);
 		analogWrite(pinWindMotor, 0);//digitalWrite(pinWindMotor, LOW);    //windMotorPower = 0;
 		analogWrite(pinShakeMotor, 0);

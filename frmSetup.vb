@@ -257,7 +257,7 @@
              btTestGDown.MouseDown, btTestGUp.MouseDown, btTestGLeft.MouseDown, btTestGRight.MouseDown _
             , btTestGLeftDown.MouseDown, btTestGLeftUp.MouseDown, btTestGRightDown.MouseDown, btTestGRightUp.MouseDown
         If txt_Validate(pShowMsg:=True) > "" Then Return
-        Dim msg As String = ValidateNumber(txtGTestDiff, 0, 99, "if you want to test, enter a difference in millimeters")
+        Dim msg As String = ValidateNumber(txtGTestDiff, 0, 500, "if you want to test, enter a difference in millimeters")
         If Not String.IsNullOrEmpty(msg) Then
             MsgBox(msg)
             Return
@@ -279,10 +279,24 @@
             End If
         End With
     End Sub
+    Private Sub btTestGPosition_MouseDown(sender As Object, e As MouseEventArgs) Handles btTestGPosition.MouseDown
+        If txt_Validate(pShowMsg:=True) > "" Then Return
+        Dim msg As String = ValidateNumber(txtTestGPositionL, -500, 500, "if you want to test, enter a relative Left position in millimeters")
+        msg &= ValidateNumber(txtTestGPositionR, -500, 500, "if you want to test, enter a relative Right position in millimeters")
+        If Not String.IsNullOrEmpty(msg) Then
+            MsgBox(msg)
+            Return
+        End If
+        With CType(Me.Owner, frmCVJoy)
+            .TestValue = CInt(txtTestGPositionL.Text)
+            .TestValue2 = CInt(txtTestGPositionR.Text)
+            .TestMode = frmCVJoy.enumTestMode.Position
+        End With
+    End Sub
     Private Sub btTest_MouseUp(sender As Object, e As MouseEventArgs) Handles Me.MouseUp, Me.MouseMove, UcControlGGraph1.MouseMove, UcControlGraph1.MouseMove _
         , btTestWheelLeft.MouseUp, btTestWheelRight.MouseUp, btTestWheelCenter.MouseUp _
         , btTestGDown.MouseUp, btTestGUp.MouseUp, btTestGLeft.MouseUp, btTestGRight.MouseUp _
-        , btTestGLeftDown.MouseUp, btTestGLeftUp.MouseUp, btTestGRightDown.MouseUp, btTestGRightUp.MouseUp _
+        , btTestGLeftDown.MouseUp, btTestGLeftUp.MouseUp, btTestGRightDown.MouseUp, btTestGRightUp.MouseUp, btTestGPosition.MouseUp _
         , btTestWind.MouseUp, btTestShake.MouseUp
         CType(Me.Owner, frmCVJoy).TestMode = frmCVJoy.enumTestMode.None
     End Sub
@@ -300,7 +314,7 @@
             UcControlGraph1.Visible = False
         Else
             If sender.Equals(btGGraph) Then
-                UcControlGGraph1.Height = txtGTestDiff.Top
+                UcControlGGraph1.Height = Label50.Bottom
                 UcControlGGraph1.Visible = True
                 Ggraph = UcControlGGraph1 ' start updating graph data from frmMain
             Else

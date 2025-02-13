@@ -97,11 +97,11 @@
         Dim x As Integer
         Select Case ParentButton.Name
             Case frmSetup.btAccelGraph.Name
-                If fromArduino IsNot Nothing Then x = fromArduino.pedalAccel
+                If fromArduino1 IsNot Nothing Then x = fromArduino1.pedalAccel
             Case frmSetup.btBrakeGraph.Name
-                If fromArduino IsNot Nothing Then x = fromArduino.pedalBreak
+                If fromArduino1 IsNot Nothing Then x = fromArduino1.pedalBreak
             Case frmSetup.btClutchGraph.Name
-                If fromArduino IsNot Nothing Then x = fromArduino.pedalClutch
+                If fromArduino1 IsNot Nothing Then x = fromArduino1.pedalClutch
             Case Else
                 Return
         End Select
