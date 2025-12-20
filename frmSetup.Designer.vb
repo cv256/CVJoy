@@ -2475,6 +2475,8 @@ Partial Class frmSetup
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(770, 626)
+        Me.Controls.Add(Me.UcControlGGraph1)
+        Me.Controls.Add(Me.UcControlGraph1)
         Me.Controls.Add(Me.Label105)
         Me.Controls.Add(Me.txtTestGPositionR)
         Me.Controls.Add(Me.Label103)
@@ -2484,8 +2486,6 @@ Partial Class frmSetup
         Me.Controls.Add(Me.Label101)
         Me.Controls.Add(Me.Label102)
         Me.Controls.Add(Me.txtPowerInertia)
-        Me.Controls.Add(Me.UcControlGGraph1)
-        Me.Controls.Add(Me.UcControlGraph1)
         Me.Controls.Add(Me.txtTurn)
         Me.Controls.Add(Me.Label84)
         Me.Controls.Add(Me.txtRoll)

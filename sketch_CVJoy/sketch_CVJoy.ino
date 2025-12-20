@@ -118,7 +118,7 @@ byte serialReceivedIdx;
 byte errors; // 1=not receiving data / 2=got invalid data from computer
 unsigned long lastSerialRecv;
 unsigned int every30Hz;
-
+byte buttons[18];
 
 void loop()
 {
@@ -213,9 +213,29 @@ noData:
 		Serial.write(serialWrite, 4);
 	}
 
+	if ((every30Hz & 16) == 16) {
+		buttonSet( 1 , (digitalRead(pinButton1) == LOW) );
+		buttonSet( 2 , (digitalRead(pinButton2) == LOW) );
+		buttonSet( 3 , (digitalRead(pinButton3) == LOW) );
+		buttonSet( 4 , (digitalRead(pinButton4) == LOW) );
+		buttonSet( 5 , (digitalRead(pinButton5) == LOW) );
+		buttonSet( 6 , (digitalRead(pinButton6) == LOW) );
+		buttonSet( 7 , (digitalRead(pinButton7) == LOW) );
+		buttonSet( 8 , (digitalRead(pinButton8) == LOW) );
+		buttonSet( 9 , (digitalRead(pinButton9) == LOW) );
+		//buttonSet( 10 , (digitalRead(pinButton10) == LOW) );
+		buttonSet( 11 , (digitalRead(pinGear1) == LOW) );
+		buttonSet( 12 , (digitalRead(pinGear2) == LOW) );
+		buttonSet( 13 , (digitalRead(pinGear3) == LOW) );
+		buttonSet( 14 , (digitalRead(pinGear4) == LOW) );
+		buttonSet( 15 , (digitalRead(pinGear5) == LOW) );
+		buttonSet( 16 , (digitalRead(pinGear6) == LOW) );
+		buttonSet( 17 , (digitalRead(pinGearR) == LOW) );
+	}
+
 	// send Pedals+Gears+Buttons(+RealBolts) -> ARDUINO -> PC -> joy:
 	every30Hz++;
-	if (every30Hz >= 4000) {
+	if (every30Hz >= 570) {
 		every30Hz = 0;
 
 		// read from hardware / SEND to computer : --------------------- must be equal to CVJoyAc.SerialRead
@@ -223,30 +243,31 @@ noData:
 		serialWrite[0] = 254;
 
 		byte tmpByte = 192; // checkdigit (64+128)
-		if (digitalRead(pinButton9) == LOW) tmpByte += 32;
-		//if (digitalRead(pinButton10) == LOW) tmpByte += 16;
+		if (buttons[9] >=10) tmpByte += 32;
+		//if (buttons[10] >=10) tmpByte += 16;
 		tmpByte = tmpByte | errors;
 		errors = 0;
 		serialWrite[1] = tmpByte;
 
 		tmpByte = 0;
-		if (digitalRead(pinButton1) == LOW) tmpByte += 1;
-		if (digitalRead(pinButton2) == LOW) tmpByte += 2;
-		if (digitalRead(pinButton3) == LOW) tmpByte += 4;
-		if (digitalRead(pinButton4) == LOW) tmpByte += 8;
-		if (digitalRead(pinButton5) == LOW) tmpByte += 16;
-		if (digitalRead(pinButton6) == LOW) tmpByte += 32;
-		if (digitalRead(pinButton7) == LOW) tmpByte += 64;
-		if (digitalRead(pinButton8) == LOW) tmpByte += 128;
+
+		if (buttons[1] >=10) tmpByte += 1;
+		if (buttons[2] >=10) tmpByte += 2;
+		if (buttons[3] >=10) tmpByte += 4;
+		if (buttons[4] >=10) tmpByte += 8;
+		if (buttons[5] >=10) tmpByte += 16;
+		if (buttons[6] >=10) tmpByte += 32;
+		if (buttons[7] >=10) tmpByte += 64;
+		if (buttons[8] >=10) tmpByte += 128;
 		serialWrite[2] = tmpByte;
 		tmpByte = 0;
-		if (digitalRead(pinGear1) == LOW) tmpByte += 1;
-		if (digitalRead(pinGear2) == LOW) tmpByte += 2;
-		if (digitalRead(pinGear3) == LOW) tmpByte += 4;
-		if (digitalRead(pinGear4) == LOW) tmpByte += 8;
-		if (digitalRead(pinGear5) == LOW) tmpByte += 16;
-		if (digitalRead(pinGear6) == LOW) tmpByte += 32;
-		if (digitalRead(pinGearR) == LOW) tmpByte += 64;
+		if (buttons[11] >=10) tmpByte += 1;
+		if (buttons[12] >=10) tmpByte += 2;
+		if (buttons[13] >=10) tmpByte += 4;
+		if (buttons[14] >=10) tmpByte += 8;
+		if (buttons[15] >=10) tmpByte += 16;
+		if (buttons[16] >=10) tmpByte += 32;
+		if (buttons[17] >=10) tmpByte += 64;
 		serialWrite[3] = tmpByte;
 
 		unsigned int tmpUInt;
@@ -338,6 +359,17 @@ void doEncoderB() {
 	}
 	interrupts();           // enable all interrupts
 }
+
+void buttonSet( int btnIndex , bool pValue ) {
+	if (pValue==true) {
+		if (buttons[btnIndex] >= 20) return;
+		buttons[btnIndex] += 1;
+	} else {
+		if (buttons[btnIndex] <= 0) return;
+		buttons[btnIndex] -= 1;
+	}
+}
+
 
 void SerialReset() {
 	// Serial.end(); end and begin operations are async and take time, we would need to wait for some time before we can begin again

@@ -242,7 +242,7 @@
         If txt_Validate(pShowMsg:=True) > "" Then Return
         With CType(Me.Owner, frmCVJoy)
             If sender.Equals(btTestWheelLeft) OrElse sender.Equals(btTestWheelRight) OrElse sender.Equals(btTestWheelCenter) Then
-                .TestValue = CInt(txtWheelMidIn.Text) * If(sender.Equals(btTestWheelRight), -1, 1)
+                .TestValue = CInt(txtWheelMidOut.Text) * If(sender.Equals(btTestWheelRight), -1, 1)
                 .TestMode = If(sender.Equals(btTestWheelCenter), frmCVJoy.enumTestMode.WheelCenter, frmCVJoy.enumTestMode.Wheel)
             ElseIf sender.Equals(btTestWind) Then
                 .TestValue = CInt(txtWindMin.Text)
