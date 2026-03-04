@@ -27,8 +27,8 @@
 #define serialSpeed 115200 // data rate in bits per second (baud) for serial data transmission. For communicating with the computer, use one of these rates: 300, 600, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600, or 115200. The highest without error seems to be actually 115200 - which is the standard
 
 // external hardware -> arduino :
-#define pinWheelEncA  2 //on Mega, Mega2560, MegaADK interrupt pins are 2, 3, 18, 19, 20, 21
-#define pinWheelEncB  3 //on Mega, Mega2560, MegaADK interrupt pins are 2, 3, 18, 19, 20, 21
+#define pinWheelEncA  19 //on Mega, Mega2560, MegaADK interrupt pins are 2, 3, 18, 19, 20, 21
+#define pinWheelEncB  18 //on Mega, Mega2560, MegaADK interrupt pins are 2, 3, 18, 19, 20, 21
 #define pinPedalAccel  1 // analog input
 #define pinPedalBreak  5 // analog input// A2 is damaged?...
 #define pinPedalClutch  3 // analog input
@@ -146,6 +146,7 @@ void loop()
 			goto noData;
 		}
 
+// GOT DATA FROM COMPUTER:   60 Hz
 		//digitalWrite(LED_BUILTIN, LOW);
 		serialReceivedIdx = 0;
 		lastSerialRecv = millis();
@@ -172,7 +173,7 @@ void loop()
 
 		analogWrite(pinWindMotor, serialReceived[3]); //windMotorPower = serialReceived[3];
 
-		if (serialReceived[4] == 0 || serialReceived[5] == 0) {
+		if (serialReceived[4] == 0 || serialReceived[5] == 0) { // shake power / shake speed
 			shakeMotorPower = 0;
 			shakeOnTime = 0;
 			shakeDuty = 0;
@@ -190,30 +191,21 @@ void loop()
 
 	}
 
-noData:
+noData: // 16MHz
 
+/*
 	// if we lost communication with the computer stop the motors, dont let them in the last state or they will make ugly damage !
-	if ( lastSerialRecv+200 < millis() ) { // 200 = 5 fps , lower than that and it will start bumping
-		analogWrite(pinWheelMotorPower, 0);
-		analogWrite(pinWindMotor, 0);//digitalWrite(pinWindMotor, LOW);    //windMotorPower = 0;
-		analogWrite(pinShakeMotor, 0);
-		shakeMotorPower = 0;
-		// SerialReset();
-		errors = errors | 1;
-	}
+		if ( lastSerialRecv+200 < millis() ) { // 200 = 5 fps , lower than that and it will start bumping
+			analogWrite(pinWheelMotorPower, 0);
+			analogWrite(pinWindMotor, 0);//digitalWrite(pinWindMotor, LOW);    //windMotorPower = 0;
+			analogWrite(pinShakeMotor, 0);
+			shakeMotorPower = 0;
+			// SerialReset();
+			errors = errors | 1;
+		}
+*/
 
-	// send Wheel Position -> PC -> joy:
-	if (wheelPosition != wheelPositionLast) {
-		wheelPositionLast = wheelPosition;
-		byte serialWrite[3];
-		serialWrite[0] = 255; // record type = «wheel info»
-		serialWrite[1] = wheelPosition & 255; // position lo part
-		serialWrite[2] = ((wheelPosition & 0xFF00) >> 8); // position hi part
-		serialWrite[3] = serialWrite[1] ^ serialWrite[2]; // checkdigit
-		Serial.write(serialWrite, 4);
-	}
-
-	if ((every30Hz & 16) == 16) {
+	if ((every30Hz % 200) == 0) { // 200 Hz
 		buttonSet( 1 , (digitalRead(pinButton1) == LOW) );
 		buttonSet( 2 , (digitalRead(pinButton2) == LOW) );
 		buttonSet( 3 , (digitalRead(pinButton3) == LOW) );
@@ -230,13 +222,24 @@ noData:
 		buttonSet( 14 , (digitalRead(pinGear4) == LOW) );
 		buttonSet( 15 , (digitalRead(pinGear5) == LOW) );
 		buttonSet( 16 , (digitalRead(pinGear6) == LOW) );
-		buttonSet( 17 , (digitalRead(pinGearR) == LOW) );
+		buttonSet( 17 , (digitalRead(pinGearR) == LOW) );	
 	}
 
 	// send Pedals+Gears+Buttons(+RealBolts) -> ARDUINO -> PC -> joy:
 	every30Hz++;
-	if (every30Hz >= 570) {
+	if (every30Hz >= 1400) {
 		every30Hz = 0;
+
+		// send Wheel Position -> PC -> joy:
+		if (wheelPosition != wheelPositionLast) {
+			wheelPositionLast = wheelPosition;
+			byte serialWrite[3];
+			serialWrite[0] = 255; // record type = «wheel info»
+			serialWrite[1] = wheelPositionLast & 255; // position lo part
+			serialWrite[2] = ((wheelPositionLast & 0xFF00) >> 8); // position hi part
+			serialWrite[3] = serialWrite[1] ^ serialWrite[2]; // checkdigit
+			Serial.write(serialWrite, 4);
+		}
 
 		// read from hardware / SEND to computer : --------------------- must be equal to CVJoyAc.SerialRead
 		byte serialWrite[7]; // SerialRead.PacketLen
@@ -280,23 +283,24 @@ noData:
 
 		serialWrite[7] = serialWrite[1] ^ serialWrite[2] ^ serialWrite[3] ^ serialWrite[4] ^ serialWrite[5] ^ serialWrite[6];
 		Serial.write(serialWrite, 8);
-	}
+		
+		// control 24v DC motors
+		if (shakeMotorPower != 0) {
+			if (!shakeOn) {
+				if (micros() >= shakeOnTime + shakeDelay) {
+					shakeOn = true;
+					analogWrite(pinShakeMotor, shakeMotorPower);
+					shakeOnTime = micros();
+				}
+			}
+			else {
+				if (micros() >= shakeOnTime + shakeDuty) {
+					shakeOn = false;
+					analogWrite(pinShakeMotor, 0);
+				}
+			}
+		}
 
-	// control 24v DC motors
-	if (shakeMotorPower != 0) {
-		if (!shakeOn) {
-			if (micros() >= shakeOnTime + shakeDelay) {
-				shakeOn = true;
-				analogWrite(pinShakeMotor, shakeMotorPower);
-				shakeOnTime = micros();
-			}
-		}
-		else {
-			if (micros() >= shakeOnTime + shakeDuty) {
-				shakeOn = false;
-				analogWrite(pinShakeMotor, 0);
-			}
-		}
 	}
 
 } //...loop
@@ -362,7 +366,10 @@ void doEncoderB() {
 
 void buttonSet( int btnIndex , bool pValue ) {
 	if (pValue==true) {
-		if (buttons[btnIndex] >= 20) return;
+		if (buttons[btnIndex] >= 10) {
+			buttons[btnIndex] = 20;
+			return;
+		}
 		buttons[btnIndex] += 1;
 	} else {
 		if (buttons[btnIndex] <= 0) return;

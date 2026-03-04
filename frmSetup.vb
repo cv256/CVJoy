@@ -95,7 +95,7 @@
 
     Public Function txt_Validate(pShowMsg As Boolean) As String
         Dim res As String = ""
-        res &= ValidateNumber(txtFreq, 11, 999, "Refresh Rate")
+        res &= ValidateNumber(txtFreq, 11, 900, "Refresh Rate (900=as fast as possible)")
 
         res &= ValidateNumber(txtWheelMidIn, 0, 255, "Wheel FF Mid Input")
         res &= ValidateNumber(txtWheelMidOut, 0, 255, "Wheel FF Mid Output")

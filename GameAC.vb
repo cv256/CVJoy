@@ -52,7 +52,7 @@ Public Class GameAC
                 ACstopped = True
             Else
                 ACP = AC.ReadPhysics()
-                If ACP.SpeedKmh = GameOutputs.Speed Then 'AndAlso Now.Subtract(GameOutputs.GameLastRead).TotalMilliseconds > 1000  ' more then 1 second with the same readings means AC is dead
+                If ACP.SpeedKmh = GameOutputs.Speed AndAlso Now.Subtract(GameOutputs.GameLastRead).TotalMilliseconds > 200 Then 'AndAlso Now.Subtract(GameOutputs.GameLastRead).TotalMilliseconds > 1000  ' more then 1 second with the same readings means AC is dead
                     State = "PAUSED"
                     ACstopped = True
                 End If

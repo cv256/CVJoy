@@ -114,10 +114,11 @@ Public Structure clGameOutputs ' info that needs updating very frequently
 
         Const damping As Single = 0.7
         Acceleration = Acceleration * damping + (Speed - GameLastSpeed) / Now.Subtract(GameLastRead).TotalMilliseconds * 15 * (1 - damping)
+        If Single.IsNaN(Acceleration) OrElse Single.IsInfinity(Acceleration) Then Acceleration = 0
         GameLastSpeed = Speed
         GameLastRead = Now
         ' TODO: calculate Rotation
-        Me.RigPitch = GamePitch * SettingsMain.Pitch + Acceleration * SettingsMain.Accel ' everything in Radians (me.accel has allready been converted) ' acP.AccG(2) has lots of noise, unusable!
+        Me.RigPitch = GamePitch * SettingsMain.Pitch + Acceleration * SettingsMain.Accel ' everything in Radians (me.accel has allready been converted) ' acP.AccG(2) has lots of noise, unusable!        
         Me.RigRoll = -GameRoll * SettingsMain.Roll + Rotation * SettingsMain.Turn '' everything in Radians (me.turn has allready been converted)
         Dim Jump As Single = Math.Abs(GameAccelZ) ^ 2 * Math.Sign(GameAccelZ) * 10
         Me.RigWind = If(pDoWind, FFWind(SpeedKmh:=Speed, pJump:=Jump, pAcceleration:=Acceleration), 0)

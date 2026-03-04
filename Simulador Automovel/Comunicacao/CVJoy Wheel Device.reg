@@ -1,0 +1,159 @@
+Windows Registry Editor Version 5.00
+
+
+
+
+
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\GameInput\Devices\1234BEAD00010004]
+"Description"="CVJoy Wheel Device"
+"RacingWheel"=hex:02,05,00,85,02,85,03,85,01,04,0a,05,0a,04,8b,00,cb,00,eb,00,\
+  ab,00,0a,00,0a,02,0a,01,0a,03,0a,07,0a,0b,0a,06,0a,0a,0a,13,0a,14,0a,17,0a,\
+  08,0a,09,08,08,08,0a,12,0a,0c,0a,0d,0a,0e,0a,0f,0a,10,0a,11,08,00,00
+"UINavigation"=hex:02,0a,08,0a,09,0a,00,0a,02,8b,00,cb,00,eb,00,ab,00,08,08,08,\
+  08,0a,01,0a,03,08,08,08,08,0a,05,0a,04,08,08,08,08
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\GameInput\Devices\1234BEAD00010004\Labels]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\GameInput\Devices\1234BEAD00010004\Labels\Buttons]
+"Button0"="Cross"
+"Button1"="Square"
+"Button10"="Right3"
+"Button11"="Left3"
+"Button19"="Plus"
+"Button2"="Circle"
+"Button20"="Minus"
+"Button23"="DownLeftArrow"
+"Button3"="Triangle"
+"Button6"="Right2"
+"Button7"="Left2"
+"Button8"="Share"
+"Button9"="Options"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\GameInput\Devices\1234BEAD00010004\Labels\Switches]
+"Switch0Down"="Down"
+"Switch0Left"="Left"
+"Switch0Right"="Right"
+"Switch0Up"="Up"
+
+
+
+
+
+
+
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004]
+"Description" = "CVJoy Wheel Device"
+
+
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel]
+"MaxWheelAngle" = dword:000001c2
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\Wheel]
+"AxisIndex" = dword:00000000
+"Invert" = dword:00000000
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\Throttle]
+"AxisIndex" = dword:00000006
+"Invert" = dword:00000001
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\Brake]
+"AxisIndex" = dword:00000001
+"Invert" = dword:00000001
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\Clutch]
+"AxisIndex" = dword:00000003
+"Invert" = dword:00000001
+
+
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\FirstGear]
+"ButtonIndex" = dword:00000015
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\SecondGear]
+"ButtonIndex" = dword:00000016
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\ThirdGear]
+"ButtonIndex" = dword:00000017
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\FourthGear]
+"ButtonIndex" = dword:00000018
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\FifthGear]
+"ButtonIndex" = dword:00000019
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\SixthGear]
+"ButtonIndex" = dword:0000001a
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\ReverseGear]
+"ButtonIndex" = dword:0000001b
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\NextGear]
+"ButtonIndex" = dword:00000008
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\PreviousGear]
+"ButtonIndex" = dword:00000009
+
+
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\Labels\Buttons]
+"Button0" = "Button0"
+"Button1" = "Button1"
+"Button2" = "Button2"
+"Button3" = "Button3"
+"Button6" = "Button6"
+"Button7" = "Button7"
+"Button8" = "Button8"
+"Button9" = "Button9"
+"Button10" = "Key"
+"Button11" = "Button11"
+"Button12" = "Button12"
+"Button13" = "Button13"
+"Button14" = "Button14"
+"Button15" = "Button15"
+"Button16" = "Button16"
+"Button17" = "Button17"
+"Button18" = "Button18"
+"Button19" = "Button19"
+"Button20" = "Button20"
+"Button21" = "Button21"
+"Button22" = "Button22"
+"Button23" = "Button23"
+"Button24" = "Button24"
+"Button25" = "Button25"
+"Button26" = "Button26"
+"Button27" = "Button27"
+"Button28" = "Button28"
+"Button29" = "Button29"
+"Button30" = "Button30"
+"Button31" = "Button31"
+"Button32" = "Button32"
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\Button1]
+"ButtonIndex" = dword:00000000
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\Button2]
+"ButtonIndex" = dword:00000001
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\Button3]
+"ButtonIndex" = dword:00000002
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\Button4]
+"ButtonIndex" = dword:00000003
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\Button5]
+"ButtonIndex" = dword:00000009
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\Button6]
+"ButtonIndex" = dword:00000008
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\Button7]
+"ButtonIndex" = dword:00000007
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\Button8]
+"ButtonIndex" = dword:00000006
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GameInput\Devices\1234BEAD00010004\RacingWheel\Button10]
+"ButtonIndex" = dword:0000000A
