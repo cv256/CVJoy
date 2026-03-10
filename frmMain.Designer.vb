@@ -84,11 +84,11 @@ Partial Class frmCVJoy
         Me.UcButtons1 = New CVJoy.ucButtons()
         Me.SuspendLayout()
         '
-        'btArduinoStart
+        'btArduinoStart1
         '
         Me.btArduinoStart1.BackColor = System.Drawing.Color.Gold
         Me.btArduinoStart1.Location = New System.Drawing.Point(61, 184)
-        Me.btArduinoStart1.Name = "btArduinoStart"
+        Me.btArduinoStart1.Name = "btArduinoStart1"
         Me.btArduinoStart1.Size = New System.Drawing.Size(118, 22)
         Me.btArduinoStart1.TabIndex = 0
         Me.btArduinoStart1.Text = "Connect to Arduino"
@@ -366,7 +366,7 @@ Partial Class frmCVJoy
         Me.chkFFCond.Location = New System.Drawing.Point(167, 154)
         Me.chkFFCond.Margin = New System.Windows.Forms.Padding(0)
         Me.chkFFCond.Name = "chkFFCond"
-        Me.chkFFCond.Size = New System.Drawing.Size(79, 17)
+        Me.chkFFCond.Size = New System.Drawing.Size(177, 17)
         Me.chkFFCond.TabIndex = 127
         Me.chkFFCond.Text = "FF Cond"
         Me.chkFFCond.UseVisualStyleBackColor = False
@@ -816,7 +816,6 @@ Partial Class frmCVJoy
         Me.Controls.Add(Me.btGameSetup)
         Me.Controls.Add(Me.btGameStart)
         Me.Controls.Add(Me.lbGameInfo)
-        Me.Controls.Add(Me.chkFFCond)
         Me.Controls.Add(Me.chkFFConst)
         Me.Controls.Add(Me.cbLogFF)
         Me.Controls.Add(Me.chkWind)
@@ -841,6 +840,7 @@ Partial Class frmCVJoy
         Me.Controls.Add(Me.ckKeepVisible)
         Me.Controls.Add(Me.ckDontShow)
         Me.Controls.Add(Me.lbMainsPower)
+        Me.Controls.Add(Me.chkFFCond)
         Me.Name = "frmCVJoy"
         Me.Text = "CV Joy"
         Me.ResumeLayout(False)

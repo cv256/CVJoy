@@ -1,6 +1,7 @@
 ﻿Imports System.IO.Ports
 Imports System.Net
-Imports CVJoy.frmCVJoy
+Imports System.Net.Sockets
+Imports System.Text
 
 
 Public Class frmCVJoy
@@ -12,6 +13,7 @@ Public Class frmCVJoy
     Public WithEvents TimerScreenAndUDP As New Windows.Forms.Timer
     Private GameOutputs As clGameOutputs, GameOutputsExtra As clGameOutputsExtra
     Public Joy As vJoyInterfaceWrap.vJoy ' http://vjoystick.sourceforge.net/site/includes/SDK_ReadMe.pdf
+    Private ButtonBox As New clButtonBox, udpClient45001 As Sockets.UdpClient
 
     Private FFGain As Single = 255
     Public FFWheel_Type As FFBEType
@@ -58,9 +60,31 @@ Public Class frmCVJoy
         cbGames.Items.Add("Standard")
 
         SettingsMain.LoadSettingsFromFile()
-        cbGames.SelectedIndex = 0 ' TODO: SettingsMain should keep that last cbGames.SelectedIndex used, and here we should use that
 
         VJoy_Start()
+
+        Dim RemoteIpEndPoint As IPEndPoint = New IPEndPoint(IPAddress.Any, 45001)
+        udpClient45001 = New Net.Sockets.UdpClient(RemoteIpEndPoint)
+        udpClient45001.BeginReceive(AddressOf ReceivedUdp, Nothing)
+
+        cbGames.SelectedIndex = 0 ' TODO: SettingsMain should keep that last cbGames.SelectedIndex used, and here we should use that
+    End Sub
+
+    Public Sub ReceivedUdp(pIAsyncResult As IAsyncResult)
+        If udpClient45001 Is Nothing Then Return
+        Dim RemoteIpEndPoint As IPEndPoint = New IPEndPoint(IPAddress.Parse(SettingsMain.UdpIp), 45001)
+        Dim bytesReceived As Byte() = udpClient45001.EndReceive(pIAsyncResult, RemoteIpEndPoint)
+
+        If bytesReceived(0) = 253 Then
+            Dim s As String = System.Text.Encoding.ASCII.GetString(bytesReceived, 1, bytesReceived.Length - 1)
+            Dim c As String = ButtonBox.GetAction(s)
+            ' TODO: execute s
+            'ErrorAdd($"UDP received", s) ' Control 'txtErrors' accessed from a thread other than the thread it was created on.
+        Else
+            'ErrorAdd($"Unexpected UDP received on {RemoteIpEndPoint.ToString}", $"header={bytesReceived(0)}") ' Control 'txtErrors' accessed from a thread other than the thread it was created on.
+        End If
+
+        If Not udpClient45001 Is Nothing Then udpClient45001.BeginReceive(AddressOf ReceivedUdp, Nothing)
     End Sub
 
     Private Sub cbGames_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbGames.SelectedIndexChanged
@@ -82,6 +106,13 @@ Public Class frmCVJoy
         UcButtons1.ShowFromGameSettings()
         UcButtons1.ShowDescriptions = True
         UcButtons1.ReadOnly = True
+
+        ' send ButtonBox configuation to the CVJoyMAUI apps:
+        Try
+            ButtonBox.SendConfiguration()
+        Catch ex As Exception
+            ErrorAdd("UDP Send Error " & SettingsMain.UdpIp, ex.Message)
+        End Try
     End Sub
 
     Private Sub GameStateChanged() ' Handles Game.StateChanged
@@ -195,6 +226,11 @@ start:
             ElseIf WheelPosition >= 16380 Then
                 toArduino1.wheelPower = 255
             Else
+                If FFWheel_Type = FFBEType.ET_NONE AndAlso Game.Spring = True Then
+                    FFWheel_Cond.NegCoeff = 2800
+                    FFWheel_Cond.PosCoeff = 2800
+                    FFWheel_Type = FFBEType.ET_SPRNG
+                End If
                 toArduino1.wheelPower = FFSteer(WheelPosition)
             End If
         End If
@@ -451,8 +487,8 @@ start:
             udpBytes(18) = BitConverter.GetBytes(Math.Abs(GameOutputs.TurboBoost))(0)
             udpBytes(19) = BitConverter.GetBytes(Math.Abs(GameOutputs.TurboBoost))(1)
             Try
-                Dim udpClient As New Sockets.UdpClient
-                udpClient.SendAsync(udpBytes, udpBytes.Length, SettingsMain.UdpIp, 45000)
+                Dim udpClient As New Sockets.UdpClient(SettingsMain.UdpIp, 45000)
+                udpClient.SendAsync(udpBytes, udpBytes.Length)
             Catch ex As Exception
                 ErrorAdd("UDP Send Error " & SettingsMain.UdpIp, ex.Message)
             End Try
@@ -461,17 +497,20 @@ start:
         If ScreenUpdateTimeElapsed > 0.5 Then ' 2Hz 
 
             If Not ckDontShow.Checked AndAlso Me.WindowState <> FormWindowState.Minimized Then
+                chkFFCond.Text = "FF Cond " & FFWheel_Type.ToString.Replace("ET_", "")
+
                 '  show wheel + FFB:
                 With toArduino1
                     Dim g As System.Drawing.Graphics = lbWheelPos.CreateGraphics()
                     g.Clear(Color.White)
                     Dim xHalf As Integer = CInt(lbWheelPos.Width / 2)
                     g.DrawLine(If(Math.Abs(WheelPosition) >= 16380, Pens.Red, Pens.Blue), xHalf, 1, CInt(xHalf * (1 + WheelPosition / 16384)), 1)
-                    g.DrawLine(If(Math.Abs(.wheelPower) >= 235, If(Math.Abs(.wheelPower) >= 255, Pens.Red, Pens.Orange), Pens.Blue), xHalf, 7, CInt(xHalf * (1 - .wheelPower / 255)), 7)
                     g.DrawLine(Pens.Green, xHalf, 3, CInt(xHalf * (1 - FFWheel_Const.Magnitude / 10000)), 3)
-                    Dim xCP As Integer = CInt(xHalf * (1 - FFWheel_Cond.CenterPointOffset / 10000))
-                    g.DrawLine(Pens.DarkOrchid, xCP - 1, 5, xCP - CInt(xHalf * FFWheel_Cond.NegCoeff / 10000), 5)
-                    g.DrawLine(Pens.DarkOrchid, xCP + 1, 5, xCP + CInt(xHalf * FFWheel_Cond.PosCoeff / 10000), 5)
+                    ' CV 2026-03-06 comentei estas 3 linhas porque nao vejo o interesse em graficar o centro e os coeficientes da Condicional:
+                    'Dim xCP As Integer = CInt(xHalf * (1 - FFWheel_Cond.CenterPointOffset / 10000))
+                    'g.DrawLine(Pens.DarkOrchid, xCP - 1, 5, xCP - CInt(xHalf * FFWheel_Cond.NegCoeff / 10000), 5)
+                    'g.DrawLine(Pens.DarkOrchid, xCP + 1, 5, xCP + CInt(xHalf * FFWheel_Cond.PosCoeff / 10000), 5)
+                    g.DrawLine(If(Math.Abs(.wheelPower) >= 235, If(Math.Abs(.wheelPower) >= 255, Pens.Red, Pens.Orange), Pens.Blue), xHalf, 7, CInt(xHalf * (1 - .wheelPower / 255)), 7)
                     lbWheelPos.ResumeLayout()
                 End With
 
@@ -656,7 +695,7 @@ start:
                     + If(.gear6, 33554432UI, 0) _
                     + If(.gearR, 67108864UI, 0)
 
-                            j.AxisX = Math.Max(Math.Min(WheelPosition + 16384, 32767), 0)  ' 0-16384-32767
+                            j.AxisX = Math.Max(Math.Min(WheelPosition + 16384, 29767), 3000)   ' 0-16384-32767
                             j.AxisY = .AccelCorrected * 128 ' 0-32767
                             j.AxisZ = .BrakeCorrected * 128 ' 0-32767
                             j.AxisXRot = .ClutchCorrected * 128 ' 0-32767
@@ -1006,40 +1045,45 @@ start:
         Dim q As Single = 0 ' aprox. -1~1
         Dim timeElapsed As Single = WheelReadTime.Subtract(WheelReadPreviousTime).Ticks
         If chkFFCond.Checked Then
-            'If the metric Is less than CP Offset - Dead Band, Then the resulting force Is given by the following formula:
-            '   FFWheel += Negative Coefficient * (q - (CP Offset – Dead Band))
-            'If the metric Is greater than CP Offset + Dead Band, then the resulting force Is given by the following formula:
-            '  FFWheel += Positive Coefficient * (q - (CP Offset + Dead Band))
-            'where q Is a type-dependent metric: 
-            '  - spring = axis position as the metric
-            '  - damper = axis velocity as the metric
-            '  - inertia = axis acceleration as the metric
-            '  - friction = when the axis is moved and depends on the defined friction coefficient
-            'If FFWheel_Type = FFBEType.ET_DMPR OrElse FFWheel_Type = FFBEType.ET_FRCTN Then ' I have not underestand yet the difference between Damper and Friction
-            'Dim newPosition As Integer = 0
-            'If pWheelPosition > SettingsMain.WheelDead Then
-            '    newPosition = pWheelPosition - SettingsMain.WheelDead
-            'ElseIf pWheelPosition < -SettingsMain.WheelDead Then
-            '    newPosition = pWheelPosition + SettingsMain.WheelDead
-            'End If
-            q = (pWheelPosition - WheelPositionPrevious) / timeElapsed * SettingsMain.WheelDampFactor 'q = (Math.Abs(pWheelPosition - LastWheelPosition) * SettingsMain.WheelDampFactor / timeElapsed) ^ (SettingsMain.WheelInertia / 100.0F) * Math.Sign(pWheelPosition - LastWheelPosition)
+            If FFWheel_Type = FFBEType.ET_SPRNG Then
+                If pWheelPosition > 70 Then
+                    q = 0.5 + CSng(pWheelPosition) / CSng(16384) ' aprox. -1~1
+                ElseIf WheelPosition < -70 Then
+                    q = -0.5 + CSng(pWheelPosition) / CSng(16384) ' aprox. -1~1
+                End If
+                'If pWheelPosition > SettingsMain.WheelDead Then
+                '    q = (pWheelPosition - SettingsMain.WheelDead) / 1.637
+                'ElseIf pWheelPosition < -SettingsMain.WheelDead Then
+                '    q = (pWheelPosition + SettingsMain.WheelDead) / 1.637
+                'End If
+            Else
+                'If the metric Is less than CP Offset - Dead Band, Then the resulting force Is given by the following formula:
+                '   FFWheel += Negative Coefficient * (q - (CP Offset – Dead Band))
+                'If the metric Is greater than CP Offset + Dead Band, then the resulting force Is given by the following formula:
+                '  FFWheel += Positive Coefficient * (q - (CP Offset + Dead Band))
+                'where q Is a type-dependent metric: 
+                '  - spring = axis position as the metric
+                '  - damper = axis velocity as the metric
+                '  - inertia = axis acceleration as the metric
+                '  - friction = when the axis is moved and depends on the defined friction coefficient
+                'If FFWheel_Type = FFBEType.ET_DMPR OrElse FFWheel_Type = FFBEType.ET_FRCTN Then ' I have not underestand yet the difference between Damper and Friction
+                'Dim newPosition As Integer = 0
+                'If pWheelPosition > SettingsMain.WheelDead Then
+                '    newPosition = pWheelPosition - SettingsMain.WheelDead
+                'ElseIf pWheelPosition < -SettingsMain.WheelDead Then
+                '    newPosition = pWheelPosition + SettingsMain.WheelDead
+                'End If
+                q = CSng(pWheelPosition - WheelPositionPrevious) / CSng(timeElapsed * SettingsMain.WheelDampFactor) 'q = (Math.Abs(pWheelPosition - LastWheelPosition) * SettingsMain.WheelDampFactor / timeElapsed) ^ (SettingsMain.WheelInertia / 100.0F) * Math.Sign(pWheelPosition - LastWheelPosition)
+            End If
             'If pWheelPosition <> PreviousWheelPosition Then txtErrors.Text &= (pWheelPosition - PreviousWheelPosition) & "       " & timeElapsed & vbCrLf
-            'ElseIf FFWheel_Type = FFBEType.ET_SPRNG Then
-            'q = pWheelPosition / 1.637
-            'If pWheelPosition > SettingsMain.WheelDead Then
-            '    q = (pWheelPosition - SettingsMain.WheelDead) / 1.637
-            'ElseIf pWheelPosition < -SettingsMain.WheelDead Then
-            '    q = (pWheelPosition + SettingsMain.WheelDead) / 1.637
-            'End If
-            '   End If
             If q < 0 Then ' if Q is negative: I am not using FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand  because they are allways zero, and their range would be -10000~10000 while Q range is -1~1 , and CVJoy has its own DeadZone
-                desiredTotalStrength += FFWheel_Cond.NegCoeff * q '(q - (FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand))
+                desiredTotalStrength += CSng(FFWheel_Cond.NegCoeff) * q '(q - (FFWheel_Cond.CenterPointOffset - FFWheel_Cond.DeadBand))
             ElseIf q > 0 Then ' if Q is positive:
-                desiredTotalStrength += FFWheel_Cond.PosCoeff * q '(q - (FFWheel_Cond.CenterPointOffset + FFWheel_Cond.DeadBand))
+                desiredTotalStrength += CSng(FFWheel_Cond.PosCoeff) * q '(q - (FFWheel_Cond.CenterPointOffset + FFWheel_Cond.DeadBand))
             End If
         End If
 
-        desiredTotalStrength = desiredTotalStrength / 10000 * FFGain '  now becomes  -255 ~ 255 (but can get to a lot more by summing up FF effects)
+        desiredTotalStrength = desiredTotalStrength / CSng(10000) * FFGain '  now becomes  -255 ~ 255 (but can get to a lot more by summing up FF effects)
 
         'If pSlipFront > 0 Then
         '    Const freq As Integer = 12

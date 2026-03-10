@@ -12,6 +12,7 @@
 
     Private Sub ShowFromGameSettings()
         txtWheelSensitivity.Text = (Game.WheelSensitivity * 100).ToString("+0000;-0000")
+        chkSpring.Checked = Game.Spring
         'txtRPM1.Text = pGame.Rpm1 * 100
         'txtSpeedMinInput.Text = pGame.MinSpeed
         'txtSpeedMaxJump.Text = pGame.SpeedMaxJump.ToString("+0.0;-0.0")
@@ -39,6 +40,7 @@
         'Game.SpeedMaxJump = txtSpeedMaxJump.Text.Replace("G", "")
         'Game.Turn = CDec(txtTurn.Text) / 10 / 57.3
         Game.WheelSensitivity = CInt(txtWheelSensitivity.Text) / 100
+        Game.Spring = chkSpring.Checked
         UcButtons1.StoreToGameSettings()
         _FrmCVJoy.UcButtons1.ShowFromGameSettings()
         Return True

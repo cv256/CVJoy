@@ -2,7 +2,8 @@
     Inherits clSettings
 
 
-    Public WheelSensitivity As Single = 8.5
+    Public WheelSensitivity As Single = 3
+    Public Spring As Boolean = False
     Public Const BtCount = 10
     Public Bt(2 * BtCount - 1) As String ' 0~9 & 10~19
     Public BtDescr(2 * BtCount - 1) As String ' 0~9 & 10~19

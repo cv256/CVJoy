@@ -1,6 +1,4 @@
 ﻿Imports System.Net
-Imports System.Runtime.Remoting.Messaging
-Imports System.Text
 
 Public Class GameMotionSim
     Inherits clGame

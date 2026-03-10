@@ -241,6 +241,7 @@ Partial Class frmSetup
         Me.Label3.Size = New System.Drawing.Size(224, 12)
         Me.Label3.TabIndex = 10
         Me.Label3.Text = "Hz (fps) between Arduino <-> CVJoy <-> vJoy+Game"
+        Me.Label3.Visible = False
         '
         'txtFreq
         '
@@ -255,6 +256,7 @@ Partial Class frmSetup
         Me.txtFreq.TabIndex = 9
         Me.txtFreq.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.txtFreq.TextMaskFormat = System.Windows.Forms.MaskFormat.ExcludePromptAndLiterals
+        Me.txtFreq.Visible = False
         '
         'Label2
         '
@@ -264,6 +266,7 @@ Partial Class frmSetup
         Me.Label2.Size = New System.Drawing.Size(73, 13)
         Me.Label2.TabIndex = 8
         Me.Label2.Text = "Refresh Rate:"
+        Me.Label2.Visible = False
         '
         'Label21
         '

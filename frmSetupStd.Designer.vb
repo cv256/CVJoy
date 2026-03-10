@@ -31,6 +31,7 @@ Partial Class frmSetupStd
         Me.ckKeepVisible = New System.Windows.Forms.CheckBox()
         Me.txtWheelSensitivity = New System.Windows.Forms.MaskedTextBox()
         Me.Label4 = New System.Windows.Forms.Label()
+        Me.chkSpring = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'btApply
@@ -130,12 +131,24 @@ Partial Class frmSetupStd
         Me.Label4.TabIndex = 233
         Me.Label4.Text = "Steering Wheel Sensitivity:"
         '
+        'chkSpring
+        '
+        Me.chkSpring.AutoSize = True
+        Me.chkSpring.BackColor = System.Drawing.Color.Transparent
+        Me.chkSpring.Location = New System.Drawing.Point(276, 59)
+        Me.chkSpring.Name = "chkSpring"
+        Me.chkSpring.Size = New System.Drawing.Size(71, 17)
+        Me.chkSpring.TabIndex = 235
+        Me.chkSpring.Text = "FF Spring"
+        Me.chkSpring.UseVisualStyleBackColor = False
+        '
         'frmSetupStd
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ClientSize = New System.Drawing.Size(610, 134)
+        Me.Controls.Add(Me.chkSpring)
         Me.Controls.Add(Me.txtWheelSensitivity)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.ckKeepVisible)
@@ -160,4 +173,5 @@ Partial Class frmSetupStd
     Friend WithEvents ckKeepVisible As CheckBox
     Friend WithEvents txtWheelSensitivity As MaskedTextBox
     Friend WithEvents Label4 As Label
+    Friend WithEvents chkSpring As CheckBox
 End Class
