@@ -13,7 +13,7 @@ Public Class frmCVJoy
     Public WithEvents TimerScreenAndUDP As New Windows.Forms.Timer
     Private GameOutputs As clGameOutputs, GameOutputsExtra As clGameOutputsExtra
     Public Joy As vJoyInterfaceWrap.vJoy ' http://vjoystick.sourceforge.net/site/includes/SDK_ReadMe.pdf
-    Private ButtonBox As New clButtonBox, udpClient45001 As Sockets.UdpClient
+    Private ButtonBox As New clButtonBox
 
     Private FFGain As Single = 255
     Public FFWheel_Type As FFBEType
@@ -63,28 +63,9 @@ Public Class frmCVJoy
 
         VJoy_Start()
 
-        Dim RemoteIpEndPoint As IPEndPoint = New IPEndPoint(IPAddress.Any, 45001)
-        udpClient45001 = New Net.Sockets.UdpClient(RemoteIpEndPoint)
-        udpClient45001.BeginReceive(AddressOf ReceivedUdp, Nothing)
+        ButtonBox.StartListening(Me)
 
         cbGames.SelectedIndex = 0 ' TODO: SettingsMain should keep that last cbGames.SelectedIndex used, and here we should use that
-    End Sub
-
-    Public Sub ReceivedUdp(pIAsyncResult As IAsyncResult)
-        If udpClient45001 Is Nothing Then Return
-        Dim RemoteIpEndPoint As IPEndPoint = New IPEndPoint(IPAddress.Parse(SettingsMain.UdpIp), 45001)
-        Dim bytesReceived As Byte() = udpClient45001.EndReceive(pIAsyncResult, RemoteIpEndPoint)
-
-        If bytesReceived(0) = 253 Then
-            Dim s As String = System.Text.Encoding.ASCII.GetString(bytesReceived, 1, bytesReceived.Length - 1)
-            Dim c As String = ButtonBox.GetAction(s)
-            ' TODO: execute s
-            'ErrorAdd($"UDP received", s) ' Control 'txtErrors' accessed from a thread other than the thread it was created on.
-        Else
-            'ErrorAdd($"Unexpected UDP received on {RemoteIpEndPoint.ToString}", $"header={bytesReceived(0)}") ' Control 'txtErrors' accessed from a thread other than the thread it was created on.
-        End If
-
-        If Not udpClient45001 Is Nothing Then udpClient45001.BeginReceive(AddressOf ReceivedUdp, Nothing)
     End Sub
 
     Private Sub cbGames_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbGames.SelectedIndexChanged
@@ -780,6 +761,7 @@ start:
             FFWheel_Type = FFBEType.ET_NONE
             FFWheel_Cond = New vJoyInterfaceWrap.vJoy.FFB_EFF_COND
             FFWheel_Const = New vJoyInterfaceWrap.vJoy.FFB_EFF_CONSTANT
+            ErrorAdd("Sending Reset", "")
         Else
             '' https://msdn.microsoft.com/en-us/library/system.windows.forms.sendkeys.send(v=vs.110).aspx
             ErrorAdd("Sending Keys: " & keysToSend, "")
@@ -795,7 +777,22 @@ start:
         MsgBox(e.ToString)
     End Sub
 
-
+    Private Delegate Sub SetErrorsTextCallback(pText As String) '  to avoid «Control 'txtErrors' accessed from a thread other than the thread it was created on»
+    Private Sub SetErrorsText(pText As String)
+        ' https://stackoverflow.com/questions/229554/whats-the-difference-between-invoke-and-begininvoke/229558#229558  :
+        'Delegate.Invoke: Executes synchronously, on the same thread.
+        'Delegate.BeginInvoke: Executes asynchronously, on a threadpool thread.
+        'Control.Invoke: Executes on the UI thread, but calling thread waits for completion before continuing.
+        'Control.BeginInvoke: Executes on the UI thread, and calling thread doesn't wait for completion.
+        ' https://www.vbforums.com/showthread.php?655071-BeginInvoke-What-I-thought-I-knew
+        If Me.InvokeRequired Then
+            Dim d As New SetErrorsTextCallback(AddressOf SetErrorsText)
+            Me.BeginInvoke(d, pText)
+        Else
+            txtErrors.Text = tmpErrors
+            'txtErrors.SelectionStart = 32767 : txtErrors.ScrollToCaret()
+        End If
+    End Sub
     Public Sub ErrorAdd(pNewErrorDescr As String, pExtraInfo As String, Optional pFF As Boolean = False)
         If pFF = False AndAlso chkLogHideDups.Checked Then
             If tmpErrors.StartsWith(pNewErrorDescr) Then Return
@@ -804,8 +801,7 @@ start:
             tmpErrors = Strings.Left(Now.ToLongTimeString & "  " & pNewErrorDescr & "  " & pExtraInfo & vbCrLf & tmpErrors, 6000)
         End If
 
-        txtErrors.Text = tmpErrors
-        'txtErrors.SelectionStart = 32767 : txtErrors.ScrollToCaret()
+        SetErrorsText(tmpErrors)
     End Sub
 
     Private Sub btLogClear_Click(sender As Object, e As EventArgs) Handles btLogClear.Click
