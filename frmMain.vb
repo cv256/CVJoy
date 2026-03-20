@@ -27,7 +27,7 @@ Public Class frmCVJoy
     Private WheelPosition As Integer ', WheelPositionDesired As Integer
     ' Date datatype accuracy is 0,1ms = 10kHz
     Private WheelReadTime As Date = Now.AddSeconds(-1), WheelPositionPrevious As Integer, WheelReadPreviousTime As Date = Now.AddSeconds(-1) ' these are only for the Conditional FFB calulations
-    Private ButtonsLast(clGame.BtCount - 1) As Boolean, ButtonOther As Boolean
+    Private ButtonsLast(clGame.BtCount - 1) As Boolean, KeysWhileButton0 As New List(Of String) ' used to detect if some buttons are pressed while button 0 is pressed, to be able to use button 0 as a "shift" button for the others)
     Private SendToArduinoCount As UInteger, ReadArduino1Count As UInteger, ReadArduino2Count As UInteger, FFBReadCount As UInteger, UDPCount As UInteger, ScreenUpdateLastTime As Date = Now
 
 
@@ -626,36 +626,48 @@ start:
                         .buttons(9) = fromArduino2.KeyOn
                         Dim buttonsJoy As UInteger = 0
 
-                        If .buttons(0) Then ' if button0 is being pressed:      
+                        If .buttons(0) Then ' if BUTTON0 is being PRESSED:      
 
                             For i As Integer = 1 To clGame.BtCount - 1
-                                If .buttons(i) Then
-                                    If Game.Bt(i + clGame.BtCount) > "" Then
-                                        If Not ButtonsLast(i) Then MySendKeys(Game.Bt(i + clGame.BtCount), True)
+                                If .buttons(i) Then ' if is being pressed now:
+                                    If Not ButtonsLast(i) Then ' and was not being pressed until now:
+                                        If Game.Bt(i + clGame.BtCount) > "" Then
+                                            MySendKeys(Game.Bt(i + clGame.BtCount), True)
+                                            KeysWhileButton0.Add(Game.Bt(i + clGame.BtCount))
+                                        End If
                                     End If
                                     buttonsJoy += 2 ^ (i + clGame.BtCount) ' VJoy buttons (0~31) from BtCount+1 to 2*BtCount-1 (2048~524288)
-                                    ButtonOther = True
                                 End If
                             Next i
 
-                        Else ' if button0 is not being pressed now :
+                        Else ' if BUTTON0 is NOT being pressed:
 
-                            If ButtonsLast(0) Then ' if was pressed alone and we just released it:
-                                If Not ButtonOther Then ' and no other button had been pressed
-                                    If Game.Bt(0) > "" Then MySendKeys(Game.Bt(0), True)
+                            If ButtonsLast(0) Then ' ...and button0 was being pressed until now:
+                                If KeysWhileButton0.Count = 0 Then ' and no other button had been pressed
+                                    If Game.Bt(0) > "" Then MySendKeys(Game.Bt(0), True) : MySendKeys(Game.Bt(0), False)
                                     buttonsJoy = 1  ' VJoy button 0 (0~31)
                                 End If
-                                ButtonOther = False
                             Else ' normal:
                                 For i As Integer = 1 To clGame.BtCount - 1
-                                    If .buttons(i) Then
-                                        If Game.Bt(i) > "" Then
-                                            If Not ButtonsLast(i) Then MySendKeys(Game.Bt(i), True)
+                                    If .buttons(i) Then ' if is being pressed:
+                                        If Not ButtonsLast(i) Then ' ...and was being pressed until now:
+                                            If Game.Bt(i) > "" Then MySendKeys(Game.Bt(i), True)
                                         End If
                                         buttonsJoy += 2 ^ i ' VJoy buttons (0~31) from 1 to BtCount-1 (2~512)
+                                    Else ' if is NOT being pressed :
+                                        If ButtonsLast(i) Then ' and was being pressed before:
+                                            If Game.Bt(i) > "" Then MySendKeys(Game.Bt(i), False)
+                                        End If
                                     End If
                                 Next i
                             End If
+
+                            ' just in case user pressed Button0+other buttons, and then released Button0 before the otherbutton, we have to release the keys that were emulated while Button0 was pressed:
+                            For Each k As String In KeysWhileButton0
+                                MySendKeys(k, False)
+                                KeysWhileButton0.Remove(k)
+                            Next
+
                         End If
                         fromArduino1.buttons.CopyTo(ButtonsLast, 0)
 #End Region
