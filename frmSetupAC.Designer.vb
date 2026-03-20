@@ -116,11 +116,11 @@ Partial Class frmSetupAC
         'UcButtons1
         '
         Me.UcButtons1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.UcButtons1.Location = New System.Drawing.Point(182, 171)
+        Me.UcButtons1.Location = New System.Drawing.Point(190, 171)
         Me.UcButtons1.Name = "UcButtons1"
         Me.UcButtons1.ReadOnly = False
         Me.UcButtons1.ShowDescriptions = False
-        Me.UcButtons1.Size = New System.Drawing.Size(416, 37)
+        Me.UcButtons1.Size = New System.Drawing.Size(416, 63)
         Me.UcButtons1.TabIndex = 230
         '
         'txtWheelSensitivity

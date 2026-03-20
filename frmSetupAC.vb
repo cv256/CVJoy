@@ -1,15 +1,14 @@
 ﻿Imports AssettoCorsaSharedMemory
 
 Public Class frmSetupAC
-    Public _FrmCVJoy As frmCVJoy, Game As GameAC
+    Public Game As GameAC
 
-    Public Sub Init(pOwner As frmCVJoy, pGame As GameAC)
-        Me.Owner = pOwner
-        _FrmCVJoy = pOwner
+    Public Sub Init(pGame As GameAC)
+        Me.Owner = Module1.FrmMain
         Game = pGame
 
         ShowFromGameSettings()
-        Me.Show(pOwner)
+        Me.Show(Owner)
     End Sub
 
     Private Sub ShowFromGameSettings()
@@ -32,13 +31,13 @@ Public Class frmSetupAC
         If txt_Validate(pShowMsg:=True) > "" Then Return False
         Game.WheelSensitivity = CInt(txtWheelSensitivity.Text) / 100
         UcButtons1.StoreToGameSettings()
-        _FrmCVJoy.UcButtons1.ShowFromGameSettings()
+        Module1.FrmMain.UcButtons1.ShowFromGameSettings()
 
         Return True
     End Function
 
     Private Sub btDefaults_Click(sender As Object, e As EventArgs) Handles btDefaults.Click
-        Game = New GameAC(_FrmCVJoy)
+        Game = New GameAC()
         ShowFromGameSettings()
     End Sub
 

@@ -1,10 +1,6 @@
 ﻿Public Class GameStd
     Inherits clGame
 
-    Public Sub New(pOwner As frmCVJoy)
-        MyBase.New(pOwner)
-    End Sub
-
     Public Overrides Function GameName() As String
         Return "Standard"
     End Function
@@ -46,8 +42,8 @@
     End Function
 
     Public Function SetupForm() As frmSetupStd
-        If Owner.OwnedForms.Any(Function(f) TypeOf f Is frmSetupStd) Then
-            Return Owner.OwnedForms.First(Function(f) TypeOf f Is frmSetupStd)
+        If Module1.FrmMain.OwnedForms.Any(Function(f) TypeOf f Is frmSetupStd) Then
+            Return Module1.FrmMain.OwnedForms.First(Function(f) TypeOf f Is frmSetupStd)
         End If
         Return Nothing
     End Function
@@ -58,7 +54,7 @@
             tmpFrm.Show()
         Else
             tmpFrm = New frmSetupStd
-            tmpFrm.Init(Owner, Me)
+            tmpFrm.Init(Me)
         End If
     End Sub
 

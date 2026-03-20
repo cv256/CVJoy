@@ -160,6 +160,12 @@
     <Compile Include="ucACGraph.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="ucButtonsKeys.Designer.vb">
+      <DependentUpon>ucButtonsKeys.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ucButtonsKeys.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ucButtons.Designer.vb">
       <DependentUpon>ucButtons.vb</DependentUpon>
     </Compile>
@@ -221,6 +227,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ucACGraph.resx">
       <DependentUpon>ucACGraph.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucButtonsKeys.resx">
+      <DependentUpon>ucButtonsKeys.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ucButtons.resx">
       <DependentUpon>ucButtons.vb</DependentUpon>

@@ -11,9 +11,6 @@ Public Class GameMotionSim
     Private GameOutputs As clGameOutputs
     Private GameOutputsExtra As clGameOutputsExtra
 
-    Public Sub New(pOwner As frmCVJoy)
-        MyBase.New(pOwner)
-    End Sub
     Public Overrides Function GameName() As String
         Return "MotionSim"
     End Function
@@ -113,8 +110,8 @@ Public Class GameMotionSim
 
 
     Public Function SetupForm() As frmSetupMotionSim
-        If Owner.OwnedForms.Any(Function(f) TypeOf f Is frmSetupMotionSim) Then
-            Return Owner.OwnedForms.First(Function(f) TypeOf f Is frmSetupMotionSim)
+        If Module1.FrmMain.OwnedForms.Any(Function(f) TypeOf f Is frmSetupMotionSim) Then
+            Return Module1.FrmMain.OwnedForms.First(Function(f) TypeOf f Is frmSetupMotionSim)
         End If
         Return Nothing
     End Function
@@ -125,7 +122,7 @@ Public Class GameMotionSim
             tmpFrm.Show()
         Else
             tmpFrm = New frmSetupMotionSim
-            tmpFrm.Init(Owner, Me)
+            tmpFrm.Init(Me)
         End If
     End Sub
 

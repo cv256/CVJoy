@@ -1,5 +1,6 @@
 ﻿Module Module1
 
+    Public FrmMain As frmCVJoy
     Public SettingsMain As New clSettingsMain
     Public toArduino1 As New SerialSend, fromArduino1 As New SerialRead
     Public toArduino2 As New SerialSend2, fromArduino2 As New SerialRead2
@@ -8,6 +9,11 @@
 
     Public graph As ucControlGraph, Ggraph As ucControlGGraph
     'Public timeStart As DateTime, timeSent As DateTime, timeRead As DateTime
+
+    Private _KeysDict As Dictionary(Of UInteger, String)
+    Private Const KEYEVENTF_KEYDOWN As UInteger = &H0
+    Private Const KEYEVENTF_KEYUP As UInteger = &H2
+    Private Declare Sub keybd_event Lib "User32" (ByVal bVk As Byte, ByVal bScan As Byte, ByVal dwFlags As UInteger, ByVal dwExtraInfo As UInteger)
 
     Public Function ValidateNumber(pTextbox As Control, pMin As Single, pMax As Single, FieldDescr As String) As String
         Dim res As Single, ok As Boolean
@@ -54,5 +60,37 @@
         If pValue = 0 Then Return 0
         Return (ScaleValue(pValue, pFromMin, pFromMax, pToMin, pToMax) / pToMax) ^ pGama * pToMax
     End Function
+
+
+    Public Function KeysDict() As Dictionary(Of UInteger, String)
+        If _KeysDict IsNot Nothing Then Return _KeysDict
+        _KeysDict = New Dictionary(Of UInteger, String)
+        _KeysDict.Add(65535, "reset")
+        For Each k As Keys In [Enum].GetValues(GetType(Keys))
+            If k < 0 OrElse k > 255 Then Continue For
+            If Not _KeysDict.ContainsKey(k) Then _KeysDict.Add(k, If(k.ToString.ToUpper = "NONE", "", k.ToString))
+        Next
+        Return _KeysDict
+    End Function
+
+    Public Sub MySendKeys(pText As String, pPressed As Boolean)
+        Dim texts As String() = pText.Split("+"c)
+        If Not pPressed Then Array.Reverse(texts)
+        If pPressed Then FrmMain.ErrorAdd(vbCr, "")
+        For Each t As String In texts
+            If t.ToLower = "reset" Then
+                FrmMain.ResetArduino1()
+                ' TODO: fazer um KeyDown das teclas todas, não vá algum KeyUp não ter tido KeyDown...
+            Else
+                Dim k As Keys
+                If [Enum].TryParse(t, k) Then
+                    FrmMain.ErrorAdd($"{If(pPressed, "Key Down", "key up")} «{t}»", "")
+                    keybd_event(CByte(k), 0, If(pPressed, KEYEVENTF_KEYDOWN, KEYEVENTF_KEYUP), 0)
+                Else
+                    FrmMain.ErrorAdd($"UNEXPECTED KEY «{t}»", "")
+                End If
+            End If
+        Next
+    End Sub
 
 End Module

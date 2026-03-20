@@ -11,9 +11,6 @@ Public Class GameAC
     Private GameOutputsExtra As clGameOutputsExtra
 
 
-    Public Sub New(pOwner As frmCVJoy)
-        MyBase.New(pOwner)
-    End Sub
     Public Overrides Function GameName() As String
         Return "Assetto Corsa"
     End Function
@@ -138,8 +135,8 @@ Public Class GameAC
 
 
     Public Function SetupForm() As frmSetupAC
-        If Owner.OwnedForms.Any(Function(f) TypeOf f Is frmSetupAC) Then
-            Return Owner.OwnedForms.First(Function(f) TypeOf f Is frmSetupAC)
+        If Module1.FrmMain.OwnedForms.Any(Function(f) TypeOf f Is frmSetupAC) Then
+            Return Module1.FrmMain.OwnedForms.First(Function(f) TypeOf f Is frmSetupAC)
         End If
         Return Nothing
     End Function
@@ -150,7 +147,7 @@ Public Class GameAC
             tmpFrm.Show()
         Else
             tmpFrm = New frmSetupAC
-            tmpFrm.Init(Owner, Me)
+            tmpFrm.Init(Me)
         End If
     End Sub
 

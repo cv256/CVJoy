@@ -1,13 +1,12 @@
 ﻿Public Class frmSetupMotionSim
-    Public _FrmCVJoy As frmCVJoy, Game As GameMotionSim
+    Public Game As GameMotionSim
 
-    Public Sub Init(pOwner As frmCVJoy, pGame As GameMotionSim)
-        Me.Owner = pOwner
-        _FrmCVJoy = pOwner
+    Public Sub Init(pGame As GameMotionSim)
+        Me.Owner = Module1.FrmMain
         Game = pGame
 
         ShowFromGameSettings()
-        Me.Show(pOwner)
+        Me.Show(Owner)
     End Sub
 
     Private Sub ShowFromGameSettings()
@@ -33,13 +32,13 @@
         Game.WheelSensitivity = CInt(txtWheelSensitivity.Text) / 100
         Game.UdpPort = CInt(txtUdpPort.Text)
         UcButtons1.StoreToGameSettings()
-        _FrmCVJoy.UcButtons1.ShowFromGameSettings()
+        Module1.FrmMain.UcButtons1.ShowFromGameSettings()
 
         Return True
     End Function
 
     Private Sub btDefaults_Click(sender As Object, e As EventArgs) Handles btDefaults.Click
-        Game = New GameMotionSim(_FrmCVJoy)
+        Game = New GameMotionSim()
         ShowFromGameSettings()
     End Sub
 

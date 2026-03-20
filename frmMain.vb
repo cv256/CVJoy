@@ -1,7 +1,6 @@
 ﻿Imports System.IO.Ports
 Imports System.Net
 Imports System.Net.Sockets
-Imports System.Text
 
 
 Public Class frmCVJoy
@@ -49,7 +48,11 @@ Public Class frmCVJoy
     Public TestMode As enumTestMode, TestValue As Integer = 0, TestValue2 As Integer = 0
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        Module1.FrmMain = Me
+
         Me.Text &= "  " & Application.ProductVersion
+
         cbLogFF.Items.Add("Don't Log FF")
         cbLogFF.Items.Add("FF")
         cbLogFF.Items.Add("FF Extra")
@@ -63,7 +66,7 @@ Public Class frmCVJoy
 
         VJoy_Start()
 
-        ButtonBox.StartListening(Me)
+        ButtonBox.StartListening()
 
         cbGames.SelectedIndex = 0 ' TODO: SettingsMain should keep that last cbGames.SelectedIndex used, and here we should use that
     End Sub
@@ -71,15 +74,15 @@ Public Class frmCVJoy
     Private Sub cbGames_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbGames.SelectedIndexChanged
         If Game IsNot Nothing Then Game.Stop()
         If cbGames.SelectedIndex = 2 Then
-            Game = New GameStd(Me)
+            Game = New GameStd()
             btGameStart.Visible = False
             lbGameInfo.Text = ""
         ElseIf cbGames.SelectedIndex = 1 Then
-            Game = New GameMotionSim(Me)
+            Game = New GameMotionSim()
             btGameStart.Visible = True
             AddHandler Game.StateChanged, AddressOf GameStateChanged
         Else
-            Game = New GameAC(Me)
+            Game = New GameAC()
             btGameStart.Visible = True
             AddHandler Game.StateChanged, AddressOf GameStateChanged
         End If
@@ -628,7 +631,7 @@ start:
                             For i As Integer = 1 To clGame.BtCount - 1
                                 If .buttons(i) Then
                                     If Game.Bt(i + clGame.BtCount) > "" Then
-                                        If Not ButtonsLast(i) Then MySendKeys(Game.Bt(i + clGame.BtCount))
+                                        If Not ButtonsLast(i) Then MySendKeys(Game.Bt(i + clGame.BtCount), True)
                                     End If
                                     buttonsJoy += 2 ^ (i + clGame.BtCount) ' VJoy buttons (0~31) from BtCount+1 to 2*BtCount-1 (2048~524288)
                                     ButtonOther = True
@@ -639,7 +642,7 @@ start:
 
                             If ButtonsLast(0) Then ' if was pressed alone and we just released it:
                                 If Not ButtonOther Then ' and no other button had been pressed
-                                    If Game.Bt(0) > "" Then MySendKeys(Game.Bt(0))
+                                    If Game.Bt(0) > "" Then MySendKeys(Game.Bt(0), True)
                                     buttonsJoy = 1  ' VJoy button 0 (0~31)
                                 End If
                                 ButtonOther = False
@@ -647,7 +650,7 @@ start:
                                 For i As Integer = 1 To clGame.BtCount - 1
                                     If .buttons(i) Then
                                         If Game.Bt(i) > "" Then
-                                            If Not ButtonsLast(i) Then MySendKeys(Game.Bt(i))
+                                            If Not ButtonsLast(i) Then MySendKeys(Game.Bt(i), True)
                                         End If
                                         buttonsJoy += 2 ^ i ' VJoy buttons (0~31) from 1 to BtCount-1 (2~512)
                                     End If
@@ -754,19 +757,13 @@ start:
         End Try
     End Sub
 
-    Public Sub MySendKeys(keysToSend As String)
-        If keysToSend = "reset" Then
-            TestMode = enumTestMode.Reset
-            FFGain = 255
-            FFWheel_Type = FFBEType.ET_NONE
-            FFWheel_Cond = New vJoyInterfaceWrap.vJoy.FFB_EFF_COND
-            FFWheel_Const = New vJoyInterfaceWrap.vJoy.FFB_EFF_CONSTANT
-            ErrorAdd("Sending Reset", "")
-        Else
-            '' https://msdn.microsoft.com/en-us/library/system.windows.forms.sendkeys.send(v=vs.110).aspx
-            ErrorAdd("Sending Keys: " & keysToSend, "")
-            SendKeys.SendWait(keysToSend)
-        End If
+    Public Sub ResetArduino1()
+        TestMode = enumTestMode.Reset
+        FFGain = 255
+        FFWheel_Type = FFBEType.ET_NONE
+        FFWheel_Cond = New vJoyInterfaceWrap.vJoy.FFB_EFF_COND
+        FFWheel_Const = New vJoyInterfaceWrap.vJoy.FFB_EFF_CONSTANT
+        ErrorAdd("Sending Reset", "")
     End Sub
 
     Private Sub SerialPort1_ErrorReceived(sender As Object, e As SerialErrorReceivedEventArgs)
@@ -836,7 +833,7 @@ start:
             Me.OwnedForms.First(Function(f) TypeOf f Is frmSetup).Show()
         Else
             Dim tmpFrm As New frmSetup
-            tmpFrm.Init(Me)
+            tmpFrm.Init()
         End If
     End Sub
 

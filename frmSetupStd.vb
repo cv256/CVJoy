@@ -1,13 +1,12 @@
 ﻿Public Class frmSetupStd
-    Public _FrmCVJoy As frmCVJoy, Game As GameStd
+    Public Game As GameStd
 
-    Public Sub Init(pOwner As frmCVJoy, pGame As GameStd)
-        Me.Owner = pOwner
-        _FrmCVJoy = pOwner
+    Public Sub Init(pGame As GameStd)
+        Me.Owner = Module1.FrmMain
         Game = pGame
 
         ShowFromGameSettings()
-        Me.Show(pOwner)
+        Me.Show(Owner)
     End Sub
 
     Private Sub ShowFromGameSettings()
@@ -42,12 +41,12 @@
         Game.WheelSensitivity = CInt(txtWheelSensitivity.Text) / 100
         Game.Spring = chkSpring.Checked
         UcButtons1.StoreToGameSettings()
-        _FrmCVJoy.UcButtons1.ShowFromGameSettings()
+        Module1.FrmMain.UcButtons1.ShowFromGameSettings()
         Return True
     End Function
 
     Private Sub btDefaults_Click(sender As Object, e As EventArgs) Handles btDefaults.Click
-        Game = New GameStd(_FrmCVJoy)
+        Game = New GameStd()
         ShowFromGameSettings()
     End Sub
 

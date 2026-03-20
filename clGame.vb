@@ -9,12 +9,8 @@
     Public BtDescr(2 * BtCount - 1) As String ' 0~9 & 10~19
 
 
-    Friend Owner As frmCVJoy
     Public MustOverride Function GameName() As String
 
-    Public Sub New(pOwner As frmCVJoy)
-        Owner = pOwner
-    End Sub
 
     Public MustOverride Sub Start()
     Public MustOverride Sub [Stop]()

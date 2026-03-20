@@ -95,7 +95,7 @@ Partial Class frmSetupStd
         Me.UcButtons1.Name = "UcButtons1"
         Me.UcButtons1.ReadOnly = False
         Me.UcButtons1.ShowDescriptions = False
-        Me.UcButtons1.Size = New System.Drawing.Size(421, 37)
+        Me.UcButtons1.Size = New System.Drawing.Size(421, 63)
         Me.UcButtons1.TabIndex = 230
         '
         'ckKeepVisible
@@ -115,7 +115,7 @@ Partial Class frmSetupStd
         Me.txtWheelSensitivity.AllowPromptAsInput = False
         Me.txtWheelSensitivity.BeepOnError = True
         Me.txtWheelSensitivity.HidePromptOnLeave = True
-        Me.txtWheelSensitivity.Location = New System.Drawing.Point(181, 57)
+        Me.txtWheelSensitivity.Location = New System.Drawing.Point(181, 76)
         Me.txtWheelSensitivity.Mask = "#0000"
         Me.txtWheelSensitivity.Name = "txtWheelSensitivity"
         Me.txtWheelSensitivity.Size = New System.Drawing.Size(46, 20)
@@ -125,7 +125,7 @@ Partial Class frmSetupStd
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(43, 60)
+        Me.Label4.Location = New System.Drawing.Point(43, 79)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(133, 13)
         Me.Label4.TabIndex = 233
@@ -135,7 +135,7 @@ Partial Class frmSetupStd
         '
         Me.chkSpring.AutoSize = True
         Me.chkSpring.BackColor = System.Drawing.Color.Transparent
-        Me.chkSpring.Location = New System.Drawing.Point(276, 59)
+        Me.chkSpring.Location = New System.Drawing.Point(276, 78)
         Me.chkSpring.Name = "chkSpring"
         Me.chkSpring.Size = New System.Drawing.Size(71, 17)
         Me.chkSpring.TabIndex = 235

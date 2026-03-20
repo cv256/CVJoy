@@ -22,27 +22,28 @@ Partial Class ucButtons
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.bt1 = New System.Windows.Forms.TextBox()
-        Me.bt2 = New System.Windows.Forms.TextBox()
-        Me.bt3 = New System.Windows.Forms.TextBox()
-        Me.bt4 = New System.Windows.Forms.TextBox()
-        Me.bt5 = New System.Windows.Forms.TextBox()
-        Me.bt6 = New System.Windows.Forms.TextBox()
-        Me.bt7 = New System.Windows.Forms.TextBox()
-        Me.bt8 = New System.Windows.Forms.TextBox()
+        Me.bt1 = New CVJoy.MyTextBox()
+        Me.bt2 = New CVJoy.MyTextBox()
+        Me.bt3 = New CVJoy.MyTextBox()
+        Me.bt4 = New CVJoy.MyTextBox()
+        Me.bt5 = New CVJoy.MyTextBox()
+        Me.bt6 = New CVJoy.MyTextBox()
+        Me.bt7 = New CVJoy.MyTextBox()
+        Me.bt8 = New CVJoy.MyTextBox()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.bt0 = New System.Windows.Forms.TextBox()
-        Me.btx0 = New System.Windows.Forms.TextBox()
+        Me.bt0 = New CVJoy.MyTextBox()
+        Me.btx0 = New CVJoy.MyTextBox()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.btx1 = New System.Windows.Forms.TextBox()
-        Me.btx2 = New System.Windows.Forms.TextBox()
-        Me.btx3 = New System.Windows.Forms.TextBox()
-        Me.btx4 = New System.Windows.Forms.TextBox()
-        Me.btx5 = New System.Windows.Forms.TextBox()
-        Me.btx6 = New System.Windows.Forms.TextBox()
-        Me.btx7 = New System.Windows.Forms.TextBox()
-        Me.btx8 = New System.Windows.Forms.TextBox()
-        Me.bt9 = New System.Windows.Forms.TextBox()
+        Me.btx1 = New CVJoy.MyTextBox()
+        Me.btx2 = New CVJoy.MyTextBox()
+        Me.btx3 = New CVJoy.MyTextBox()
+        Me.btx4 = New CVJoy.MyTextBox()
+        Me.btx5 = New CVJoy.MyTextBox()
+        Me.btx6 = New CVJoy.MyTextBox()
+        Me.btx7 = New CVJoy.MyTextBox()
+        Me.btx8 = New CVJoy.MyTextBox()
+        Me.bt9 = New CVJoy.MyTextBox()
+        Me.ButtonsKeys1 = New CVJoy.ucButtonsKeys()
         Me.SuspendLayout()
         '
         'bt1
@@ -330,10 +331,20 @@ Partial Class ucButtons
         Me.bt9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.bt9.WordWrap = False
         '
+        'ButtonsKeys1
+        '
+        Me.ButtonsKeys1.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(128, Byte), Integer))
+        Me.ButtonsKeys1.Location = New System.Drawing.Point(87, 40)
+        Me.ButtonsKeys1.Name = "ButtonsKeys1"
+        Me.ButtonsKeys1.Size = New System.Drawing.Size(247, 23)
+        Me.ButtonsKeys1.TabIndex = 48
+        Me.ButtonsKeys1.Visible = False
+        '
         'ucButtons
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.ButtonsKeys1)
         Me.Controls.Add(Me.bt9)
         Me.Controls.Add(Me.btx0)
         Me.Controls.Add(Me.Label2)
@@ -356,30 +367,31 @@ Partial Class ucButtons
         Me.Controls.Add(Me.bt7)
         Me.Controls.Add(Me.bt8)
         Me.Name = "ucButtons"
-        Me.Size = New System.Drawing.Size(415, 37)
+        Me.Size = New System.Drawing.Size(415, 63)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Public WithEvents bt1 As TextBox
-    Public WithEvents bt2 As TextBox
-    Public WithEvents bt3 As TextBox
-    Public WithEvents bt4 As TextBox
-    Public WithEvents bt5 As TextBox
-    Public WithEvents bt6 As TextBox
-    Public WithEvents bt7 As TextBox
-    Public WithEvents bt8 As TextBox
     Friend WithEvents Label1 As Label
-    Public WithEvents bt0 As TextBox
-    Public WithEvents btx0 As TextBox
     Friend WithEvents Label2 As Label
-    Public WithEvents btx1 As TextBox
-    Public WithEvents btx2 As TextBox
-    Public WithEvents btx3 As TextBox
-    Public WithEvents btx4 As TextBox
-    Public WithEvents btx5 As TextBox
-    Public WithEvents btx6 As TextBox
-    Public WithEvents btx7 As TextBox
-    Public WithEvents btx8 As TextBox
-    Public WithEvents bt9 As TextBox
+    Public WithEvents ButtonsKeys1 As ucButtonsKeys
+    Public WithEvents bt1 As MyTextBox
+    Public WithEvents bt2 As MyTextBox
+    Public WithEvents bt3 As MyTextBox
+    Public WithEvents bt4 As MyTextBox
+    Public WithEvents bt5 As MyTextBox
+    Public WithEvents bt6 As MyTextBox
+    Public WithEvents bt7 As MyTextBox
+    Public WithEvents bt8 As MyTextBox
+    Public WithEvents bt0 As MyTextBox
+    Public WithEvents btx0 As MyTextBox
+    Public WithEvents btx1 As MyTextBox
+    Public WithEvents btx2 As MyTextBox
+    Public WithEvents btx3 As MyTextBox
+    Public WithEvents btx4 As MyTextBox
+    Public WithEvents btx5 As MyTextBox
+    Public WithEvents btx6 As MyTextBox
+    Public WithEvents btx7 As MyTextBox
+    Public WithEvents btx8 As MyTextBox
+    Public WithEvents bt9 As MyTextBox
 End Class

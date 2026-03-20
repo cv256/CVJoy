@@ -42,6 +42,7 @@
         End Get
         Set(value As Boolean)
             If value Then Label1.Text = ""
+            If value Then ButtonsKeys1.Visible = False
             For Each c As Control In Me.Controls
                 If Not c.Name.StartsWith("bt") Then Continue For
                 DirectCast(c, TextBox).ReadOnly = value
@@ -54,6 +55,7 @@
             Return _showDescriptions
         End Get
         Set(value As Boolean)
+            If value Then ButtonsKeys1.Visible = False
             If Not IsNothing(Game) Then StoreToGameSettings()
             _showDescriptions = value
             If Not IsNothing(Game) Then ShowFromGameSettings()
@@ -64,5 +66,21 @@
     Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click, Label2.Click
         ShowDescriptions = Not ShowDescriptions
     End Sub
+
+End Class
+
+
+Public Class MyTextBox
+    Inherits TextBox
+
+    Private Sub MyTextBox_Enter(sender As Object, e As EventArgs) Handles Me.Enter
+        If Me.ReadOnly Then Return
+        With DirectCast(Me.Parent, ucButtons)
+            If .ShowDescriptions Then Return
+            .ButtonsKeys1.SetTextBox(Me)
+            .ButtonsKeys1.Visible = True
+        End With
+    End Sub
+
 
 End Class

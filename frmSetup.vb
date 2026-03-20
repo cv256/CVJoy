@@ -1,9 +1,7 @@
 ﻿Public Class frmSetup
-    Public _FrmCVJoy As frmCVJoy
 
-    Public Sub Init(pOwner As frmCVJoy)
-        Me.Owner = pOwner
-        _FrmCVJoy = pOwner
+    Public Sub Init()
+        Me.Owner = Module1.FrmMain
 
         cbComPort.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames())
         cbComPort.SelectedIndex = cbComPort.Items.IndexOf(SettingsMain.ArduinoComPort)
@@ -23,7 +21,7 @@
 
         ShowSettings()
 
-        Me.Show(pOwner)
+        Me.Show(Owner)
     End Sub
 
     Private Sub ShowSettings()
